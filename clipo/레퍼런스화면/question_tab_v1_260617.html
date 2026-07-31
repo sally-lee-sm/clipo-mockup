@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="clipo_favicon.png">
+  <title>활동지 — CLIPO</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *{ font-family:'Pretendard GOV',-apple-system,sans-serif; box-sizing:border-box; }
+    body{ margin:0; background:#f6f7f9; color:#222631; font-size:16px; min-width:1280px; }
+    a{ text-decoration:none; color:inherit; }
+    button{ font-family:inherit; }
+
+    /* ===== Global Header ===== */
+    .g-hd { height:56px; background:#fff; border-bottom:1px solid #d9d9d9; display:flex; align-items:center; padding:0 20px 0 8px; position:fixed; top:0; left:0; right:0; z-index:200; }
+    .gh-menu-btn { width:36px; height:36px; border:none; background:none; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; color:#3b3f4c; margin-right:8px; line-height:1; }
+    .g-hd-r { margin-left:auto; display:flex; align-items:center; gap:6px; font-size:14px; color:#3b3f4c; }
+    .plan-badge { background:#eef3ff; color:#416bff; font-size:12px; font-weight:600; padding:3px 10px; border-radius:12px; }
+    .hd-div { width:1px; height:14px; background:#d9d9d9; margin:0 4px; }
+    .credit-wrap { display:flex; align-items:center; gap:4px; font-size:14px; font-weight:500; color:#3b3f4c; }
+    .user-btn { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:0; border:none; background:none; font-size:14px; color:#222631; cursor:pointer; line-height:1; font-weight:500; }
+
+    /* ===== Sidebar ===== */
+    .icon-sb { width:56px; background:#fff; border-right:1px solid #d9d9d9; position:fixed; top:56px; bottom:0; left:0; display:flex; flex-direction:column; padding:8px 0; z-index:150; transition:width .2s ease; }
+    .icon-sb.expanded { width:200px; }
+    .si { height:40px; display:flex; align-items:center; border-radius:8px; color:#6d7381; cursor:pointer; margin:0 8px 2px; position:relative; padding:0 4px 0 8px; gap:10px; white-space:nowrap; flex-shrink:0; }
+    .si:hover { background:#f1f3f5; }
+    .si.active { background:#e9f2ff; color:#416bff; }
+    .si-icon { width:24px; height:24px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .si-label { font-size:13px; font-weight:500; opacity:0; transition:opacity .1s; overflow:hidden; }
+    .icon-sb.expanded .si-label { opacity:1; }
+    .si-tip { position:absolute; left:48px; top:50%; transform:translateY(-50%); background:#222631; color:#fff; font-size:11px; padding:3px 8px; border-radius:4px; white-space:nowrap; display:none; z-index:300; pointer-events:none; }
+    .si:hover .si-tip { display:block; }
+    .icon-sb.expanded .si-tip { display:none !important; }
+    .nav-bottom { margin-top:auto; width:100%; }
+    .nav-div { height:1px; background:#f1f3f5; margin:4px 8px; }
+
+    /* ===== Layout ===== */
+    .main-wrap{ padding-top:56px; padding-left:56px; transition:padding-left .2s; min-height:100vh; display:flex; flex-direction:column; }
+    body.nav-expanded .main-wrap{ padding-left:200px; }
+
+    /* ===== Tab band ===== */
+    .tab-band{ background:white; border-bottom:1px solid #dde1e8; }
+    .tab-band-inner{ max-width:1240px; margin:0 auto; padding:0 32px; display:flex; gap:8px; }
+    .sub-tab{ padding:18px 14px; font-size:16px; font-weight:500; color:#3b3f4c; border:none; background:none; cursor:pointer; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-1px; display:inline-flex; align-items:center; justify-content:center; line-height:1; }
+    .sub-tab:hover{ color:#222631; }
+    .sub-tab.on{ color:#416bff; border-bottom:2px solid #416bff; }
+
+    /* ===== Page ===== */
+    .page-wrap{ max-width:1240px; width:100%; margin:0 auto; padding:28px 32px 0; flex:1; display:flex; flex-direction:column; }
+    .page-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:28px; }
+    .page-h1{ font-size:22px; font-weight:700; margin:0 0 8px; }
+    .page-sub{ font-size:16px; color:#3b3f4c; margin:0; line-height:1.55; }
+    .back-link{ display:inline-flex; align-items:center; line-height:1; gap:4px; font-size:15px; font-weight:600; color:#222631; background:none; border:none; cursor:pointer; font-family:inherit; padding:0; margin-bottom:14px; align-self:flex-start; }
+    .back-link i{ color:#416bff; }
+
+    /* ===== buttons ===== */
+    .btn{ height:40px; border-radius:8px; font-size:14px; font-weight:600; font-family:inherit; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; gap:6px; padding:0 14px; border:1px solid transparent; }
+    .btn-sm{ height:34px; font-size:13px; padding:0 12px; }
+    .btn-lg{ height:44px; padding:0 22px; font-size:15px; }
+    .btn-primary{ background:#416bff; color:#fff; }
+    .btn-primary:hover{ background:#365eef; }
+    .btn-secondary{ background:#fff; color:#3151c4; border:1px solid #ccdfff; }
+    .btn-secondary:hover{ background:#e9f2ff; }
+    .btn-outline{ background:#fff; color:#3b3f4c; border:1px solid #d9d9d9; }
+    .btn-outline:hover{ background:#f6f7f9; }
+    .btn-ai{ background:#416bff; color:#fff; }
+    .btn-ai:hover{ background:#365eef; }
+    .btn-ghost{ background:none; border:none; color:#6d7381; cursor:pointer; font-family:inherit; font-size:13px; font-weight:600; display:inline-flex; align-items:center; gap:4px; }
+    .btn-ghost:hover{ color:#416bff; }
+    .btn[disabled]{ opacity:.5; cursor:not-allowed; }
+
+    /* ===== 설계 요약 (읽기전용) ===== */
+    .design-summary{ background:#f4f8ff; border:1px solid #d8e6ff; border-radius:12px; padding:18px 20px; margin-bottom:20px; }
+    .ds-top{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#3151c4; margin-bottom:12px; }
+    .ds-row{ display:flex; gap:10px; font-size:14px; color:#3b3f4c; line-height:1.6; margin-bottom:6px; }
+    .ds-row:last-child{ margin-bottom:0; }
+    .ds-key{ flex:0 0 76px; font-weight:600; color:#6d7381; }
+    .ds-val{ flex:1; }
+    .ds-chip{ display:inline-block; background:#fff; border:1px solid #d8e6ff; color:#3151c4; font-size:13px; font-weight:500; border-radius:6px; padding:3px 9px; margin:0 6px 6px 0; }
+    .ds-lock{ font-size:13px; color:#6d7381; margin-top:10px; display:flex; align-items:center; gap:5px; }
+    .ds-edit{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-top:16px; padding-top:14px; border-top:1px solid #f1f3f5; }
+    .ds-edit-note{ font-size:14px; color:#565d6b; line-height:1.55; display:flex; align-items:center; gap:6px; }
+    .leave-ic{ width:52px; height:52px; border-radius:50%; background:#eef3ff; color:#416bff; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; }
+    .leave-title{ font-size:20px; font-weight:700; color:#222631; line-height:1.45; margin:0 0 10px; }
+    .leave-desc{ font-size:15px; color:#565d6b; line-height:1.55; margin:0; }
+    .qb-q{ font-size:15px; color:#3b3f4c; line-height:1.6; margin:10px 0 0; }
+    .qb-tags{ display:flex; gap:8px; margin-top:12px; }
+    .qa-chip{ font-size:13px; color:#3b3f4c; background:#fff; border:1px solid #e1e4ea; border-radius:6px; padding:6px 10px; }
+    .qb-q-inp{ width:100%; min-height:64px; border:1px solid #d9d9d9; border-radius:8px; padding:10px 12px; font-size:15px; font-family:inherit; color:#222631; outline:none; resize:vertical; line-height:1.6; margin-top:6px; }
+    .qb-q-inp:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .add-q{ display:inline-flex; align-self:flex-start; align-items:center; gap:6px; margin-top:14px; font-size:14px; font-weight:600; color:#3151c4; border:1px solid #ccdfff; background:#fff; border-radius:8px; padding:10px 16px; cursor:pointer; font-family:inherit; line-height:1; }
+    .add-q:hover{ background:#f4f8ff; }
+
+    /* 설계 기준 토글 (접힘 기본) */
+    .ctx-collapse{ background:#fff; border-radius:12px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; overflow:hidden; }
+    .ctx-toggle{ width:100%; display:flex; align-items:center; gap:8px; padding:18px 20px; background:#fff; border:none; cursor:pointer; font-family:inherit; font-size:16px; font-weight:700; color:#222631; }
+    .ctx-toggle:hover{ background:#f9fafb; }
+    .ctx-toggle > i:first-child{ color:#6d7381; }
+    .ctx-toggle .ctx-sub{ font-size:13px; font-weight:400; color:#9ea3ad; }
+    .ctx-toggle .ctx-caret{ margin-left:auto; color:#9ea3ad; transition:transform .15s; }
+    .ctx-collapse.open .ctx-caret{ transform:rotate(180deg); }
+    .ctx-body{ display:none; padding:18px 20px; border-top:1px solid #eef0f3; }
+    .ctx-collapse.open .ctx-body{ display:block; }
+    .ctx-sec-label{ font-size:14px; font-weight:700; color:#6d7381; margin-bottom:10px; }
+    .ach-item{ display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; font-size:15px; line-height:1.6; }
+    .ach-code{ flex-shrink:0; background:#eef3ff; color:#3151c4; font-weight:600; font-size:13px; border-radius:6px; padding:3px 8px; }
+    .ach-txt{ color:#3b3f4c; }
+    .rub-item{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:12px 14px; border:1px solid #eceef2; border-radius:8px; margin-bottom:8px; }
+    .rub-name{ font-size:15px; color:#222631; font-weight:500; }
+    .rub-score{ font-size:13px; color:#6d7381; font-weight:600; flex-shrink:0; }
+
+    /* ===== 평가 카드 (문항 슬롯) ===== */
+    .ev-card{ background:#fff; border-radius:12px; padding:20px 22px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:16px; }
+    .ev-card.clickable{ cursor:pointer; transition:box-shadow .12s; }
+    .ev-card.clickable:hover{ box-shadow:0 0 1px #2226314D, 0 6px 18px #0000001f; }
+    .card-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:8px; }
+    .qcard{ background:#fff; border-radius:12px; padding:20px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; cursor:pointer; transition:box-shadow .12s; min-height:150px; display:flex; flex-direction:column; }
+    .qcard:hover{ box-shadow:0 0 1px #2226314D, 0 6px 18px #0000001f; }
+    .qcard-title{ font-size:16px; font-weight:700; color:#222631; line-height:1.45; margin:0 0 10px; }
+    .qcard-badge{ margin-bottom:auto; }
+    .qcard-meta{ font-size:13px; color:#6d7381; margin:14px 0 0; }
+    .qcard-tagline{ display:flex; align-items:center; flex-wrap:wrap; gap:8px 12px; margin-bottom:auto; }
+    .qst{ display:inline-flex; align-items:center; gap:4px; font-size:12.5px; font-weight:500; color:#b0b5bf; }
+    .qst.on{ color:#129a5e; }
+    .list-value{ display:flex; align-items:flex-start; gap:10px; background:#f4f8ff; border:1px solid #e0ebff; border-radius:12px; padding:15px 18px; font-size:15px; font-weight:500; color:#3151c4; line-height:1.6; margin:0 0 24px; }
+    .list-value i{ flex-shrink:0; margin-top:2px; }
+    .list-value b{ font-weight:700; }
+    .form-promo{ background:#e9f2ff; border-bottom:1px solid #d4e1ff; }
+    .form-promo .fp-inner{ max-width:1240px; margin:0 auto; padding:12px 32px; display:flex; align-items:center; gap:10px; }
+    .form-promo .fp-inner > i{ width:18px; height:18px; color:#3151c4; flex-shrink:0; }
+    .form-promo .fp-txt{ flex:1; font-size:14px; color:#3151c4; line-height:1.55; }
+    .form-promo .fp-txt b{ font-weight:700; }
+    .form-promo .fp-dismiss{ flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; line-height:1; font-size:13px; font-weight:500; color:#7986a6; background:none; border:none; padding:6px 2px; cursor:pointer; font-family:inherit; }
+    .form-promo .fp-dismiss:hover{ color:#3151c4; text-decoration:underline; text-underline-offset:2px; }
+    .form-promo.hidden{ display:none; }
+    .ev-hd{ display:flex; align-items:flex-start; justify-content:space-between; gap:14px; }
+    .ev-title{ font-size:18px; font-weight:700; color:#222631; margin:0 0 6px; display:flex; align-items:center; gap:10px; }
+    .ev-meta{ font-size:14px; color:#6d7381; line-height:1.55; }
+    .ev-actions{ display:flex; gap:8px; flex-shrink:0; }
+    .badge{ display:inline-flex; align-items:center; gap:4px; font-size:12px; font-weight:600; border-radius:6px; padding:4px 9px; line-height:1; }
+    .badge-empty{ background:#f1f3f5; color:#6d7381; }
+    .badge-done{ background:#e4f7ee; color:#129a5e; }
+    .badge-unassigned{ background:#fff4e5; color:#c2701a; }
+    .badge-attn{ background:#fdecd8; color:#b5560a; }
+    .ev-body{ margin-top:16px; border-top:1px dashed #e6e8ed; padding-top:16px; }
+
+    /* 빈 상태 CTA (활동지 없음) */
+    .empty-cta{ display:flex; align-items:center; gap:16px; background:#fbfcff; border:1.5px dashed #a3c3ff; border-radius:10px; padding:18px 20px; }
+    .empty-ic{ width:44px; height:44px; border-radius:10px; background:#e9f2ff; color:#416bff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .empty-tx{ flex:1; }
+    .empty-tx .et-main{ font-size:15px; font-weight:700; color:#222631; margin:0 0 3px; }
+    .empty-tx .et-sub{ font-size:13px; color:#6d7381; margin:0; }
+    .empty-acts{ display:flex; gap:8px; flex-shrink:0; }
+
+    /* 등록된 문항 미니 리스트 */
+    .q-mini{ display:flex; align-items:center; gap:10px; padding:10px 12px; border:1px solid #eceef2; border-radius:8px; margin-bottom:8px; font-size:14px; color:#3b3f4c; }
+    .q-mini:last-child{ margin-bottom:0; }
+    .q-no{ width:24px; height:24px; border-radius:6px; background:#eef3ff; color:#3151c4; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .q-mini-txt{ flex:1; }
+    .q-mini-score{ font-size:13px; font-weight:600; color:#6d7381; }
+
+    .add-new-bar{ display:flex; justify-content:flex-end; margin-bottom:18px; }
+    .section-label{ font-size:13px; font-weight:700; color:#6d7381; letter-spacing:.02em; margin:26px 0 12px; display:flex; align-items:center; gap:8px; }
+    .section-label .hint{ font-weight:500; color:#9ea3ad; }
+
+    /* 새 활동지 드롭다운 (개발 화면 create-menu와 동일) */
+    .create-menu{ position:absolute; top:46px; right:0; background:white; border-radius:8px; box-shadow:0 0 1px #2226314D, 0 8px 24px #00000026; padding:6px; z-index:400; min-width:208px; display:none; }
+    .create-menu.open{ display:block; }
+    .create-menu button{ width:100%; display:flex; align-items:center; gap:8px; padding:10px 12px; border:none; background:none; border-radius:6px; font-family:inherit; font-size:15px; color:#222631; cursor:pointer; text-align:left; }
+    .create-menu button:hover{ background:#f6f7f9; }
+
+    /* ===== 복사해서 가져오기 모달 ===== */
+    .modal-ov{ position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1700; display:none; align-items:center; justify-content:center; padding:24px; }
+    .modal-ov.open{ display:flex; }
+    .modal{ background:#fff; border-radius:16px; width:700px; max-width:96vw; max-height:86vh; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(0,0,0,.25); overflow:hidden; }
+    .modal-hd{ display:flex; align-items:flex-start; justify-content:space-between; padding:24px 28px 0; }
+    .modal-title{ font-size:20px; font-weight:700; color:#222631; }
+    .modal-x{ width:32px; height:32px; border:none; background:none; cursor:pointer; color:#6d7381; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; }
+    .modal-x:hover{ background:#f1f3f5; }
+    .modal-desc{ font-size:15px; color:#3b3f4c; padding:8px 28px 0; margin:0; line-height:1.55; }
+    .modal-tools{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px 28px 14px; }
+    .modal-count{ font-size:14px; color:#6d7381; }
+    .modal-search{ position:relative; width:340px; }
+    .modal-search input{ width:100%; height:44px; border:1px solid #d9d9d9; border-radius:10px; padding:0 42px 0 14px; font-size:15px; font-family:inherit; outline:none; }
+    .modal-search input:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .modal-search input::placeholder{ color:#9ea3ad; }
+    .modal-search i, .modal-search svg{ position:absolute; right:14px; top:50%; transform:translateY(-50%); color:#416bff; pointer-events:none; }
+    .modal-body{ flex:1; overflow:auto; padding:0 28px; }
+    .cp-tbl{ width:100%; border-collapse:collapse; border:1px solid #e6e8ed; border-radius:10px; overflow:hidden; }
+    .cp-tbl th{ background:#f6f7f9; font-size:14px; font-weight:600; color:#6d7381; padding:13px 12px; text-align:center; border-bottom:1px solid #e6e8ed; }
+    .cp-tbl td{ font-size:15px; color:#222631; padding:13px 12px; text-align:center; border-bottom:1px solid #eef0f3; }
+    .cp-tbl tbody tr:last-child td{ border-bottom:none; }
+    .cp-tbl tbody tr{ cursor:pointer; }
+    .cp-tbl tbody tr:hover{ background:#f9fbff; }
+    .cp-tbl tbody tr.on{ background:#f4f8ff; }
+    .cp-radio{ width:20px; height:20px; border-radius:50%; border:1.5px solid #c7cbd3; display:inline-block; vertical-align:middle; }
+    .cp-tbl tbody tr.on .cp-radio{ border:6px solid #416bff; }
+    .modal-ft{ display:flex; justify-content:flex-end; gap:10px; padding:16px 28px 22px; }
+
+    /* ===== Drawer (AI 생성) ===== */
+    .dw-ov{ position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:1600; display:none; }
+    .dw-ov.open{ display:block; }
+    .dw{ position:fixed; top:0; right:0; bottom:0; width:760px; max-width:94vw; background:#fff; box-shadow:-8px 0 30px rgba(0,0,0,.18); transform:translateX(100%); transition:transform .25s ease; display:flex; flex-direction:column; z-index:1601; }
+    .dw-ov.open .dw{ transform:translateX(0); }
+    .dw-hd{ display:flex; align-items:center; justify-content:space-between; padding:22px 24px 18px; flex-shrink:0; border-bottom:1px solid #f1f3f5; }
+    .dw-title{ font-size:20px; font-weight:700; color:#222631; }
+    .dw-close{ width:36px; height:36px; border:none; background:none; cursor:pointer; color:#6d7381; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; }
+    .dw-close:hover{ background:#f1f3f5; }
+    .dw-body{ flex:1; overflow:auto; padding:22px 24px 16px; }
+    .dw-ft{ flex-shrink:0; padding:16px 24px 20px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid #f1f3f5; }
+    .dw-sub{ font-size:15px; font-weight:700; color:#222631; margin:24px 0 12px; }
+    .dw-sub:first-child{ margin-top:0; }
+
+    /* 안내 alert (배경+아이콘, 좌측 띠 없음) */
+    .note{ display:flex; gap:10px; background:#f1f3f5; border-radius:8px; padding:13px 15px; }
+    .note i{ color:#6d7381; flex-shrink:0; margin-top:1px; }
+    .note .nt{ font-size:13px; color:#3b3f4c; line-height:1.6; }
+    .note.amber{ background:#fff4e5; }
+    .note.amber i{ color:#c2701a; }
+
+    /* 분기 / 난이도 라디오카드 */
+    .opt-cards{ display:grid; gap:12px; }
+    .opt-cards.col2{ grid-template-columns:repeat(2,1fr); }
+    .opt-cards.col3{ grid-template-columns:repeat(3,1fr); }
+    .opt-card{ border:1.5px solid #dde1e8; border-radius:10px; padding:16px; cursor:pointer; transition:border-color .12s, background .12s; position:relative; }
+    .opt-card:hover{ border-color:#a3c3ff; }
+    .opt-card.on{ border-color:#416bff; background:#f4f8ff; }
+    .opt-card-ic{ width:34px; height:34px; border-radius:8px; background:#f1f3f5; color:#6d7381; display:flex; align-items:center; justify-content:center; margin-bottom:10px; }
+    .opt-card.on .opt-card-ic{ background:#e9f2ff; color:#416bff; }
+    .opt-card.soon{ cursor:default; background:#fafbfc; border-color:#e6e8ed; }
+    .opt-card.soon:hover{ border-color:#e6e8ed; }
+    .opt-card.soon .opt-card-ic{ background:#f1f3f5; color:#b6bcc7; }
+    .opt-card.soon .opt-card-t{ color:#6d7381; }
+    .opt-card.soon .opt-card-d{ color:#9ea3ad; }
+    .opt-card-soon{ position:absolute; top:12px; right:12px; font-size:11px; font-weight:700; color:#6d7381; background:#eceef2; border-radius:5px; padding:2px 7px; line-height:1.5; }
+    .opt-card-soon-note{ font-size:12px; font-weight:600; color:#416bff; margin:8px 0 0; }
+    .opt-card-t{ font-size:15px; font-weight:700; color:#222631; margin:0 0 4px; }
+    .opt-card-d{ font-size:13px; color:#6d7381; line-height:1.5; margin:0; }
+    .opt-card-beta{ position:absolute; top:12px; right:12px; font-size:11px; font-weight:700; color:#416bff; background:#e9f2ff; border-radius:5px; padding:2px 7px; line-height:1.5; letter-spacing:.02em; }
+    .info-note{ display:flex; align-items:flex-start; gap:8px; background:#fff7ec; border:1px solid #f3e2b8; border-radius:10px; padding:12px 14px; font-size:14px; color:#b5560a; line-height:1.55; margin-bottom:20px; }
+    .info-note b{ font-weight:700; }
+    .h1-beta{ display:inline-flex; align-items:center; vertical-align:middle; font-size:12px; font-weight:700; color:#416bff; background:#e9f2ff; border-radius:5px; padding:2px 8px; line-height:1.5; letter-spacing:.02em; margin-left:8px; position:relative; top:-3px; }
+    /* AI 생성 스텝바 (박스형) */
+    .gen-steps{ display:flex; align-items:center; align-self:flex-start; flex-wrap:wrap; margin:6px 0 24px; }
+    .gen-step{ display:inline-flex; align-items:center; gap:8px; border:1.5px solid #e2e5ea; border-radius:9px; padding:8px 14px; background:#fff; }
+    .gen-step.active{ border-color:#416bff; }
+    .gen-step.clickable{ cursor:pointer; }
+    .gen-step.clickable:hover{ border-color:#a3c3ff; background:#f8faff; }
+    .gen-step-num{ width:20px; height:20px; border-radius:50%; background:#eceef2; color:#8c92a0; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .gen-step.active .gen-step-num{ background:#416bff; color:#fff; }
+    .gen-step-label{ font-size:15px; font-weight:600; color:#8c92a0; white-space:nowrap; }
+    .gen-step.active .gen-step-label{ color:#416bff; }
+    .gen-step-sep{ color:#c3c8d2; margin:0 10px; display:inline-flex; align-items:center; }
+    /* 활동지 등록 방법 선택 (미등록 상세 페이지) */
+    .reg-tag{ display:inline-flex; align-items:center; gap:5px; font-size:13px; font-weight:600; color:#6d7381; background:#f1f3f5; border-radius:6px; padding:5px 11px; margin-bottom:12px; }
+    .reg-list{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .reg-card{ display:flex; flex-direction:column; align-items:flex-start; width:100%; text-align:left; border:1.5px solid #e2e5ea; border-radius:12px; padding:18px; background:#fff; cursor:pointer; font-family:inherit; transition:border-color .12s, background .12s; position:relative; }
+    .reg-card:hover{ border-color:#a3c3ff; background:#f8faff; }
+    .reg-card.on{ border-color:#416bff; background:#f8faff; }
+    .reg-ic{ width:38px; height:38px; border-radius:9px; background:#f1f3f5; color:#6d7381; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-bottom:12px; }
+    .reg-card.on .reg-ic{ background:#e9f2ff; color:#416bff; }
+    .reg-tx{ display:block; }
+    .reg-t{ display:block; font-size:16px; font-weight:700; color:#222631; }
+    .reg-d{ display:block; font-size:14px; color:#6d7381; margin-top:5px; line-height:1.5; }
+    .reg-beta{ font-size:11px; font-weight:700; color:#416bff; background:#e9f2ff; border-radius:5px; padding:2px 7px; margin-left:6px; }
+    .reg-check{ position:absolute; top:14px; right:14px; color:#416bff; display:none; }
+    .reg-card.on .reg-check{ display:inline-flex; }
+    #reg-panel{ background:#fff; border-radius:14px; padding:28px 30px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; }
+    .reg-pane-desc{ font-size:16px; color:#565d6b; line-height:1.65; margin:0 0 18px; }
+    .reg-method-label{ font-size:16px; font-weight:700; color:#222631; margin:0 0 12px; }
+    .recog-desc{ font-size:14px; color:#6d7381; line-height:1.6; margin:0 0 14px; }
+    .recog-actions{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; }
+    .reg-ai-box{ display:flex; align-items:flex-start; gap:14px; background:#f4f8ff; border:1px solid #e0ebff; border-radius:12px; padding:18px 20px; }
+    .reg-ai-ic{ width:42px; height:42px; border-radius:10px; background:#e9f2ff; color:#416bff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .reg-ai-t{ font-size:16px; font-weight:700; color:#222631; }
+    .reg-ai-d{ font-size:14px; color:#565d6b; margin-top:4px; line-height:1.55; }
+    /* A4 활동지 뷰어 */
+    .a4-wrap{ display:flex; justify-content:center; margin:0 0 16px; }
+    .a4-sheet{ background:#fff; width:100%; max-width:794px; border:1px solid #e6e8ed; border-radius:6px; box-shadow:0 6px 28px rgba(0,0,0,.09); padding:54px 60px; box-sizing:border-box; }
+    .a4-title{ font-size:21px; font-weight:700; color:#222631; text-align:center; margin:0; }
+    .a4-info-row{ display:flex; gap:28px; justify-content:center; font-size:13px; color:#3b3f4c; border-top:2px solid #222631; border-bottom:1px solid #c9d2e0; padding:9px 0; margin:16px 0 28px; }
+    .a4-q{ margin-bottom:24px; }
+    .a4-q-head{ font-size:16px; font-weight:600; color:#222631; line-height:1.65; margin:0; }
+    .a4-q-score{ font-size:13px; font-weight:600; color:#6d7381; white-space:nowrap; }
+    .a4-asset{ display:flex; align-items:center; justify-content:center; gap:8px; background:#f6f7f9; border:1px dashed #c9d2e0; border-radius:6px; padding:20px; font-size:13px; color:#6d7381; margin:12px 0; text-align:center; }
+    .a4-lines{ margin-top:12px; }
+    .a4-lines span{ display:block; height:30px; border-bottom:1px solid #e6e8ed; }
+    .regen-setup{ margin-top:14px; padding-top:14px; border-top:1px solid #f1f3f5; }
+    .regen-setup-link{ display:inline-flex; align-items:center; gap:5px; background:none; border:none; padding:0; font-family:inherit; font-size:13px; font-weight:600; color:#416bff; cursor:pointer; }
+    .regen-setup-link:hover{ text-decoration:underline; }
+    .regen-setup-sub{ font-size:12px; color:#9ea3ad; margin:4px 0 0; }
+    .q-count{ display:inline-flex; align-items:center; gap:10px; }
+    .q-count-label{ font-size:15px; font-weight:600; color:#3b3f4c; margin-right:4px; }
+    .step-btn{ width:34px; height:34px; border:1px solid #d9d9d9; background:#fff; border-radius:8px; font-size:18px; color:#3b3f4c; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; font-family:inherit; }
+    .step-btn:hover{ border-color:#a3c3ff; background:#f4f8ff; color:#3151c4; }
+    .q-count-num{ min-width:26px; text-align:center; font-size:18px; font-weight:700; color:#222631; }
+    .q-count-unit{ font-size:15px; color:#6d7381; }
+    .type-chips{ display:flex; flex-wrap:wrap; gap:8px; }
+    .tchip{ font-size:14px; color:#3b3f4c; background:#fff; border:1px solid #d9d9d9; border-radius:8px; padding:8px 14px; cursor:pointer; user-select:none; line-height:1.2; }
+    .tchip:hover{ border-color:#a3c3ff; }
+    .tchip.on{ background:#eef3ff; border-color:#a3c3ff; color:#3151c4; font-weight:600; }
+
+    /* dropzone */
+    .dropzone{ border:1.5px dashed #a3c3ff; border-radius:10px; min-height:120px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; color:#6d7381; background:#fbfcff; padding:18px; }
+    .dropzone:hover{ background:#f4f8ff; }
+    .dropzone .dz-ic{ width:42px; height:42px; border-radius:10px; background:#e9f2ff; color:#416bff; display:flex; align-items:center; justify-content:center; }
+    .dropzone .dz-main{ font-size:14px; color:#3b3f4c; }
+    .dropzone .dz-sub{ font-size:12px; color:#9ea3ad; }
+    .file-chip{ display:flex; align-items:center; gap:10px; border:1px solid #d8e6ff; background:#f4f8ff; border-radius:8px; padding:11px 14px; font-size:14px; color:#3151c4; }
+    .file-chip i{ flex-shrink:0; }
+    .file-chip .fc-x{ cursor:pointer; color:#9ea3ad; display:inline-flex; flex-shrink:0; }
+    .file-chip .fc-change{ display:inline-flex; align-items:center; justify-content:center; gap:5px; line-height:1; flex-shrink:0; font-size:13px; font-weight:600; color:#3151c4; background:#fff; border:1px solid #cdddff; border-radius:7px; padding:6px 10px; cursor:pointer; font-family:inherit; }
+    .file-chip .fc-change:hover{ background:#eef3ff; }
+    .recog-box{ background:#f4f8ff; border:1px solid #e0ebff; border-radius:10px; padding:14px 16px; margin:16px 0 4px; }
+    .recog-hd{ font-size:14px; color:#3151c4; font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:8px; }
+    .recog-item{ display:flex; align-items:flex-start; gap:9px; font-size:14px; color:#3b3f4c; padding:6px 0; line-height:1.5; }
+    .recog-item input{ width:16px; height:16px; accent-color:#416bff; margin-top:2px; flex-shrink:0; }
+    .recog-item input:disabled{ opacity:.55; }
+    .recog-q{ display:flex; gap:12px; padding:14px; border:1px solid #eceef2; border-radius:10px; margin-bottom:10px; }
+    .recog-q.attn{ border-color:#f3d9b8; background:#fffaf2; }
+    .recog-q-no{ width:28px; height:28px; border-radius:7px; background:#eef3ff; color:#3151c4; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .recog-q-body{ flex:1; }
+    .recog-q-text{ width:100%; min-height:52px; border:1px solid #d9d9d9; border-radius:8px; padding:10px 12px; font-size:15px; font-family:inherit; color:#222631; outline:none; resize:vertical; line-height:1.5; }
+    .recog-q-text:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .recog-q-meta{ display:flex; align-items:center; gap:8px; margin-top:8px; font-size:13px; color:#6d7381; }
+    .recog-q-score{ width:56px; height:32px; border:1px solid #d9d9d9; border-radius:6px; text-align:center; font-size:14px; font-weight:600; outline:none; font-family:inherit; }
+    .recog-q-attn-tag{ font-size:12px; font-weight:600; color:#b5560a; background:#fdecd8; border-radius:5px; padding:2px 8px; }
+    /* 확정 문항 요약 */
+    .confirmed-bar{ display:flex; align-items:center; gap:10px; background:#fff7ec; border:1px solid #f3e2b8; border-radius:10px; padding:14px 16px; margin-top:12px; font-size:14px; color:#b5560a; font-weight:600; }
+    .confirmed-bar.confirmed{ background:#f4f8ff; border-color:#e0ebff; color:#3151c4; }
+    .confirmed-bar i{ flex-shrink:0; }
+    .cb-edit{ margin-left:auto; height:32px; border:1px solid #ccdfff; background:#fff; color:#3151c4; border-radius:8px; padding:0 12px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer; display:inline-flex; align-items:center; gap:5px; }
+    .cb-edit:hover{ background:#e9f2ff; }
+    /* 정확도 부스터 */
+    .bst-intro{ margin:26px 0 14px; }
+    .bst-intro-t{ font-size:18px; font-weight:700; color:#222631; display:inline-flex; align-items:center; gap:8px; }
+    .bst-intro-s{ display:block; font-size:14px; color:#6d7381; margin-top:6px; line-height:1.55; }
+    .bst{ background:#fff; border-radius:12px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:14px; overflow:hidden; }
+    .bst-hd{ display:flex; align-items:center; gap:14px; padding:18px 20px; cursor:pointer; }
+    .bst-hd:hover{ background:#fafbfc; }
+    .bst-ic{ width:38px; height:38px; border-radius:9px; background:#eef3ff; color:#3151c4; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .bst-tt{ flex:1; }
+    .bst-t{ font-size:16px; font-weight:700; color:#222631; }
+    .bst-why{ font-size:13px; color:#6d7381; margin-top:2px; }
+    .bst-tag{ font-size:12px; font-weight:700; color:#0e8a55; background:#e4f7ee; border-radius:6px; padding:4px 9px; flex-shrink:0; }
+    .bst-caret{ color:#9ea3ad; transition:transform .15s; flex-shrink:0; }
+    .bst.open .bst-caret{ transform:rotate(180deg); }
+    .bst-body{ display:none; padding:18px 20px; border-top:1px solid #eef0f3; }
+    .bst.open .bst-body{ display:block; }
+    .bst-body-desc{ font-size:14px; color:#3b3f4c; margin:0 0 14px; line-height:1.55; }
+    .bq{ padding:14px 0; border-top:1px solid #f4f5f7; }
+    .bq:first-of-type{ border-top:none; padding-top:0; }
+    .bq-title{ display:flex; align-items:flex-start; gap:8px; font-size:15px; color:#222631; line-height:1.5; margin-bottom:10px; }
+    .bq-no{ width:24px; height:24px; border-radius:6px; background:#eef3ff; color:#3151c4; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .bq-chips{ display:flex; flex-wrap:wrap; gap:8px; padding-left:32px; }
+    .bchip{ font-size:13px; color:#6d7381; background:#fff; border:1px solid #d9d9d9; border-radius:8px; padding:7px 11px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; max-width:185px; }
+    .bchip-tx{ min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .bchip.on{ background:#eef3ff; border-color:#a3c3ff; color:#3151c4; }
+    .bchip.ai{ background:#e9f2ff; border-color:#a3c3ff; color:#3151c4; }
+    .bchip small{ color:#416bff; font-weight:600; flex-shrink:0; }
+    .bst-aihead{ display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:10px; }
+    .bst-aihead .bst-body-desc{ margin:0; }
+    .or-line{ text-align:center; font-size:13px; color:#9ea3ad; margin:16px 0; }
+    .xls-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; background:#f6f7f9; border-radius:10px; padding:14px 16px; }
+    .xls-t{ font-size:15px; font-weight:700; color:#222631; }
+    .xls-s{ font-size:13px; color:#9ea3ad; margin-left:6px; }
+    .bq-ans{ width:100%; min-height:60px; border:1px solid #d9d9d9; border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit; color:#222631; outline:none; resize:vertical; }
+    .bq-ans:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    /* 인식 결과 팝업 테이블 */
+    .rg-tbl{ border:1px solid #e6e8ed; border-radius:10px; overflow:auto; max-height:48vh; }
+    .rg-head{ display:grid; grid-template-columns:150px 1fr 270px 100px; background:#f6f7f9; font-size:13px; font-weight:600; color:#6d7381; position:sticky; top:0; z-index:2; }
+    .rg-head>div{ padding:12px 14px; }
+    .rg-row{ display:grid; grid-template-columns:150px 1fr 270px 100px; border-top:1px solid #eef0f3; align-items:stretch; }
+    .rg-row>div{ padding:12px 14px; }
+    .rg-big{ background:#f4f8ff; }
+    .rg-bigtag{ font-size:13px; font-weight:700; color:#3151c4; background:#eef3ff; border-radius:6px; padding:4px 10px; display:inline-block; }
+    .rg-c1{ font-size:14px; font-weight:600; color:#3b3f4c; }
+    .rg-ta{ width:100%; min-height:48px; border:1px solid #d9d9d9; border-radius:8px; padding:8px 10px; font-size:14px; font-family:inherit; color:#222631; outline:none; resize:vertical; line-height:1.5; }
+    .rg-ta:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .rg-big .rg-ta{ font-style:italic; color:#6d7381; }
+    .rg-muted{ font-size:13px; color:#9ea3ad; }
+    .rg-guide{ background:#fbfcff; font-size:13px; }
+    .rg-del{ display:flex; align-items:center; justify-content:center; color:#c3c8d4; cursor:pointer; }
+    .rg-act{ display:flex; align-items:center; justify-content:center; gap:1px; }
+    .rg-iconbtn{ display:inline-flex; align-items:center; justify-content:center; width:22px; height:24px; color:#9ea3ad; cursor:pointer; border-radius:6px; flex-shrink:0; }
+    .rg-iconbtn:hover{ background:#eef3ff; color:#416bff; }
+    .rg-iconbtn.del:hover{ background:#fdecec; color:#e5484d; }
+    .rg-add{ margin-top:12px; font-size:14px; color:#3151c4; border:1px solid #ccdfff; background:#fff; border-radius:8px; padding:9px 16px; cursor:pointer; font-family:inherit; font-weight:600; }
+    .rg-c1-inp{ width:100%; height:100%; min-height:38px; border:1px solid #e1e4ea; border-radius:6px; padding:6px 8px; font-size:14px; font-weight:600; color:#3b3f4c; font-family:inherit; background:#fff; outline:none; }
+    .rg-c1-inp:hover{ border-color:#b9c0cc; }
+    .rg-c1-inp:focus{ border-color:#416bff; background:#fff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .rg-bigtag-inp{ width:100%; height:100%; min-height:38px; max-width:118px; border:1px solid #cdddff; border-radius:6px; padding:4px 10px; font-size:13px; font-weight:700; color:#3151c4; background:#eef3ff; font-family:inherit; outline:none; }
+    .rg-bigtag-inp:hover{ border-color:#9cbcff; }
+    .rg-bigtag-inp:focus{ border-color:#416bff; background:#fff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .rg-guide-ro{ font-size:13px; color:#6d7381; line-height:1.55; padding:2px 0; }
+    .up-loading{ display:flex; align-items:center; gap:14px; background:#f4f8ff; border:1px solid #e0ebff; border-radius:10px; padding:16px 18px; margin-top:12px; }
+    .up-spin{ width:32px; height:32px; border-radius:50%; border:4px solid #dbe6ff; border-top-color:#416bff; animation:anaspin 1s linear infinite; flex-shrink:0; }
+    .up-load-t{ font-size:15px; font-weight:700; color:#222631; }
+    .up-load-s{ font-size:13px; color:#6d7381; margin-top:2px; }
+    /* 수식 입력 버튼 */
+    .ans-tool{ display:flex; margin-top:8px; }
+    .fx-btn{ display:inline-flex; align-items:center; justify-content:center; gap:5px; line-height:1; vertical-align:middle; font-size:12px; font-weight:500; color:#3b3f4c; background:#fff; border:1px solid #3b3f4c; border-radius:7px; padding:6px 11px; cursor:pointer; font-family:inherit; }
+    .fx-btn:hover{ background:#f6f7f9; }
+    .fx-btn i{ color:#6d7381; }
+    .bq-empty{ font-size:14px; color:#9ea3ad; padding:14px 2px; margin:0; }
+    /* 답안 엑셀 업로드 팝업 */
+    .xls-step{ display:flex; gap:14px; padding:16px 0; }
+    .xls-step+.xls-step{ border-top:1px solid #f0f1f4; }
+    .xls-step-no{ flex-shrink:0; width:26px; height:26px; border-radius:50%; background:#eef3ff; color:#3151c4; font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center; line-height:1; }
+    .xls-step-bd{ flex:1; min-width:0; }
+    .xls-step-t{ font-size:15px; font-weight:700; color:#222631; margin-bottom:4px; }
+    .xls-step-d{ font-size:13px; color:#6d7381; line-height:1.55; margin-bottom:12px; }
+    .xls-step-d b{ color:#3151c4; font-weight:700; }
+    .xls-drop{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; border:1.5px dashed #c9d2e0; border-radius:10px; padding:22px; color:#6d7381; font-size:13px; cursor:pointer; background:#fafbfc; }
+    .xls-drop:hover{ border-color:#a3c3ff; background:#f4f8ff; color:#3151c4; }
+    /* 수식 입력 팝업 */
+    .fx-quick{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+    .fx-quick button{ display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; min-width:44px; height:38px; padding:0 10px; font-size:14px; color:#3b3f4c; background:#fff; border:1px solid #d9d9d9; border-radius:8px; cursor:pointer; font-family:inherit; }
+    .fx-quick button:hover{ border-color:#a3c3ff; background:#f4f8ff; color:#3151c4; }
+    .fx-input{ width:100%; min-height:72px; border:1px solid #d9d9d9; border-radius:8px; padding:10px 12px; font-size:14px; font-family:inherit; color:#222631; outline:none; resize:vertical; line-height:1.5; }
+    .fx-input:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .fx-hint{ font-size:12px; color:#9ea3ad; margin-top:8px; }
+
+    /* radio line */
+    .radio-line{ display:flex; gap:22px; }
+    .rad{ display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:15px; color:#222631; }
+    .rad .ring{ width:20px; height:20px; border-radius:50%; border:1.5px solid #c7cbd3; background:#fff; flex-shrink:0; }
+    .rad.on .ring{ border:6.5px solid #416bff; }
+
+    .chk-inline{ display:inline-flex; align-items:center; gap:8px; font-size:14px; color:#3b3f4c; cursor:pointer; user-select:none; }
+    .chk-inline input{ width:17px; height:17px; accent-color:#416bff; }
+
+    .ta{ width:100%; min-height:84px; border:1px solid #d9d9d9; border-radius:10px; padding:13px 14px; font-size:15px; font-family:inherit; color:#222631; outline:none; resize:vertical; line-height:1.6; }
+    .ta:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .ta::placeholder{ color:#9ea3ad; }
+
+    .credit-tag{ display:inline-flex; align-items:center; gap:5px; font-size:13px; font-weight:600; color:#6d7381; }
+    .credit-tag i{ color:#416bff; }
+
+    /* 새로 만들기 — 설계 입력 필드 */
+    .newgen-hd{ display:flex; align-items:center; justify-content:space-between; margin:0 0 14px; }
+    .fl{ display:block; font-size:16px; font-weight:700; color:#222631; margin-bottom:6px; }
+    .fl-desc{ font-size:14px; color:#565d6b; line-height:1.6; margin:0 0 14px; }
+    .fl-sub{ display:block; font-size:14px; font-weight:600; color:#3b3f4c; margin:0 0 9px; }
+    .rec{ font-size:11px; font-weight:600; color:#3151c4; background:#eef3ff; border-radius:5px; padding:2px 7px; margin-left:4px; vertical-align:middle; }
+    .opt{ font-size:11px; font-weight:600; color:#6d7381; background:#f1f3f5; border-radius:5px; padding:2px 7px; margin-left:4px; vertical-align:middle; }
+    .sel2{ width:100%; height:46px; border:1px solid #d9d9d9; border-radius:8px; padding:0 40px 0 14px; font-size:15px; font-family:inherit; color:#222631; background:#fff; cursor:pointer; appearance:none; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236d7381' stroke-width='2'><path d='M6 9l6 6 6-6'/></svg>"); background-repeat:no-repeat; background-position:right 12px center; }
+    .inp2{ width:100%; height:46px; border:1px solid #d9d9d9; border-radius:8px; padding:0 14px; font-size:15px; font-family:inherit; color:#222631; outline:none; background:#fff; }
+    .inp2:focus, .sel2:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+    .inp2::placeholder{ color:#9ea3ad; }
+    .field-row{ margin-bottom:30px; }
+    .field-help{ background:#f6f7f9; border-radius:8px; padding:11px 13px; font-size:13px; color:#6d7381; line-height:1.55; margin-top:8px; }
+    .field-hint{ font-size:13px; color:#9ea3ad; margin:6px 0 0; line-height:1.5; }
+    .url-row{ display:flex; gap:8px; }
+    .url-row .inp2{ flex:1; }
+    .url-row .btn{ flex-shrink:0; height:46px; }
+    .src-list{ display:flex; flex-direction:column; gap:8px; }
+    .src-chip{ display:flex; align-items:center; gap:8px; border:1px solid #e1e4ea; background:#fafbfc; border-radius:8px; padding:9px 12px; font-size:14px; color:#3b3f4c; }
+    .src-chip>i{ flex-shrink:0; color:#6d7381; }
+    .src-chip .sc-name{ flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .src-chip .sc-x{ cursor:pointer; color:#9ea3ad; display:inline-flex; flex-shrink:0; }
+    .src-drop{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; border:1.5px dashed #c9d2e0; border-radius:10px; padding:22px; color:#6d7381; font-size:14px; cursor:pointer; background:#fafbfc; text-align:center; }
+    .src-drop:hover{ border-color:#a3c3ff; background:#f4f8ff; color:#3151c4; }
+    .sw2{ display:inline-flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#3b3f4c; font-weight:500; }
+    .sw2 input{ display:none; }
+    .sw2-track{ width:38px; height:22px; border-radius:100px; background:#d9d9d9; position:relative; transition:background .15s; }
+    .sw2-knob{ position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:#fff; transition:left .15s; box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    .sw2 input:checked + .sw2-track{ background:#416bff; }
+    .sw2 input:checked + .sw2-track .sw2-knob{ left:18px; }
+
+    /* ===== 생성 결과 (문항 카드) ===== */
+    .result-bar{ display:flex; align-items:center; justify-content:space-between; gap:14px; background:#fff; border-radius:12px; padding:16px 20px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:16px; }
+    .rb-left{ font-size:15px; color:#3b3f4c; display:flex; align-items:center; gap:10px; }
+    .rb-left b{ color:#222631; }
+    .q-card{ background:#fff; border-radius:12px; padding:20px 22px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:14px; }
+    .q-card-hd{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:12px; }
+    .q-tag{ display:inline-flex; align-items:center; gap:8px; }
+    .q-badge{ width:28px; height:28px; border-radius:7px; background:#eef3ff; color:#3151c4; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+    .q-score{ font-size:13px; font-weight:600; color:#6d7381; background:#f1f3f5; border-radius:6px; padding:3px 9px; }
+    .q-acts{ display:flex; gap:6px; flex-shrink:0; }
+    .q-prompt{ font-size:16px; color:#222631; line-height:1.6; margin:0 0 12px; }
+    .q-asset{ display:flex; gap:10px; align-items:center; background:#f6f7f9; border:1px solid #eceef2; border-radius:8px; padding:11px 13px; font-size:13px; color:#6d7381; margin-bottom:12px; }
+    .q-asset i{ color:#9ea3ad; flex-shrink:0; }
+    .ans-toggle{ display:inline-flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:#416bff; cursor:pointer; background:none; border:none; font-family:inherit; padding:0; }
+    .ans-box{ margin-top:10px; background:#f4f8ff; border:1px solid #e0ebff; border-radius:8px; padding:14px 16px; font-size:15px; color:#3b3f4c; line-height:1.65; display:none; }
+    .ans-box.open{ display:block; }
+    .ans-box-hd{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .ans-box-hd .al{ font-size:13px; font-weight:700; color:#3151c4; }
+
+    .site-footer{ margin-top:auto; padding:48px 0 40px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .sf-links{ display:flex; align-items:center; }
+    .sf-links a{ font-size:14px; color:#3b3f4c; padding:0 16px; }
+    .sf-links a + a{ border-left:1px solid #dde1e8; }
+    .sf-copy{ font-size:14px; color:#9aa0ad; }
+
+    .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(12px); opacity:0; min-width:300px; max-width:520px; padding:14px 22px; border-radius:8px; font-size:15px; font-weight:600; box-shadow:0 4px 12px #00000026; z-index:9999; transition:opacity .2s, transform .2s; pointer-events:none; background:#416bff; color:#fff; text-align:center; }
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+    .hidden{ display:none !important; }
+
+    /* ===== 분석중 로딩 ===== */
+    .ana-ov{ position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:1800; display:none; align-items:center; justify-content:center; }
+    .ana-ov.open{ display:flex; }
+    .ana-card{ background:#fff; border-radius:20px; width:440px; max-width:92vw; padding:40px 36px 32px; box-shadow:0 20px 60px rgba(0,0,0,.25); text-align:center; }
+    .ana-ring{ width:70px; height:70px; margin:0 auto 22px; border-radius:50%; border:6px solid #e9ecf5; border-top-color:#416bff; border-right-color:#8b97ff; animation:anaspin 1s linear infinite; }
+    @keyframes anaspin{ to{ transform:rotate(360deg); } }
+    .ana-title{ font-size:19px; font-weight:700; color:#222631; margin:0 0 6px; }
+    .ana-sub{ font-size:15px; color:#6d7381; margin:0; }
+    .ana-req{ background:#f4f8ff; border-radius:12px; padding:16px; text-align:left; margin-bottom:20px; }
+    .ana-req-l{ font-size:14px; font-weight:700; color:#3151c4; margin-bottom:6px; }
+    .ana-req-v{ font-size:14px; color:#3b3f4c; line-height:1.5; }
+    .ana-steps{ text-align:left; display:flex; flex-direction:column; gap:10px; }
+    .ana-step{ display:flex; align-items:center; gap:10px; font-size:15px; color:#9ea3ad; }
+    .ana-step.done{ color:#222631; }
+    .ana-step .ana-ic{ width:22px; height:22px; border-radius:50%; background:#416bff; color:#fff; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ana-step .ana-dot{ width:22px; height:22px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ana-step .ana-dot::after{ content:''; width:10px; height:10px; border-radius:50%; background:#c3c8d4; }
+
+    /* ===== 설계 계획 ===== */
+    .plan-warn{ display:flex; gap:10px; background:#fff8e6; border-radius:10px; padding:14px 16px; margin-bottom:12px; }
+    .plan-warn i{ color:#c2701a; flex-shrink:0; margin-top:1px; }
+    .plan-warn .pw-t{ font-size:14px; color:#5c4a1f; line-height:1.6; }
+    .plan-info{ display:flex; gap:10px; background:#f4f8ff; border-radius:10px; padding:14px 16px; margin-bottom:20px; }
+    .plan-info i{ color:#416bff; flex-shrink:0; margin-top:1px; }
+    .plan-info .pi-t{ font-size:14px; color:#3b3f4c; line-height:1.6; }
+    .plan-chips{ display:flex; align-items:center; gap:10px; margin-bottom:18px; flex-wrap:wrap; }
+    .pchip{ display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid #e6e8ed; border-radius:10px; padding:10px 14px; }
+    .pchip-k{ font-size:13px; color:#6d7381; }
+    .pchip-v{ font-size:15px; font-weight:700; color:#222631; }
+    .pchip.amber{ background:#fff8e6; border-color:#f3e2b8; }
+    .pchip.amber .pchip-v{ color:#c2701a; }
+    .pchip-desc{ font-size:13px; color:#9ea3ad; }
+    .plan-card{ background:#fff; border:1px solid #e6e8ed; border-radius:12px; padding:18px 20px; margin-bottom:14px; }
+    .plan-2col{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    .plan-2col .plan-card{ margin-bottom:0; }
+    .pc-label{ font-size:14px; font-weight:700; display:flex; align-items:center; gap:6px; margin-bottom:10px; }
+    .pc-label.blue{ color:#3151c4; }
+    .pc-label.teal{ color:#0d9488; }
+    .pc-label.purple{ color:#7e44fb; }
+    .pc-label.green{ color:#129a5e; }
+    .pc-label .pl-sub{ font-size:12px; font-weight:400; color:#9ea3ad; margin-left:4px; }
+    .pc-body{ font-size:15px; color:#222631; line-height:1.65; }
+    .plan-sec-title{ font-size:15px; font-weight:700; color:#3b3f4c; display:flex; align-items:center; gap:8px; margin:26px 0 12px; }
+    .plan-sec-title i{ color:#6d7381; }
+    .plan-sec-title .pst-sub{ font-size:13px; font-weight:400; color:#9ea3ad; }
+    .q-block{ background:#fbfcff; border:1px solid #e0e8f5; border-radius:12px; padding:18px 20px; margin-bottom:14px; }
+    .qb-hd{ display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+    .qb-no{ width:30px; height:30px; border-radius:8px; background:#5b6cff; color:#fff; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .qb-title{ font-size:16px; font-weight:700; color:#222631; flex:1; }
+    .qb-tools{ display:flex; gap:6px; color:#b3b6bd; }
+    .qb-tools i, .qb-tools svg{ cursor:pointer; }
+    .qb-tools i:hover, .qb-tools svg:hover{ color:#3151c4; }
+    .qb-desc{ font-size:14px; color:#3b3f4c; line-height:1.6; padding:12px 0; border-top:1px solid #eef0f3; }
+    .qb-asset{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+    .qa-l{ font-size:13px; font-weight:600; color:#6d7381; display:flex; align-items:center; gap:4px; }
+    .qa-add{ font-size:13px; color:#6d7381; border:1px solid #d9d9d9; border-radius:8px; padding:6px 12px; background:#fff; cursor:pointer; display:inline-flex; align-items:center; gap:4px; }
+    .sub-q{ display:flex; gap:12px; padding:14px 0 4px; border-top:1px dashed #e6e8ed; margin-top:8px; }
+    .sq-no{ font-size:13px; font-weight:700; color:#5b6cff; flex-shrink:0; padding-top:2px; }
+    .sq-body{ flex:1; }
+    .sq-text{ font-size:15px; color:#222631; line-height:1.6; margin-bottom:10px; }
+    .sq-meta{ display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .sq-tag{ height:34px; border:1px solid #d9d9d9; border-radius:8px; padding:0 12px; font-size:14px; color:#3b3f4c; background:#fff; display:inline-flex; align-items:center; gap:6px; cursor:pointer; }
+    .sq-tag.blue{ color:#3151c4; background:#eef3ff; border-color:#d8e6ff; }
+    .sq-q{ flex:1; min-width:200px; font-size:14px; color:#0e8a55; background:#e9f9f1; border-radius:8px; padding:8px 12px; line-height:1.5; }
+    .add-sub{ font-size:13px; color:#6d7381; border:1px solid #d9d9d9; border-radius:8px; padding:8px 14px; background:#fff; cursor:pointer; margin-top:10px; }
+    .plan-cond{ background:#f1faf5; border:1px solid #cdeeda; border-radius:12px; padding:18px 20px; margin:14px 0; }
+    .plan-cond ul{ margin:0; padding-left:18px; }
+    .plan-cond li{ font-size:14px; color:#222631; line-height:1.75; }
+    .rubric-card{ background:#fff; border:1px solid #e6e8ed; border-radius:12px; overflow:hidden; margin-bottom:14px; }
+    .rc-hd{ display:flex; align-items:center; justify-content:space-between; padding:16px 20px; }
+    .rc-name{ font-size:16px; font-weight:700; color:#222631; }
+    .rc-score{ font-size:14px; font-weight:600; color:#3b3f4c; border:1px solid #e6e8ed; border-radius:8px; padding:6px 12px; }
+    .rc-levels{ border-top:1px solid #eef0f3; padding:8px 20px 14px; }
+    .rc-lv{ display:flex; gap:14px; padding:10px 0; align-items:flex-start; }
+    .rc-lv + .rc-lv{ border-top:1px solid #f4f5f7; }
+    .lvtag{ width:28px; flex-shrink:0; font-size:14px; font-weight:700; color:#6d7381; text-align:center; }
+    .rc-lv-txt{ font-size:14px; color:#222631; line-height:1.6; }
+    .plan-actions{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin:24px 0 8px; }
+    .plan-actions .pa-note{ font-size:13px; color:#9ea3ad; }
+    .plan-actions .pa-btns{ display:flex; gap:10px; }
+    .sec{ background:#fff; border-radius:12px; padding:22px 24px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:18px; }
+    .sec-hd{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:16px; }
+    .sec-title{ font-size:18px; font-weight:700; color:#222631; }
+    /* 데모 플로우 점프 네비 (우하단 검은 패널) */
+    .demo-nav{ position:fixed; right:24px; bottom:24px; z-index:400; background:#222631; color:#fff; border-radius:14px; padding:14px 16px; width:236px; box-shadow:0 8px 24px rgba(0,0,0,.3); user-select:none; cursor:move; }
+    body.dn-dragging{ user-select:none; cursor:move; }
+    .dn-title{ font-size:12px; font-weight:700; letter-spacing:1.5px; color:#b3b6bd; margin-bottom:10px; display:flex; align-items:center; justify-content:space-between; cursor:move; padding:2px 0 6px; }
+    .dn-step{ display:flex; align-items:center; gap:9px; padding:7px 8px; border-radius:8px; font-size:13.5px; font-weight:500; color:#c7cbd3; cursor:pointer; }
+    .dn-step:hover{ background:#3b3f4c; }
+    .dn-step .n{ width:20px; height:20px; border-radius:100px; background:#3b3f4c; font-size:11.5px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+  </style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header class="g-hd">
+  <button class="gh-menu-btn" onclick="toggleNav()"><i data-lucide="menu" style="width:20px;height:20px"></i></button>
+  <svg width="76" height="16" viewBox="0 0 76 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer" onclick="location.href='home_v1_260612.html'"><path d="M11.3613 4.03516H4.09668V11.9629H8.88281L8.88086 11.9648H15.6016V16H4.02539C1.80242 15.9998 0 14.223 0 12.0322V3.96777C0 1.77696 1.80242 0.000177874 4.02539 0H15.4561L11.3613 4.03516ZM22.0703 11.9648H33.5781V16H22.002C19.7788 16 17.9756 14.2231 17.9756 12.0322V0H22.0703V11.9648ZM40.0459 16H35.9521V0H40.0459V16ZM54.5381 0C56.4564 0 58.0138 1.53228 58.0186 3.42285L58.0166 3.4248V8.54297C58.014 10.4333 56.4567 11.9648 54.5361 11.9648H46.5107L42.416 16V0H54.5381ZM71.9746 0C74.0086 0.000134956 75.6887 1.49046 75.958 3.42285H76V12.5771H75.958C75.6887 14.5095 74.011 15.9999 71.9746 16H64.4238C62.3897 16 60.7098 14.5096 60.4404 12.5771C60.4145 12.398 60.3984 12.2184 60.3984 12.0322V3.96777C60.3984 3.78159 60.4145 3.60205 60.4404 3.42285C60.7098 1.49037 62.3873 0 64.4238 0H71.9746ZM64.4922 12.5771H71.9062V3.42285H64.4922V12.5771ZM46.5107 3.42285V8.54004H53.9238V3.42285H46.5107Z" fill="#365EEF"/></svg>
+  <div class="g-hd-r">
+    <span class="plan-badge">학교 유료</span>
+    <span style="font-size:14px;color:#3b3f4c">D-180</span>
+    <div class="hd-div"></div>
+    <i data-lucide="sparkles" style="width:18px;height:18px;color:#416bff"></i>
+    <div class="credit-wrap">AI 크레딧 <span id="credit-num">200</span></div>
+    <div class="hd-div"></div>
+    <button class="user-btn">최대표 선생님(대표교사) <i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+  </div>
+</header>
+
+<!-- ===== Sidebar ===== -->
+<nav class="icon-sb" id="icon-sb">
+  <div class="si" onclick="location.href='home_v1_260612.html'"><div class="si-icon"><i data-lucide="home" style="width:20px;height:20px"></i></div><span class="si-label">홈</span><span class="si-tip">홈</span></div>
+  <div class="si" onclick="location.href='eval_plan_v1_260619.html'"><div class="si-icon"><i data-lucide="scissors" style="width:20px;height:20px"></i></div><span class="si-label">평가 준비</span><span class="si-tip">평가 준비</span></div>
+  <div class="si active" onclick="location.href='co_teacher_review_v1_260611.html?home=1'"><div class="si-icon"><i data-lucide="layout-grid" style="width:20px;height:20px"></i></div><span class="si-label">수업</span><span class="si-tip">수업</span></div>
+  <div class="si" onclick="location.href='creative_activity_list_v6_260507.html'"><div class="si-icon"><i data-lucide="notebook-pen" style="width:20px;height:20px"></i></div><span class="si-label">창의적 체험활동 <span style="font-size:10px;background:#416bff;color:#fff;padding:1px 5px;border-radius:3px;margin-left:2px">Beta</span></span><span class="si-tip">창의적 체험활동</span></div>
+  <div class="si" onclick="location.href='quick_seteuk_dev_list_v1_260604.html'"><div class="si-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div><span class="si-label">세특 간편 생성기</span><span class="si-tip">세특 간편 생성기</span></div>
+  <div class="si" onclick="notReady('행동특성 및 종합기록')"><div class="si-icon"><i data-lucide="smile" style="width:20px;height:20px"></i></div><span class="si-label">행동특성 및 종합기록</span><span class="si-tip">행동특성 및 종합기록</span></div>
+  <div class="si" onclick="notReady('리포트')"><div class="si-icon"><i data-lucide="bar-chart-2" style="width:20px;height:20px"></i></div><span class="si-label">리포트</span><span class="si-tip">리포트</span></div>
+  <div class="si" onclick="notReady('학교 설정')"><div class="si-icon"><i data-lucide="building-2" style="width:20px;height:20px"></i></div><span class="si-label">학교 설정</span><span class="si-tip">학교 설정</span></div>
+  <div class="nav-bottom">
+    <div class="nav-div"></div>
+    <div class="si" onclick="notReady('매뉴얼 다운로드')"><div class="si-icon"><i data-lucide="file-down" style="width:20px;height:20px"></i></div><span class="si-label">매뉴얼 다운로드</span><span class="si-tip">매뉴얼 다운로드</span></div>
+    <div class="si" onclick="notReady('요금제')"><div class="si-icon"><i data-lucide="credit-card" style="width:20px;height:20px"></i></div><span class="si-label">요금제</span><span class="si-tip">요금제</span></div>
+    <div class="si" onclick="notReady('고객센터')"><div class="si-icon"><i data-lucide="help-circle" style="width:20px;height:20px"></i></div><span class="si-label">고객센터</span><span class="si-tip">고객센터</span></div>
+  </div>
+</nav>
+
+<div class="main-wrap">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="location.href='co_teacher_review_v1_260611.html?home=1'">수업 홈</button>
+      <button class="sub-tab" onclick="location.href='task_ocr_inline_v1.html#design'">평가 설계</button>
+      <button class="sub-tab on">활동지</button>
+      <button class="sub-tab" onclick="location.href='task_ocr_inline_v1.html'">과제물 관리</button>
+      <button class="sub-tab" onclick="location.href='task_ocr_inline_v1.html#scoring'">채점</button>
+      <button class="sub-tab" onclick="notReady('세부능력 및 특기사항 지원')">세부능력 및 특기사항 지원</button>
+    </div>
+  </div>
+
+  <div class="form-promo" id="qt-promo-bar">
+    <div class="fp-inner">
+      <i data-lucide="sparkles"></i>
+      <span class="fp-txt">활동지를 등록하면 AI가 학생 답변과 문항을 더 잘 구분해 <b>채점이 정확해져요</b>. 가진 활동지가 없으면 AI로 만들 수도 있어요.</span>
+      <button class="fp-dismiss" onclick="dismissQtPromo()">다시 보지 않기</button>
+    </div>
+  </div>
+
+  <!-- ============ VIEW: 문항 목록 ============ -->
+  <div class="page-wrap" id="view-list">
+    <div class="page-head">
+      <div>
+        <h1 class="page-h1">1학년 국어 활동지</h1>
+        <p class="page-sub">등록하지 않아도 AI 채점은 그대로 실행돼요.</p>
+      </div>
+    </div>
+
+    <div class="card-grid">
+      <!-- 활동지 미등록 -->
+      <div class="qcard" onclick="showRegSelect('매체 자료 비판적 읽기')">
+        <h3 class="qcard-title">매체 자료 비판적 읽기</h3>
+        <div class="qcard-tagline"><span class="badge badge-empty"><i data-lucide="circle-dashed" style="width:12px;height:12px"></i>미등록</span></div>
+        <p class="qcard-meta">교내 공개</p>
+      </div>
+      <!-- 등록완료: 직접 업로드 -->
+      <div class="qcard" onclick="openRegistered('upload','2025_1학기_국어_서술형_활동지.pdf','주장하는 글 쓰기',3)">
+        <h3 class="qcard-title">주장하는 글 쓰기</h3>
+        <div class="qcard-tagline">
+          <span class="badge badge-done"><i data-lucide="check" style="width:12px;height:12px"></i>등록</span>
+          <span class="qst on"><i data-lucide="check-circle-2" style="width:14px;height:14px"></i>채점요소 연결</span>
+          <span class="qst on"><i data-lucide="check-circle-2" style="width:14px;height:14px"></i>모범답안</span>
+        </div>
+        <p class="qcard-meta">교내 공개 · 직접 업로드</p>
+      </div>
+      <!-- 등록완료: 다른 선생님 활동지 복사 -->
+      <div class="qcard" onclick="openRegistered('copy','매체비판_읽기와글쓰기_활동지.pdf','자료 기반 논술하기',0)">
+        <h3 class="qcard-title">자료 기반 논술하기</h3>
+        <div class="qcard-tagline">
+          <span class="badge badge-done"><i data-lucide="check" style="width:12px;height:12px"></i>등록</span>
+          <span class="qst on"><i data-lucide="check-circle-2" style="width:14px;height:14px"></i>채점요소 연결</span>
+          <span class="qst"><i data-lucide="circle" style="width:14px;height:14px"></i>모범답안</span>
+        </div>
+        <p class="qcard-meta">교내 공개 · 김정현 선생님 활동지 복사</p>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <!-- ============ VIEW: 활동지 등록 방법 선택 (미등록 상세) ============ -->
+  <div class="page-wrap hidden" id="view-reg">
+    <button class="back-link" onclick="showList()"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>목록으로</button>
+    <h1 class="page-h1" id="reg-h1">활동지 등록</h1>
+    <p class="reg-method-label" style="margin-top:18px;">어떤 방법으로 등록할까요?</p>
+    <div class="reg-list">
+      <button class="reg-card on" data-m="upload" onclick="selectReg('upload')">
+        <span class="reg-ic"><i data-lucide="upload" style="width:19px;height:19px"></i></span>
+        <span class="reg-tx"><span class="reg-t">가진 활동지 올리기</span><span class="reg-d">PDF·이미지를 올려 문항을 자동으로 인식해요.</span></span>
+        <i data-lucide="check-circle-2" class="reg-check" style="width:20px;height:20px"></i>
+      </button>
+      <button class="reg-card" data-m="copy" onclick="selectReg('copy')">
+        <span class="reg-ic"><i data-lucide="copy" style="width:19px;height:19px"></i></span>
+        <span class="reg-tx"><span class="reg-t">다른 선생님 활동지 가져오기</span><span class="reg-d">동교과 선생님이 공유한 활동지를 복사해요.</span></span>
+        <i data-lucide="check-circle-2" class="reg-check" style="width:20px;height:20px"></i>
+      </button>
+      <button class="reg-card" data-m="ai" onclick="selectReg('ai')">
+        <span class="reg-ic"><i data-lucide="wand-sparkles" style="width:19px;height:19px"></i></span>
+        <span class="reg-tx"><span class="reg-t">AI로 함께 만들기<span class="reg-beta">Beta</span></span><span class="reg-d">성취기준·채점기준에 맞춰 AI가 초안을 만들어요.</span></span>
+        <i data-lucide="check-circle-2" class="reg-check" style="width:20px;height:20px"></i>
+      </button>
+    </div>
+
+    <div id="reg-panel" style="margin-top:26px;">
+      <!-- 이미 있어요 -->
+      <div id="regp-upload" class="reg-pane">
+        <p class="reg-pane-desc">가진 활동지(PDF·이미지)를 올리면 문항을 자동으로 인식해 등록해요. 인식 결과만 확인하면 끝이에요.</p>
+        <div class="dropzone" id="rup-dz" onclick="rupUpload()">
+          <div class="dz-ic"><i data-lucide="file-up" style="width:22px;height:22px"></i></div>
+          <div class="dz-main">클릭하거나 파일을 끌어다 놓으세요.</div>
+          <div class="dz-sub">PDF, JPG, PNG 가능 · 한글 파일은 PDF로 변환해 올려주세요</div>
+        </div>
+        <div id="rup-done" class="hidden">
+          <div class="file-chip">
+            <i data-lucide="file-text" style="width:16px;height:16px"></i>
+            <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">2025_1학기_국어_서술형_활동지.pdf</span>
+            <button class="fc-change" onclick="rupUpload()"><i data-lucide="refresh-cw" style="width:13px;height:13px"></i>파일 변경</button>
+            <span class="fc-x" onclick="rupReset()"><i data-lucide="x" style="width:16px;height:16px"></i></span>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:18px;">
+            <button class="btn btn-primary btn-lg" onclick="rupAnalyze()"><i data-lucide="scan-search" style="width:16px;height:16px"></i>분석 시작</button>
+          </div>
+        </div>
+      </div>
+      <!-- AI로 함께 만들어요 -->
+      <div id="regp-ai" class="reg-pane hidden">
+        <p class="reg-pane-desc">성취기준·채점기준에 맞춰 AI가 활동지 초안을 만들어요. 내용 입력 → 예상 문항 확인 → 활동지 완성, 3단계로 진행돼요.</p>
+        <div style="display:flex; justify-content:flex-end;">
+          <button class="btn btn-primary btn-lg" onclick="openGen('plan')"><i data-lucide="wand-sparkles" style="width:16px;height:16px"></i>AI로 활동지 만들기</button>
+        </div>
+      </div>
+      <!-- 다른 선생님 가져오기 -->
+      <div id="regp-copy" class="reg-pane hidden">
+        <p class="reg-pane-desc">교내 같은 교과 선생님이 공유한 활동지를 복사해 가져와요. 문항·모범답안까지 그대로 함께 복사돼요.</p>
+        <div class="modal-tools" style="padding:0; margin-bottom:14px;">
+          <span class="modal-count">총 8개</span>
+          <div class="modal-search"><input placeholder="평가명 또는 선생님 이름 입력"><i data-lucide="search" style="width:18px;height:18px"></i></div>
+        </div>
+        <table class="cp-tbl">
+          <thead><tr><th style="width:64px;">선택</th><th style="width:120px;">선생님</th><th>평가명</th><th style="width:80px;">문항</th><th style="width:120px;">최근 수정일</th></tr></thead>
+          <tbody>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>박서연</td><td>(중) 시 감상문 쓰기</td><td>4개</td><td>26/06/12</td></tr>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>박서연</td><td>설명하는 글 요약하기</td><td>3개</td><td>26/06/05</td></tr>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>이준호</td><td>주장하는 글쓰기</td><td>5개</td><td>26/05/28</td></tr>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>이준호</td><td>소설 속 인물의 심리 서술</td><td>4개</td><td>26/05/20</td></tr>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>김민지</td><td>매체 자료 비판적 읽기</td><td>3개</td><td>26/05/14</td></tr>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>김민지</td><td>토론 입론문 작성하기</td><td>6개</td><td>26/05/02</td></tr>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>최예린</td><td>시조의 운율과 표현 분석</td><td>3개</td><td>26/04/22</td></tr>
+            <tr onclick="selectCopyRow(this)"><td><span class="cp-radio"></span></td><td>최예린</td><td>건의하는 글 쓰기</td><td>4개</td><td>26/04/15</td></tr>
+          </tbody>
+        </table>
+        <div style="display:flex; justify-content:flex-end; margin-top:16px;">
+          <button class="btn btn-primary btn-lg" id="copyConfirm" disabled onclick="doCopy()"><i data-lucide="copy" style="width:16px;height:16px"></i>복사 생성</button>
+        </div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <!-- ============ VIEW: 생성 결과 ============ -->
+  <div class="page-wrap hidden" id="view-result">
+    <button class="back-link" onclick="showList()"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>목록으로</button>
+    <h1 class="page-h1">AI 활동지 초안</h1>
+    <p class="page-sub" style="margin-bottom:18px;">AI가 만든 초안이에요. 한글 파일로 내려받아 직접 다듬어 쓰거나, 그대로 등록해 채점요소·모범답안을 더할 수 있어요.</p>
+    <div class="gen-steps">
+      <div class="gen-step clickable" onclick="showView('view-create')"><span class="gen-step-num">1</span><span class="gen-step-label">내용 입력</span></div>
+      <span class="gen-step-sep"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></span>
+      <div class="gen-step clickable" onclick="showView('view-plan')"><span class="gen-step-num">2</span><span class="gen-step-label">예상 문항 확인</span></div>
+      <span class="gen-step-sep"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></span>
+      <div class="gen-step active"><span class="gen-step-num">3</span><span class="gen-step-label">활동지 완성</span></div>
+    </div>
+
+    <!-- A4 활동지 뷰어 -->
+    <div class="a4-wrap">
+      <div class="a4-sheet">
+        <h2 class="a4-title">비판적 읽기와 주장하는 글쓰기</h2>
+        <div class="a4-info-row"><span>1학년 ___반 ___번</span><span>이름 _________</span><span>점수 ____ / 15</span></div>
+
+        <div class="a4-q">
+          <p class="a4-q-head">1. 다음 제시문을 읽고, 글쓴이가 말하고자 하는 중심 내용을 한 문장으로 요약하여 서술하시오. <span class="a4-q-score">[6점]</span></p>
+          <div class="a4-lines"><span></span><span></span></div>
+        </div>
+        <div class="a4-q">
+          <p class="a4-q-head">2. 글쓴이가 주장을 뒷받침하기 위해 제시한 근거 두 가지를 찾아 각각 서술하시오. <span class="a4-q-score">[4점]</span></p>
+          <div class="a4-lines"><span></span><span></span></div>
+        </div>
+        <div class="a4-q">
+          <p class="a4-q-head">3. 제시된 〈자료 가〉를 바탕으로 '일회용품 사용 규제'에 대한 자신의 주장을 정하고, 타당한 근거 두 가지를 들어 글을 쓰시오. <span class="a4-q-score">[5점]</span></p>
+          <div class="a4-asset"><i data-lucide="image" style="width:15px;height:15px"></i>〈자료 가〉 원본 자료 — 업로드한 글·표를 그대로 사용 (새로 생성하지 않음)</div>
+          <div class="a4-lines"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:14px;color:#565d6b;line-height:1.6;margin:6px 0 18px;display:flex;gap:7px;align-items:flex-start;">
+      <i data-lucide="info" style="width:16px;height:16px;flex-shrink:0;margin-top:1px;"></i>
+      <span>이미지(그림·도형 등)는 새로 만들지 않고 원본을 그대로 사용합니다. 현재 서·논술형 텍스트 과제를 중심으로 지원합니다.</span>
+    </p>
+
+    <div class="plan-actions" style="justify-content:space-between; align-items:center;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button class="btn btn-outline btn-lg" onclick="openRegen()"><i data-lucide="refresh-cw" style="width:15px;height:15px"></i>다시 생성</button>
+        <span style="font-size:13px;color:#9ea3ad;display:inline-flex;align-items:center;gap:4px;"><i data-lucide="sparkles" style="width:13px;height:13px"></i>크레딧 1개 사용</span>
+      </div>
+      <div class="pa-btns">
+        <button class="btn btn-outline btn-lg" style="border-color:#416bff;color:#416bff;" onclick="openRegistered('ai','',window._regEv||'비판적 읽기와 주장하는 글쓰기',0)">활동지 등록</button>
+        <button class="btn btn-primary btn-lg" onclick="toastMsg('한글(HWP) 다운로드는 이 목업에서 제공하지 않습니다.')"><i data-lucide="download" style="width:16px;height:16px"></i>한글 다운로드</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <!-- ============ VIEW: 설계 계획 (AI 중간 산출물 · 다시 생성 시 크레딧 1) ============ -->
+  <div class="page-wrap hidden" id="view-plan">
+    <button class="back-link" onclick="showView('view-create')"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>이전으로</button>
+    <h1 class="page-h1">활동지 계획</h1>
+    <p class="page-sub" style="margin-bottom:18px;">AI가 활동지를 만들기 전, 어떤 문항으로 구성할지 미리 보여드려요. 확인하고 '이 내용으로 활동지 만들기'를 누르면 완성돼요.</p>
+    <div class="gen-steps">
+      <div class="gen-step clickable" onclick="showView('view-create')"><span class="gen-step-num">1</span><span class="gen-step-label">내용 입력</span></div>
+      <span class="gen-step-sep"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></span>
+      <div class="gen-step active"><span class="gen-step-num">2</span><span class="gen-step-label">예상 문항 확인</span></div>
+      <span class="gen-step-sep"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></span>
+      <div class="gen-step"><span class="gen-step-num">3</span><span class="gen-step-label">활동지 완성</span></div>
+    </div>
+
+    <div class="plan-sec-title" style="margin-top:0;"><i data-lucide="clipboard-list" style="width:17px;height:17px"></i>문항 <span class="pst-sub" id="plan-q-count">2문항</span></div>
+
+    <div id="plan-q-list">
+      <div class="q-block">
+        <div class="qb-hd"><span class="qb-no">1</span><span class="qb-title">제시문 읽고 중심 내용 요약하기</span><span class="qb-tools"><i data-lucide="chevron-up" style="width:16px;height:16px" onclick="moveQ(this,-1)"></i><i data-lucide="chevron-down" style="width:16px;height:16px" onclick="moveQ(this,1)"></i><i data-lucide="trash-2" style="width:16px;height:16px" onclick="this.closest('.q-block').remove(); renumberPlanQ();"></i></span></div>
+        <div class="qb-q">제시문을 읽고, 글쓴이가 말하고자 하는 중심 내용을 한 문장으로 요약하여 서술하시오.</div>
+        <div class="qb-asset" style="margin-top:12px;"><span class="qa-l"><i data-lucide="paperclip" style="width:14px;height:14px"></i>제시 자료</span><span class="qa-chip">제시문 · 일회용품 규제 관련 글 (요약·재구성)</span></div>
+      </div>
+
+      <div class="q-block">
+        <div class="qb-hd"><span class="qb-no">2</span><span class="qb-title">근거를 들어 주장하는 글쓰기</span><span class="qb-tools"><i data-lucide="chevron-up" style="width:16px;height:16px" onclick="moveQ(this,-1)"></i><i data-lucide="chevron-down" style="width:16px;height:16px" onclick="moveQ(this,1)"></i><i data-lucide="trash-2" style="width:16px;height:16px" onclick="this.closest('.q-block').remove(); renumberPlanQ();"></i></span></div>
+        <div class="qb-q">〈자료 가〉를 바탕으로 '일회용품 사용 규제'에 대한 자신의 주장을 정하고, 타당한 근거 두 가지를 들어 글을 쓰시오.</div>
+        <div class="qb-asset" style="margin-top:12px;"><span class="qa-l"><i data-lucide="paperclip" style="width:14px;height:14px"></i>제시 자료</span><span class="qa-chip">〈자료 가〉 · 일회용품 사용량 통계 자료</span></div>
+      </div>
+    </div>
+
+    <button class="add-q" onclick="addPlanQ()"><i data-lucide="plus" style="width:15px;height:15px"></i>문항 추가</button>
+
+    <div id="plan-rubric-full">
+    <div class="plan-sec-title"><i data-lucide="star" style="width:17px;height:17px"></i>평가 기준 <span class="pst-sub">채점요소 최대 3개</span></div>
+
+    <div class="rubric-card">
+      <div class="rc-hd"><span class="rc-name">중심 내용 파악과 요약의 정확성</span><span class="rc-score">40 점</span></div>
+      <div class="rc-levels">
+        <div class="rc-lv"><span class="lvtag">상</span><span class="rc-lv-txt">글쓴이의 주장과 핵심 근거를 정확히 파악하여 중심 내용을 간결하게 요약함.</span></div>
+        <div class="rc-lv"><span class="lvtag">중</span><span class="rc-lv-txt">중심 내용을 대체로 파악했으나 일부 누락하거나 다소 장황하게 요약함.</span></div>
+        <div class="rc-lv"><span class="lvtag">하</span><span class="rc-lv-txt">중심 내용을 잘못 파악하거나 요약하지 못함.</span></div>
+      </div>
+    </div>
+
+    <div class="rubric-card">
+      <div class="rc-hd"><span class="rc-name">주장의 명료성과 근거의 타당성</span><span class="rc-score">60 점</span></div>
+      <div class="rc-levels">
+        <div class="rc-lv"><span class="lvtag">상</span><span class="rc-lv-txt">주장이 분명하고, 타당한 근거 두 가지를 들어 설득력 있게 글을 전개함.</span></div>
+        <div class="rc-lv"><span class="lvtag">중</span><span class="rc-lv-txt">주장은 드러나나 근거가 한 가지에 그치거나 타당성이 다소 부족함.</span></div>
+        <div class="rc-lv"><span class="lvtag">하</span><span class="rc-lv-txt">주장이 불분명하거나 근거를 제시하지 못함.</span></div>
+      </div>
+    </div>
+
+    </div><!-- /plan-rubric-full -->
+
+    <div class="plan-actions" style="justify-content:flex-end;">
+      <div class="pa-btns">
+        <button class="btn btn-outline btn-lg" onclick="openRegen()"><i data-lucide="refresh-cw" style="width:15px;height:15px"></i>다시 생성</button>
+        <button class="btn btn-primary btn-lg" onclick="finalizePlan()"><i data-lucide="check" style="width:16px;height:16px"></i>이 내용으로 활동지 만들기</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <!-- ============ VIEW: AI 생성 설정 (페이지) ============ -->
+  <div class="page-wrap hidden" id="view-create">
+    <button class="back-link" onclick="showList()"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>목록으로</button>
+    <h1 class="page-h1">AI로 활동지 만들기 <span class="h1-beta">Beta</span></h1>
+    <p class="page-sub" style="margin-bottom:18px;">설계 정보를 활용해 활동지를 새로 만들어요. 기존 활동지를 변경하는 기능도 곧 제공할 예정이에요.</p>
+    <div class="gen-steps">
+      <div class="gen-step active"><span class="gen-step-num">1</span><span class="gen-step-label">내용 입력</span></div>
+      <span class="gen-step-sep"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></span>
+      <div class="gen-step"><span class="gen-step-num">2</span><span class="gen-step-label">예상 문항 확인</span></div>
+      <span class="gen-step-sep"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></span>
+      <div class="gen-step"><span class="gen-step-num">3</span><span class="gen-step-label">활동지 완성</span></div>
+    </div>
+
+    <!-- 연계 컨텍스트: 설계에서 진입 -->
+    <div id="ctx-plan" class="ctx-collapse" style="margin-bottom:18px;">
+      <button class="ctx-toggle" onclick="toggleCtx()">
+        <i data-lucide="link-2" style="width:14px;height:14px"></i>
+        <span>성취기준 · 채점기준</span>
+        <i data-lucide="chevron-down" class="ctx-caret" style="width:16px;height:16px"></i>
+      </button>
+      <div class="ctx-body">
+        <div class="ctx-sec-label">성취기준</div>
+        <div class="ach-item"><span class="ach-code">9국02-03</span><span class="ach-txt">읽기 목적을 고려하여 글의 중심 내용을 파악하고 요약하며 읽는다.</span></div>
+        <div class="ach-item"><span class="ach-code">9국03-04</span><span class="ach-txt">주장하는 내용에 맞게 타당한 근거를 들어 글을 쓴다.</span></div>
+        <div class="ctx-sec-label" style="margin-top:14px;">채점기준 <span style="font-weight:400;color:#9ea3ad;">3개</span></div>
+        <div class="rub-item"><span class="rub-name">1. 중심 내용 파악의 정확성</span><span class="rub-score">10 · 8 · 6</span></div>
+        <div class="rub-item"><span class="rub-name">2. 요약의 간결성과 응집성</span><span class="rub-score">10 · 8 · 6</span></div>
+        <div class="rub-item"><span class="rub-name">3. 근거의 타당성과 표현의 적절성</span><span class="rub-score">10 · 8 · 6</span></div>
+        <div class="ds-edit">
+          <span class="ds-edit-note"><i data-lucide="info" style="width:15px;height:15px;flex-shrink:0"></i>성취기준·채점기준은 평가 설계에서 정해요. 바꾸려면 설계로 이동하세요.</span>
+          <button class="btn btn-outline btn-sm" onclick="openLeaveDesign()">설계에서 수정<i data-lucide="arrow-right" style="width:14px;height:14px"></i></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 무소속 컨텍스트: 설계 없이 시작 → 성취기준 먼저 선택 -->
+    <div id="ctx-standalone" class="hidden" style="margin-bottom:20px;">
+      <p class="dw-sub" style="margin-top:0;">성취기준 선택 <span style="color:#f2525f">*</span></p>
+      <div class="note" style="margin-bottom:12px;"><i data-lucide="info" style="width:16px;height:16px"></i><div class="nt">설계를 먼저 안 만드셨어도 괜찮아요. <b>성취기준만 고르면</b> 바로 활동지를 만들 수 있고, 채점기준은 함께 만들어집니다.</div></div>
+      <select class="inp" style="width:100%;height:48px;border:1px solid #d9d9d9;border-radius:8px;padding:0 14px;font-size:16px;color:#222631;background:#fff;">
+        <option>성취기준을 검색하여 선택해 주세요.</option>
+        <option>[9과04-02] 암석의 순환 과정을 설명한다.</option>
+      </select>
+    </div>
+
+    <!-- 카드: 활동지 설계 -->
+    <div class="sec">
+      <div class="sec-hd"><span class="sec-title">활동지 내용</span></div>
+
+    <!-- 제약 안내 (가벼운 한 줄) -->
+    <p style="font-size:14px;color:#565d6b;line-height:1.6;margin:0 0 16px;display:flex;gap:7px;align-items:flex-start;">
+      <i data-lucide="info" style="width:16px;height:16px;flex-shrink:0;margin-top:1px;"></i>
+      <span>이미지(그림·도형 등)는 새로 만들지 않고 원본을 그대로 사용합니다. 현재 서·논술형 텍스트 과제를 중심으로 지원합니다.</span>
+    </p>
+
+    <!-- 변형 전용: 활동지 업로드 -->
+    <div id="gen-upload" class="hidden">
+      <p class="dw-sub">활동지 업로드</p>
+      <div class="dropzone" onclick="showFileChip()" id="dz">
+        <div class="dz-ic"><i data-lucide="file-up" style="width:22px;height:22px"></i></div>
+        <div class="dz-main">클릭하거나 파일을 끌어다 놓으세요.</div>
+        <div class="dz-sub">PDF, JPG, PNG, HWP 가능</div>
+      </div>
+      <div id="file-chip" class="file-chip hidden" style="margin-top:10px;">
+        <i data-lucide="file-text" style="width:16px;height:16px"></i>2024_2학기_국어_서술형_활동지.pdf
+        <span class="fc-x" onclick="hideFileChip()"><i data-lucide="x" style="width:16px;height:16px"></i></span>
+      </div>
+
+      <!-- 업로드 후에만: 인식 결과 + 변형 설정 -->
+      <div id="vary-settings" class="hidden">
+        <div class="recog-box">
+          <div class="recog-hd"><i data-lucide="check-circle-2" style="width:15px;height:15px"></i>활동지에서 문항 3개를 인식했습니다</div>
+          <div id="recog-list">
+            <label class="recog-item"><input type="checkbox" checked disabled><span>1. 제시문을 읽고 글의 중심 내용을 한 문장으로 요약하시오.</span></label>
+            <label class="recog-item"><input type="checkbox" checked disabled><span>2. 글쓴이의 주장과 근거 두 가지를 서술하시오.</span></label>
+            <label class="recog-item"><input type="checkbox" checked disabled><span>3. 자료를 바탕으로 자신의 주장을 정하고 근거를 들어 쓰시오.</span></label>
+          </div>
+        </div>
+
+        <p class="dw-sub">변형 범위</p>
+        <div class="radio-line">
+          <span class="rad on" onclick="pickScope(this,'all')"><span class="ring"></span>전체 활동지</span>
+          <span class="rad" onclick="pickScope(this,'some')"><span class="ring"></span>특정 문항만 선택</span>
+        </div>
+
+        <p class="dw-sub">변형 수준</p>
+        <div class="opt-cards col3">
+          <div class="opt-card" onclick="pickOne(this)">
+            <div class="opt-card-ic"><i data-lucide="trending-down" style="width:18px;height:18px"></i></div>
+            <p class="opt-card-t">쉽게</p>
+            <p class="opt-card-d">발문 완화·단계 분리 (보강용)</p>
+          </div>
+          <div class="opt-card on" onclick="pickOne(this)">
+            <div class="opt-card-ic"><i data-lucide="equal" style="width:18px;height:18px"></i></div>
+            <p class="opt-card-t">비슷하게</p>
+            <p class="opt-card-d">난이도 유지·소재만 교체 (동형)</p>
+          </div>
+          <div class="opt-card" onclick="pickOne(this)">
+            <div class="opt-card-ic"><i data-lucide="trending-up" style="width:18px;height:18px"></i></div>
+            <p class="opt-card-t">어렵게</p>
+            <p class="opt-card-d">맥락 복잡도 ↑ (심화용)</p>
+          </div>
+        </div>
+
+        <label class="chk-inline" style="margin-top:16px;"><input type="checkbox" checked>자료(지문·이미지 등) 원본 유지 — 새로 만들지 않음</label>
+      </div>
+    </div>
+
+    <!-- 신규 전용: 활동지 설계 입력 -->
+    <div id="gen-new-opts">
+      <!-- ① 학생이 읽을 자료 -->
+      <div class="field-row">
+        <label class="fl">학생이 읽을 자료 <span class="opt">선택</span></label>
+        <p class="fl-desc">학생이 읽고 답할 제시문이에요. 가진 글을 붙여넣거나, 링크·파일을 첨부하면 AI가 내용을 읽어 제시문을 만들어요. 읽기 자료 없이 문항만 만들 수도 있어요.</p>
+        <div class="radio-line" style="margin-bottom:14px;">
+          <span class="rad on" onclick="pickSource(this,'paste')"><span class="ring"></span>직접 입력</span>
+          <span class="rad" onclick="pickSource(this,'url')"><span class="ring"></span>링크 첨부</span>
+          <span class="rad" onclick="pickSource(this,'file')"><span class="ring"></span>파일 첨부</span>
+          <span class="rad" onclick="pickSource(this,'none')"><span class="ring"></span>자료 없음</span>
+        </div>
+        <div id="src-paste"><textarea class="ta" style="min-height:120px;" placeholder="학생이 읽을 제시문을 붙여넣어 주세요."></textarea></div>
+        <div id="src-url" class="hidden">
+          <div id="url-list" class="src-list" style="margin-bottom:8px;"></div>
+          <div class="url-row"><input id="url-input" class="inp2" placeholder="https://… (뉴스 기사 또는 유튜브 링크)"><button class="btn btn-secondary" onclick="addUrl()">가져오기</button></div>
+          <p class="fl-desc" style="margin:8px 0 0;">링크는 최대 5개까지 첨부할 수 있어요. 원문은 그대로 싣지 않고 요약·재구성하며, 합쳐 최대 8,000자까지 사용해요.</p>
+        </div>
+        <div id="src-file" class="hidden">
+          <div id="file-list" class="src-list" style="margin-bottom:8px;"></div>
+          <div class="src-drop" onclick="addFile()"><i data-lucide="file-up" style="width:22px;height:22px"></i><span>클릭하거나 파일을 끌어다 놓으세요 · 1개 (PDF·JPG·PNG)</span></div>
+          <p class="fl-desc" style="margin:8px 0 0;">파일은 1개까지 올릴 수 있어요. 올린 파일의 내용을 읽어 제시문·문항에 활용하고, 원문 이미지·표는 그대로 써요.</p>
+        </div>
+        <div id="src-none" class="hidden"><p class="fl-desc" style="margin:0;">읽기 자료(제시문) 없이 문항만 만들어요.</p></div>
+      </div>
+
+      <!-- ② 문항 -->
+      <div class="field-row">
+        <label class="fl">문항</label>
+        <p class="fl-desc">학생이 풀 문항이에요. 몇 개를 만들지 정하고, 넣고 싶은 유형이 있으면 골라 주세요.</p>
+        <span class="fl-sub">문항 수</span>
+        <div class="q-count">
+          <button class="step-btn" onclick="stepQ(-1)">−</button>
+          <span id="qNum" class="q-count-num">3</span>
+          <button class="step-btn" onclick="stepQ(1)">+</button>
+          <span class="q-count-unit">개</span>
+        </div>
+        <span class="fl-sub" style="margin-top:24px;">문항 유형 <span class="opt">선택</span></span>
+        <p class="fl-desc" style="margin-bottom:10px;">넣고 싶은 유형을 골라 주세요. 목록에 없으면 아래 요청 사항에 적으면 돼요. 고르지 않으면 AI가 자료·성취기준에 맞춰 구성해 드려요.</p>
+        <div class="type-chips">
+          <span class="tchip" onclick="this.classList.toggle('on')">요약·정리</span>
+          <span class="tchip" onclick="this.classList.toggle('on')">설명·서술</span>
+          <span class="tchip" onclick="this.classList.toggle('on')">자료 해석</span>
+          <span class="tchip" onclick="this.classList.toggle('on')">비교·분석</span>
+          <span class="tchip" onclick="this.classList.toggle('on')">주장·근거</span>
+          <span class="tchip" onclick="this.classList.toggle('on')">적용·문제해결</span>
+          <span class="tchip" onclick="this.classList.toggle('on')">평가·비판</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 공통: 요청 사항 -->
+    <div class="field-row" style="margin-bottom:0;">
+      <label class="fl">요청 사항 <span class="opt">선택</span></label>
+      <p class="fl-desc">이렇게 만들어 달라는 점이 있으면 자유롭게 적어 주세요.</p>
+      <textarea class="ta" style="min-height:118px;" placeholder="예시:
+• 자료를 해석하는 문항을 1개 포함해 주세요
+• 발문은 '~하시오' 체로 통일해 주세요
+• 2번 문항은 찬반 토론 형식으로 만들어 주세요"></textarea>
+    </div>
+    </div><!-- /sec 활동지 설계 -->
+
+    <div class="plan-actions" style="margin-top:24px;">
+      <span class="pa-note"><i data-lucide="sparkles" style="width:13px;height:13px;vertical-align:-2px"></i> 초안 생성에 크레딧 1개 사용</span>
+      <div class="pa-btns">
+        <button class="btn btn-primary btn-lg" onclick="runGen()"><i data-lucide="wand-sparkles" style="width:16px;height:16px"></i>활동지 생성</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+
+  <!-- ============ VIEW: 활동지 업로드 & 인식 확인 ============ -->
+  <div class="page-wrap hidden" id="view-upload">
+    <button class="back-link" onclick="showList()"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>목록으로</button>
+    <h1 class="page-h1" id="up-h1">활동지 업로드</h1>
+    <p class="page-sub" id="up-sub" style="margin-bottom:24px;">활동지를 올리면 문항을 자동으로 인식해 드려요. 결과만 확인하면 바로 등록할 수 있어요. 채점요소·모범답안을 더하면 채점이 더 정확해집니다. (선택)</p>
+
+    <div class="sec" id="up-basic-sec">
+      <div class="sec-hd"><span class="sec-title">기본 정보</span></div>
+      <label style="display:block;font-size:14px;font-weight:600;color:#3b3f4c;margin:0 0 8px;">활동지명</label>
+      <input id="up-name" style="width:100%;height:44px;border:1px solid #d9d9d9;border-radius:10px;padding:0 14px;font-size:15px;font-family:inherit;color:#222631;outline:none;" placeholder="활동지명을 입력해 주세요.">
+      <label style="display:block;font-size:14px;font-weight:600;color:#3b3f4c;margin:18px 0 8px;">공개 여부</label>
+      <div class="radio-line">
+        <span class="rad on" onclick="pickRadio(this)"><span class="ring"></span>교내 공개</span>
+        <span class="rad" onclick="pickRadio(this)"><span class="ring"></span>나만 보기</span>
+      </div>
+    </div>
+
+    <div id="up-regraded-note" class="info-note hidden">
+      <i data-lucide="info" style="width:16px;height:16px;flex-shrink:0;margin-top:1px"></i>
+      <span>이 활동지로 <b id="up-graded-n">3</b>개 학급을 이미 채점했어요. 활동지를 바꾸면 <b>다시 채점해야</b> 변경 내용이 반영돼요. (이전 채점 결과는 그대로 유지)</span>
+    </div>
+
+    <!-- 활동지 파일 -->
+    <div class="sec" id="up-file-sec">
+      <div class="sec-hd"><span class="sec-title">활동지 파일</span></div>
+      <div class="dropzone" id="up-dz" onclick="upDoUpload()">
+        <div class="dz-ic"><i data-lucide="file-up" style="width:22px;height:22px"></i></div>
+        <div class="dz-main">클릭하거나 파일을 끌어다 놓으세요.</div>
+        <div class="dz-sub">PDF, JPG, PNG 가능 · 한글 파일은 PDF로 변환해 올려주세요</div>
+      </div>
+      <div id="up-chip" class="file-chip hidden" style="margin-top:10px;">
+        <i data-lucide="file-text" style="width:16px;height:16px"></i><span id="up-chip-name" style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">2025_1학기_국어_서술형_활동지.pdf</span>
+        <button class="fc-change" id="up-fc-change" onclick="upDoUpload()"><i data-lucide="refresh-cw" style="width:13px;height:13px"></i>파일 변경</button>
+        <span class="fc-x" onclick="confirmRemoveFile()"><i data-lucide="x" style="width:16px;height:16px"></i></span>
+      </div>
+
+      <!-- OCR 인식 중 -->
+      <div id="up-loading" class="up-loading hidden">
+        <div class="up-spin"></div>
+        <div><div class="up-load-t">문항을 인식하고 있어요…</div><div class="up-load-s">분량이 많으면 조금 걸릴 수 있어요</div></div>
+      </div>
+
+    </div>
+
+    <!-- 문항 인식 결과 (인라인) -->
+    <div class="sec hidden" id="up-recog-sec">
+      <div class="sec-hd"><span class="sec-title">문항 인식 결과</span></div>
+      <p class="recog-desc">인식된 문항이 맞는지 확인하고, 다른 부분은 직접 고치세요. 지문·이미지·표는 화면에 없어도 AI가 함께 인식해 채점에 활용해요.</p>
+      <div class="rg-tbl" id="rgTbl" oninput="markRecogDirty()">
+        <div class="rg-head"><div>문항/영역</div><div>문항 내용</div><div>학생 답변 가이드</div><div></div></div>
+
+        <div class="rg-row rg-big">
+          <div class="rg-c1"><input class="rg-bigtag-inp" value="대문항 1"></div>
+          <div><textarea class="rg-ta">다음 글을 읽고 물음에 답하시오.</textarea></div>
+          <div class="rg-muted">지시문 · 채점 없음</div>
+          <div class="rg-act"><span class="rg-iconbtn" onclick="moveRecogRow(this,-1)"><i data-lucide="chevron-up" style="width:15px;height:15px"></i></span><span class="rg-iconbtn" onclick="moveRecogRow(this,1)"><i data-lucide="chevron-down" style="width:15px;height:15px"></i></span><span class="rg-iconbtn del" onclick="delRecogRow(this)"><i data-lucide="trash-2" style="width:15px;height:15px"></i></span></div>
+        </div>
+        <div class="rg-row">
+          <div><input class="rg-c1-inp" value="1-1 · 요약하기"></div>
+          <div><textarea class="rg-ta">제시문의 중심 내용을 한 문장으로 요약하시오.</textarea></div>
+          <div><div class="rg-guide-ro">중심 내용을 정확히 파악해 한 문장으로 요약해야 합니다.</div></div>
+          <div class="rg-act"><span class="rg-iconbtn" onclick="moveRecogRow(this,-1)"><i data-lucide="chevron-up" style="width:15px;height:15px"></i></span><span class="rg-iconbtn" onclick="moveRecogRow(this,1)"><i data-lucide="chevron-down" style="width:15px;height:15px"></i></span><span class="rg-iconbtn del" onclick="delRecogRow(this)"><i data-lucide="trash-2" style="width:15px;height:15px"></i></span></div>
+        </div>
+        <div class="rg-row">
+          <div><input class="rg-c1-inp" value="1-2 · 근거 찾기"></div>
+          <div><textarea class="rg-ta">글쓴이가 주장을 뒷받침하기 위해 제시한 근거 두 가지를 찾아 각각 서술하시오.</textarea></div>
+          <div><div class="rg-guide-ro">근거 두 가지를 모두 찾아 각각 구체적으로 서술해야 합니다.</div></div>
+          <div class="rg-act"><span class="rg-iconbtn" onclick="moveRecogRow(this,-1)"><i data-lucide="chevron-up" style="width:15px;height:15px"></i></span><span class="rg-iconbtn" onclick="moveRecogRow(this,1)"><i data-lucide="chevron-down" style="width:15px;height:15px"></i></span><span class="rg-iconbtn del" onclick="delRecogRow(this)"><i data-lucide="trash-2" style="width:15px;height:15px"></i></span></div>
+        </div>
+
+        <div class="rg-row rg-big">
+          <div class="rg-c1"><input class="rg-bigtag-inp" value="대문항 2"></div>
+          <div><textarea class="rg-ta">아래 〈자료 가〉를 읽고 물음에 답하시오.</textarea></div>
+          <div class="rg-muted">지시문 · 채점 없음</div>
+          <div class="rg-act"><span class="rg-iconbtn" onclick="moveRecogRow(this,-1)"><i data-lucide="chevron-up" style="width:15px;height:15px"></i></span><span class="rg-iconbtn" onclick="moveRecogRow(this,1)"><i data-lucide="chevron-down" style="width:15px;height:15px"></i></span><span class="rg-iconbtn del" onclick="delRecogRow(this)"><i data-lucide="trash-2" style="width:15px;height:15px"></i></span></div>
+        </div>
+        <div class="rg-row">
+          <div><input class="rg-c1-inp" value="2-1 · 주장하는 글쓰기"></div>
+          <div><textarea class="rg-ta">〈자료 가〉를 바탕으로 '일회용품 사용 규제'에 대한 자신의 주장을 정하고, 타당한 근거 두 가지를 들어 글을 쓰시오.</textarea></div>
+          <div><div class="rg-guide-ro">주장을 분명히 밝히고, 자료에 근거한 타당한 근거 두 가지를 들어 글을 써야 합니다.</div></div>
+          <div class="rg-act"><span class="rg-iconbtn" onclick="moveRecogRow(this,-1)"><i data-lucide="chevron-up" style="width:15px;height:15px"></i></span><span class="rg-iconbtn" onclick="moveRecogRow(this,1)"><i data-lucide="chevron-down" style="width:15px;height:15px"></i></span><span class="rg-iconbtn del" onclick="delRecogRow(this)"><i data-lucide="trash-2" style="width:15px;height:15px"></i></span></div>
+        </div>
+      </div>
+      <div class="recog-actions">
+        <button class="rg-add" onclick="addRecogRow()">+ 문항 추가</button>
+        <button class="btn btn-secondary" id="recogSaveBtn" onclick="saveRecog()"><i data-lucide="check" style="width:15px;height:15px"></i>문항 저장</button>
+      </div>
+      <div class="info-note hidden" id="recogDirty" style="margin-top:12px;">
+        <i data-lucide="info" style="width:16px;height:16px;flex-shrink:0;margin-top:1px"></i>
+        <span>문항을 수정했어요. <b>문항 저장</b>을 누르면 아래 채점요소·모범답안에 반영돼요.</span>
+      </div>
+    </div>
+
+    <!-- 정확도 부스터 (선택 · 비순차) -->
+    <div id="up-boosters" class="hidden">
+      <div class="bst-intro">
+        <span class="bst-intro-t">채점을 더 정확하게 <span class="opt">선택</span></span>
+        <span class="bst-intro-s">다 안 해도 돼요. 할수록 AI에 정보가 더 전달돼 채점이 정확해져요.</span>
+      </div>
+
+      <div class="bst">
+        <div class="bst-hd" onclick="toggleBst(this)">
+          <div class="bst-ic"><i data-lucide="link" style="width:18px;height:18px"></i></div>
+          <div class="bst-tt"><div class="bst-t">채점요소 연결</div><div class="bst-why">문항마다 어떤 채점요소로 평가할지 알려주면 채점이 더 정확해져요</div></div>
+          <span class="bst-tag">정확도 ↑</span>
+          <i data-lucide="chevron-down" class="bst-caret" style="width:18px;height:18px"></i>
+        </div>
+        <div class="bst-body">
+          <div class="bst-aihead">
+            <p class="bst-body-desc">문항마다 채점요소를 직접 고르거나, AI가 한 번에 연결하게 할 수 있어요.</p>
+            <button class="btn btn-secondary btn-sm" id="rubricAiBtn" onclick="aiLinkRubrics(this)"><i data-lucide="wand-sparkles" style="width:14px;height:14px"></i>AI로 자동 연결 · 크레딧 1</button>
+          </div>
+          <div id="rubricLoading" class="up-loading hidden">
+            <div class="up-spin"></div>
+            <div><div class="up-load-t">AI가 채점요소를 연결하고 있어요</div><div class="up-load-s">문항마다 알맞은 채점요소를 고르는 중이에요.</div></div>
+          </div>
+          <div id="rubricList"></div>
+        </div>
+      </div>
+
+      <div class="bst">
+        <div class="bst-hd" onclick="toggleBst(this)">
+          <div class="bst-ic"><i data-lucide="file-check-2" style="width:18px;height:18px"></i></div>
+          <div class="bst-tt"><div class="bst-t">모범답안 입력</div><div class="bst-why">정답이 있는 문항에 모범답안을 넣으면 채점이 더 정확해져요</div></div>
+          <span class="bst-tag">정확도 ↑</span>
+          <i data-lucide="chevron-down" class="bst-caret" style="width:18px;height:18px"></i>
+        </div>
+        <div class="bst-body">
+          <div class="xls-row">
+            <div><span class="xls-t">엑셀로 한 번에</span><span class="xls-s">양식 내려받아 채운 뒤 업로드</span></div>
+            <button class="btn btn-secondary btn-sm" onclick="openXls()"><i data-lucide="upload" style="width:14px;height:14px"></i>답안 엑셀 업로드</button>
+          </div>
+          <div class="or-line">또는 직접 입력</div>
+          <div id="answerList"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="plan-actions" style="margin-top:24px; justify-content:flex-end;">
+      <div class="pa-btns">
+        <button class="btn btn-outline btn-lg" onclick="showList()">취소</button>
+        <button class="btn btn-primary btn-lg" id="up-submit" disabled onclick="upSubmit()"><i data-lucide="check" style="width:16px;height:16px"></i>활동지 등록</button>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== 분석중 로딩 ===== -->
+<div class="ana-ov" id="anaModal">
+  <div class="ana-card">
+    <div class="ana-ring"></div>
+    <p class="ana-title" id="anaTitle">활동지를 만들고 있어요…</p>
+    <p class="ana-sub">잠시만 기다려 주세요.</p>
+  </div>
+</div>
+
+<!-- ===== 복사해서 가져오기 모달 ===== -->
+
+<!-- ===== 활동지 등록 선택 모달 ===== -->
+<div class="modal-ov" id="regModal" onclick="if(event.target===this) closeRegModal()">
+  <div class="modal" style="width:800px;">
+    <div class="modal-hd">
+      <span class="modal-title">활동지 등록</span>
+      <button class="modal-x" onclick="closeRegModal()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <p class="modal-desc">이 평가의 활동지를 어떻게 등록할까요?</p>
+    <div style="padding:14px 28px 26px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+      <div class="opt-card" onclick="closeRegModal(); showUpload()">
+        <div class="opt-card-ic"><i data-lucide="upload" style="width:18px;height:18px"></i></div>
+        <p class="opt-card-t">이미 있어요</p>
+        <p class="opt-card-d">가진 활동지를 올려 그대로 등록해요.</p>
+      </div>
+      <div class="opt-card" onclick="closeRegModal(); openGen('plan')">
+        <span class="opt-card-beta">Beta</span>
+        <div class="opt-card-ic"><i data-lucide="wand-sparkles" style="width:18px;height:18px"></i></div>
+        <p class="opt-card-t">AI로 함께 만들어요</p>
+        <p class="opt-card-d">성취기준·채점기준을 바탕으로 초안을 만들어요.</p>
+      </div>
+      <div class="opt-card" onclick="closeRegModal(); openCopyModal()">
+        <div class="opt-card-ic"><i data-lucide="copy" style="width:18px;height:18px"></i></div>
+        <p class="opt-card-t">다른 선생님의 활동지를 가져와요</p>
+        <p class="opt-card-d">동교과 선생님의 활동지를 복사해요.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 문항 인식 결과 팝업 → view-upload 페이지로 인라인 이동(제거됨) -->
+
+<!-- 답안 엑셀 업로드 팝업 -->
+<div class="modal-ov" id="xlsModal" onclick="if(event.target===this) closeXls()">
+  <div class="modal" style="width:560px;">
+    <div class="modal-hd">
+      <span class="modal-title">답안 엑셀로 한 번에 입력</span>
+      <button class="modal-x" onclick="closeXls()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <p class="modal-desc">확정한 문항이 채워진 양식을 내려받아 답안만 적어 올리면 돼요.</p>
+    <div class="modal-body" style="padding-top:8px;">
+      <div class="xls-step">
+        <div class="xls-step-no">1</div>
+        <div class="xls-step-bd">
+          <div class="xls-step-t">양식 내려받기</div>
+          <div class="xls-step-d">확정한 <b>문항 <span id="xlsQCount">3</span>개</b>가 미리 입력돼 있어요. 문항은 그대로 두고 답안 칸만 채워 주세요.</div>
+          <button class="btn btn-outline btn-sm" onclick="toastMsg('문항이 채워진 답안 양식을 내려받습니다.')"><i data-lucide="download" style="width:14px;height:14px"></i>양식 내려받기 (.xlsx)</button>
+        </div>
+      </div>
+      <div class="xls-step">
+        <div class="xls-step-no">2</div>
+        <div class="xls-step-bd">
+          <div class="xls-step-t">채운 양식 올리기</div>
+          <div class="xls-step-d">답안을 채운 엑셀을 올리면 문항별 모범답안으로 들어가요.</div>
+          <div class="xls-drop" onclick="toastMsg('엑셀 업로드는 이 목업에서 제공하지 않습니다.')">
+            <i data-lucide="upload-cloud" style="width:26px;height:26px"></i>
+            <span>엑셀 파일을 끌어다 놓거나 클릭해 선택</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-ft" style="border-top:1px solid #e6e8ed;">
+      <button class="btn btn-outline btn-lg" onclick="closeXls()">취소</button>
+      <button class="btn btn-primary btn-lg" onclick="closeXls(); toastMsg('답안 양식을 불러왔어요.')">완료</button>
+    </div>
+  </div>
+</div>
+
+<!-- 수식 입력 팝업 -->
+<div class="modal-ov" id="fxModal" onclick="if(event.target===this) closeFx()">
+  <div class="modal" style="width:520px;">
+    <div class="modal-hd">
+      <span class="modal-title">수식 입력</span>
+      <button class="modal-x" onclick="closeFx()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <p class="modal-desc">자주 쓰는 기호를 넣거나 직접 입력한 뒤 삽입하면 답안에 들어가요.</p>
+    <div class="modal-body" style="padding-top:14px;">
+      <div class="fx-quick">
+        <button onclick="fxIns('x^{2}')">x²</button>
+        <button onclick="fxIns('x_{n}')">xₙ</button>
+        <button onclick="fxIns('\\frac{a}{b}')">a/b</button>
+        <button onclick="fxIns('\\sqrt{x}')">√</button>
+        <button onclick="fxIns('\\sum_{i=1}^{n}')">∑</button>
+        <button onclick="fxIns('\\int_{a}^{b}')">∫</button>
+        <button onclick="fxIns('\\pi')">π</button>
+        <button onclick="fxIns('\\times')">×</button>
+        <button onclick="fxIns('\\div')">÷</button>
+        <button onclick="fxIns('\\leq')">≤</button>
+        <button onclick="fxIns('\\geq')">≥</button>
+        <button onclick="fxIns('\\neq')">≠</button>
+      </div>
+      <textarea id="fxInput" class="fx-input" placeholder="예: \frac{1}{2}x^{2} + 3x - 5"></textarea>
+      <div class="fx-hint">삽입하면 답안에 <b>$수식$</b> 형태로 들어갑니다.</div>
+    </div>
+    <div class="modal-ft" style="border-top:1px solid #e6e8ed;">
+      <button class="btn btn-outline btn-lg" onclick="closeFx()">취소</button>
+      <button class="btn btn-primary btn-lg" onclick="fxInsertToTarget()"><i data-lucide="corner-down-left" style="width:15px;height:15px"></i>삽입</button>
+    </div>
+  </div>
+</div>
+
+<!-- 활동지 파일 삭제 경고 팝업 -->
+<div class="modal-ov" id="delFileModal" onclick="if(event.target===this) closeDelFileModal()">
+  <div class="modal" style="width:460px;">
+    <div class="modal-hd">
+      <span class="modal-title">활동지 파일을 삭제할까요?</span>
+      <button class="modal-x" onclick="closeDelFileModal()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <p class="modal-desc">파일을 지우면 아래에 입력한 <b>채점요소 연결·모범답안</b>도 모두 함께 지워져요.</p>
+    <div class="modal-ft" style="border-top:1px solid #e6e8ed; margin-top:18px;">
+      <button class="btn btn-outline btn-lg" onclick="closeDelFileModal()">취소</button>
+      <button class="btn btn-lg" style="background:#dc2626;color:#fff;border:1px solid #dc2626;" onclick="delFileConfirm()"><i data-lucide="trash-2" style="width:15px;height:15px"></i>삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- 변경 저장 확인 (이전 채점 이력 있을 때) -->
+<div class="modal-ov" id="saveRegModal" onclick="if(event.target===this) closeSaveReg()">
+  <div class="modal" style="width:480px;">
+    <div class="modal-hd">
+      <span class="modal-title">변경 사항을 저장할까요?</span>
+      <button class="modal-x" onclick="closeSaveReg()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <p class="modal-desc">이미 채점한 결과에는 자동으로 반영되지 않아요. 변경 내용을 적용하려면 저장 후 <b>다시 채점</b>해 주세요. (이전 채점 결과는 그대로 유지)</p>
+    <div class="modal-ft" style="border-top:1px solid #e6e8ed; margin-top:18px;">
+      <button class="btn btn-outline btn-lg" onclick="saveRegOnly()">저장만 할게요</button>
+      <button class="btn btn-primary btn-lg" onclick="saveRegAndRescore()"><i data-lucide="rotate-cw" style="width:15px;height:15px"></i>저장하고 다시 채점</button>
+    </div>
+  </div>
+</div>
+
+<!-- 설계 다시 생성 — 수정 방향 입력 -->
+<div class="modal-ov" id="regenModal" onclick="if(event.target===this) closeRegen()">
+  <div class="modal" style="width:520px;">
+    <div class="modal-hd">
+      <span class="modal-title">활동지 다시 생성</span>
+      <button class="modal-x" onclick="closeRegen()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <p class="modal-desc">지금 만든 활동지를 어떤 방향으로 다듬을까요? 비워 두면 같은 기준으로 새로 생성해요. (선택)</p>
+    <div class="modal-body" style="padding-top:12px;padding-bottom:20px;">
+      <textarea id="regenDir" class="fx-input" style="min-height:96px;" placeholder="예: 자료를 해석하는 문항을 1개 더 넣어 주세요&#10;예: 발문을 더 쉬운 표현으로 바꿔 주세요"></textarea>
+      <div class="regen-setup">
+        <button class="regen-setup-link" onclick="regenToSetup()">성취기준·난이도·문항 수부터 다시 정할래요<i data-lucide="arrow-right" style="width:14px;height:14px"></i></button>
+        <p class="regen-setup-sub">설정 화면으로 돌아가 처음부터 다시 만들어요.</p>
+      </div>
+    </div>
+    <div class="modal-ft" style="border-top:1px solid #e6e8ed;">
+      <button class="btn btn-outline btn-lg" onclick="closeRegen()">취소</button>
+      <button class="btn btn-primary btn-lg" onclick="doRegen()"><i data-lucide="wand-sparkles" style="width:15px;height:15px"></i>다시 생성 · 크레딧 1</button>
+    </div>
+  </div>
+</div>
+
+<!-- 설계 화면 이동 확인 (입력 내용 사라짐) -->
+<div class="modal-ov" id="leaveDesignModal" onclick="if(event.target===this) closeLeaveDesign()">
+  <div class="modal" style="width:420px;">
+    <div style="padding:30px 28px 0; text-align:center;">
+      <div class="leave-ic"><i data-lucide="arrow-up-right" style="width:26px;height:26px"></i></div>
+      <h3 class="leave-title">설계 화면으로 이동할까요?</h3>
+      <p class="leave-desc">지금 입력한 자료·문항 내용이 사라질 수 있어요.</p>
+    </div>
+    <div class="modal-ft" style="justify-content:center; gap:10px; border:none; padding:22px 28px 26px;">
+      <button class="btn btn-outline btn-lg" onclick="closeLeaveDesign()">아니오</button>
+      <button class="btn btn-primary btn-lg" onclick="location.href='evaluation_design_v4_260615.html'">네, 이동합니다</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function toggleNav(){ document.getElementById('icon-sb').classList.toggle('expanded'); document.body.classList.toggle('nav-expanded'); }
+var _tt=null;
+function toastMsg(m){ var t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(_tt); _tt=setTimeout(function(){t.classList.remove('show');},2200); }
+function notReady(n){ toastMsg((n||'해당 화면')+' 은(는) 아직 준비 중입니다.'); }
+
+/* 라디오(라인) */
+function pickRadio(el){ var sibs=el.parentElement.querySelectorAll('.rad'); sibs.forEach(function(s){s.classList.remove('on');}); el.classList.add('on'); }
+/* 단일 선택 카드 (난이도) */
+function pickOne(el){ var sibs=el.parentElement.querySelectorAll('.opt-card'); sibs.forEach(function(s){s.classList.remove('on');}); el.classList.add('on'); }
+
+/* Drawer */
+function openGen(mode){
+  window._genMode = mode;
+  var plan = (mode==='plan');
+  document.getElementById('ctx-plan').classList.toggle('hidden', !plan);
+  document.getElementById('ctx-standalone').classList.toggle('hidden', plan);
+  document.getElementById('ctx-plan').classList.remove('open');
+  pickGen('new');
+  showView('view-create');
+}
+function closeGen(){}
+function makeFourStep(){ document.querySelectorAll('.gen-steps').forEach(function(gs){ if(gs.getAttribute('data-4')) return; gs.setAttribute('data-4','1'); gs.querySelectorAll('.gen-step-num').forEach(function(n){ n.textContent=String(parseInt(n.textContent,10)+1); }); var sep=document.createElement('span'); sep.className='gen-step-sep'; sep.innerHTML='<i data-lucide="chevron-right" style="width:18px;height:18px"></i>'; var info=document.createElement('div'); info.className='gen-step clickable'; info.setAttribute('onclick',"location.href='eval_plan_v1_260619.html?make=sheet'"); info.innerHTML='<span class="gen-step-num">1</span><span class="gen-step-label">활동지 정보</span>'; gs.insertBefore(sep, gs.firstChild); gs.insertBefore(info, gs.firstChild); });
+  var _bc=document.querySelector('#view-create .back-link'); if(_bc){ _bc.setAttribute('onclick',"location.href='eval_plan_v1_260619.html?make=sheet'"); _bc.innerHTML='<i data-lucide="chevron-left" style="width:18px;height:18px"></i>이전으로'; }
+  var _br=document.querySelector('#view-result .back-link'); if(_br){ _br.setAttribute('onclick',"showView('view-plan')"); _br.innerHTML='<i data-lucide="chevron-left" style="width:18px;height:18px"></i>이전으로'; }
+  if(window.lucide) lucide.createIcons(); }
+function openRegen(){ var d=document.getElementById('regenDir'); if(d) d.value=''; document.getElementById('regenModal').classList.add('open'); if(window.lucide) lucide.createIcons(); setTimeout(function(){ if(d) d.focus(); },40); }
+function closeRegen(){ document.getElementById('regenModal').classList.remove('open'); }
+function doRegen(){ closeRegen(); runGen(); }
+function regenToSetup(){ closeRegen(); openGen(window._genMode==='standalone'?'standalone':'plan'); }
+function toggleCtx(){ document.getElementById('ctx-plan').classList.toggle('open'); }
+function openLeaveDesign(){ document.getElementById('leaveDesignModal').classList.add('open'); if(window.lucide) lucide.createIcons(); }
+function closeLeaveDesign(){ document.getElementById('leaveDesignModal').classList.remove('open'); }
+function pickSource(el, mode){ pickRadio(el); ['paste','url','file','none'].forEach(function(m){ var e=document.getElementById('src-'+m); if(e) e.classList.toggle('hidden', m!==mode); }); }
+function srcChip(icon, name){ var d=document.createElement('div'); d.className='src-chip'; d.innerHTML='<i data-lucide="'+icon+'" style="width:16px;height:16px"></i><span class="sc-name">'+name+'</span><span class="sc-x" onclick="this.closest(\'.src-chip\').remove()"><i data-lucide="x" style="width:15px;height:15px"></i></span>'; return d; }
+function addUrl(){ var list=document.getElementById('url-list'); if(list.children.length>=5){ toastMsg('링크는 최대 5개까지 첨부할 수 있어요.'); return; } var i=document.getElementById('url-input'); var v=(i.value||'').trim()||'https://news.example.com/일회용품-규제-기사'; list.appendChild(srcChip('link', v)); i.value=''; if(window.lucide) lucide.createIcons(); }
+var _fileN=0, _fileNames=['일회용품_규제_읽기자료.pdf','관련기사_스크랩.jpg','토론_제시문.pdf'];
+function addFile(){ var list=document.getElementById('file-list'); if(list.children.length>=1){ toastMsg('파일은 1개까지 첨부할 수 있어요. 바꾸려면 기존 파일을 삭제해 주세요.'); return; } list.appendChild(srcChip('file-text', _fileNames[_fileN++ % _fileNames.length])); if(window.lucide) lucide.createIcons(); }
+function stepQ(d){ var el=document.getElementById('qNum'); var n=Math.max(1, Math.min(10, (parseInt(el.textContent,10)||3)+d)); el.textContent=n; }
+function renumberPlanQ(){ var nos=document.querySelectorAll('#plan-q-list .q-block .qb-no'); nos.forEach(function(el,i){ el.textContent=(i+1); }); var c=document.getElementById('plan-q-count'); if(c) c.textContent=nos.length+'문항'; }
+function moveQ(el, dir){ var b=el.closest('.q-block'); if(!b) return; if(dir<0){ var p=b.previousElementSibling; if(p) b.parentNode.insertBefore(b,p); } else { var n=b.nextElementSibling; if(n) b.parentNode.insertBefore(n,b); } renumberPlanQ(); }
+function addPlanQ(){
+  var list=document.getElementById('plan-q-list');
+  var b=document.createElement('div'); b.className='q-block';
+  b.innerHTML='<div class="qb-hd"><span class="qb-no"></span><span class="qb-title" style="color:#9ea3ad;font-weight:600">새 문항</span><span class="qb-tools"><i data-lucide="chevron-up" style="width:16px;height:16px" onclick="moveQ(this,-1)"></i><i data-lucide="chevron-down" style="width:16px;height:16px" onclick="moveQ(this,1)"></i><i data-lucide="trash-2" style="width:16px;height:16px" onclick="this.closest(\'.q-block\').remove(); renumberPlanQ();"></i></span></div>'
+    +'<textarea class="qb-q-inp" placeholder="추가할 문항을 적어 주세요. 비워 두면 AI가 자료·성취기준에 맞춰 채워요."></textarea>';
+  list.appendChild(b); renumberPlanQ();
+  if(window.lucide) lucide.createIcons();
+  var ta=b.querySelector('textarea'); if(ta) ta.focus();
+}
+function pickGenSoon(){ toastMsg('기존 활동지 변경하기는 준비 중이에요. AI 연구가 끝나는 대로 제공할 예정이에요.'); }
+function pickGen(g){
+  if(g==='vary') return pickGenSoon();
+  document.querySelectorAll('.opt-card[data-gen]').forEach(function(c){ c.classList.toggle('on', c.dataset.gen===g); });
+  document.getElementById('gen-upload').classList.toggle('hidden', g!=='vary');
+  document.getElementById('gen-new-opts').classList.toggle('hidden', g!=='new');
+}
+function showFileChip(){ document.getElementById('file-chip').classList.remove('hidden'); document.getElementById('dz').classList.add('hidden'); document.getElementById('vary-settings').classList.remove('hidden'); if(window.lucide) lucide.createIcons(); }
+function hideFileChip(){ document.getElementById('file-chip').classList.add('hidden'); document.getElementById('dz').classList.remove('hidden'); document.getElementById('vary-settings').classList.add('hidden'); }
+function pickScope(el, mode){ pickRadio(el); document.querySelectorAll('#recog-list input').forEach(function(b){ if(mode==='all'){ b.checked=true; b.disabled=true; } else { b.disabled=false; } }); }
+function runGen(){ var a=document.getElementById('anaModal'); a.classList.add('open'); if(window.lucide) lucide.createIcons(); setTimeout(function(){ a.classList.remove('open'); showPlan(); }, 2200); }
+
+/* Views */
+function showView(id){ ['view-list','view-reg','view-result','view-plan','view-create','view-upload'].forEach(function(v){ var el=document.getElementById(v); if(el) el.classList.toggle('hidden', v!==id); }); if(typeof qtPromoSync==='function') qtPromoSync(id); window.scrollTo(0,0); if(window.lucide) lucide.createIcons(); }
+var _qtPromoDismissed=false; try{ _qtPromoDismissed=sessionStorage.getItem('clipo_qt_promo')==='1'; }catch(e){}
+function qtPromoSync(activeId){ var el=document.getElementById('qt-promo-bar'); if(el) el.classList.toggle('hidden', _qtPromoDismissed || activeId!=='view-list'); }
+function dismissQtPromo(){ _qtPromoDismissed=true; try{ sessionStorage.setItem('clipo_qt_promo','1'); }catch(e){} qtPromoSync('view-list'); }
+qtPromoSync('view-list');
+function showRegSelect(evName){ window._regEv=evName||'활동지'; _regPending=true; var h=document.getElementById('reg-h1'); if(h) h.textContent=(evName||'활동지')+' · 활동지'; rupReset(); selectReg('upload'); showView('view-reg'); }
+function rupUpload(){ var dz=document.getElementById('rup-dz'), done=document.getElementById('rup-done'); if(dz) dz.classList.add('hidden'); if(done) done.classList.remove('hidden'); if(window.lucide) lucide.createIcons(); }
+function rupReset(){ var dz=document.getElementById('rup-dz'), done=document.getElementById('rup-done'); if(done) done.classList.add('hidden'); if(dz) dz.classList.remove('hidden'); if(window.lucide) lucide.createIcons(); }
+function rupAnalyze(){
+  var ev=window._regEv||'활동지';
+  _upMode='new'; _gradedCount=0; window._regSource='upload'; window._regFile='2025_1학기_국어_서술형_활동지.pdf';
+  var note=document.getElementById('up-regraded-note'); if(note) note.classList.add('hidden');
+  var fc=document.getElementById('up-fc-change'); if(fc) fc.classList.remove('hidden');
+  document.getElementById('up-file-sec').classList.remove('hidden');
+  document.getElementById('up-dz').classList.add('hidden');
+  document.getElementById('up-loading').classList.add('hidden');
+  document.getElementById('up-chip').classList.remove('hidden');
+  document.getElementById('up-chip-name').textContent='2025_1학기_국어_서술형_활동지.pdf';
+  document.getElementById('up-h1').textContent=ev; var _un=document.getElementById('up-name'); if(_un) _un.value=ev;
+  document.getElementById('up-sub').textContent='인식한 문항을 확인하고, 채점요소·모범답안을 더하면 채점이 더 정확해져요. (선택)';
+  document.getElementById('up-recog-sec').classList.remove('hidden');
+  document.getElementById('rubricList').innerHTML=''; document.getElementById('answerList').innerHTML='';
+  renderBoosters();
+  document.getElementById('up-boosters').classList.remove('hidden');
+  var sb=document.getElementById('up-submit'); sb.disabled=false; sb.innerHTML='<i data-lucide="check" style="width:16px;height:16px"></i>활동지 등록';
+  var a=document.getElementById('anaModal'), at=document.getElementById('anaTitle'); if(at) at.textContent='문항을 인식하고 있어요…'; a.classList.add('open'); if(window.lucide) lucide.createIcons();
+  setTimeout(function(){ a.classList.remove('open'); if(at) at.textContent='활동지를 만들고 있어요…'; showView('view-upload'); }, 1500);
+}
+function selectReg(m){ window._regSource=m; document.querySelectorAll('#view-reg .reg-card').forEach(function(c){ c.classList.toggle('on', c.getAttribute('data-m')===m); }); ['upload','ai','copy'].forEach(function(x){ var p=document.getElementById('regp-'+x); if(p) p.classList.toggle('hidden', x!==m); }); if(window.lucide) lucide.createIcons(); }
+var _upMode='new';
+var _regPending=false;
+function showUpload(){ _upMode='new'; _gradedCount=0; var rn=document.getElementById('up-regraded-note'); if(rn) rn.classList.add('hidden'); var fc=document.getElementById('up-fc-change'); if(fc) fc.classList.remove('hidden'); document.getElementById('up-file-sec').classList.remove('hidden'); document.getElementById('up-chip').classList.add('hidden'); document.getElementById('up-dz').classList.remove('hidden'); document.getElementById('up-loading').classList.add('hidden'); document.getElementById('up-recog-sec').classList.add('hidden'); document.getElementById('up-boosters').classList.add('hidden'); document.getElementById('rubricList').innerHTML=''; document.getElementById('answerList').innerHTML=''; document.getElementById('up-chip-name').textContent='2025_1학기_국어_서술형_활동지.pdf'; document.getElementById('up-h1').textContent='활동지 업로드'; document.getElementById('up-sub').textContent='활동지를 올리면 문항을 자동으로 인식해 드려요. 결과만 확인하면 바로 등록할 수 있어요. 채점요소·모범답안을 더하면 채점이 더 정확해집니다. (선택)'; var sb=document.getElementById('up-submit'); sb.disabled=true; sb.innerHTML='<i data-lucide="check" style="width:16px;height:16px"></i>활동지 등록'; closeRecogModal(); showView('view-upload'); }
+/* 등록완료 활동지 열기 — 업로드/인식 결과 페이지를 '등록됨' 상태로 재사용 */
+var _gradedCount=0;
+function openRegistered(source, fileName, evName, gradedCount){
+  _upMode='registered'; _gradedCount=gradedCount||0; window._regSource=source; window._regFile=(source==='ai'?'':fileName); window._regEv=evName;
+  var fileSec=document.getElementById('up-file-sec'), note=document.getElementById('up-regraded-note'), fc=document.getElementById('up-fc-change');
+  document.getElementById('up-h1').textContent=evName||'활동지'; var _un2=document.getElementById('up-name'); if(_un2) _un2.value=evName||'';
+  fileSec.classList.remove('hidden');
+  document.getElementById('up-dz').classList.add('hidden');
+  document.getElementById('up-loading').classList.add('hidden');
+  document.getElementById('up-chip').classList.remove('hidden');
+  document.getElementById('up-recog-sec').classList.remove('hidden');
+  setRecogBar(true);
+  if(source==='ai'){
+    document.getElementById('up-chip-name').textContent=(evName||'활동지')+' · AI 생성';
+    if(fc) fc.classList.add('hidden');
+    note.classList.add('hidden');
+    document.getElementById('up-sub').textContent='생성한 활동지를 등록해요. 채점요소·모범답안을 더하면 AI 채점이 더 정확해져요. (선택)';
+  } else {
+    document.getElementById('up-chip-name').textContent=fileName;
+    if(fc) fc.classList.remove('hidden');
+    document.getElementById('up-sub').textContent='이 평가에 등록된 활동지예요. 인식 결과·모범답안을 확인하고, 바꾸려면 파일을 다시 올리거나 인식 결과를 수정하세요.';
+    if(_gradedCount>0){ document.getElementById('up-graded-n').textContent=_gradedCount; note.classList.remove('hidden'); } else { note.classList.add('hidden'); }
+  }
+  document.getElementById('up-boosters').classList.remove('hidden');
+  document.getElementById('rubricList').innerHTML='';
+  document.getElementById('answerList').innerHTML='';
+  renderBoosters();
+  if(source==='copy') prefillRegisteredData();
+  var sb=document.getElementById('up-submit'); sb.disabled=false; sb.innerHTML='<i data-lucide="check" style="width:16px;height:16px"></i>'+(source==='ai'?'활동지 저장':(_regPending?'활동지 등록':'변경 저장'));
+  closeRecogModal(); showView('view-upload');
+}
+/* 복사로 함께 가져온 채점요소 연결 + 모범답안 (시연용) */
+function prefillRegisteredData(){
+  document.querySelectorAll('#rubricList .bq').forEach(function(bq){
+    var c=bq.querySelector('.bchip[data-ai="1"]')||bq.querySelector('.bchip');
+    if(c){ c.classList.add('on'); if(!c.querySelector('small')){ var s=document.createElement('small'); s.textContent='복사됨'; c.appendChild(s); } }
+  });
+  var answers=[
+    '글쓴이는 매체 정보를 그대로 믿지 말고 출처와 의도를 따져 보아야 한다고 말한다.',
+    '첫째, 매체마다 강조하는 관점이 다르다. 둘째, 같은 사건도 선택·배열에 따라 사실이 다르게 전달될 수 있다.',
+    '일회용품 사용은 규제해야 한다. 사용량이 급증해 환경 부담이 크고, 대체재도 충분히 마련되어 있기 때문이다.'
+  ];
+  document.querySelectorAll('#answerList .bq-ans').forEach(function(ta,i){ if(answers[i]!=null) ta.value=answers[i]; });
+}
+function upDoUpload(){ document.getElementById('up-chip').classList.remove('hidden'); document.getElementById('up-dz').classList.add('hidden'); document.getElementById('up-loading').classList.remove('hidden'); if(window.lucide) lucide.createIcons(); setTimeout(function(){ document.getElementById('up-loading').classList.add('hidden'); revealRecog(); }, 1600); }
+function revealRecog(){ document.getElementById('up-recog-sec').classList.remove('hidden'); renderBoosters(); document.getElementById('up-boosters').classList.remove('hidden'); document.getElementById('up-submit').disabled=false; if(window.lucide) lucide.createIcons(); }
+var _recogDirty=false;
+function markRecogDirty(){ if(_recogDirty) return; _recogDirty=true; var d=document.getElementById('recogDirty'); if(d) d.classList.remove('hidden'); var sb=document.getElementById('up-submit'); if(sb) sb.disabled=true; if(window.lucide) lucide.createIcons(); }
+function clearRecogDirty(){ _recogDirty=false; var d=document.getElementById('recogDirty'); if(d) d.classList.add('hidden'); }
+function saveRecog(){ renderBoosters(); var sb=document.getElementById('up-submit'); if(sb) sb.disabled=false; if(window.lucide) lucide.createIcons(); toastMsg('수정한 문항을 반영했어요.'); }
+function setRecogBar(confirmed){ /* 인식바 제거 — 문항은 인라인 표시 */ }
+function upRemove(){ document.getElementById('up-chip').classList.add('hidden'); document.getElementById('up-dz').classList.remove('hidden'); document.getElementById('up-loading').classList.add('hidden'); document.getElementById('up-recog-sec').classList.add('hidden'); document.getElementById('up-boosters').classList.add('hidden'); document.getElementById('up-submit').disabled=true; document.getElementById('rubricList').innerHTML=''; document.getElementById('answerList').innerHTML=''; var ab=document.getElementById('rubricAiBtn'); if(ab){ ab.disabled=false; ab.innerHTML='<i data-lucide="wand-sparkles" style="width:14px;height:14px"></i>AI로 자동 연결 · 크레딧 1'; } if(window.lucide) lucide.createIcons(); }
+function confirmRemoveFile(){ document.getElementById('delFileModal').classList.add('open'); if(window.lucide) lucide.createIcons(); }
+function closeDelFileModal(){ document.getElementById('delFileModal').classList.remove('open'); }
+function delFileConfirm(){ closeDelFileModal(); upRemove(); toastMsg('활동지 파일을 삭제했어요.'); }
+function openXls(){ var c=document.getElementById('xlsQCount'); if(c) c.textContent=scoredCount(); document.getElementById('xlsModal').classList.add('open'); if(window.lucide) lucide.createIcons(); }
+function closeXls(){ document.getElementById('xlsModal').classList.remove('open'); }
+var _fxTarget=null;
+function openFx(btn){ _fxTarget=btn.closest('.bq').querySelector('.bq-ans'); var fi=document.getElementById('fxInput'); fi.value=''; document.getElementById('fxModal').classList.add('open'); if(window.lucide) lucide.createIcons(); setTimeout(function(){fi.focus();},40); }
+function closeFx(){ document.getElementById('fxModal').classList.remove('open'); }
+function fxIns(t){ var i=document.getElementById('fxInput'); var a=i.selectionStart, b=i.selectionEnd; if(a==null){a=b=i.value.length;} i.value=i.value.slice(0,a)+t+i.value.slice(b); var pos=a+t.length; i.focus(); i.setSelectionRange(pos,pos); }
+function fxInsertToTarget(){ var v=document.getElementById('fxInput').value.trim(); if(v && _fxTarget){ var sep=(_fxTarget.value && !/\s$/.test(_fxTarget.value))?' ':''; _fxTarget.value += sep+'$'+v+'$'; closeFx(); toastMsg('수식을 답안에 넣었어요.'); } else { closeFx(); } }
+function openRecogModal(){ var m=document.getElementById('recogModal'); if(m){ m.classList.add('open'); if(window.lucide) lucide.createIcons(); } }
+function closeRecogModal(){ var m=document.getElementById('recogModal'); if(m) m.classList.remove('open'); }
+function addRecogRow(){
+  var tbl=document.getElementById('rgTbl');
+  var row=document.createElement('div');
+  row.className='rg-row';
+  row.innerHTML='<div><input class="rg-c1-inp" placeholder="예: 2-2 · 근거 들기"></div>'
+    +'<div><textarea class="rg-ta" placeholder="문항 내용을 입력하세요."></textarea></div>'
+    +'<div></div>'
+    +'<div class="rg-act"><span class="rg-iconbtn" onclick="moveRecogRow(this,-1)"><i data-lucide="chevron-up" style="width:15px;height:15px"></i></span><span class="rg-iconbtn" onclick="moveRecogRow(this,1)"><i data-lucide="chevron-down" style="width:15px;height:15px"></i></span><span class="rg-iconbtn del" onclick="delRecogRow(this)"><i data-lucide="trash-2" style="width:15px;height:15px"></i></span></div>';
+  tbl.appendChild(row);
+  if(window.lucide) lucide.createIcons();
+  var inp=row.querySelector('.rg-c1-inp'); if(inp) inp.focus();
+  markRecogDirty();
+}
+function delRecogRow(el){ var r=el.closest('.rg-row'); if(r) r.remove(); markRecogDirty(); }
+function moveRecogRow(el, dir){ var row=el.closest('.rg-row'); if(!row) return; if(dir<0){ var prev=row.previousElementSibling; if(prev && prev.classList.contains('rg-row')){ row.parentNode.insertBefore(row, prev); markRecogDirty(); } } else { var next=row.nextElementSibling; if(next && next.classList.contains('rg-row')){ row.parentNode.insertBefore(next, row); markRecogDirty(); } } }
+
+/* ===== 문항 → 부스터 데이터 연결 ===== */
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+var RUBRIC_OPTIONS = ['중심 내용 파악의 정확성','요약의 간결성과 응집성','근거의 타당성과 표현의 적절성','자료에 근거한 주장의 논리적 타당성과 표현의 적절성'];
+/* 대문항(지시문)은 채점 대상 아님 → 소문항만 수집 */
+function collectQuestions(){
+  var qs=[];
+  document.querySelectorAll('#rgTbl .rg-row').forEach(function(row){
+    if(row.classList.contains('rg-big')) return;
+    var li=row.querySelector('.rg-c1-inp'), ta=row.querySelector('.rg-ta');
+    var label=li?li.value.trim():'', content=ta?ta.value.trim():'';
+    if(!label && !content) return;
+    qs.push({ label:label, content:content });
+  });
+  return qs;
+}
+function scoredCount(){ return collectQuestions().length; }
+/* 재렌더 전 사용자가 입력/선택한 내용 스냅샷 (문항명 기준 보존) */
+function snapshotBoosters(){
+  var snap={ rubric:{}, answer:{} };
+  document.querySelectorAll('#rubricList .bq').forEach(function(bq){
+    var k=bq.getAttribute('data-label'); if(k==null) return;
+    var m={};
+    bq.querySelectorAll('.bchip').forEach(function(c){ m[c.getAttribute('title')]={ on:c.classList.contains('on'), ai:c.classList.contains('ai') }; });
+    snap.rubric[k]=m;
+  });
+  document.querySelectorAll('#answerList .bq').forEach(function(bq){
+    var k=bq.getAttribute('data-label'); if(k==null) return;
+    var ta=bq.querySelector('.bq-ans'); snap.answer[k]=ta?ta.value:'';
+  });
+  return snap;
+}
+function renderRubricList(qs, prev){
+  var box=document.getElementById('rubricList');
+  if(!qs.length){ box.innerHTML='<p class="bq-empty">인식된 문항이 없어요. 인식 결과에서 문항을 추가해 주세요.</p>'; return; }
+  box.innerHTML=qs.map(function(q,i){
+    var sel=prev&&prev[q.label]?prev[q.label]:null;
+    var aiIdx=i % RUBRIC_OPTIONS.length;
+    var chips=RUBRIC_OPTIONS.map(function(opt,oi){
+      var st=sel&&sel[opt]; var on=st&&st.on, ai=st&&st.ai;
+      return '<span class="bchip'+(on?' on':'')+(ai?' ai':'')+'" title="'+esc(opt)+'"'+(oi===aiIdx?' data-ai="1"':'')+' onclick="pickBchip(this)"><span class="bchip-tx">'+esc(opt)+'</span>'+(ai?' <small>AI 추천</small>':'')+'</span>';
+    }).join('');
+    return '<div class="bq" data-label="'+esc(q.label)+'"><div class="bq-title"><span class="bq-no">'+(i+1)+'</span>'+esc(q.content||q.label)+'</div><div class="bq-chips">'+chips+'</div></div>';
+  }).join('');
+}
+function renderAnswerList(qs, prev){
+  var box=document.getElementById('answerList');
+  if(!qs.length){ box.innerHTML='<p class="bq-empty">인식된 문항이 없어요.</p>'; return; }
+  box.innerHTML=qs.map(function(q,i){
+    var val=(prev&&prev[q.label]!=null)?prev[q.label]:'';
+    return '<div class="bq" data-label="'+esc(q.label)+'"><div class="bq-title"><span class="bq-no">'+(i+1)+'</span>'+esc(q.content||q.label)+'</div>'
+      +'<textarea class="bq-ans" placeholder="모범답안을 입력해 주세요. (없으면 비워두세요)">'+esc(val)+'</textarea>'
+      +'<div class="ans-tool"><button class="fx-btn" onclick="openFx(this)"><i data-lucide="sigma" style="width:13px;height:13px"></i>수식 입력</button></div></div>';
+  }).join('');
+}
+function renderBoosters(){
+  var snap=snapshotBoosters();
+  var qs=collectQuestions();
+  renderRubricList(qs, snap.rubric);
+  renderAnswerList(qs, snap.answer);
+  clearRecogDirty();
+  if(window.lucide) lucide.createIcons();
+}
+function confirmRecog(){ revealRecog(); }
+function toggleBst(hd){ hd.parentElement.classList.toggle('open'); if(window.lucide) lucide.createIcons(); }
+function pickBchip(el){ el.classList.toggle('on'); if(!el.classList.contains('on')){ el.classList.remove('ai'); var s=el.querySelector('small'); if(s) s.remove(); } }
+function aiLinkRubrics(btn){
+  var loading=document.getElementById('rubricLoading'), list=document.getElementById('rubricList');
+  if(btn) btn.disabled=true;
+  list.classList.add('hidden');
+  loading.classList.remove('hidden');
+  if(window.lucide) lucide.createIcons();
+  setTimeout(function(){
+    loading.classList.add('hidden');
+    list.classList.remove('hidden');
+    document.querySelectorAll('#rubricList .bchip[data-ai="1"]').forEach(function(c){
+      c.classList.add('on','ai');
+      if(!c.querySelector('small')){ var s=document.createElement('small'); s.textContent='AI 추천'; c.appendChild(s); }
+    });
+    if(btn){ btn.disabled=false; btn.innerHTML='<i data-lucide="wand-sparkles" style="width:14px;height:14px"></i>AI로 다시 연결 · 크레딧 1'; }
+    if(window.lucide) lucide.createIcons();
+    toastMsg('AI가 문항별 채점요소를 연결했어요. (크레딧 1개 사용)');
+  }, 1500);
+}
+function upSubmit(){ if(_regPending){ finalizeRegistration(); _regPending=false; toastMsg('활동지를 등록했어요. 인식 결과로 채점이 정확해져요.'); setTimeout(showList, 800); return; } if(_upMode==='registered' && _gradedCount>0){ document.getElementById('saveRegModal').classList.add('open'); if(window.lucide) lucide.createIcons(); return; } toastMsg(_upMode==='registered'?'변경 사항을 저장했어요.':'활동지를 등록했어요. 인식 결과로 채점이 정확해져요.'); setTimeout(showList, 800); }
+function closeSaveReg(){ document.getElementById('saveRegModal').classList.remove('open'); }
+function saveRegOnly(){ closeSaveReg(); toastMsg('변경 사항을 저장했어요. 다시 채점해야 반영돼요.'); setTimeout(showList, 900); }
+function saveRegAndRescore(){ closeSaveReg(); toastMsg('변경 사항을 저장하고 채점 화면으로 이동합니다.'); setTimeout(showList, 1000); }
+function showResult(){ showView('view-result'); }
+function showList(){ if(window._backTo){ location.href=window._backTo; return; } _regPending=false; showView('view-list'); }
+function showPlan(){ showView('view-plan'); var fromPlan=(window._genMode==='plan'); document.getElementById('plan-rubric-full').classList.toggle('hidden', fromPlan); }
+function finalizePlan(){ var a=document.getElementById('anaModal'); a.classList.add('open'); if(window.lucide) lucide.createIcons(); setTimeout(function(){ a.classList.remove('open'); showResult(); }, 1800); }
+
+/* 모범답안 토글 */
+function toggleAns(btn){
+  var box=btn.nextElementSibling; var open=box.classList.toggle('open');
+  btn.querySelector('i').setAttribute('data-lucide', open?'chevron-down':'chevron-right');
+  btn.childNodes[1].nodeValue = open?'모범답안 접기':'모범답안 보기';
+  if(window.lucide) lucide.createIcons();
+}
+
+function toggleNewMenu(e){ e.stopPropagation(); document.getElementById('newq-menu').classList.toggle('open'); }
+function closeNewMenu(){ var m=document.getElementById('newq-menu'); if(m) m.classList.remove('open'); }
+document.addEventListener('click', function(){ closeNewMenu(); });
+
+function openCopyModal(){ document.getElementById('copyModal').classList.add('open'); setTimeout(function(){ if(window.lucide) lucide.createIcons(); },20); }
+function closeCopyModal(){ document.getElementById('copyModal').classList.remove('open'); }
+var _copySel=null;
+function selectCopyRow(tr){ document.querySelectorAll('.cp-tbl tbody tr').forEach(function(r){r.classList.remove('on');}); tr.classList.add('on'); document.getElementById('copyConfirm').disabled=false; _copySel={ teacher: tr.children[1].textContent.trim(), name: tr.children[2].textContent.trim() }; }
+function buildRegCardInner(ev, rubricOn, answerOn, metaSrc){
+  function qst(on,label){ return '<span class="qst'+(on?' on':'')+'"><i data-lucide="'+(on?'check-circle-2':'circle')+'" style="width:14px;height:14px"></i>'+label+'</span>'; }
+  return '<h3 class="qcard-title">'+ev+'</h3>'
+    +'<div class="qcard-tagline"><span class="badge badge-done"><i data-lucide="check" style="width:12px;height:12px"></i>등록</span>'+qst(rubricOn,'채점요소 연결')+qst(answerOn,'모범답안')+'</div>'
+    +'<p class="qcard-meta">교내 공개 · '+metaSrc+'</p>';
+}
+function regOpen(ev,source,file){ return "openRegistered('"+source+"','"+String(file).replace(/'/g,'')+"','"+String(ev).replace(/'/g,'')+"',0)"; }
+function finalizeRegistration(){
+  var ev=window._regEv||'활동지', source=window._regSource||'upload', file=window._regFile||'';
+  var rubricOn=document.querySelectorAll('#rubricList .bchip.on').length>0;
+  var answerOn=Array.prototype.some.call(document.querySelectorAll('#answerList .bq-ans'), function(t){ return t.value.trim()!==''; });
+  var metaSrc=source==='ai'?'AI 생성':(source==='copy'?((window._copyTeacher?window._copyTeacher+' 선생님 ':'')+'활동지 복사'):'직접 업로드');
+  var grid=document.querySelector('#view-list .card-grid'); if(!grid) return;
+  var target=null;
+  grid.querySelectorAll('.qcard').forEach(function(c){ var t=c.querySelector('.qcard-title'); if(t && t.textContent.trim()===ev && c.querySelector('.badge-empty')) target=c; });
+  var inner=buildRegCardInner(ev, rubricOn, answerOn, metaSrc);
+  if(target){ target.setAttribute('onclick', regOpen(ev,source,file)); target.innerHTML=inner; }
+  else { var card=document.createElement('div'); card.className='qcard'; card.setAttribute('onclick', regOpen(ev,source,file)); card.innerHTML=inner; grid.appendChild(card); }
+  if(window.lucide) lucide.createIcons();
+}
+function doCopy(){ if(!_copySel) return; var src=_copySel.name, file=src.replace(/[()\s]/g,'')+'_활동지.pdf', ev=window._regEv||src; window._copyTeacher=_copySel.teacher; toastMsg('‘'+src+'’ 활동지를 복사해 가져왔어요.'); openRegistered('copy', file, ev, 0); }
+function openRegModal(){ document.getElementById('regModal').classList.add('open'); if(window.lucide) lucide.createIcons(); }
+function closeRegModal(){ document.getElementById('regModal').classList.remove('open'); }
+
+lucide.createIcons();
+/* 외부(평가 준비 등)에서 활동지 카드 클릭 → 인식완료 상세 바로 열기 */
+(function(){ try{ var p=new URLSearchParams(location.search); var open=p.get('open'); if(!open) return; var ev=p.get('ev')||'활동지'; window._backTo='eval_plan_v1_260619.html';
+  document.querySelectorAll('.icon-sb .si').forEach(function(s){ var l=s.querySelector('.si-label'); s.classList.toggle('active', !!(l && l.textContent.trim().indexOf('평가 준비')===0)); });
+  var _tbi=document.querySelector('.tab-band-inner'); if(_tbi) _tbi.innerHTML='<button class="sub-tab on" onclick="location.href=\'eval_plan_v1_260619.html\'">나의 자료</button><button class="sub-tab" onclick="location.href=\'eval_plan_v1_260619.html?tab=shared\'">학교 자료실</button>';
+  var _ld=document.querySelector('#leaveDesignModal .btn-primary'); if(_ld) _ld.setAttribute('onclick',"location.href='eval_plan_detail_v1_260619.html'");
+  if(open==='detail'){ var src=p.get('src')||'upload'; var file=p.get('file')||(ev.replace(/\s+/g,'_')+'.pdf'); openRegistered(src, file, ev, 0); }
+  else if(open==='upload'){ window._regEv=ev; showUpload(); var bs=document.getElementById('up-basic-sec'); if(bs) bs.classList.add('hidden'); document.getElementById('up-h1').textContent=ev; var _bu=document.querySelector('#view-upload .back-link'); if(_bu){ _bu.setAttribute('onclick',"location.href='eval_plan_v1_260619.html?make=sheet'"); _bu.innerHTML='<i data-lucide="chevron-left" style="width:18px;height:18px"></i>이전으로'; } }
+  else if(open==='ai'){ window._regEv=ev; openGen('plan'); makeFourStep(); }
+  if(window.lucide) lucide.createIcons();
+}catch(e){} })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1279 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="favicon_chang.svg">
+  <title>창의적 체험활동 - CLIPO</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    * { font-family: 'Pretendard GOV', -apple-system, sans-serif; box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #f6f7f9; }
+
+    /* ── 헤더 (v2 동일) ── */
+    .g-hd { height: 56px; background: #fff; border-bottom: 1px solid #d9d9d9; display: flex; align-items: center; padding: 0 20px 0 8px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
+    .g-hd-r { margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 14px; color: #3b3f4c; }
+    .plan-badge { background: #416bff; color: #fff; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+    .hd-div { width: 1px; height: 14px; background: #d9d9d9; margin: 0 4px; }
+    .credit-wrap { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f6f7f9; border-radius: 6px; font-size: 13px; font-weight: 600; color: #3b3f4c; }
+    .user-btn { display: flex; align-items: center; gap: 4px; padding: 4px 10px; border: 1px solid #d9d9d9; border-radius: 6px; background: #fff; font-size: 13px; color: #3b3f4c; cursor: pointer; }
+
+    /* ── 아이콘 사이드바 ── */
+    .icon-sb{width:56px;background:#fff;border-right:1px solid #d9d9d9;position:fixed;top:56px;bottom:0;left:0;display:flex;flex-direction:column;padding:8px 0;z-index:150;transition:width .2s ease}
+    .icon-sb.expanded{width:200px}
+    .si{height:40px;display:flex;align-items:center;border-radius:8px;color:#6d7381;cursor:pointer;margin-bottom:2px;position:relative;padding:0 4px 0 16px;gap:10px;white-space:nowrap;flex-shrink:0}
+    .si:hover{background:#f1f3f5}
+    .si.active{background:#e9f2ff;color:#416bff}
+    .si-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .si-label{font-size:13px;font-weight:500;opacity:0;transition:opacity .1s;overflow:hidden}
+    .icon-sb.expanded .si-label{opacity:1}
+    .si-tip{position:absolute;left:48px;top:50%;transform:translateY(-50%);background:#222631;color:#fff;font-size:11px;padding:3px 8px;border-radius:4px;white-space:nowrap;display:none;z-index:300;pointer-events:none}
+    .si:hover .si-tip{display:block}
+    .icon-sb.expanded .si-tip{display:none!important}
+    .nav-bottom{margin-top:auto;width:100%}
+    .nav-div{height:1px;background:#f1f3f5;margin:4px 0}
+    body.nav-expanded .list-main-shell{margin-left:200px;transition:margin-left .2s ease}
+
+    /* ── 목록 ── */
+    .list-main-shell { margin-left: 56px; margin-top: 56px; min-height: calc(100vh - 56px); }
+    .list-main { max-width: 1200px; margin: 0 auto; padding: 40px 48px; }
+    .page-title { font-size: 26px; font-weight: 600; color: #222631; margin-bottom: 6px; display: inline-flex; align-items: center; gap: 8px; }
+    .page-title .beta { font-size: 11px; font-weight: 600; background: #f1f3f5; color: #6d7381; padding: 2px 7px; border-radius: 4px; display: inline-flex; align-items: center; gap: 3px; }
+    .page-sub   { font-size: 14px; color: #6d7381; }
+    .btn-primary { background: #365eef; color: #fff; border: none; border-radius: 4px; padding: 10px 18px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; font-family: inherit; white-space: nowrap; }
+    .btn-primary:hover { background: #3151c4; }
+    .year-title { font-size: 16px; font-weight: 600; color: #222631; }
+    .ybadge { font-size: 12px; font-weight: 500; padding: 2px 8px; border-radius: 4px; }
+    .ybadge.now  { background: #e9f2ff; color: #416bff; }
+    .ybadge.past { background: #f1f3f5; color: #6d7381; }
+    .card { background: #fff; border: 1px solid #d9d9d9; border-radius: 12px; padding: 20px 24px; cursor: pointer; transition: box-shadow .15s, border-color .15s; position: relative; }
+    .card:hover { border-color: #b3b3b3; box-shadow: 0 4px 12px rgba(0,0,0,.08); }
+    .badge-type { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
+    .b-jayul { background: #e9f2ff; color: #365eef; }
+    .b-jinro  { background: #ffedd5; color: #ea580c; }
+    .b-dong   { background: #ebdfff; color: #6f34db; }
+    .menu-btn { background: none; border: none; cursor: pointer; color: #6d7381; display: flex; align-items: center; border-radius: 6px; padding: 4px; }
+    .menu-btn:hover { background: #f1f3f5; }
+    .card-class { font-size: 20px; font-weight: 600; color: #222631; margin: 12px 0 4px; }
+    .card-date  { font-size: 14px; color: #6d7381; }
+    .divider    { height: 1px; background: #f1f3f5; margin: 16px 0 12px; }
+    .pb-bg  { height: 6px; background: #f1f3f5; border-radius: 3px; overflow: hidden; margin-bottom: 4px; }
+    .pb-fill { height: 100%; border-radius: 3px; }
+    .pb-jayul { background: #365eef; }
+    .pb-jinro { background: #ea580c; }
+    .pb-dong  { background: #6f34db; }
+    .card-dropdown { display: none; position: absolute; top: 44px; right: 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.10); z-index: 50; min-width: 156px; overflow: hidden; padding: 6px; }
+    .card-dropdown.open { display: block; }
+    .dropdown-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; font-size: 14px; font-weight: 500; cursor: pointer; color: #3b3f4c; border-radius: 6px; }
+    .dropdown-item:hover { background: #f6f7f9; }
+    .dropdown-item.danger { color: #f2525f; }
+    .dropdown-item.danger:hover { background: #fff3f4; }
+    .dropdown-item i { color: inherit; flex-shrink: 0; }
+    footer { text-align: center; padding: 48px 0 24px; font-size: 13px; color: #6d7381; }
+    footer a { color: #6d7381; text-decoration: none; margin: 0 8px; }
+
+    /* ── MOCKUP 토글 ── */
+    .mockup-toggle{position:fixed;bottom:24px;right:24px;background:#222631;color:#fff;border-radius:24px;padding:5px;display:inline-flex;align-items:center;gap:2px;box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:550;font-family:inherit}
+    .mt-label{padding:0 8px 0 10px;font-size:11px;font-weight:700;color:#b3b6bd;letter-spacing:0.5px}
+    .mt-btn{padding:7px 14px;border:none;background:none;color:#b3b6bd;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;border-radius:18px;line-height:1;transition:all .15s}
+    .mt-btn:hover{color:#fff}
+    .mt-btn.active{background:#416bff;color:#fff}
+
+    /* ── 반응형 ── */
+    @media (max-width: 1023px) {
+      .list-main { padding: 32px 32px; }
+      .cards-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    @media (max-width: 640px) {
+      .list-main { padding: 24px 20px; }
+      .cards-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+      .page-title { font-size: 22px !important; flex-wrap: wrap; }
+      .page-sub { font-size: 13px; }
+      .btn-primary { padding: 9px 14px; font-size: 13px; }
+      .card { padding: 16px 18px; }
+      .card-class { font-size: 18px; }
+      .modal-box { padding: 24px 20px !important; }
+      .modal-title { font-size: 18px !important; }
+    }
+
+    /* ── 모달 ── */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 300; align-items: center; justify-content: center; }
+    .overlay.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 12px; padding: 32px; width: 480px; max-width: calc(100vw - 48px); box-shadow: 0 0 1px #2226314D, 0 4px 8px #0000001A; }
+    .modal-title { font-size: 20px; font-weight: 600; color: #222631; margin-bottom: 6px; }
+    .modal-sub   { font-size: 14px; color: #6d7381; margin-bottom: 28px; }
+    .field-label { font-size: 14px; font-weight: 500; color: #3b3f4c; margin-bottom: 8px; }
+    .field-select { width: 100%; padding: 10px 14px; font-size: 15px; font-family: inherit; border: 1px solid #d9d9d9; border-radius: 4px; color: #222631; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236d7381' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center; appearance: none; cursor: pointer; }
+    .field-select:focus { outline: none; border-color: #416bff; }
+    .type-btns { display: flex; gap: 10px; }
+    .type-btn { flex: 1; padding: 12px 8px; font-size: 15px; font-weight: 500; font-family: inherit; border: 1px solid #d9d9d9; border-radius: 4px; background: #fff; color: #3b3f4c; cursor: pointer; }
+    .type-btn:hover { border-color: #b3b3b3; }
+    .type-btn.selected { border-color: #416bff; background: #f4f8ff; color: #416bff; font-weight: 600; }
+    .type-btn:disabled { cursor: not-allowed; opacity: .55; }
+    .field-select:disabled { cursor: not-allowed; opacity: .65; background-color: #f6f7f9; }
+    .field-input { width: 100%; padding: 10px 14px; font-size: 15px; font-family: inherit; border: 1px solid #d9d9d9; border-radius: 4px; color: #222631; }
+    .field-input:focus { outline: none; border-color: #416bff; }
+    .field-input::placeholder { color: #b3b3b3; }
+    .field-hint { font-size: 13px; color: #6d7381; margin-top: 6px; }
+    .empty-notice { padding: 14px 16px; background: #f6f7f9; border-radius: 10px; font-size: 13px; color: #3b3f4c; line-height: 1.6; display: flex; align-items: center; gap: 12px; }
+    .empty-notice .ntx { flex: 1; }
+    .empty-notice .nhd { color: #222631; font-weight: 500; margin-bottom: 2px; }
+    .empty-notice .nsub { color: #6d7381; font-size: 13px; }
+    .empty-notice a { color: #416bff; text-decoration: none; font-weight: 500; }
+    .empty-notice .nbtn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; background: #fff; border: 1px solid #d9d9d9; border-radius: 8px; color: #3b3f4c; font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: none; flex-shrink: 0; font-family: inherit; }
+    .empty-notice .nbtn:hover { border-color: #416bff; color: #416bff; }
+    .modal-footer { display: flex; gap: 8px; margin-top: 28px; justify-content: flex-end; }
+    .btn-cancel { padding: 11px 26px; font-size: 14px; font-weight: 600; font-family: inherit; border: 1px solid #d4e0ff; border-radius: 999px; background: #fff; color: #416bff; cursor: pointer; line-height: 1; }
+    .btn-cancel:hover { background: #f4f8ff; }
+    .btn-submit { padding: 11px 26px; font-size: 14px; font-weight: 600; font-family: inherit; border: none; border-radius: 999px; cursor: pointer; line-height: 1; }
+    .btn-submit.active { background: #416bff; color: #fff; }
+    .btn-submit.active:hover { background: #365eef; }
+    .btn-submit.disabled { background: #c1cefb; color: #fff; cursor: not-allowed; }
+    .del-box { background: #fff; border-radius: 12px; padding: 36px 32px 28px; width: 400px; max-width: calc(100vw - 48px); text-align: center; box-shadow: 0 0 1px #2226314D, 0 4px 8px #0000001A; }
+    .del-icon { width: 56px; height: 56px; border-radius: 50%; background: #fee2e2; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+    .del-title { font-size: 20px; font-weight: 700; color: #222631; margin-bottom: 12px; }
+    .del-desc  { font-size: 16px; color: #6d7381; line-height: 1.6; margin-bottom: 28px; }
+    .del-footer { display: flex; gap: 10px; }
+    .btn-del-cancel { flex: 1; padding: 13px; font-size: 14px; font-weight: 500; font-family: inherit; border: 1px solid #f2525f; border-radius: 4px; background: #fff; color: #f2525f; cursor: pointer; }
+    .btn-del-cancel:hover { background: #fff3f4; }
+    .btn-del-confirm { flex: 1; padding: 13px; font-size: 14px; font-weight: 600; font-family: inherit; border: none; border-radius: 4px; background: #f2525f; color: #fff; cursor: pointer; }
+    .btn-del-confirm:hover { background: #db3e51; }
+
+    /* ── 학생 추가/변경 모달 ── */
+    .modal-x-btn { background: none; border: none; color: #6d7381; cursor: pointer; padding: 6px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; }
+    .modal-x-btn:hover { background: #f1f3f5; }
+    .stu-search { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border: 1px solid #d9d9d9; border-radius: 10px; margin-bottom: 14px; height: 48px; }
+    .stu-search input { flex: 1; border: none; outline: none; font-size: 15px; font-family: inherit; color: #222631; background: transparent; }
+    .stu-search input::placeholder { color: #b3b6bd; }
+    .stu-tree { border: 1px solid #e5e7eb; border-radius: 10px; padding: 8px; }
+    .stu-tree-scroll { max-height: 360px; overflow-y: auto; }
+    .stu-class-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 8px; cursor: pointer; }
+    .stu-class-row:hover { background: #f6f7f9; }
+    .stu-class-label { flex: 1; font-size: 15px; font-weight: 500; color: #222631; line-height: 1.4; }
+    .stu-expand { background: none; border: none; color: #6d7381; cursor: pointer; padding: 4px; display: inline-flex; align-items: center; justify-content: center; border-radius: 4px; }
+    .stu-expand:hover { background: #eef0f3; }
+    .stu-class-children { display: none; padding: 4px 0 8px 44px; }
+    .stu-class-children.open { display: block; }
+    .stu-row { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-radius: 8px; cursor: pointer; font-size: 15px; color: #3b3f4c; }
+    .stu-row:hover { background: #f6f7f9; }
+    .stu-row-label { font-size: 15px; color: #3b3f4c; line-height: 1.4; }
+    .stu-checkbox { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; cursor: pointer; flex-shrink: 0; }
+    .stu-checkbox input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .stu-checkbox span { width: 20px; height: 20px; border: 1.5px solid #d9d9d9; border-radius: 4px; background: #fff; display: inline-flex; align-items: center; justify-content: center; transition: all .12s; }
+    .stu-checkbox input:checked + span { background: #416bff; border-color: #416bff; }
+    .stu-checkbox input:checked + span::after { content: ''; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); margin-top: -2px; }
+    .stu-class-cb-indet + span { background: #416bff; border-color: #416bff; }
+    .stu-class-cb-indet + span::after { content: ''; width: 10px; height: 2px; background: #fff; }
+    .stu-class-cb-indet:checked + span::after { content: ''; width: 10px; height: 2px; background: #fff; border: none; transform: none; margin: 0; }
+    .stu-warn { display: flex; gap: 10px; padding: 14px 16px; background: #fff7ed; border-radius: 10px; margin-top: 16px; font-size: 14px; color: #9a3412; line-height: 1.6; }
+    .stu-warn strong { color: #9a3412; font-weight: 600; }
+    .stu-help { font-size: 13px; color: #6d7381; flex: 1; line-height: 1.5; }
+
+    /* ── 토스트 ── */
+    .toast { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: #222631; color: #fff; padding: 12px 20px; border-radius: 8px; font-size: 14px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.2); opacity: 0; transition: opacity .2s, transform .2s; z-index: 400; pointer-events: none; line-height: 1; }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast-ic { display: inline-flex; align-items: center; justify-content: center; color: #1ab864; }
+  </style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<header class="g-hd">
+  <button onclick="toggleNav()" style="width:36px;height:36px;border:none;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#3b3f4c;margin-right:8px">
+    <i data-lucide="menu" style="width:20px;height:20px"></i>
+  </button>
+  <svg width="76" height="16" viewBox="0 0 76 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer" onclick="location.href='home_v1_260612.html'">
+    <path d="M11.3613 4.03516H4.09668V11.9629H8.88281L8.88086 11.9648H15.6016V16H4.02539C1.80242 15.9998 0 14.223 0 12.0322V3.96777C0 1.77696 1.80242 0.000177874 4.02539 0H15.4561L11.3613 4.03516ZM22.0703 11.9648H33.5781V16H22.002C19.7788 16 17.9756 14.2231 17.9756 12.0322V0H22.0703V11.9648ZM40.0459 16H35.9521V0H40.0459V16ZM54.5381 0C56.4564 0 58.0138 1.53228 58.0186 3.42285L58.0166 3.4248V8.54297C58.014 10.4333 56.4567 11.9648 54.5361 11.9648H46.5107L42.416 16V0H54.5381ZM71.9746 0C74.0086 0.000134956 75.6887 1.49046 75.958 3.42285H76V12.5771H75.958C75.6887 14.5095 74.011 15.9999 71.9746 16H64.4238C62.3897 16 60.7098 14.5096 60.4404 12.5771C60.4145 12.398 60.3984 12.2184 60.3984 12.0322V3.96777C60.3984 3.78159 60.4145 3.60205 60.4404 3.42285C60.7098 1.49037 62.3873 0 64.4238 0H71.9746ZM64.4922 12.5771H71.9062V3.42285H64.4922V12.5771ZM46.5107 3.42285V8.54004H53.9238V3.42285H46.5107Z" fill="#365EEF"/>
+  </svg>
+  <div class="g-hd-r">
+    <span class="plan-badge">개인 유료</span>
+    <span style="font-size:13px;color:#6d7381">D-1710</span>
+    <div class="hd-div"></div>
+    <i data-lucide="bot" style="width:16px;height:16px;color:#416bff"></i>
+    <div class="credit-wrap">AI 크레딧 700</div>
+    <div class="hd-div"></div>
+    <button class="user-btn">
+      test99 선생님(담임) <i data-lucide="chevron-down" style="width:14px;height:14px"></i>
+    </button>
+  </div>
+</header>
+
+<!-- 아이콘 사이드바 -->
+<nav class="icon-sb" id="icon-sb">
+  <div class="si" onclick="location.href='home_v1_260612.html'"><div class="si-icon"><i data-lucide="home" style="width:20px;height:20px"></i></div><span class="si-label">홈</span><span class="si-tip">홈</span></div>
+  <div class="si"><div class="si-icon"><i data-lucide="scissors" style="width:20px;height:20px"></i></div><span class="si-label">평가계획</span><span class="si-tip">평가계획</span></div>
+  <div class="si" onclick="location.href='co_teacher_review_v1_260611.html'"><div class="si-icon"><i data-lucide="layout-grid" style="width:20px;height:20px"></i></div><span class="si-label">수업</span><span class="si-tip">수업</span></div>
+  <div class="si active"><div class="si-icon"><i data-lucide="notebook-pen" style="width:20px;height:20px"></i></div><span class="si-label">창의적 체험활동 <span style="font-size:10px;background:#416bff;color:#fff;padding:1px 5px;border-radius:3px;margin-left:2px">Beta</span></span><span class="si-tip">창의적 체험활동</span></div>
+  <div class="si" onclick="location.href='quick_seteuk_dev_list_v1_260604.html'"><div class="si-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div><span class="si-label">세특 간편 생성기</span><span class="si-tip">세특 간편 생성기</span></div>
+  <div class="si"><div class="si-icon"><i data-lucide="smile" style="width:20px;height:20px"></i></div><span class="si-label">행동특성 및 종합기록</span><span class="si-tip">행동특성 및 종합기록 지원</span></div>
+  <div class="si"><div class="si-icon"><i data-lucide="bar-chart-2" style="width:20px;height:20px"></i></div><span class="si-label">리포트</span><span class="si-tip">리포트</span></div>
+  <div class="si"><div class="si-icon"><i data-lucide="building-2" style="width:20px;height:20px"></i></div><span class="si-label">학교 설정</span><span class="si-tip">학교 설정</span></div>
+  <div class="nav-bottom">
+    <div class="nav-div"></div>
+    <div class="si"><div class="si-icon"><i data-lucide="file-down" style="width:20px;height:20px"></i></div><span class="si-label">매뉴얼 다운로드</span><span class="si-tip">매뉴얼 다운로드</span></div>
+    <div class="si"><div class="si-icon"><i data-lucide="credit-card" style="width:20px;height:20px"></i></div><span class="si-label">요금제</span><span class="si-tip">요금제</span></div>
+    <div class="si"><div class="si-icon"><i data-lucide="help-circle" style="width:20px;height:20px"></i></div><span class="si-label">고객센터</span><span class="si-tip">고객센터</span></div>
+  </div>
+</nav>
+
+<!-- 목록 -->
+<div class="list-main-shell">
+<main class="list-main">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:36px;">
+    <div>
+      <h1 class="page-title">창의적 체험활동 지원<span class="beta"><i data-lucide="lock" style="width:10px;height:10px"></i> Beta</span></h1>
+      <p class="page-sub">학생 활동 자료·내용을 등록하면 AI가 학생별 기록 초안을 만들어 드려요</p>
+    </div>
+    <button class="btn-primary" onclick="openAddModal()">
+      <i data-lucide="plus" style="width:16px;height:16px;"></i> 활동 추가
+    </button>
+  </div>
+
+  <!-- 빈 상태 (활동 0개일 때) -->
+  <div id="empty-state" style="display:none;text-align:center;padding:100px 24px 80px;">
+    <div style="margin-bottom:24px;display:inline-block">
+      <!-- 노트북·페이퍼클립 일러스트 (Figma 매칭) -->
+      <svg width="180" height="160" viewBox="0 0 180 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 배경 원 -->
+        <ellipse cx="90" cy="85" rx="76" ry="70" fill="#eff3ff"/>
+        <!-- 캐릭터 머리 -->
+        <circle cx="70" cy="62" r="14" fill="#222631"/>
+        <ellipse cx="70" cy="62" rx="11" ry="12" fill="#fde2cf"/>
+        <!-- 눈 -->
+        <circle cx="66" cy="62" r="1.2" fill="#222631"/>
+        <circle cx="74" cy="62" r="1.2" fill="#222631"/>
+        <!-- 입 -->
+        <path d="M68 67 Q70 69 72 67" stroke="#222631" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+        <!-- 몸통 -->
+        <path d="M55 78 Q55 78 60 76 L80 76 Q85 78 85 78 L88 110 Q88 116 82 116 L58 116 Q52 116 52 110 Z" fill="#416bff"/>
+        <!-- 팔 -->
+        <path d="M82 84 Q104 86 110 96" stroke="#416bff" stroke-width="9" stroke-linecap="round" fill="none"/>
+        <!-- 손 -->
+        <circle cx="112" cy="98" r="6" fill="#fde2cf"/>
+        <!-- 노트북 -->
+        <rect x="106" y="58" width="44" height="58" rx="3" fill="#fff" stroke="#222631" stroke-width="1.5"/>
+        <!-- 노트북 라인 -->
+        <line x1="113" y1="73" x2="143" y2="73" stroke="#d4e0ff" stroke-width="1.5"/>
+        <line x1="113" y1="82" x2="143" y2="82" stroke="#d4e0ff" stroke-width="1.5"/>
+        <line x1="113" y1="91" x2="143" y2="91" stroke="#d4e0ff" stroke-width="1.5"/>
+        <line x1="113" y1="100" x2="133" y2="100" stroke="#d4e0ff" stroke-width="1.5"/>
+        <!-- 페이퍼클립 -->
+        <path d="M138 50 Q138 44 132 44 Q126 44 126 50 L126 60 Q126 64 130 64 Q134 64 134 60 L134 52" stroke="#416bff" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- 노트북 스프링 -->
+        <circle cx="145" cy="65" r="1.5" fill="#b3b6bd"/>
+        <circle cx="145" cy="75" r="1.5" fill="#b3b6bd"/>
+        <circle cx="145" cy="85" r="1.5" fill="#b3b6bd"/>
+        <circle cx="145" cy="95" r="1.5" fill="#b3b6bd"/>
+        <circle cx="145" cy="105" r="1.5" fill="#b3b6bd"/>
+      </svg>
+    </div>
+    <h2 style="font-size:20px;font-weight:700;color:#222631;margin-bottom:10px;line-height:1.4">아직 등록된 활동이 없어요</h2>
+    <p style="font-size:14px;color:#6d7381;line-height:1.7">자율·진로·동아리 활동 카드를 만들어<br>기록을 시작해 보세요.</p>
+  </div>
+
+  <!-- 2026학년도 -->
+  <section data-year="2026" style="margin-bottom:40px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+      <span class="year-title">2026학년도</span>
+    </div>
+    <div class="cards-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+      <div class="card" onclick="goDetail(event,'자율활동','2학년 1반','b-jayul')">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="badge-type b-jayul">자율활동</span>
+          <button class="menu-btn" onclick="toggleDropdown(event,this)"><i data-lucide="more-horizontal" style="width:16px;height:16px;"></i></button>
+        </div>
+        <div class="card-dropdown">
+          <div class="dropdown-item" onclick="openAddStudentsModal(event,this)"><i data-lucide="user-plus" style="width:14px;height:14px;"></i>학생 추가</div>
+          <div class="dropdown-item danger" onclick="openDelModal(event,this)"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>활동 삭제</div>
+        </div>
+        <p class="card-class">2학년 1반</p>
+        <div class="divider"></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:14px;color:#6d7381;">기록 진행률</span><span style="font-size:14px;color:#3b3f4c;font-weight:500;">2 / 7명</span></div>
+        <div class="pb-bg"><div class="pb-fill pb-jayul" style="width:28%;"></div></div>
+      </div>
+      <div class="card" onclick="goDetail(event,'진로활동','2학년 1반','b-jinro')">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="badge-type b-jinro">진로활동</span>
+          <button class="menu-btn" onclick="toggleDropdown(event,this)"><i data-lucide="more-horizontal" style="width:16px;height:16px;"></i></button>
+        </div>
+        <div class="card-dropdown">
+          <div class="dropdown-item" onclick="openAddStudentsModal(event,this)"><i data-lucide="user-plus" style="width:14px;height:14px;"></i>학생 추가</div>
+          <div class="dropdown-item danger" onclick="openDelModal(event,this)"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>활동 삭제</div>
+        </div>
+        <p class="card-class">2학년 1반</p>
+        <div class="divider"></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:14px;color:#6d7381;">기록 진행률</span><span style="font-size:14px;color:#3b3f4c;font-weight:500;">1 / 7명</span></div>
+        <div class="pb-bg"><div class="pb-fill pb-jinro" style="width:14%;"></div></div>
+      </div>
+      <div class="card" onclick="goDetail(event,'동아리활동','과학탐구부','b-dong',false)">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="badge-type b-dong">동아리활동</span>
+          <button class="menu-btn" onclick="toggleDropdown(event,this)"><i data-lucide="more-horizontal" style="width:16px;height:16px;"></i></button>
+        </div>
+        <div class="card-dropdown">
+          <div class="dropdown-item" onclick="openEditModal(event,this)"><i data-lucide="pencil" style="width:14px;height:14px;"></i>동아리명 수정</div>
+          <div class="dropdown-item" onclick="openChangeStudentsModal(event,this)"><i data-lucide="users" style="width:14px;height:14px;"></i>학생 변경</div>
+          <div class="dropdown-item danger" onclick="openDelModal(event,this)"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>활동 삭제</div>
+        </div>
+        <p class="card-class">과학탐구부</p>
+        <div class="divider"></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:6px 0">
+          <i data-lucide="user-plus" style="width:14px;height:14px;color:#b3b6bd"></i>
+          <span style="font-size:13px;color:#b3b6bd">학생 등록 전</span>
+        </div>
+      </div>
+      <div class="card" onclick="goDetail(event,'동아리활동','수학사고력반','b-dong',true)">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="badge-type b-dong">동아리활동</span>
+          <button class="menu-btn" onclick="toggleDropdown(event,this)"><i data-lucide="more-horizontal" style="width:16px;height:16px;"></i></button>
+        </div>
+        <div class="card-dropdown">
+          <div class="dropdown-item" onclick="openEditModal(event,this)"><i data-lucide="pencil" style="width:14px;height:14px;"></i>동아리명 수정</div>
+          <div class="dropdown-item" onclick="openChangeStudentsModal(event,this)"><i data-lucide="users" style="width:14px;height:14px;"></i>학생 변경</div>
+          <div class="dropdown-item danger" onclick="openDelModal(event,this)"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>활동 삭제</div>
+        </div>
+        <p class="card-class">수학사고력반</p>
+        <div class="divider"></div>
+        <div style="display:flex;align-items:center;gap:6px;padding:6px 0">
+          <i data-lucide="user-plus" style="width:14px;height:14px;color:#b3b6bd"></i>
+          <span style="font-size:13px;color:#b3b6bd">학생 등록 전</span>
+        </div>
+      </div>
+      <!-- 데모 트리거 카드 (목업 전용) -->
+      <div class="card demo-card" onclick="openOnboardingDemo()" style="border:1.5px dashed #c7d6ff;background:#f6f9ff;cursor:pointer;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="badge-type" style="background:#1f2937;color:#fff;letter-spacing:0.5px">DEMO</span>
+          <i data-lucide="sparkles" style="width:18px;height:18px;color:#416bff"></i>
+        </div>
+        <p class="card-class" style="color:#416bff">튜토리얼 전 적용할 팝업</p>
+        <div class="divider"></div>
+        <div style="font-size:14px;color:#3b3f4c;line-height:1.55">튜토리얼 적용 전에<br><strong style="color:#222631">자료 업로드 유도하려고 띄울 화면임.</strong></div>
+      </div>
+      <!-- 데모 트리거 카드 - 튜토리얼 (목업 전용) -->
+      <div class="card demo-card" onclick="openTutorialDemo()" style="border:1.5px dashed #c7d6ff;background:#f6f9ff;cursor:pointer;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="badge-type" style="background:#1f2937;color:#fff;letter-spacing:0.5px">DEMO</span>
+          <i data-lucide="play-circle" style="width:18px;height:18px;color:#416bff"></i>
+        </div>
+        <p class="card-class" style="color:#416bff">사용법 튜토리얼</p>
+        <div class="divider"></div>
+        <div style="font-size:14px;color:#3b3f4c;line-height:1.55">자료 등록부터 기록 다운로드까지<br><strong style="color:#222631">3단계 흐름을 한 번에 익혀보세요.</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2025학년도 (2026 1학기 오픈 기능이라 숨김) -->
+  <section data-year="2025" style="margin-bottom:40px;display:none;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;">
+      <span class="year-title">2025학년도</span><span class="ybadge past">지난 기록</span>
+    </div>
+    <div class="cards-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
+      <div class="card" onclick="goDetail(event,'자율활동','1학년 1반','b-jayul')">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="badge-type b-jayul">자율활동</span>
+          <button class="menu-btn" onclick="toggleDropdown(event,this)"><i data-lucide="more-horizontal" style="width:16px;height:16px;"></i></button>
+        </div>
+        <div class="card-dropdown"><div class="dropdown-item danger" onclick="openDelModal(event,this)"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>삭제</div></div>
+        <p class="card-class">1학년 1반</p>
+        <div class="divider"></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:14px;color:#6d7381;">기록 진행률</span><span style="font-size:14px;color:#3b3f4c;font-weight:500;">30 / 30명</span></div>
+        <div class="pb-bg"><div class="pb-fill pb-jayul" style="width:100%;"></div></div>
+      </div>
+    </div>
+  </section>
+</main>
+</div><!-- /list-main-shell -->
+
+<!-- 목업 시나리오 토글 -->
+<div class="mockup-toggle" id="mockup-toggle">
+  <span class="mt-label">MOCKUP</span>
+  <button class="mt-btn active" data-scenario="hasData" onclick="setListScenario('hasData')">데이터 있음</button>
+  <button class="mt-btn" data-scenario="empty" onclick="setListScenario('empty')">데이터 없음</button>
+</div>
+
+
+<!-- 삭제 확인 모달 -->
+<div class="overlay" id="delModal">
+  <div class="del-box">
+    <div class="del-icon"><i data-lucide="trash-2" style="width:24px;height:24px;color:#f2525f;"></i></div>
+    <p class="del-title" id="delTitle"></p>
+    <p class="del-desc">입력한 자료와 작성된 데이터가<br>모두 삭제되며 복구가 불가능합니다.</p>
+    <div class="del-footer">
+      <button class="btn-del-cancel" onclick="closeDelModal()">아니오</button>
+      <button class="btn-del-confirm" onclick="confirmDelete()">네, 삭제합니다.</button>
+    </div>
+  </div>
+</div>
+
+<!-- 동아리명 수정 모달 (Figma 4965-46878) -->
+<div class="overlay" id="editDongModal" onclick="if(event.target===this)closeEditDongModal()">
+  <div class="modal-box" style="width:480px;padding:28px 28px 24px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;">
+      <p class="modal-title" style="margin-bottom:0;font-size:18px">동아리명 수정</p>
+      <button class="modal-x-btn" onclick="closeEditDongModal()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <input class="field-input" id="editDongInput" type="text" placeholder="동아리명" style="font-size:15px;padding:12px 14px;margin-bottom:0" oninput="updateEditDongBtn()">
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:24px">
+      <button class="btn-cancel" style="flex:none;padding:11px 26px;font-size:15px" onclick="closeEditDongModal()">취소</button>
+      <button class="btn-submit active" id="editDongSubmitBtn" style="flex:none;padding:11px 26px;font-size:15px" onclick="saveEditDong()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 학생 추가 모달 (자율/진로) -->
+<div class="overlay" id="addStudentsModal" onclick="if(event.target===this)closeAddStudentsModal()">
+  <div class="modal-box" style="width:480px;padding:28px 28px 24px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;">
+      <p class="modal-title" style="margin-bottom:0;font-size:20px">학생 추가</p>
+      <button class="modal-x-btn" onclick="closeAddStudentsModal()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <div class="stu-tree" id="addStuTree">
+      <!-- 빈 학생만 (이미 배정된 학생 제외) — 데모용 -->
+      <div class="stu-class-row">
+        <label class="stu-checkbox"><input type="checkbox" class="stu-class-cb" checked onchange="toggleClassCb(this)"><span></span></label>
+        <span class="stu-class-label">1학년 1반 (1/1명)</span>
+        <button class="stu-expand expanded" onclick="toggleStuClass(this)"><i data-lucide="chevron-up" style="width:18px;height:18px"></i></button>
+      </div>
+      <div class="stu-class-children open">
+        <div class="stu-row">
+          <label class="stu-checkbox"><input type="checkbox" class="stu-cb" checked><span></span></label>
+          <span class="stu-row-label">10301 김하나</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:24px">
+      <button class="btn-cancel" style="flex:none;padding:11px 26px;font-size:15px" onclick="closeAddStudentsModal()">취소</button>
+      <button class="btn-submit active" style="flex:none;padding:11px 26px;font-size:15px" onclick="confirmAddStudents()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 학생 변경 모달 (동아리) -->
+<div class="overlay" id="changeStudentsModal" onclick="if(event.target===this)closeChangeStudentsModal()">
+  <div class="modal-box" style="width:560px;padding:28px 28px 24px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;">
+      <p class="modal-title" style="margin-bottom:0;font-size:20px">학생 변경</p>
+      <button class="modal-x-btn" onclick="closeChangeStudentsModal()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <div class="stu-search">
+      <i data-lucide="search" style="width:16px;height:16px;color:#6d7381"></i>
+      <input type="text" placeholder="이름 또는 학번 검색">
+    </div>
+    <div class="stu-tree stu-tree-scroll" id="changeStuTree">
+      <div class="stu-class-row">
+        <label class="stu-checkbox"><input type="checkbox" class="stu-class-cb" checked onchange="toggleClassCb(this)"><span></span></label>
+        <span class="stu-class-label">1학년 1반 (5/5명)</span>
+        <button class="stu-expand" onclick="toggleStuClass(this)"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+      </div>
+      <div class="stu-class-row">
+        <label class="stu-checkbox"><input type="checkbox" class="stu-class-cb" onchange="toggleClassCb(this)"><span></span></label>
+        <span class="stu-class-label">1학년 2반 (0/4명)</span>
+        <button class="stu-expand" onclick="toggleStuClass(this)"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+      </div>
+      <div class="stu-class-row">
+        <label class="stu-checkbox"><input type="checkbox" class="stu-class-cb stu-class-cb-indet" onchange="toggleClassCb(this)"><span></span></label>
+        <span class="stu-class-label">1학년 3반 (1/5명)</span>
+        <button class="stu-expand expanded" onclick="toggleStuClass(this)"><i data-lucide="chevron-up" style="width:16px;height:16px"></i></button>
+      </div>
+      <div class="stu-class-children open">
+        <div class="stu-row"><label class="stu-checkbox"><input type="checkbox" class="stu-cb"><span></span></label><span class="stu-row-label">10301 김하나</span></div>
+        <div class="stu-row"><label class="stu-checkbox"><input type="checkbox" class="stu-cb" checked><span></span></label><span class="stu-row-label">10302 김두나</span></div>
+        <div class="stu-row"><label class="stu-checkbox"><input type="checkbox" class="stu-cb"><span></span></label><span class="stu-row-label">10303 김세나</span></div>
+        <div class="stu-row"><label class="stu-checkbox"><input type="checkbox" class="stu-cb"><span></span></label><span class="stu-row-label">10304 김네나</span></div>
+        <div class="stu-row"><label class="stu-checkbox"><input type="checkbox" class="stu-cb"><span></span></label><span class="stu-row-label">10304 김네나</span></div>
+      </div>
+      <div class="stu-class-row">
+        <label class="stu-checkbox"><input type="checkbox" class="stu-class-cb" onchange="toggleClassCb(this)"><span></span></label>
+        <span class="stu-class-label">2학년 1반 (0/4명)</span>
+        <button class="stu-expand" onclick="toggleStuClass(this)"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+      </div>
+      <div class="stu-class-row">
+        <label class="stu-checkbox"><input type="checkbox" class="stu-class-cb" onchange="toggleClassCb(this)"><span></span></label>
+        <span class="stu-class-label">2학년 2반 (0/4명)</span>
+        <button class="stu-expand" onclick="toggleStuClass(this)"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+      </div>
+      <div class="stu-class-row">
+        <label class="stu-checkbox"><input type="checkbox" class="stu-class-cb" onchange="toggleClassCb(this)"><span></span></label>
+        <span class="stu-class-label">2학년 3반 (0/4명)</span>
+        <button class="stu-expand" onclick="toggleStuClass(this)"><i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+      </div>
+    </div>
+    <div class="stu-warn">
+      <i data-lucide="alert-triangle" style="width:16px;height:16px;color:#f97316;flex-shrink:0;margin-top:1px"></i>
+      <span>배정에서 제외 시, 기존에 입력된 자료와 기록이 삭제됩니다. <strong>[10102 김하나], [10103 김두나], [10104 김네나]</strong></span>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:12px;flex-wrap:wrap">
+      <p class="stu-help">학생 목록은 학교 설정에서 수정 가능합니다.</p>
+      <div style="display:flex;gap:8px">
+        <button class="btn-cancel" style="flex:none;padding:11px 26px;font-size:15px" onclick="closeChangeStudentsModal()">취소</button>
+        <button class="btn-submit active" style="flex:none;padding:11px 26px;font-size:15px" onclick="confirmChangeStudents()">변경 (6명)</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 학생 변경 시 삭제 확인 모달 (동아리 학생 변경 → 제외된 학생 자료 삭제 확인) -->
+<div class="overlay" id="changeStuConfirmModal">
+  <div class="del-box">
+    <div class="del-icon"><i data-lucide="trash-2" style="width:24px;height:24px;color:#f2525f;"></i></div>
+    <p class="del-title" style="font-size:18px;line-height:1.5">기존에 작성된 학생의 자료와 기록이<br>모두 삭제됩니다.</p>
+    <p class="del-desc" style="font-size:15px;margin-bottom:24px">10101 김하나, 10102 김두나 외 1명</p>
+    <div class="del-footer">
+      <button class="btn-del-cancel" onclick="closeChangeStuConfirm()">아니오</button>
+      <button class="btn-del-confirm" onclick="proceedChangeStudents()">네, 삭제합니다.</button>
+    </div>
+  </div>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast"><span class="toast-ic"><i data-lucide="check-circle-2" style="width:18px;height:18px"></i></span><span id="toastMsg"></span></div>
+
+<!-- 기록 추가 모달 -->
+<div class="overlay" id="addModal" onclick="if(event.target===this)closeAddModal()">
+  <div class="modal-box">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;">
+      <p class="modal-title" id="modalTitle" style="margin-bottom:0">활동 추가</p>
+      <button class="modal-x-btn" onclick="closeAddModal()"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <div style="margin-bottom:20px;">
+      <p class="field-label">학년도</p>
+      <select class="field-select" id="yearSelect" onchange="onYearChange()">
+        <option value="2026">2026학년도</option>
+        <option value="2027">2027학년도</option>
+      </select>
+    </div>
+    <div style="margin-bottom:20px;">
+      <p class="field-label">기록 유형</p>
+      <div class="type-btns">
+        <button class="type-btn selected" onclick="selectType('jayul')">자율활동</button>
+        <button class="type-btn" onclick="selectType('jinro')">진로활동</button>
+        <button class="type-btn" onclick="selectType('dong')">동아리활동</button>
+      </div>
+    </div>
+    <div id="classField" style="margin-bottom:4px;">
+      <p class="field-label">학급</p>
+      <div id="classSelectWrap">
+        <div style="display:flex;gap:8px;">
+          <select class="field-select" id="gradeSelect" onchange="onGradeChange()" style="flex:1;">
+            <option value="">학년</option>
+          </select>
+          <select class="field-select" id="banSelect" onchange="updateSubmit()" style="flex:1;" disabled>
+            <option value="">반</option>
+          </select>
+        </div>
+        <p class="field-hint" id="classHint" style="margin-top:8px;">원하는 반이 없나요? <a href="#" style="color:#416bff;text-decoration:none;font-weight:500">학교설정 &gt; 학생 ↗</a>에서 학생을 등록하면 반이 자동 생성돼요.</p>
+      </div>
+      <div id="emptyNotice" class="empty-notice" style="display:none;">
+        <div class="ntx">
+          <div class="nhd">※ 해당 학년도에 등록된 학생이 없습니다.</div>
+          <div class="nsub">학교 설정에서 학생을 먼저 등록해 주세요.</div>
+        </div>
+        <a class="nbtn" href="#" onclick="event.preventDefault();showToast('학교 설정으로 이동')">학교 설정으로 이동 <i data-lucide="chevron-right" style="width:14px;height:14px"></i></a>
+      </div>
+    </div>
+    <div id="dongField" style="display:none;margin-bottom:4px;">
+      <p class="field-label">동아리명</p>
+      <input class="field-input" id="dongInput" type="text" placeholder="예) 과학탐구부, 밴드부, 코딩클럽" oninput="updateSubmit()">
+      <p class="field-hint">카드 제목으로 표시됩니다</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeAddModal()">취소</button>
+      <button class="btn-submit disabled" id="submitBtn" onclick="submitModal()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 첫 진입 온보딩 팝업 (3스텝 안내) ── -->
+<div id="ob-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:900;align-items:center;justify-content:center">
+  <div class="cob-modal">
+    <button onclick="closeOb()" class="cob-x"><i data-lucide="x" style="width:18px;height:18px"></i></button>
+
+    <!-- Slide 1 — 학생 자료 입력 -->
+    <div class="cob-slide" data-step="1">
+      <div class="cob-hero">
+        <div class="cob-card">
+          <div class="cob-card-name">10101 김하나</div>
+          <div class="cob-chips">
+            <span class="cob-chip"><i data-lucide="paperclip" style="width:12px;height:12px"></i> 활동지_스캔본.pdf</span>
+            <span class="cob-chip"><i data-lucide="list-checks" style="width:12px;height:12px"></i> 자율_설문(행)</span>
+          </div>
+          <div class="cob-card-box">자유낙하 실험 활동, 환경 정화 활동에 참여함. 탐구력·봉사 정신·집중력·의사소통이 돋보임.</div>
+          <div class="cob-card-foot"><span class="cob-card-pill"><i data-lucide="sparkles" style="width:13px;height:13px"></i> AI 자료 분석</span></div>
+        </div>
+      </div>
+      <div class="cob-desc">학생별로 <b>활동지·설문 자료를 올리거나</b> 활동 내역을 직접 입력해요.<br>자료가 없어도 활동 내역만으로 기록을 만들 수 있어요.</div>
+    </div>
+
+    <!-- Slide 2 — AI 자료 분석 -->
+    <div class="cob-slide" data-step="2" style="display:none">
+      <div class="cob-hero">
+        <div class="cob-card">
+          <div class="cob-card-name">AI 자료 분석 내용</div>
+          <div class="cob-check on"><span class="cob-cb"><i data-lucide="check" style="width:12px;height:12px"></i></span> 자유낙하 실험을 주도적으로 설계하고 변인을 통제함</div>
+          <div class="cob-check on"><span class="cob-cb"><i data-lucide="check" style="width:12px;height:12px"></i></span> 동료와 원활히 소통하며 협력적으로 탐구함</div>
+          <div class="cob-check"><span class="cob-cb"></span> 실험 결과를 체계적으로 정리하고 통찰을 도출함</div>
+        </div>
+      </div>
+      <div class="cob-desc">올린 자료를 <b>AI가 분석해 활동·역량을 항목으로 정리</b>해 드려요.<br>기록에 넣을 항목을 골라 체크하면 돼요.</div>
+    </div>
+
+    <!-- Slide 3 — 기록 확인 및 수정 -->
+    <div class="cob-slide" data-step="3" style="display:none">
+      <div class="cob-hero">
+        <div class="cob-card">
+          <div class="cob-card-head">
+            <span class="cob-card-name" style="display:inline-flex;align-items:center;gap:5px"><i data-lucide="sparkles" style="width:15px;height:15px;color:#416bff"></i> AI Assistant 생성 기록</span>
+            <span class="cob-card-pill sm"><i data-lucide="refresh-ccw" style="width:12px;height:12px"></i> 다시 생성</span>
+          </div>
+          <div class="cob-card-box tall">탐구력과 집중력이 뛰어나 자유낙하 실험 활동에 적극적으로 참여하여 실험 과정을 철저히 분석하고 관찰함. 실험 도중 예상치 못한 변수가 발생했을 때도 침착하게 대처하며 해결 방법을 모색함으로써 실험 결과에 대한 깊이 있는 통찰을 보임. 실험 후반부에 동료들과 원활한 의사소통을…</div>
+        </div>
+      </div>
+      <div class="cob-desc">선택한 항목으로 <b>AI가 기록 초안을 만들어 드려요.</b><br>직접 다듬어 최종 기록을 완성하면 끝이에요. 그럼 시작해 볼까요?</div>
+    </div>
+
+    <!-- Footer: prev / dots / next -->
+    <div class="cob-foot">
+      <button class="cob-nav prev" id="cobPrev" onclick="cobPrev()">이전으로</button>
+      <div class="cob-dots">
+        <span class="cob-dot active" data-d="1"></span>
+        <span class="cob-dot" data-d="2"></span>
+        <span class="cob-dot" data-d="3"></span>
+      </div>
+      <button class="cob-nav next" id="cobNext" onclick="cobNext()">다음으로</button>
+    </div>
+  </div>
+</div>
+<style>
+#ob-overlay.show{display:flex !important}
+.cob-modal{background:#fff;border-radius:16px;width:512px;max-width:calc(100vw - 40px);box-shadow:0 16px 48px rgba(0,0,0,.2);position:relative;overflow:hidden;padding:20px 20px 16px}
+.cob-x{position:absolute;top:14px;right:14px;width:32px;height:32px;border:none;background:none;cursor:pointer;color:#6d7381;display:flex;align-items:center;justify-content:center;border-radius:6px;z-index:3}
+.cob-x:hover{background:#f1f3f5;color:#222631}
+/* 미니 프리뷰 히어로 */
+.cob-hero{height:218px;background:#a8b1f0;border-radius:14px;padding:26px 26px 0;overflow:hidden;display:flex;justify-content:center}
+.cob-card{width:100%;background:#fff;border-radius:12px 12px 0 0;box-shadow:0 6px 20px rgba(40,50,90,.16);padding:18px 18px 20px;text-align:left}
+.cob-card-name{font-size:15px;font-weight:700;color:#222631;margin-bottom:12px}
+.cob-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.cob-card-head .cob-card-name{margin-bottom:0}
+.cob-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.cob-chip{display:inline-flex;align-items:center;gap:4px;padding:5px 9px;background:#f1f3f5;border-radius:6px;font-size:12px;font-weight:500;color:#3b3f4c;line-height:1}
+.cob-card-box{background:#f6f7f9;border-radius:8px;padding:12px 14px;font-size:13px;color:#3b3f4c;line-height:1.6}
+.cob-card-box.tall{min-height:120px}
+.cob-card-foot{display:flex;justify-content:flex-end;margin-top:12px}
+.cob-card-pill{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;background:#416bff;color:#fff;border-radius:8px;font-size:13px;font-weight:600;line-height:1}
+.cob-card-pill.sm{padding:5px 10px;background:#eef3ff;color:#416bff;border:1px solid #d6e3ff;border-radius:14px;font-size:12px}
+.cob-check{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:#3b3f4c;line-height:1.5;padding:8px 0}
+.cob-check .cob-cb{flex-shrink:0;width:18px;height:18px;border-radius:5px;border:1.5px solid #c5c8d0;background:#fff;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.cob-check.on .cob-cb{background:#416bff;border-color:#416bff;color:#fff}
+.cob-check.on{color:#222631;font-weight:500}
+/* 설명 */
+.cob-desc{text-align:center;font-size:15px;color:#3b3f4c;line-height:1.65;padding:20px 8px 8px}
+.cob-desc b{font-weight:700;color:#222631}
+/* 푸터 */
+.cob-foot{display:flex;align-items:center;justify-content:space-between;padding:8px 6px 4px;min-height:40px}
+.cob-nav{border:none;background:none;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;line-height:1;padding:8px 4px}
+.cob-nav.prev{color:#9aa0ad}
+.cob-nav.prev:hover{color:#6d7381}
+.cob-nav.next{color:#416bff}
+.cob-nav.next:hover{color:#365eef}
+.cob-nav.hidden{visibility:hidden}
+.cob-dots{display:flex;gap:7px;align-items:center}
+.cob-dot{width:7px;height:7px;border-radius:50%;background:#d4d7dd;transition:all .15s}
+.cob-dot.active{background:#416bff;width:8px;height:8px}
+</style>
+
+<script>
+  lucide.createIcons();
+  function toggleNav() {
+    document.getElementById('icon-sb').classList.toggle('expanded');
+    document.body.classList.toggle('nav-expanded');
+  }
+
+  function goDetail(e, type, cls, badge, hasStudents=true, isNew=false) {
+    if (e.target.closest('.menu-btn') || e.target.closest('.card-dropdown')) return;
+    if (type === '동아리활동') {
+      const saved = getDongStore()[cls];
+      if (saved && saved.count > 0) {
+        location.href = 'creative_activity_input_v1_260507.html?type=' + encodeURIComponent(type) + '&cls=' + encodeURIComponent(cls);
+      } else {
+        location.href = 'dong_register_v4_260507.html?dong=' + encodeURIComponent(cls);
+      }
+    } else {
+      location.href = 'creative_activity_input_v1_260507.html?type=' + encodeURIComponent(type) + '&cls=' + encodeURIComponent(cls) + (isNew ? '&new=1' : '');
+    }
+  }
+
+  function openOnboardingDemo() {
+    // 같은 페이지에서 온보딩 모달 표시 (DEMO 카드 트리거)
+    showOb();
+  }
+
+  // ── 온보딩 팝업 (3스텝 캐러셀) ──
+  let cobStep = 1;
+  const COB_TOTAL = 3;
+  function showOb(){ cobStep = 1; cobRender(); document.getElementById('ob-overlay').classList.add('show'); lucide.createIcons(); }
+  function closeOb(){ document.getElementById('ob-overlay').classList.remove('show'); try{localStorage.setItem('clipo_creative_onboarding_seen','1');}catch(e){} }
+  function cobRender(){
+    document.querySelectorAll('.cob-slide').forEach(sl=>{ sl.style.display = (+sl.dataset.step === cobStep) ? '' : 'none'; });
+    document.querySelectorAll('.cob-dot').forEach(d=>{ d.classList.toggle('active', +d.dataset.d === cobStep); });
+    document.getElementById('cobPrev').classList.toggle('hidden', cobStep === 1);
+    document.getElementById('cobNext').textContent = (cobStep === COB_TOTAL) ? '시작하기' : '다음으로';
+    lucide.createIcons();
+  }
+  function cobPrev(){ if(cobStep > 1){ cobStep--; cobRender(); } }
+  function cobNext(){
+    if(cobStep < COB_TOTAL){ cobStep++; cobRender(); }
+    else { startFromOnboarding(); }
+  }
+  function startFromOnboarding(){
+    closeOb();
+    // 활동 카드가 하나도 없으면 활동 추가 모달로 유도, 있으면 그냥 닫기
+    const cardCount = document.querySelectorAll('.cards-grid .card:not(.demo-card)').length;
+    if (cardCount === 0 && typeof openAddModal === 'function') {
+      setTimeout(openAddModal, 150);
+    }
+  }
+  // 첫 진입 시 1회 노출 (localStorage). ?ob=1 강제 표시
+  (function maybeShowOb(){
+    const params = new URLSearchParams(location.search);
+    const force = params.get('ob') === '1';
+    if (!force) {
+      try { if (localStorage.getItem('clipo_creative_onboarding_seen') === '1') return; } catch(e) {}
+    }
+    setTimeout(showOb, 300);
+  })();
+  function openTutorialDemo() {
+    try { localStorage.removeItem('clipo_creative_onboarding_seen'); } catch(e) {}
+    location.href = 'creative_activity_input_v1_260507.html?type=' + encodeURIComponent('자율활동') + '&cls=' + encodeURIComponent('2학년 1반') + '&tour=1';
+  }
+
+  function getDongStore() {
+    try { return JSON.parse(localStorage.getItem('clipo_dong_students') || '{}'); }
+    catch(e) { return {}; }
+  }
+
+  // 동아리 카드들에 저장된 학생 수 반영
+  function refreshDongCards() {
+    const store = getDongStore();
+    document.querySelectorAll('.card .badge-type.b-dong').forEach(badge => {
+      const card = badge.closest('.card');
+      const name = card.querySelector('.card-class').textContent.trim();
+      const saved = store[name];
+      if (!saved || !saved.count) return;
+      // "학생 등록 전" 영역을 진행률 블록으로 교체
+      const anchorEl = card.querySelector('.card-class');
+      let after = anchorEl ? anchorEl.nextElementSibling : null;
+      // 기존 빈 상태 / 진행률 블록 제거
+      while (after) { const next = after.nextElementSibling; after.remove(); after = next; }
+      // 새 진행률 블록 삽입
+      const html = `
+        <div class="divider"></div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:14px;color:#6d7381;">기록 진행률</span><span style="font-size:14px;color:#3b3f4c;font-weight:500;">0 / ${saved.count}명</span></div>
+        <div class="pb-bg"><div class="pb-fill pb-dong" style="width:0%;"></div></div>`;
+      card.insertAdjacentHTML('beforeend', html);
+      // onclick의 hasStudents도 갱신
+      card.setAttribute('onclick', `goDetail(event,'동아리활동','${name}','b-dong',true)`);
+    });
+  }
+  // 데모 시드: 수학사고력반은 학생 등록된 상태로 노출
+  (function preseedDongDemo(){
+    const store = getDongStore();
+    if(!store['수학사고력반']){
+      store['수학사고력반'] = {
+        count: 8,
+        classes: {
+          '2학년 1반': [
+            {n:1,name:'김민수',sid:'20101'},
+            {n:2,name:'박서연',sid:'20102'},
+            {n:3,name:'이지호',sid:'20103'},
+            {n:4,name:'최유진',sid:'20104'}
+          ],
+          '2학년 2반': [
+            {n:5,name:'정우진',sid:'20205'},
+            {n:6,name:'한지민',sid:'20206'},
+            {n:7,name:'유태성',sid:'20207'},
+            {n:8,name:'송예린',sid:'20208'}
+          ]
+        },
+        savedAt: new Date().toISOString()
+      };
+      localStorage.setItem('clipo_dong_students', JSON.stringify(store));
+    }
+  })();
+  refreshDongCards();
+
+  function setListScenario(scenario){
+    document.querySelectorAll('.mt-btn').forEach(b => b.classList.toggle('active', b.dataset.scenario === scenario));
+    const empty = document.getElementById('empty-state');
+    const isEmpty = scenario === 'empty';
+    if (empty) empty.style.display = isEmpty ? 'block' : 'none';
+    // 학년도 섹션 + 페이지 헤더의 활동 추가 버튼 토글
+    document.querySelectorAll('section[data-year]').forEach(sec => {
+      // 2025는 원래 숨김 상태라 데이터 있음 모드에서만 hasData 적용해도 hidden 유지
+      if (sec.dataset.year === '2025') return;
+      sec.style.display = isEmpty ? 'none' : '';
+    });
+    // 페이지 우상단 활동 추가 버튼은 항상 노출 (빈 상태에도 CTA 유지)
+    const headerAddBtn = document.querySelector('.list-main .btn-primary');
+    if (headerAddBtn) headerAddBtn.style.display = '';
+    if (isEmpty) lucide.createIcons();
+  }
+
+  // 등록 직후 토스트
+  (function() {
+    const p = new URLSearchParams(location.search);
+    const reg = p.get('registered');
+    if (reg) {
+      setTimeout(() => showToast(`'${reg}' 학생 등록을 완료했어요`), 200);
+      // URL 정리
+      history.replaceState(null, '', location.pathname);
+    }
+  })();
+
+  let targetCard = null;
+  function toggleDropdown(e, btn) {
+    e.stopPropagation();
+    const dd = btn.closest('.card').querySelector('.card-dropdown');
+    const open = dd.classList.contains('open');
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+    if (!open) dd.classList.add('open');
+  }
+  function openDelModal(e, item) {
+    e.stopPropagation();
+    targetCard = item.closest('.card');
+    const title = targetCard.querySelector('.card-class').textContent.trim();
+    const isDong = !!targetCard.querySelector('.b-dong');
+    const isJayul = !!targetCard.querySelector('.b-jayul');
+    const isJinro = !!targetCard.querySelector('.b-jinro');
+    let msg;
+    if (isDong) {
+      msg = `${title} 동아리를 삭제하시겠습니까?`;
+    } else {
+      const typeLabel = isJayul ? '자율활동' : (isJinro ? '진로활동' : '활동');
+      msg = `${typeLabel} ${title}을 삭제하시겠습니까?`;
+    }
+    document.getElementById('delTitle').textContent = msg;
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.getElementById('delModal').classList.add('open');
+    lucide.createIcons();
+  }
+  function closeDelModal() { document.getElementById('delModal').classList.remove('open'); targetCard = null; }
+
+  // ── 학생 추가 모달 (자율/진로) ──
+  function openAddStudentsModal(e, item) {
+    e.stopPropagation();
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.getElementById('addStudentsModal').classList.add('open');
+    lucide.createIcons();
+  }
+  function closeAddStudentsModal() { document.getElementById('addStudentsModal').classList.remove('open'); }
+  function confirmAddStudents() {
+    closeAddStudentsModal();
+    showToast('학생을 추가했어요');
+  }
+
+  // ── 학생 변경 모달 (동아리) ──
+  let changeStuTargetCard = null;
+  function openChangeStudentsModal(e, item) {
+    e.stopPropagation();
+    changeStuTargetCard = item.closest('.card');
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.getElementById('changeStudentsModal').classList.add('open');
+    lucide.createIcons();
+  }
+  function closeChangeStudentsModal() { document.getElementById('changeStudentsModal').classList.remove('open'); }
+  function confirmChangeStudents() {
+    // 제외된 학생이 있는 시나리오 가정 → 삭제 확인 단계로
+    closeChangeStudentsModal();
+    document.getElementById('changeStuConfirmModal').classList.add('open');
+    lucide.createIcons();
+  }
+  function closeChangeStuConfirm() { document.getElementById('changeStuConfirmModal').classList.remove('open'); }
+  function proceedChangeStudents() {
+    closeChangeStuConfirm();
+    showToast('학생 변경을 완료했어요');
+    changeStuTargetCard = null;
+  }
+
+  // ── 학급 폴더 열기/닫기 ──
+  function toggleStuClass(btn) {
+    const row = btn.closest('.stu-class-row');
+    const children = row.nextElementSibling;
+    const isClassChildren = children && children.classList.contains('stu-class-children');
+    if (!isClassChildren) return;
+    children.classList.toggle('open');
+    btn.classList.toggle('expanded');
+    const icon = btn.querySelector('i');
+    if (icon) {
+      icon.setAttribute('data-lucide', children.classList.contains('open') ? 'chevron-up' : 'chevron-down');
+      lucide.createIcons();
+    }
+  }
+
+  // 학급 체크박스 토글 → 하위 학생 일괄 적용
+  function toggleClassCb(cb) {
+    cb.classList.remove('stu-class-cb-indet');
+    const row = cb.closest('.stu-class-row');
+    const children = row.nextElementSibling;
+    if (children && children.classList.contains('stu-class-children')) {
+      children.querySelectorAll('.stu-cb').forEach(c => c.checked = cb.checked);
+    }
+  }
+  function confirmDelete() {
+    if (targetCard) {
+      const name = targetCard.querySelector('.card-class').textContent.trim();
+      const isDong = !!targetCard.querySelector('.b-dong');
+      const isJayul = !!targetCard.querySelector('.b-jayul');
+      const isJinro = !!targetCard.querySelector('.b-jinro');
+      const type = isDong ? 'dong' : (isJayul ? 'jayul' : (isJinro ? 'jinro' : null));
+      const grid = targetCard.closest('.cards-grid');
+      targetCard.remove();
+      if (grid && grid.children.length === 0) grid.closest('section').remove();
+      // 동아리면 학생 데이터도 정리
+      if (isDong) {
+        const store = getDongStore();
+        if (store[name]) { delete store[name]; localStorage.setItem('clipo_dong_students', JSON.stringify(store)); }
+      }
+      // 사용자 추가 카드 영속화 목록에서도 제거
+      if (type) removeCustomCard(name, type);
+      showToast(`'${name}' 카드를 삭제했어요`);
+    }
+    closeDelModal();
+  }
+
+  let editTargetCard = null;
+  function openEditModal(e, item) {
+    e.stopPropagation();
+    editTargetCard = item.closest('.card');
+    const cur = editTargetCard.querySelector('.card-class').textContent.trim();
+    document.getElementById('editDongInput').value = cur;
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+    document.getElementById('editDongModal').classList.add('open');
+    updateEditDongBtn();
+    lucide.createIcons();
+    setTimeout(() => { const inp = document.getElementById('editDongInput'); inp.focus(); inp.select(); }, 50);
+  }
+  function closeEditDongModal() {
+    document.getElementById('editDongModal').classList.remove('open');
+    editTargetCard = null;
+  }
+  function updateEditDongBtn() {
+    const v = document.getElementById('editDongInput').value.trim();
+    const btn = document.getElementById('editDongSubmitBtn');
+    btn.disabled = !v;
+    btn.classList.toggle('active', !!v);
+    btn.classList.toggle('disabled', !v);
+  }
+  function saveEditDong() {
+    if (!editTargetCard) return;
+    const newName = document.getElementById('editDongInput').value.trim();
+    if (!newName) return;
+    const oldName = editTargetCard.querySelector('.card-class').textContent.trim();
+    if (newName === oldName) { closeEditDongModal(); return; }
+    // 자기 자신 제외 동아리명 중복 검증
+    const otherDongNames = Array.from(document.querySelectorAll('.badge-type.b-dong'))
+      .map(b => b.closest('.card'))
+      .filter(card => card && card !== editTargetCard)
+      .map(card => card.querySelector('.card-class')?.textContent.trim());
+    if (otherDongNames.includes(newName)) {
+      showToast(`'${newName}' 동아리가 이미 등록되어 있어요`);
+      return;
+    }
+    // localStorage 동아리명 키 이전
+    const store = getDongStore();
+    if (store[oldName]) {
+      store[newName] = store[oldName];
+      delete store[oldName];
+      localStorage.setItem('clipo_dong_students', JSON.stringify(store));
+    }
+    // 사용자 추가 카드 영속화 목록도 동기화
+    const customList = getCustomCards();
+    const idx = customList.findIndex(c => c.title === oldName && c.type === 'dong');
+    if (idx >= 0) {
+      customList[idx].title = newName;
+      localStorage.setItem('clipo_custom_cards', JSON.stringify(customList));
+    }
+    editTargetCard.querySelector('.card-class').textContent = newName;
+    const hasStudents = !!editTargetCard.querySelector('.pb-bg');
+    editTargetCard.setAttribute('onclick', `goDetail(event,'동아리활동','${newName}','b-dong',${hasStudents})`);
+    closeEditDongModal();
+    showToast('동아리명을 수정했어요');
+  }
+  function saveEdit() {
+    if (!editTargetCard) return;
+    const newName = document.getElementById('dongInput').value.trim();
+    if (!newName) return;
+    const oldName = editTargetCard.querySelector('.card-class').textContent.trim();
+    // 자기 자신 제외 동아리명 중복 검증
+    const otherDongNames = Array.from(document.querySelectorAll('.badge-type.b-dong'))
+      .map(b => b.closest('.card'))
+      .filter(card => card && card !== editTargetCard)
+      .map(card => card.querySelector('.card-class')?.textContent.trim());
+    if (otherDongNames.includes(newName)) {
+      showToast(`'${newName}' 동아리가 이미 등록되어 있어요`);
+      return;
+    }
+    // localStorage 동아리명 키 이전
+    const store = getDongStore();
+    if (store[oldName]) {
+      store[newName] = store[oldName];
+      delete store[oldName];
+      localStorage.setItem('clipo_dong_students', JSON.stringify(store));
+    }
+    // 사용자 추가 카드 영속화 목록도 동기화
+    const customList = getCustomCards();
+    const idx = customList.findIndex(c => c.title === oldName && c.type === 'dong');
+    if (idx >= 0) {
+      customList[idx].title = newName;
+      localStorage.setItem('clipo_custom_cards', JSON.stringify(customList));
+    }
+    editTargetCard.querySelector('.card-class').textContent = newName;
+    const hasStudents = !!editTargetCard.querySelector('.pb-bg');
+    editTargetCard.setAttribute('onclick', `goDetail(event,'동아리활동','${newName}','b-dong',${hasStudents})`);
+    closeAddModal();
+    showToast('동아리명을 수정했어요');
+  }
+
+  let _toastTimer = null;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    lucide.createIcons();
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+  }
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.card-dropdown.open').forEach(d => d.classList.remove('open'));
+  });
+
+  let currentType = 'jayul';
+  let modalMode = 'create';
+  const CLASS_DATA = {
+    '2026': {
+      '1': ['1반','2반','3반','4반','5반','6반','7반','8반','9반','10반'],
+      '2': ['1반','2반','3반','4반','5반','6반','7반','8반','9반','10반'],
+      '3': ['1반','2반','3반','4반','5반','6반','7반','8반','9반','10반']
+    },
+    '2027': {}
+  };
+
+  function openAddModal() {
+    modalMode = 'create';
+    editTargetCard = null;
+    document.getElementById('modalTitle').textContent = '활동 추가';
+    document.getElementById('submitBtn').textContent = '저장';
+    document.getElementById('yearSelect').disabled = false;
+    document.querySelectorAll('.type-btn').forEach(b => b.disabled = false);
+    document.getElementById('yearSelect').value = '2026';
+    onYearChange();
+    selectType('jayul');
+    document.getElementById('dongInput').value = '';
+    document.getElementById('addModal').classList.add('open');
+    updateSubmit();
+  }
+  function closeAddModal() {
+    document.getElementById('addModal').classList.remove('open');
+    document.getElementById('yearSelect').disabled = false;
+    document.querySelectorAll('.type-btn').forEach(b => b.disabled = false);
+    editTargetCard = null;
+    modalMode = 'create';
+  }
+  function selectType(type) {
+    currentType = type;
+    document.querySelectorAll('.type-btn').forEach((b,i) => b.classList.toggle('selected', ['jayul','jinro','dong'][i] === type));
+    document.getElementById('classField').style.display = type !== 'dong' ? 'block' : 'none';
+    document.getElementById('dongField').style.display  = type === 'dong' ? 'block' : 'none';
+    // 유형 전환 시 학급 dropdown의 '등록됨' 상태 재계산
+    if (type !== 'dong' && document.getElementById('gradeSelect').value) {
+      onGradeChange();
+    }
+    updateSubmit();
+  }
+  function getRegisteredClassTitles(typeClass, year) {
+    const set = new Set();
+    document.querySelectorAll(`section[data-year="${year}"] .badge-type.${typeClass}`).forEach(b => {
+      const card = b.closest('.card');
+      const t = card ? card.querySelector('.card-class')?.textContent.trim() : '';
+      if (t) set.add(t);
+    });
+    return set;
+  }
+  function onYearChange() {
+    const year = document.getElementById('yearSelect').value;
+    const grades = Object.keys(CLASS_DATA[year] || {});
+    const gSel = document.getElementById('gradeSelect');
+    const bSel = document.getElementById('banSelect');
+    gSel.innerHTML = '<option value="">학년</option>' + grades.map(g => `<option value="${g}">${g}학년</option>`).join('');
+    bSel.innerHTML = '<option value="">반</option>';
+    bSel.disabled = true;
+    document.getElementById('classSelectWrap').style.display = grades.length ? 'block' : 'none';
+    document.getElementById('emptyNotice').style.display = grades.length ? 'none' : 'block';
+    updateSubmit();
+  }
+  function onGradeChange() {
+    const year = document.getElementById('yearSelect').value;
+    const grade = document.getElementById('gradeSelect').value;
+    const bSel = document.getElementById('banSelect');
+    if (!grade) {
+      bSel.innerHTML = '<option value="">반</option>';
+      bSel.disabled = true;
+    } else {
+      const bans = (CLASS_DATA[year] && CLASS_DATA[year][grade]) || [];
+      const typeClass = { jayul:'b-jayul', jinro:'b-jinro', dong:'b-dong' }[currentType];
+      const taken = getRegisteredClassTitles(typeClass, year);
+      bSel.innerHTML = '<option value="">반</option>' + bans.map(b => {
+        const title = `${grade}학년 ${b}`;
+        const isTaken = taken.has(title);
+        return `<option value="${b}"${isTaken ? ' disabled' : ''}>${b}${isTaken ? ' (등록됨)' : ''}</option>`;
+      }).join('');
+      bSel.disabled = false;
+      bSel.value = '';
+    }
+    updateSubmit();
+  }
+  function updateSubmit() {
+    let ready;
+    if (modalMode === 'edit') {
+      const v = document.getElementById('dongInput').value.trim();
+      const orig = editTargetCard ? editTargetCard.querySelector('.card-class').textContent : '';
+      ready = v.length > 0 && v !== orig;
+    } else {
+      const year = document.getElementById('yearSelect').value;
+      const hasClasses = Object.keys(CLASS_DATA[year] || {}).length > 0;
+      if (currentType === 'dong') {
+        ready = document.getElementById('dongInput').value.trim().length > 0;
+      } else {
+        const g = document.getElementById('gradeSelect').value;
+        const b = document.getElementById('banSelect').value;
+        ready = hasClasses && !!g && !!b;
+      }
+    }
+    const btn = document.getElementById('submitBtn');
+    btn.className = 'btn-submit ' + (ready ? 'active' : 'disabled');
+    btn.disabled = !ready;
+  }
+  function submitModal() {
+    if (modalMode === 'edit') saveEdit();
+    else createCard();
+  }
+  // ── 사용자가 추가한 카드 영속화 ──
+  function getCustomCards() {
+    try { return JSON.parse(localStorage.getItem('clipo_custom_cards') || '[]'); }
+    catch(e) { return []; }
+  }
+  function saveCustomCard(entry) {
+    const list = getCustomCards();
+    list.push(entry);
+    localStorage.setItem('clipo_custom_cards', JSON.stringify(list));
+  }
+  function removeCustomCard(title, type) {
+    const list = getCustomCards().filter(c => !(c.title === title && c.type === type));
+    localStorage.setItem('clipo_custom_cards', JSON.stringify(list));
+  }
+
+  // 카드 DOM 생성 (메타 → DOM)
+  function buildCardEl({ year, type, title }) {
+    const typeLabel = { jayul:'자율활동', jinro:'진로활동', dong:'동아리활동' }[type];
+    const typeClass = { jayul:'b-jayul', jinro:'b-jinro', dong:'b-dong' }[type];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.dataset.custom = '1';
+    card.dataset.type = type;
+    if (type === 'dong') {
+      card.setAttribute('onclick', `goDetail(event,'동아리활동','${title}','b-dong',false)`);
+    } else {
+      card.setAttribute('onclick', `goDetail(event,'${typeLabel}','${title}','${typeClass}',true,true)`);
+    }
+    const dropdownItems = type === 'dong'
+      ? `<div class="dropdown-item" onclick="openEditModal(event,this)"><i data-lucide="pencil" style="width:14px;height:14px;"></i>동아리명 수정</div><div class="dropdown-item" onclick="openChangeStudentsModal(event,this)"><i data-lucide="users" style="width:14px;height:14px;"></i>학생 변경</div><div class="dropdown-item danger" onclick="openDelModal(event,this)"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>활동 삭제</div>`
+      : `<div class="dropdown-item" onclick="openAddStudentsModal(event,this)"><i data-lucide="user-plus" style="width:14px;height:14px;"></i>학생 추가</div><div class="dropdown-item danger" onclick="openDelModal(event,this)"><i data-lucide="trash-2" style="width:14px;height:14px;"></i>활동 삭제</div>`;
+    const bottomBlock = type === 'dong'
+      ? `<div style="display:flex;align-items:center;gap:6px;padding:6px 0"><i data-lucide="user-plus" style="width:14px;height:14px;color:#b3b6bd"></i><span style="font-size:13px;color:#b3b6bd">학생 등록 전</span></div>`
+      : `<div class="divider"></div><div style="display:flex;justify-content:space-between;margin-bottom:8px;"><span style="font-size:14px;color:#6d7381;">기록 진행률</span><span style="font-size:14px;color:#3b3f4c;font-weight:500;">0 / 0명</span></div><div class="pb-bg"><div class="pb-fill pb-${type}" style="width:0%;"></div></div>`;
+    card.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <span class="badge-type ${typeClass}">${typeLabel}</span>
+        <button class="menu-btn" onclick="toggleDropdown(event,this)"><i data-lucide="more-horizontal" style="width:16px;height:16px;"></i></button>
+      </div>
+      <div class="card-dropdown">${dropdownItems}</div>
+      <p class="card-class">${title}</p>
+      ${bottomBlock}`;
+    return card;
+  }
+
+  // grid 찾기 (없으면 학년도 섹션 생성)
+  function getOrCreateYearGrid(year) {
+    let grid = null;
+    document.querySelectorAll('section[data-year]').forEach(s => { if (s.dataset.year===year) grid=s.querySelector('.cards-grid'); });
+    if (!grid) {
+      const sec = document.createElement('section');
+      sec.dataset.year = year; sec.style.marginBottom = '40px';
+      sec.innerHTML = `<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;"><span class="year-title">${year}학년도</span></div><div class="cards-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;"></div>`;
+      document.querySelector('.list-main').insertBefore(sec, document.querySelector('.list-main').children[1]);
+      grid = sec.querySelector('.cards-grid');
+    }
+    return grid;
+  }
+
+  function insertCardIntoGrid(grid, card) {
+    const firstDemo = grid.querySelector('.demo-card');
+    if (firstDemo) grid.insertBefore(card, firstDemo);
+    else grid.appendChild(card);
+  }
+
+  function createCard() {
+    const year = document.getElementById('yearSelect').value;
+    const typeLabel = { jayul:'자율활동', jinro:'진로활동', dong:'동아리활동' }[currentType];
+    const typeClass = { jayul:'b-jayul', jinro:'b-jinro', dong:'b-dong' }[currentType];
+    const title = currentType === 'dong'
+      ? document.getElementById('dongInput').value.trim()
+      : `${document.getElementById('gradeSelect').value}학년 ${document.getElementById('banSelect').value}`;
+    // 중복 검증 (한 계정 내 동일 동아리명 / 동일 학급+유형 1개)
+    const existingNames = Array.from(document.querySelectorAll(`.badge-type.${typeClass}`)).map(b => {
+      const card = b.closest('.card');
+      const t = card ? card.querySelector('.card-class')?.textContent.trim() : '';
+      return t;
+    });
+    if (existingNames.includes(title)) {
+      const msg = currentType === 'dong'
+        ? `'${title}' 동아리가 이미 등록되어 있어요`
+        : `'${title}' ${typeLabel}이 이미 등록되어 있어요`;
+      showToast(msg);
+      return;
+    }
+    const card = buildCardEl({ year, type: currentType, title });
+    const grid = getOrCreateYearGrid(year);
+    insertCardIntoGrid(grid, card);
+    // localStorage 영속화
+    saveCustomCard({ year, type: currentType, title });
+    lucide.createIcons();
+    closeAddModal();
+    document.getElementById('dongInput').value = '';
+    document.getElementById('gradeSelect').value = '';
+    document.getElementById('banSelect').innerHTML = '<option value="">반</option>';
+    document.getElementById('banSelect').disabled = true;
+    selectType('jayul'); updateSubmit();
+  }
+
+  // 페이지 로드 시 저장된 사용자 카드 복원
+  (function restoreCustomCards() {
+    const list = getCustomCards();
+    list.forEach(entry => {
+      // 이미 DOM에 있는지(하드코딩 카드와 중복) 확인
+      const typeClass = { jayul:'b-jayul', jinro:'b-jinro', dong:'b-dong' }[entry.type];
+      const dup = Array.from(document.querySelectorAll(`.badge-type.${typeClass}`)).some(b => {
+        const c = b.closest('.card');
+        return c && c.querySelector('.card-class')?.textContent.trim() === entry.title;
+      });
+      if (dup) return;
+      const card = buildCardEl(entry);
+      const grid = getOrCreateYearGrid(entry.year);
+      insertCardIntoGrid(grid, card);
+    });
+    lucide.createIcons();
+    refreshDongCards();
+  })();
+</script>
+</body>
+</html>
