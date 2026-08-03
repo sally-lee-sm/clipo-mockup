@@ -256,6 +256,19 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .t-name { font-size:15px; font-weight:500; flex:1; }
 .t-subj { font-size:13px; color:#6d7381; }
 
+/* 초대 링크 팝오버 */
+.link-popover { position:absolute; top:38px; right:0; background:#fff; border-radius:10px; box-shadow:0 0 1px #2226314D, 0 12px 32px rgba(0,0,0,.18); padding:18px; width:340px; z-index:600; display:none; text-align:left; }
+.link-popover.open { display:block; }
+.lp-title { font-size:14px; font-weight:600; display:flex; align-items:center; gap:6px; margin-bottom:6px; color:#222631; }
+.lp-desc { font-size:12px; color:#6d7381; line-height:1.5; margin-bottom:12px; }
+.lp-url { display:flex; gap:6px; margin-bottom:8px; }
+.lp-url input { flex:1; height:34px; border:1px solid #dde1e8; border-radius:6px; padding:0 10px; font-size:12px; color:#3b3f4c; font-family:'Courier New', monospace; background:#f9fafb; }
+.lp-meta { font-size:11px; color:#9ea3ad; }
+
+/* 선생님 목록 아이템 확장 (범위 뱃지 포함) */
+.t-item { align-items:center; }
+.t-name { flex:1; }
+
 /* 프리셋 카드 (수업 / 수업+세특) */
 .preset-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px; }
 .preset-card { padding:16px 18px; border:1.5px solid #dde1e8; border-radius:10px; cursor:pointer; transition:all .12s; background:#fff; position:relative; }
@@ -300,11 +313,16 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .stu-comment-chip.empty { background:transparent; color:#b3b6bd; border:1px dashed #dde1e8; opacity:0; transition:opacity .15s; }
 .score-table tr:hover .stu-comment-chip.empty { opacity:1; }
 
-/* ===== 댓글 사이드 패널 (2차 채점자) ===== */
-.comment-side { position:fixed; top:56px; right:0; bottom:0; width:420px; background:#fff; border-left:1px solid #dde1e8; z-index:100; display:flex; flex-direction:column; transform:translateX(100%); transition:transform .25s ease; box-shadow:-4px 0 16px rgba(0,0,0,.05); }
-.comment-side.open { transform:translateX(0); }
-.cs-head { padding:18px 20px 14px; border-bottom:1px solid #f1f3f5; }
-.cs-head-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+/* ===== 댓글 플로팅 창 (드래그 가능) ===== */
+.comment-side { position:fixed; top:100px; left:auto; right:24px; bottom:auto; width:420px; height:580px; max-height:calc(100vh - 120px); background:#fff; border:1px solid #dde1e8; border-radius:12px; z-index:100; display:none; flex-direction:column; box-shadow:0 12px 40px rgba(0,0,0,.18); overflow:hidden; }
+.comment-side.open { display:flex; }
+.comment-side.min { height:52px; overflow:hidden; }
+.comment-side.min .cs-filter-row, .comment-side.min .cs-body, .comment-side.min .comment-write { display:none; }
+.cs-head { padding:14px 16px 10px; border-bottom:1px solid #f1f3f5; cursor:grab; background:linear-gradient(to bottom, #f9fafb, #fff); }
+.cs-head:active { cursor:grabbing; }
+.cs-head-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.cs-drag-hint { display:inline-flex; align-items:center; gap:6px; color:#9ea3ad; margin-right:6px; }
+.cs-drag-hint svg { width:14px; height:14px; }
 .cs-title { font-size:17px; font-weight:600; display:flex; align-items:center; gap:8px; }
 .cs-tab-info { font-size:13px; color:#6d7381; display:flex; align-items:center; gap:8px; }
 .cs-tab-info b { color:#3151c4; font-weight:600; }
@@ -321,16 +339,18 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .comment-item { padding:14px 20px; border-bottom:1px solid #f1f3f5; }
 .comment-item:last-child { border-bottom:none; }
 .comment-item.highlight { background:#f4f8ff; }
-.ci-head { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
-.ci-avatar { width:30px; height:30px; border-radius:50%; background:#e9f2ff; color:#365eef; display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0; }
+.ci-head { display:flex; align-items:center; gap:6px; margin-bottom:6px; flex-wrap:wrap; }
 .ci-nm { display:flex; align-items:center; gap:6px; flex:1; min-width:0; }
 .ci-name { font-size:14px; font-weight:600; }
-.ci-role { font-size:10px; font-weight:500; padding:2px 6px; border-radius:4px; }
+.ci-role { font-size:10px; font-weight:600; padding:2px 6px; border-radius:4px; }
 .ci-role.owner { background:#e9f2ff; color:#3151c4; }
 .ci-role.reviewer { background:#ebdfff; color:#5d26c4; }
-.ci-time { font-size:11px; color:#9ea3ad; flex-shrink:0; }
-.ci-body { font-size:14px; color:#3b3f4c; line-height:1.55; padding-left:38px; }
-.ci-target { font-size:12px; color:#3151c4; background:#e9f2ff; border-radius:4px; padding:3px 8px; display:inline-flex; align-items:center; gap:4px; margin-left:38px; margin-top:6px; cursor:pointer; }
+.ci-scope { font-size:10px; font-weight:500; padding:2px 6px; border-radius:4px; border:1px solid; }
+.ci-scope.basic { background:#f4f8ff; color:#3151c4; border-color:#ccdfff; }
+.ci-scope.plus { background:#faf5ff; color:#5d26c4; border-color:#d5bfff; }
+.ci-time { font-size:11px; color:#9ea3ad; flex-shrink:0; margin-left:auto; }
+.ci-body { font-size:14px; color:#3b3f4c; line-height:1.55; padding-left:2px; }
+.ci-target { font-size:12px; color:#3151c4; background:#e9f2ff; border-radius:4px; padding:3px 8px; display:inline-flex; align-items:center; gap:4px; margin-top:6px; cursor:pointer; }
 .ci-target:hover { background:#ccdfff; }
 .ci-target svg { width:11px; height:11px; }
 
@@ -373,13 +393,13 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .ci-unread-dot { width:8px; height:8px; border-radius:50%; background:#f2525f; margin-right:2px; flex-shrink:0; }
 .comment-item.unread .ci-name { color:#3151c4; }
 
-.ci-replies { margin:8px 0 0 38px; padding-left:12px; border-left:2px solid #dde1e8; display:flex; flex-direction:column; gap:10px; }
+.ci-replies { margin:8px 0 0 12px; padding-left:12px; border-left:2px solid #dde1e8; display:flex; flex-direction:column; gap:10px; }
 .ci-reply { padding:8px 0; }
 .ci-reply .ci-head { margin-bottom:4px; }
-.ci-reply .ci-avatar { width:24px; height:24px; font-size:10px; }
-.ci-reply .ci-body { font-size:13px; padding-left:32px; line-height:1.5; }
+.ci-reply .ci-body { font-size:13px; padding-left:2px; line-height:1.5; }
 
-.ci-reply-form { margin:8px 0 0 38px; padding-left:12px; border-left:2px dashed #ccdfff; display:none; }
+.ci-actions { margin:8px 0 0 0; }
+.ci-reply-form { margin:8px 0 0 12px; padding-left:12px; border-left:2px dashed #ccdfff; display:none; }
 .ci-reply-form.open { display:block; }
 .ci-reply-form textarea { width:100%; min-height:52px; border:1px solid #d9d9d9; border-radius:6px; padding:8px 10px; font-size:13px; font-family:inherit; resize:vertical; }
 .ci-reply-form .actions { display:flex; justify-content:flex-end; gap:6px; margin-top:6px; }
@@ -1404,21 +1424,18 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       <div class="scoring-item">
         <div class="si-head">
           <div>
-            <div class="si-title">(고) 자기주도 독서 활동 <span style="color:#f2525f;font-size:12px;margin-left:6px">● 학생별 댓글 3</span></div>
-            <div class="si-meta">26.07.14 최종 확정 · 교내 공개 · 2-1반 학생별 채점 결과</div>
+            <div class="si-title">(고) 자기주도 독서 활동</div>
+            <div class="si-meta">26.07.14 최종 확정 · 교내 공개</div>
           </div>
           <div class="si-status">
             <span class="badge bd-done"><i data-lucide="check" style="width:11px;height:11px"></i>채점 완료</span>
           </div>
         </div>
         <table class="score-table">
-          <thead><tr><th>학번</th><th>이름</th><th>총점</th><th>주장의 명확성</th><th>근거의 타당성</th><th>표현과 어법</th><th>댓글</th></tr></thead>
+          <thead><tr><th>학급</th><th>선생님 채점</th><th>원점수 평균</th><th>AI 채점</th><th>결과</th></tr></thead>
           <tbody>
-            <tr><td>10101</td><td class="left">김일일</td><td><b>18</b>/20</td><td>7/8</td><td>7/8</td><td>4/4</td><td><span class="stu-comment-chip" onclick="openCommentSide('수행평가 채점'); setCommentContext('2-1반 · 김일일')"><i data-lucide="message-circle"></i>2<span class="unread-dot"></span></span></td></tr>
-            <tr><td>10102</td><td class="left">김이이</td><td><b>15</b>/20</td><td>5/8</td><td>7/8</td><td>3/4</td><td><span class="stu-comment-chip empty" onclick="openCommentSide('수행평가 채점'); setCommentContext('2-1반 · 김이이')"><i data-lucide="message-circle-plus"></i>남기기</span></td></tr>
-            <tr><td>10103</td><td class="left">김삼삼</td><td><b>17</b>/20</td><td>8/8</td><td>5/8</td><td>4/4</td><td><span class="stu-comment-chip" onclick="openCommentSide('수행평가 채점'); setCommentContext('2-1반 · 김삼삼')"><i data-lucide="message-circle"></i>1</span></td></tr>
-            <tr><td>10104</td><td class="left">이사사</td><td><b>19</b>/20</td><td>8/8</td><td>7/8</td><td>4/4</td><td><span class="stu-comment-chip empty" onclick="openCommentSide('수행평가 채점'); setCommentContext('2-1반 · 이사사')"><i data-lucide="message-circle-plus"></i>남기기</span></td></tr>
-            <tr><td>10105</td><td class="left">이오오</td><td><b>13</b>/20</td><td>5/8</td><td>5/8</td><td>3/4</td><td><span class="stu-comment-chip empty" onclick="openCommentSide('수행평가 채점'); setCommentContext('2-1반 · 이오오')"><i data-lucide="message-circle-plus"></i>남기기</span></td></tr>
+            <tr><td class="left">1-1반</td><td><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>20/20</td><td><b>82.4</b></td><td><span class="badge bd-done">완료</span></td><td><button class="btn-subtle btn-sm">결과 확인</button></td></tr>
+            <tr><td class="left">1-10반</td><td><div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>18/18</td><td><b>79.8</b></td><td><span class="badge bd-done">완료</span></td><td><button class="btn-subtle btn-sm">결과 확인</button></td></tr>
           </tbody>
         </table>
       </div>
@@ -1458,7 +1475,21 @@ body.nav-expanded .main-wrap { margin-left:222px; }
     </div>
     <div class="m-body">
       <div class="field">
-        <div class="field-label">함께 볼 선생님</div>
+        <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;">
+          <span>함께 볼 선생님 <span style="color:#6d7381;font-weight:400">(현재 3명 선택됨)</span></span>
+          <button class="btn-subtle btn-sm" onclick="openLinkPopover(this, event)" style="height:32px;font-size:13px;position:relative;">
+            <i data-lucide="link" style="width:14px;height:14px"></i>초대 링크 생성
+            <div class="link-popover" id="linkPopover">
+              <div class="lp-title"><i data-lucide="link" style="width:15px;height:15px;color:#365eef"></i>초대 링크</div>
+              <div class="lp-desc">이 링크로 접속하면 같은 학교 선생님이 이 수업을 검토할 수 있어요. 계정 로그인은 필요해요.</div>
+              <div class="lp-url">
+                <input readonly value="https://clipo.ai/invite/2NqXA9kZm2LpQ" id="linkUrl">
+                <button class="btn-subtle btn-sm" onclick="copyLinkUrl(event)">복사</button>
+              </div>
+              <div class="lp-meta">만료 없음 · 언제든 회수 가능</div>
+            </div>
+          </button>
+        </div>
         <div class="teacher-search">
           <input class="text-input" placeholder="이름·과목으로 검색 (예: 박수정, 국어)">
         </div>
@@ -1467,33 +1498,42 @@ body.nav-expanded .main-wrap { margin-left:222px; }
             <div class="t-check checked"><i data-lucide="check"></i></div>
             <div class="t-name">박수정 선생님</div>
             <div class="t-subj">국어</div>
+            <span class="rv-preset plus" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업 + 세특</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check checked"><i data-lucide="check"></i></div>
             <div class="t-name">김민준 선생님</div>
             <div class="t-subj">국어</div>
+            <span class="rv-preset plus" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업 + 세특</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check checked"><i data-lucide="check"></i></div>
             <div class="t-name">이지혜 선생님</div>
             <div class="t-subj">역사</div>
+            <span class="rv-preset basic" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check"></div>
             <div class="t-name">최민아 선생님</div>
             <div class="t-subj">사회</div>
+            <span style="font-size:12px;color:#9ea3ad;">미공유</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check"></div>
             <div class="t-name">정하나 선생님</div>
             <div class="t-subj">수학</div>
+            <span style="font-size:12px;color:#9ea3ad;">미공유</span>
           </div>
         </div>
         <div class="field-help">같은 학교 소속 선생님 중에서 선택해요. 교과·인원 제한이 없어요.</div>
       </div>
 
       <div class="field">
-        <div class="field-label">공유 범위 <span style="color:#6d7381;font-weight:400">(선생님별로 다르게 지정할 수 있어요)</span></div>
+        <div class="field-label">공유 범위</div>
+        <div style="font-size:13px;color:#3151c4;background:#f4f8ff;border:1px solid #ccdfff;border-radius:6px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+          <i data-lucide="info" style="width:14px;height:14px;flex-shrink:0"></i>
+          <span>위에서 선택한 <b id="selectedCount">3명</b>의 선생님에게 공유 범위를 일괄 적용합니다.</span>
+        </div>
         <div class="preset-list">
           <div class="preset-card on" onclick="pickPreset(this, 'basic')">
             <div class="preset-card-hd">
@@ -1539,11 +1579,12 @@ body.nav-expanded .main-wrap { margin-left:222px; }
      Comment Side Panel (개선 v2 — 탭 정보 · 필터 · 확인 원버튼 · 대댓글)
 ================================================ -->
 <aside class="comment-side" id="commentSide">
-  <div class="cs-head">
+  <div class="cs-head" id="csHead">
     <div class="cs-head-top">
-      <div class="cs-title"><i data-lucide="message-circle" style="width:18px;height:18px;color:#365eef"></i>댓글</div>
+      <div class="cs-title"><span class="cs-drag-hint" title="드래그로 이동"><i data-lucide="grip-vertical"></i></span><i data-lucide="message-circle" style="width:17px;height:17px;color:#365eef"></i>댓글</div>
       <div style="display:flex;gap:2px;">
-        <button class="m-close" onclick="collapseCommentSide()" title="접기"><i data-lucide="chevrons-right"></i></button>
+        <button class="m-close" onclick="minimizeCommentSide()" title="최소화"><i data-lucide="minus"></i></button>
+        <button class="m-close" onclick="hideCommentAll()" title="닫기"><i data-lucide="x"></i></button>
       </div>
     </div>
     <div class="cs-tab-info">
@@ -1570,6 +1611,9 @@ body.nav-expanded .main-wrap { margin-left:222px; }
     <span class="cs-count-text">총 <b id="csTotalCnt">3</b>개 댓글</span>
   </div>
   <div class="cs-body" id="csBody">
+    <!-- 댓글 목록은 renderComments()에서 동적 렌더링됨 -->
+  </div>
+  <div style="display:none;" id="csBodyLegacyPlaceholder" aria-hidden="true">
     <div class="comment-item highlight unread">
       <div class="ci-head">
         <span class="ci-unread-dot" title="안 읽은 댓글"></span>
@@ -1690,18 +1734,6 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       </div>
     </div>
 
-    <!-- 삭제된 댓글 예시 -->
-    <div class="comment-item deleted">
-      <div class="ci-head">
-        <div class="ci-avatar" style="background:#fff7ed;color:#ea580c">이지</div>
-        <div class="ci-nm">
-          <span class="ci-name" style="color:#9ea3ad;">이지혜 선생님</span>
-          <span class="ci-role reviewer">2차</span>
-        </div>
-        <span class="ci-time">07/30 09:41</span>
-      </div>
-      <div class="ci-body-deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다.</div>
-    </div>
   </div>
   <div class="comment-write">
     <div class="cw-context" id="cwContext">
@@ -1847,6 +1879,19 @@ function pickPreset(el, key) {
   el.parentElement.querySelectorAll('.preset-card').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
 }
+function openLinkPopover(btn, e) {
+  if (e) e.stopPropagation();
+  const pop = btn.querySelector('.link-popover');
+  pop.classList.toggle('open');
+  lucide.createIcons();
+}
+function copyLinkUrl(e) {
+  if (e) e.stopPropagation();
+  const inp = document.getElementById('linkUrl');
+  inp.select();
+  document.execCommand('copy');
+  toastMsg('초대 링크가 복사되었어요.');
+}
 
 function saveShare() {
   closeShareModal();
@@ -1855,16 +1900,114 @@ function saveShare() {
 }
 
 // 탭별 공유된 선생님 수 (목업 데모용)
-const SHARED_COUNT_BY_TAB = { '수업 홈':3, '수행평가 설계':2, '과제물 관리':0, '수행평가 채점':3, '세부능력 및 특기사항 지원':1, '관찰 기록':3 };
-const COMMENT_COUNT_BY_TAB = { '수업 홈':3, '수행평가 설계':1, '수행평가 채점':3, '관찰 기록':1 };
+const SHARED_COUNT_BY_TAB = { '수업 홈':3, '수행평가 설계':2, '과제물 관리':2, '수행평가 채점':3, '세부능력 및 특기사항 지원':2, '관찰 기록':3 };
+
+// ===== 탭별 댓글 데이터 (v0.4 컨텍스트 단위 반영) =====
+// 컨텍스트 형식:
+// - 수업 홈: 화면 전체
+// - 수행평가 설계: 수행평가명
+// - 과제물 관리: 수행평가명 > 학급
+// - 수행평가 채점: 수행평가명 > 학급 > 학생
+// - 세특 지원: 학급
+const COMMENTS_BY_TAB = {
+  '수업 홈': [
+    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 10:08', body:'수업 홈에서 관찰 기록 태그 정리가 잘 되어있네요. 참고할게요.', reacts:[{emoji:'👍',n:1,mine:true}], unread:true }
+  ],
+  '수행평가 설계': [
+    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 10:08', target:'(고) 자기주도 독서 활동', body:'채점기준 A "주장의 명확성" 급간 배점이 8-5-4-3-1로 되어있는데, 4점과 3점 구간이 좀 촘촘해 보여요.', reacts:[{emoji:'👀',n:2,mine:true}], jumpTo:{scene:'reviewer-eval-detail', targetId:'crit-A'}, unread:true,
+      replies:[{ author:'홍길동', role:'owner', scope:null, time:'07/31 10:45', body:'그 부분은 논리 흐름의 미묘한 차이를 잡으려고 나눴어요. 실채점 결과 보고 조정 검토 예정입니다.' }]
+    },
+    { author:'김민준', role:'reviewer', scope:'plus', time:'07/30 15:33', target:'(고) 읽기 자료 분석을 통한 주제 통합 탐구', body:'전체적으로 채점기준이 명확해서 이해가 쉬웠습니다.', reacts:[{emoji:'✅',n:2,mine:true}] }
+  ],
+  '과제물 관리': [
+    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 11:22', target:'(고) 자기주도 독서 활동 > 1-1반', body:'1-1반 미제출 학생 11명은 다른 반에 비해 많네요. 별도 안내가 필요할 것 같아요.', reacts:[], unread:true },
+    { author:'이지혜', role:'reviewer', scope:'basic', time:'07/30 14:12', target:'(고) 읽기 자료 분석을 통한 주제 통합 탐구 > 1-10반', body:'1-10반은 이미 마감 완료됐네요. 진행 잘 되었나 보네요!', reacts:[{emoji:'🎉',n:1,mine:false}] }
+  ],
+  '수행평가 채점': [
+    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 10:08', target:'(고) 자기주도 독서 활동 > 1-1반 > 10101 김일일 학생', body:'김일일 학생 논술 답안, 3번 문항 근거 채점기준 4점으로 봐도 될까요? 자료 인용이 충분해 보여서요.', reacts:[{emoji:'👀',n:2,mine:true},{emoji:'👍',n:1,mine:true}], unread:true,
+      replies:[{ author:'홍길동', role:'owner', scope:null, time:'07/31 10:45', body:'그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요. 필요하면 오후에 함께 볼까요?' }]
+    },
+    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 11:22', target:'(고) 자기주도 독서 활동 > 1-1반 > 10103 김삼삼 학생', body:'김삼삼 학생 주장은 명확한데 근거 부분에서 5점 준 이유가 궁금해요.', reacts:[], unread:true },
+    { author:'김민준', role:'reviewer', scope:'plus', time:'07/30 15:33', target:'(고) 읽기 자료 분석을 통한 주제 통합 탐구 > 1-1반', body:'1-1반 평균 82.4점 잘 나왔네요. 채점기준 잘 잡으신 것 같습니다.', reacts:[{emoji:'✅',n:1,mine:true}] }
+  ],
+  '세부능력 및 특기사항 지원': [
+    { author:'김민준', role:'reviewer', scope:'plus', time:'07/31 09:15', target:'1학년 1반', body:'1학년 1반 세특 초안 봤어요. AI 생성 기록이 학생별 특성을 잘 잡아냈네요.', reacts:[{emoji:'👍',n:1,mine:true}], unread:true },
+    { author:'박수정', role:'reviewer', scope:'plus', time:'07/30 16:40', target:'1학년 10반', body:'1학년 10반은 학생 수가 적어서 개별 특성이 잘 드러나겠어요. 마감 전 한번 더 검토 부탁드려요.', reacts:[] },
+    // 삭제된 댓글 예시
+    { author:'이지혜', role:'reviewer', scope:'basic', time:'07/30 09:41', body:'', deleted:true }
+  ]
+};
+
+function renderComments(tabName) {
+  const body = document.getElementById('csBody');
+  if (!body) return;
+  const list = COMMENTS_BY_TAB[tabName] || [];
+  if (list.length === 0) {
+    body.innerHTML = '<div class="cs-empty">이 탭에는 아직 댓글이 없어요.</div>';
+    document.getElementById('csTotalCnt').textContent = 0;
+    return;
+  }
+  body.innerHTML = list.map((c, i) => renderCommentItem(c, i)).join('');
+  document.getElementById('csTotalCnt').textContent = list.length;
+  lucide.createIcons();
+}
+function renderCommentItem(c, idx) {
+  if (c.deleted) {
+    return '<div class="comment-item deleted"><div class="ci-head"><span class="ci-name" style="color:#9ea3ad;">' + c.author + ' 선생님</span><span class="ci-role reviewer">' + (c.role==='owner'?'1차':'2차') + '</span><span class="ci-time">' + c.time + '</span></div><div class="ci-body-deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다.</div></div>';
+  }
+  const roleClass = c.role === 'owner' ? 'owner' : 'reviewer';
+  const roleLabel = c.role === 'owner' ? '1차' : '2차';
+  const scopeChip = c.scope === 'plus' ? '<span class="ci-scope plus">수업+세특</span>' :
+                   c.scope === 'basic' ? '<span class="ci-scope basic">수업</span>' : '';
+  const unreadDot = c.unread ? '<span class="ci-unread-dot" title="안 읽은 댓글"></span>' : '';
+  const targetChip = c.target ? '<div class="ci-target" onclick="' + (c.jumpTo ? "jumpToTarget('" + c.jumpTo.scene + "','" + c.jumpTo.targetId + "')" : "notReady('해당 위치로 이동')") + '"><i data-lucide="corner-down-right"></i>' + c.target + '</div>' : '';
+  const reactsHTML = (c.reacts || []).map(r =>
+    '<button class="ci-react-btn ' + (r.mine ? 'on' : '') + '" onclick="toggleReact(this, \'' + r.emoji + '\')"><span>' + r.emoji + '</span><span class="rc">' + r.n + '</span></button>'
+  ).join('');
+  const emojiPop = '<button class="ci-react-add" onclick="toggleEmojiPop(this, event)" title="반응 추가"><i data-lucide="smile-plus"></i><div class="emoji-pop"><button onclick="addReact(this,\'👍\')">👍</button><button onclick="addReact(this,\'❤️\')">❤️</button><button onclick="addReact(this,\'👀\')">👀</button><button onclick="addReact(this,\'✅\')">✅</button><button onclick="addReact(this,\'🎉\')">🎉</button></div></button>';
+  const ownMenuHTML = (c.author === '김민준' || c.author === '박수정') ? '' :
+    '<div class="ci-own-menu-wrap"><button class="ci-own-menu-btn" onclick="toggleOwnMenu(this, event)" title="내 댓글 관리"><i data-lucide="more-vertical"></i></button><div class="ci-own-menu"><button onclick="editComment(this)"><i data-lucide="pencil"></i>수정</button><button class="danger" onclick="deleteComment(this)"><i data-lucide="trash-2"></i>삭제</button></div></div>';
+  const repliesHTML = (c.replies || []).map(r => {
+    const rRoleClass = r.role === 'owner' ? 'owner' : 'reviewer';
+    const rRoleLabel = r.role === 'owner' ? '1차' : '2차';
+    const rScope = r.scope === 'plus' ? '<span class="ci-scope plus">수업+세특</span>' : r.scope === 'basic' ? '<span class="ci-scope basic">수업</span>' : '';
+    return '<div class="ci-reply"><div class="ci-head"><span class="ci-nm"><span class="ci-name">' + r.author + ' 선생님</span><span class="ci-role ' + rRoleClass + '">' + rRoleLabel + '</span>' + rScope + '</span><span class="ci-time">' + r.time + '</span></div><div class="ci-body">' + r.body + '</div></div>';
+  }).join('');
+  const repliesBlock = repliesHTML ? '<div class="ci-replies">' + repliesHTML + '</div>' : '';
+  return '<div class="comment-item ' + (c.unread ? 'unread' : '') + '">'
+    + '<div class="ci-head">' + unreadDot + '<span class="ci-nm"><span class="ci-name">' + c.author + ' 선생님</span><span class="ci-role ' + roleClass + '">' + roleLabel + '</span>' + scopeChip + '</span><span class="ci-time">' + c.time + '</span></div>'
+    + '<div class="ci-body">' + c.body + '</div>'
+    + targetChip
+    + '<div class="ci-actions">' + reactsHTML + emojiPop + '<button class="ci-reply-btn" onclick="toggleReplyForm(this)"><i data-lucide="corner-down-right" style="width:12px;height:12px"></i>답글</button>' + ownMenuHTML + '</div>'
+    + repliesBlock
+    + '<div class="ci-reply-form"><textarea placeholder="답글을 남겨주세요"></textarea><div class="actions"><button class="btn-ghost btn-sm" onclick="toggleReplyForm(this)">취소</button><button class="btn-solid btn-sm" onclick="submitReply(this)">답글 등록</button></div></div>'
+    + '</div>';
+}
+function updateCommentCount() {
+  const tabName = document.getElementById('csTabName').textContent;
+  const list = COMMENTS_BY_TAB[tabName] || [];
+  return list.filter(c => c.unread).length;
+}
+const COMMENT_COUNT_BY_TAB = new Proxy({}, {
+  get: (_, tab) => (COMMENTS_BY_TAB[tab] || []).filter(c => c.unread).length
+});
 
 function openCommentSide(target) {
   const t = target || '수행평가 채점';
   document.getElementById('csTabName').textContent = t;
   document.getElementById('csSharedCnt').textContent = SHARED_COUNT_BY_TAB[t] ?? 3;
-  document.getElementById('commentSide').classList.add('open');
+  const side = document.getElementById('commentSide');
+  side.classList.add('open');
+  side.classList.remove('min');
   document.getElementById('commentRail').classList.remove('show');
+  renderComments(t);
+  // 필터 초기화
+  const flabel = document.getElementById('csFilterLabel');
+  if (flabel) flabel.textContent = '전체 보기';
   lucide.createIcons();
+}
+function minimizeCommentSide() {
+  document.getElementById('commentSide').classList.add('min');
 }
 function showCommentRail(target) {
   const cnt = COMMENT_COUNT_BY_TAB[target] ?? 0;
@@ -2133,6 +2276,43 @@ function jumpToTarget(sceneId, targetElId) {
     toastMsg('박수정 선생님이 남긴 위치로 이동했어요.', true);
   }, 150);
 }
+
+// ===== Drag: Comment Side Panel (v0.4 플로팅) =====
+(function() {
+  const side = document.getElementById('commentSide');
+  const hd = document.getElementById('csHead');
+  if (!side || !hd) return;
+  let sx=0, sy=0, sl=0, st=0, dragging=false;
+  hd.addEventListener('mousedown', e => {
+    if (e.target.closest('button')) return;
+    dragging = true;
+    sx = e.clientX; sy = e.clientY;
+    const rect = side.getBoundingClientRect();
+    sl = rect.left; st = rect.top;
+    side.style.right = 'auto'; side.style.bottom = 'auto';
+    side.style.left = sl + 'px'; side.style.top = st + 'px';
+    hd.style.cursor = 'grabbing';
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    let nx = sl + (e.clientX - sx);
+    let ny = st + (e.clientY - sy);
+    const rect = side.getBoundingClientRect();
+    nx = Math.max(0, Math.min(window.innerWidth - rect.width, nx));
+    ny = Math.max(56, Math.min(window.innerHeight - 60, ny));
+    side.style.left = nx + 'px';
+    side.style.top = ny + 'px';
+  });
+  document.addEventListener('mouseup', () => {
+    if (dragging) { dragging = false; hd.style.cursor = ''; }
+  });
+  // 최소화 상태에서 헤더 클릭 시 확장
+  hd.addEventListener('click', e => {
+    if (e.target.closest('button')) return;
+    if (side.classList.contains('min')) side.classList.remove('min');
+  });
+})();
 
 // ===== Drag: Case Navigator =====
 (function() {
