@@ -62,8 +62,9 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 /* ===== Class Tab Band ===== */
 .class-tabs { background:#fff; border-bottom:1px solid #dde1e8; }
 .tab-band-inner { max-width:1240px; margin:0 auto; padding:0 32px; display:flex; gap:8px; }
-.ct { padding:18px 16px 15px; font-size:16px; font-weight:500; color:#6d7381; border-bottom:3px solid transparent; cursor:pointer; }
+.ct { padding:18px 16px 15px; font-size:16px; font-weight:500; color:#6d7381; border-bottom:3px solid transparent; cursor:pointer; position:relative; display:inline-flex; align-items:center; gap:6px; }
 .ct.active { color:#416bff; border-bottom-color:#416bff; }
+.ct-unread-dot { width:7px; height:7px; border-radius:50%; background:#f2525f; display:inline-block; box-shadow:0 0 0 1.5px #fff; }
 
 /* ===== Class Banner (수업 진입 상단 — 실제 화면 톤 매치) ===== */
 .class-banner { background:#416bff; border-radius:12px; color:#fff; padding:28px 32px; display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; }
@@ -161,6 +162,8 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .tag-shared-out { background:#eefcf4; color:#27724b; }
 .tag-shared-in { background:#ebdfff; color:#5d26c4; }
 .cc-noti { position:absolute; top:-8px; right:-8px; min-width:24px; height:24px; padding:0 7px; border-radius:100px; background:#f2525f; color:#fff; font-size:13px; font-weight:700; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 1px 4px rgba(0,0,0,.2); }
+.tag.tag-unread { background:#fef2f2; color:#ab303a; border:1px solid #fecaca; display:inline-flex; align-items:center; gap:4px; padding:0 8px; }
+.tag.tag-unread .tag-dot { width:5px; height:5px; border-radius:50%; background:#f2525f; }
 .cc-share-info { display:flex; align-items:center; gap:6px; font-size:13px; color:#27724b; margin-top:8px; }
 .cc-share-info svg { width:14px; height:14px; }
 
@@ -219,6 +222,87 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .empty-reviewer { padding:36px 0; text-align:center; color:#6d7381; font-size:15px; }
 .empty-reviewer svg { width:36px; height:36px; color:#b3b6bd; margin-bottom:12px; }
 
+/* ===== 2차 채점자용: 내가 남긴 댓글 카드 ===== */
+.my-comments-card { background:#fff; border-radius:12px; padding:24px 28px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; }
+.mc-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.mc-title { font-size:20px; font-weight:600; display:flex; align-items:center; gap:8px; }
+.mc-title svg { width:19px; height:19px; color:#365eef; }
+.mc-count { font-size:14px; color:#6d7381; }
+.mc-desc { font-size:13px; color:#6d7381; margin-bottom:14px; line-height:1.5; }
+.mc-list { display:flex; flex-direction:column; gap:8px; max-height:520px; overflow-y:auto; padding-right:2px; }
+.mc-item { border:1px solid #f1f3f5; border-radius:8px; padding:12px 14px; cursor:pointer; transition:all .12s; background:#fff; }
+.mc-item:hover { border-color:#a3c3ff; background:#f9fafb; }
+.mc-item.has-reply { border-left:3px solid #416bff; }
+.mc-meta { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; gap:8px; flex-wrap:wrap; }
+.mc-tab-chip { display:inline-flex; align-items:center; gap:4px; height:22px; padding:0 8px; border-radius:4px; background:#f4f8ff; color:#3151c4; font-size:11px; font-weight:600; }
+.mc-tab-chip svg { width:11px; height:11px; }
+.mc-time { font-size:11px; color:#9ea3ad; }
+.mc-target { font-size:12px; color:#6d7381; margin-bottom:6px; display:flex; align-items:center; gap:4px; }
+.mc-target svg { width:11px; height:11px; }
+.mc-body { font-size:14px; color:#3b3f4c; line-height:1.5; margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.mc-foot { display:flex; align-items:center; gap:10px; font-size:11px; color:#6d7381; }
+.mc-foot-item { display:inline-flex; align-items:center; gap:3px; }
+.mc-foot-item.has-new { color:#f2525f; font-weight:600; }
+.mc-foot-item svg { width:11px; height:11px; }
+.mc-empty { padding:36px 20px; text-align:center; color:#9ea3ad; font-size:14px; }
+
+/* ===== D안: 대시보드 형식 검토자 리스트 ===== */
+.share-dash { background:#fff; border-radius:12px; padding:24px 28px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:16px; }
+.dash-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:12px; flex-wrap:wrap; }
+.dash-title { font-size:18px; font-weight:600; display:flex; align-items:center; gap:8px; }
+.dash-title svg { width:20px; height:20px; color:#365eef; }
+.dash-summary { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:14px; }
+.dash-chip { display:inline-flex; align-items:center; gap:5px; height:26px; padding:0 10px; border-radius:100px; font-size:13px; font-weight:500; }
+.dash-chip.unread { background:#fee2e2; color:#ab303a; }
+.dash-chip.recent { background:#eefcf4; color:#27724b; }
+.dash-chip.total { background:#f1f3f5; color:#3b3f4c; }
+.dash-chip svg { width:12px; height:12px; }
+.dash-toolbar { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.dash-sort { display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 10px; border:1px solid #d9d9d9; border-radius:6px; background:#fff; font-size:13px; color:#3b3f4c; cursor:pointer; }
+.dash-sort svg { width:13px; height:13px; }
+.dash-table { width:100%; border-collapse:collapse; }
+.dash-table th { background:#f9fafb; padding:12px 14px; font-size:12px; font-weight:500; color:#6d7381; text-align:left; border-bottom:1px solid #dde1e8; }
+.dash-table td { padding:14px; font-size:14px; border-bottom:1px solid #f1f3f5; vertical-align:middle; }
+.dash-table tr:last-child td { border-bottom:none; }
+.dash-table tr:hover td { background:#fafbfc; }
+.dash-teacher { display:flex; align-items:center; gap:10px; }
+.dash-teacher-ic { width:32px; height:32px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+.dash-teacher-ic svg { width:16px; height:16px; }
+.dash-teacher-nm { font-weight:500; }
+.dash-teacher-subj { font-size:12px; color:#6d7381; }
+.dash-activity { display:inline-flex; align-items:center; gap:5px; font-size:13px; }
+.dash-activity.recent { color:#3151c4; font-weight:500; }
+.dash-activity.stale { color:#6d7381; }
+.dash-activity.none { color:#9ea3ad; }
+.dash-activity svg { width:12px; height:12px; }
+/* 미확인 댓글 클릭 액션 (A/D 공통) */
+.dash-unread, .rv-unread-btn { display:inline-flex; align-items:center; gap:5px; height:26px; padding:0 10px; border-radius:100px; background:#fef2f2; color:#ab303a; font-size:12px; font-weight:600; border:1px solid #fecaca; cursor:pointer; transition:all .12s; font-family:inherit; }
+.dash-unread:hover, .rv-unread-btn:hover { background:#fee2e2; border-color:#f2525f; color:#f2525f; }
+.dash-unread .dot, .rv-unread-btn .dot { width:6px; height:6px; border-radius:50%; background:#f2525f; flex-shrink:0; }
+.dash-unread .arrow, .rv-unread-btn .arrow { opacity:0; transform:translateX(-4px); transition:all .15s; margin-left:2px; }
+.dash-unread:hover .arrow, .rv-unread-btn:hover .arrow { opacity:1; transform:translateX(0); }
+.dash-unread svg, .rv-unread-btn svg { width:12px; height:12px; }
+.rv-unread-btn { margin-left:8px; }
+.dash-unread-empty { color:#c7cbd3; font-size:13px; }
+
+/* 미확인 댓글 탭별 breakdown 팝오버 (A안·D안 공통) */
+.unread-pop { position:fixed; background:#fff; border-radius:10px; box-shadow:0 0 1px #2226314D, 0 12px 32px rgba(0,0,0,.2); padding:8px; min-width:280px; z-index:900; display:none; }
+.unread-pop.open { display:block; }
+.unread-pop-title { font-size:13px; font-weight:600; color:#222631; padding:6px 10px 10px; border-bottom:1px solid #f1f3f5; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+.unread-pop-title svg { width:14px; height:14px; color:#f2525f; }
+.unread-pop-title .cnt { font-weight:700; color:#f2525f; }
+.unread-pop-list { display:flex; flex-direction:column; gap:2px; }
+.unread-pop-item { display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:6px; background:none; border:none; cursor:pointer; color:#222631; font-size:14px; font-family:inherit; text-align:left; width:100%; justify-content:flex-start; }
+.unread-pop-item:hover { background:#f4f8ff; }
+.unread-pop-item .up-ic { width:18px; color:#6d7381; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; }
+.unread-pop-item .up-ic svg { width:16px; height:16px; }
+.unread-pop-item .up-name { flex:1; font-weight:500; }
+.unread-pop-item .up-cnt { font-size:12px; color:#ab303a; font-weight:600; background:#fef2f2; padding:2px 8px; border-radius:100px; border:1px solid #fecaca; }
+.unread-pop-item .up-arrow { color:#9ea3ad; opacity:0; transition:all .15s; }
+.unread-pop-item:hover .up-arrow { color:#3151c4; opacity:1; transform:translateX(2px); }
+.unread-pop-item .up-arrow svg { width:14px; height:14px; }
+.dash-actions { text-align:right; }
+
 /* ===== 댓글 알림 스트립 ===== */
 .comment-strip { background:#e9f2ff; border:1px solid #ccdfff; border-radius:10px; padding:12px 16px; display:flex; align-items:center; gap:12px; margin-bottom:16px; }
 .cs-icon { width:28px; height:28px; border-radius:50%; background:#416bff; color:#fff; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -265,9 +349,11 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .lp-url input { flex:1; height:34px; border:1px solid #dde1e8; border-radius:6px; padding:0 10px; font-size:12px; color:#3b3f4c; font-family:'Courier New', monospace; background:#f9fafb; }
 .lp-meta { font-size:11px; color:#9ea3ad; }
 
-/* 선생님 목록 아이템 확장 (범위 뱃지 포함) */
-.t-item { align-items:center; }
-.t-name { flex:1; }
+/* 선생님 목록 아이템 (이름 바로 옆에 과목명, 우측 끝에 범위 뱃지) */
+.t-item { align-items:center; gap:8px; }
+.t-name-wrap { display:flex; align-items:baseline; gap:6px; margin-right:auto; }
+.t-name { font-size:15px; font-weight:500; }
+.t-subj { font-size:13px; color:#6d7381; }
 
 /* 프리셋 카드 (수업 / 수업+세특) */
 .preset-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:8px; }
@@ -314,7 +400,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .score-table tr:hover .stu-comment-chip.empty { opacity:1; }
 
 /* ===== 댓글 플로팅 창 (드래그 가능) ===== */
-.comment-side { position:fixed; top:100px; left:auto; right:24px; bottom:auto; width:420px; height:580px; max-height:calc(100vh - 120px); background:#fff; border:1px solid #dde1e8; border-radius:12px; z-index:100; display:none; flex-direction:column; box-shadow:0 12px 40px rgba(0,0,0,.18); overflow:hidden; }
+.comment-side { position:fixed; top:76px; left:auto; right:24px; bottom:auto; width:420px; height:calc(100vh - 100px); background:#fff; border:1px solid #dde1e8; border-radius:12px; z-index:100; display:none; flex-direction:column; box-shadow:0 12px 40px rgba(0,0,0,.18); overflow:hidden; }
 .comment-side.open { display:flex; }
 .comment-side.min { height:52px; overflow:hidden; }
 .comment-side.min .cs-filter-row, .comment-side.min .cs-body, .comment-side.min .comment-write { display:none; }
@@ -330,14 +416,27 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .cs-tab-info .shared-cnt { display:inline-flex; align-items:center; gap:4px; }
 .cs-tab-info .shared-cnt svg { width:12px; height:12px; }
 
+.cs-scope-row { padding:10px 16px; border-bottom:1px solid #f1f3f5; background:#f4f8ff; display:none; flex-wrap:wrap; gap:6px; align-items:center; }
+.cs-scope-row.show { display:flex; }
+.cs-scope-dd { height:30px; padding:0 26px 0 10px; border:1px solid #ccdfff; border-radius:6px; background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%233151c4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 8px center; font-size:12px; color:#3151c4; font-weight:500; cursor:pointer; font-family:inherit; appearance:none; -webkit-appearance:none; max-width:220px; }
+.cs-scope-dd:hover { border-color:#416bff; }
+.cs-scope-dd:focus { outline:none; border-color:#416bff; box-shadow:0 0 0 2px rgba(65,107,255,.15); }
+
+/* 작성자 필터 chip (내부 필터 · 점프 시 표시) */
+.cs-author-chip { display:none; align-items:center; gap:6px; padding:8px 12px; margin:8px 16px 0; background:#fef2f2; border:1px solid #fecaca; border-radius:6px; font-size:13px; color:#ab303a; font-weight:500; }
+.cs-author-chip svg { width:14px; height:14px; }
+.cs-author-chip button { margin-left:auto; background:none; padding:2px; color:#ab303a; border-radius:4px; cursor:pointer; }
+.cs-author-chip button:hover { background:#fecaca; }
+.cs-author-chip button svg { width:12px; height:12px; }
 .cs-filter-row { padding:12px 20px; border-bottom:1px solid #f1f3f5; display:flex; align-items:center; justify-content:space-between; gap:8px; background:#f9fafb; }
 .cs-filter { display:inline-flex; align-items:center; gap:6px; height:32px; padding:0 10px 0 12px; border:1px solid #d9d9d9; border-radius:6px; background:#fff; font-size:13px; color:#3b3f4c; cursor:pointer; }
 .cs-filter:hover { border-color:#a3c3ff; }
 .cs-count-text { font-size:12px; color:#6d7381; }
 
-.cs-body { flex:1; overflow-y:auto; padding:8px 0; }
-.comment-item { padding:14px 20px; border-bottom:1px solid #f1f3f5; }
+.cs-body { flex:1; overflow-y:auto; overflow-x:hidden; padding:8px 0; }
+.comment-item { padding:14px 20px; border-bottom:1px solid #f1f3f5; overflow:visible; max-height:none; }
 .comment-item:last-child { border-bottom:none; }
+.comment-item .ci-body { overflow:visible; max-height:none; word-break:break-word; }
 .comment-item.highlight { background:#f4f8ff; }
 .ci-head { display:flex; align-items:center; gap:6px; margin-bottom:6px; flex-wrap:wrap; }
 .ci-nm { display:flex; align-items:center; gap:6px; flex:1; min-width:0; }
@@ -524,6 +623,110 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .tgl.on .tgl-track { background:#416bff; }
 .tgl.on .tgl-knob { left:20px; }
 
+/* ===== 2차 채점자 모드 (읽기 전용 리본 자동 표시) ===== */
+body.reviewer-mode .scene.active .page-wrap::before {
+  content:'';
+  display:block;
+}
+body.reviewer-mode .scene.active .page-wrap { position:relative; }
+.rv-mode-strip { display:none; background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:12px 18px; align-items:center; gap:10px; margin-bottom:16px; font-size:14px; color:#92310a; }
+.rv-mode-strip svg { width:16px; height:16px; color:#ea580c; flex-shrink:0; }
+body.reviewer-mode .rv-mode-strip { display:flex; }
+body.reviewer-mode .scene.active .step-btn,
+body.reviewer-mode .scene.active .btn-solid:not(.rv-allow),
+body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; pointer-events:none; }
+
+/* ===== 신규 화면 공통 유틸 ===== */
+.section-card { background:#fff; border-radius:12px; padding:24px 28px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:16px; }
+.pg-h { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:20px; gap:12px; }
+.pg-h-l { flex:1; }
+.pg-h1 { font-size:24px; font-weight:600; margin-bottom:4px; }
+.pg-h-desc { font-size:14px; color:#6d7381; }
+
+/* 수행평가 설계 목록 카드 */
+.eval-plan-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:16px; }
+.epc { background:#fff; border-radius:10px; padding:22px 24px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; min-height:150px; display:flex; flex-direction:column; cursor:pointer; transition:box-shadow .12s; }
+.epc:hover { box-shadow:0 0 0 1.5px #ccdfff, 0 4px 12px #0000001A; }
+.epc-title { font-size:16px; font-weight:600; margin-bottom:auto; line-height:1.5; }
+.epc-foot { display:flex; align-items:center; justify-content:space-between; margin-top:20px; gap:8px; }
+.epc-meta { font-size:12px; color:#6d7381; }
+.epc-actions { display:flex; gap:4px; }
+.epc-ic-btn { width:30px; height:30px; border-radius:6px; background:none; color:#6d7381; cursor:pointer; }
+.epc-ic-btn:hover { background:#f1f3f5; color:#3b3f4c; }
+.epc-ic-btn svg { width:15px; height:15px; }
+
+/* 과제물 관리 · 채점 아코디언 */
+.acc-item { background:#fff; border-radius:12px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:14px; overflow:hidden; }
+.acc-hd { padding:20px 28px; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.acc-hd-l { display:flex; align-items:center; gap:8px; flex:1; }
+.acc-hd-l .chev { color:#6d7381; }
+.acc-hd-l .chev svg { width:16px; height:16px; }
+.acc-hd-name { font-size:17px; font-weight:600; }
+.acc-hd-meta { font-size:13px; color:#6d7381; margin-top:2px; }
+.acc-hd-r { display:flex; gap:6px; align-items:center; }
+.hw-table { width:100%; border-collapse:collapse; }
+.hw-table th { background:#f9fafb; padding:11px; font-size:12px; font-weight:500; color:#6d7381; text-align:center; border-top:1px solid #f1f3f5; border-bottom:1px solid #dde1e8; }
+.hw-table td { padding:14px 11px; font-size:14px; text-align:center; border-bottom:1px solid #f1f3f5; }
+.hw-table tr:last-child td { border-bottom:none; }
+.hw-badge { height:24px; padding:0 8px; border-radius:4px; font-size:12px; font-weight:600; display:inline-flex; align-items:center; }
+.hw-b-progress { background:#e9f2ff; color:#3151c4; }
+.hw-b-done { background:#eefcf4; color:#27724b; }
+.hw-b-closed { background:#fef2f2; color:#ab303a; }
+.hw-b-none { background:#f1f3f5; color:#6d7381; }
+.hw-link { color:#3151c4; font-weight:500; cursor:pointer; display:inline-flex; align-items:center; gap:4px; background:none; padding:0; font-size:13px; }
+.hw-link svg { width:13px; height:13px; }
+
+/* 3단계 큰 카드 (학급 채점 현황) */
+.step-cards { display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:24px; }
+.step-card { background:#fff; border-radius:12px; padding:22px 24px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; }
+.step-num { font-size:12px; font-weight:600; color:#3151c4; margin-bottom:6px; }
+.step-title { font-size:17px; font-weight:600; margin-bottom:6px; }
+.step-desc { font-size:13px; color:#6d7381; margin-bottom:16px; line-height:1.5; }
+.step-btn { width:100%; height:44px; background:#365eef; color:#fff; border-radius:6px; font-size:14px; font-weight:600; border:none; cursor:pointer; }
+.step-btn:hover { background:#3151c4; }
+.step-btn.subtle { background:#e9f2ff; color:#365eef; }
+.step-btn.subtle:hover { background:#ccdfff; }
+
+/* 학생 채점 상세 (좌 PDF + 우 채점) */
+.stu-scoring-wrap { display:grid; grid-template-columns:1fr 460px; gap:16px; height:calc(100vh - 200px); }
+.stu-pdf-panel { background:#3b3f4c; border-radius:10px; display:flex; flex-direction:column; overflow:hidden; }
+.stu-pdf-hd { padding:10px 14px; background:#222631; color:#fff; font-size:13px; display:flex; justify-content:space-between; align-items:center; }
+.stu-pdf-body { flex:1; background:#fff; padding:20px; overflow:auto; font-size:14px; color:#3b3f4c; line-height:1.6; }
+.stu-scoring-panel { background:#fff; border-radius:10px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; overflow-y:auto; padding:20px 24px; }
+.stu-total-hd { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid #f1f3f5; margin-bottom:16px; }
+.stu-total { font-size:16px; font-weight:600; }
+.stu-total b { font-size:22px; color:#365eef; }
+.stu-status-radio { display:flex; gap:12px; font-size:12px; }
+.stu-status-radio label { display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
+.stu-crit-item { padding:14px 0; border-bottom:1px solid #f1f3f5; }
+.stu-crit-item:last-child { border-bottom:none; }
+.stu-crit-nm { font-size:14px; font-weight:500; margin-bottom:8px; }
+.stu-score-pills { display:flex; gap:6px; }
+.stu-score-pill { width:44px; height:36px; border:1px solid #dde1e8; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; font-size:14px; font-weight:600; cursor:pointer; background:#fff; }
+.stu-score-pill.on { background:#365eef; color:#fff; border-color:#365eef; }
+
+/* 세특 지원 표 */
+.sr-table { width:100%; border-collapse:collapse; background:#fff; }
+.sr-table th { background:#f9fafb; padding:10px 12px; font-size:12px; font-weight:500; color:#6d7381; text-align:left; border-bottom:1px solid #dde1e8; }
+.sr-table td { padding:14px 12px; font-size:13px; border-bottom:1px solid #f1f3f5; vertical-align:top; line-height:1.5; }
+.sr-content { max-height:180px; overflow-y:auto; padding-right:6px; }
+.sr-actions-row { display:flex; gap:4px; margin-top:8px; }
+.sr-ic { width:26px; height:26px; border-radius:4px; background:#f6f7f9; color:#6d7381; cursor:pointer; }
+.sr-ic:hover { background:#e9f2ff; color:#3151c4; }
+.sr-ic svg { width:13px; height:13px; }
+
+/* 학생 제출 현황 표 */
+.subs-table { width:100%; border-collapse:collapse; }
+.subs-table th { background:#f9fafb; padding:12px; font-size:12px; font-weight:500; color:#6d7381; text-align:center; border-bottom:1px solid #dde1e8; }
+.subs-table td { padding:14px 12px; font-size:13px; text-align:center; border-bottom:1px solid #f1f3f5; }
+
+/* 미제출 학생 배너 */
+.miss-banner { background:#fef2f2; border:1px solid #fecaca; border-radius:8px; padding:14px 18px; margin-bottom:20px; display:flex; align-items:flex-start; gap:10px; }
+.miss-banner svg { width:16px; height:16px; color:#f2525f; flex-shrink:0; margin-top:2px; }
+.miss-banner .mb-title { font-size:14px; font-weight:600; color:#ab303a; margin-bottom:4px; }
+.miss-banner .mb-list { font-size:13px; color:#3b3f4c; line-height:1.6; }
+.miss-banner .mb-time { margin-left:auto; font-size:12px; color:#6d7381; white-space:nowrap; flex-shrink:0; }
+
 /* ===== Footer ===== */
 .site-footer { padding:48px 0 40px; text-align:center; color:#6d7381; font-size:13px; }
 
@@ -627,7 +830,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
         <div class="my-hd">
           <h1 class="my-title">내 수업</h1>
           <div class="my-tools">
-            <span class="tgl" onclick="this.classList.toggle('on')"><span class="tgl-track"><span class="tgl-knob"></span></span>공유한 수업 보기</span>
+            <span class="tgl" id="tglShared" onclick="toggleSharedOnly(this)"><span class="tgl-track"><span class="tgl-knob"></span></span>공유한 수업 보기</span>
             <span class="tgl" onclick="this.classList.toggle('on')"><span class="tgl-track"><span class="tgl-knob"></span></span>보관한 수업 보기</span>
             <button class="btn-make"><i data-lucide="plus" style="width:16px;height:16px"></i>수업 만들기</button>
           </div>
@@ -635,22 +838,21 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 
         <div class="sem-hd">
           <span class="sem-title">2026학년도 1학기</span>
-          <span class="sem-meta">진행 중 3개 · 공유 중 1개 · 보관 중 0개</span>
+          <span class="sem-meta" id="semMeta">진행 중 3개 · 공유 중 1개 · 보관 중 0개</span>
         </div>
-        <div class="sem-grid">
-          <div class="cc" onclick="goScene('owner-class-nosetup')">
+        <div class="sem-grid" id="ownerClassGrid">
+          <div class="cc" data-shared="0" onclick="goScene('owner-class-nosetup')">
             <div class="cc-name">1학년 국어 (기본반)</div>
             <div class="cc-evals">수행평가 3개</div>
             <div class="cc-tags"><span class="tag tag-subj">국어</span></div>
           </div>
-          <div class="cc" onclick="goScene('owner-class-shared')">
-            <span class="cc-noti">2</span>
+          <div class="cc" data-shared="1" onclick="goScene('owner-class-shared')">
             <div class="cc-name">2학년 국어 (심화반)</div>
             <div class="cc-evals">수행평가 5개</div>
             <div class="cc-share-info"><i data-lucide="users"></i>공동 평가 · 검토자 3명</div>
-            <div class="cc-tags"><span class="tag tag-subj">국어</span><span class="tag tag-shared-out">공유 중</span></div>
+            <div class="cc-tags"><span class="tag tag-subj">국어</span><span class="tag tag-shared-out">공유 중</span><span class="tag tag-unread"><span class="tag-dot"></span>미확인 댓글 5개</span></div>
           </div>
-          <div class="cc" onclick="goScene('owner-class-nosetup')">
+          <div class="cc" data-shared="0" onclick="goScene('owner-class-nosetup')">
             <div class="cc-name">3학년 문학</div>
             <div class="cc-evals">수행평가 2개</div>
             <div class="cc-tags"><span class="tag tag-subj">국어</span></div>
@@ -720,7 +922,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
     <!-- 공동 평가 미설정: 얇은 안내 스트립 -->
     <div style="background:#f4f8ff; border:1px solid #ccdfff; border-radius:8px; padding:14px 18px; margin-bottom:24px; display:flex; align-items:center; gap:12px;">
       <i data-lucide="users" style="width:20px;height:20px; color:#365eef; flex-shrink:0"></i>
-      <div style="flex:1; font-size:14px; color:#3151c4;">이 수업을 같은 학교 선생님과 함께 확인하고 댓글로 소통해 보세요. <b>공동 평가</b>을 시작하면 원하는 탭만 골라 공개할 수 있어요.</div>
+      <div style="flex:1; font-size:14px; color:#3151c4;">이 수업을 같은 학교 선생님과 함께 확인하고 댓글로 소통해 보세요. <b>공동 평가</b>를 시작하면 선생님별로 공유 범위를 설정하여 공개할 수 있어요.</div>
       <button class="btn-outline btn-sm" onclick="openShareModal()">공동 평가 시작</button>
     </div>
 
@@ -846,13 +1048,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       </div>
     </div>
 
-    <div class="comment-strip">
-      <div class="cs-icon"><i data-lucide="message-circle"></i></div>
-      <div class="cs-text"><b>박수정 선생님</b>이 수행평가 채점 탭에 댓글 2개를 남겼어요.</div>
-      <button class="btn-subtle btn-sm" onclick="goScene('owner-comments-view')">보러 가기</button>
-    </div>
-
-    <div class="share-panel">
+<div class="share-panel">
       <div class="sp-head">
         <div>
           <div class="sp-title"><i data-lucide="users"></i>공동 평가 · 검토 선생님 3명</div>
@@ -862,26 +1058,10 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       </div>
 
       <div class="reviewer-row">
-        <div class="rv-avatar"><i data-lucide="user"></i></div>
-        <div class="rv-info">
-          <div class="rv-name">박수정 선생님 <span style="color:#f2525f;font-size:12px;margin-left:6px">● 댓글 2</span></div>
-          <div class="rv-meta">국어 · 어제 열람</div>
-        </div>
-        <span class="rv-preset plus"><i data-lucide="package"></i>수업 + 세특</span>
-        <div class="rv-menu-wrap">
-          <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
-          <div class="rv-menu">
-            <button onclick="openShareModal()"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
-            <div class="rv-menu-div"></div>
-            <button class="danger" onclick="revokeReviewer('박수정')"><i data-lucide="user-x" style="width:15px;height:15px"></i>공동 평가 권한 회수</button>
-          </div>
-        </div>
-      </div>
-      <div class="reviewer-row">
         <div class="rv-avatar" style="background:#eefcf4;color:#27724b"><i data-lucide="user"></i></div>
         <div class="rv-info">
           <div class="rv-name">김민준 선생님</div>
-          <div class="rv-meta">국어 · 3일 전 열람</div>
+          <div class="rv-meta">국어 · 3일 전 댓글 남김</div>
         </div>
         <span class="rv-preset plus"><i data-lucide="package"></i>수업 + 세특</span>
         <div class="rv-menu-wrap">
@@ -894,10 +1074,26 @@ body.nav-expanded .main-wrap { margin-left:222px; }
         </div>
       </div>
       <div class="reviewer-row">
+        <div class="rv-avatar"><i data-lucide="user"></i></div>
+        <div class="rv-info">
+          <div class="rv-name">박수정 선생님 <button class="rv-unread-btn" onclick="jumpToUnread('박수정', this, event)" title="박수정 선생님이 남긴 미확인 댓글 확인하기"><span class="dot"></span>미확인 5<span class="arrow"><i data-lucide="arrow-right"></i></span></button></div>
+          <div class="rv-meta">국어 · 어제 댓글 남김</div>
+        </div>
+        <span class="rv-preset plus"><i data-lucide="package"></i>수업 + 세특</span>
+        <div class="rv-menu-wrap">
+          <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
+          <div class="rv-menu">
+            <button onclick="openShareModal()"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
+            <div class="rv-menu-div"></div>
+            <button class="danger" onclick="revokeReviewer('박수정')"><i data-lucide="user-x" style="width:15px;height:15px"></i>공동 평가 권한 회수</button>
+          </div>
+        </div>
+      </div>
+      <div class="reviewer-row">
         <div class="rv-avatar" style="background:#fff7ed;color:#ea580c"><i data-lucide="user"></i></div>
         <div class="rv-info">
           <div class="rv-name">이지혜 선생님</div>
-          <div class="rv-meta">역사 · 아직 열람 안 함</div>
+          <div class="rv-meta">역사 · 아직 활동 없음</div>
         </div>
         <span class="rv-preset basic"><i data-lucide="package"></i>수업</span>
         <div class="rv-menu-wrap">
@@ -990,6 +1186,139 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 </div>
 
 <!-- ================================================
+     SCENE 3-D: Owner — 공유 중 상태 (D안: 대시보드 형식)
+     → A안(scene-owner-class-shared)과 나란히 비교 목적
+================================================ -->
+<div class="scene" id="scene-owner-class-shared-d">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct active">수업 홈</div>
+      <div class="ct" onclick="notReady('수행평가 설계')">수행평가 설계</div>
+      <div class="ct" onclick="notReady('과제물 관리')">과제물 관리</div>
+      <div class="ct" onclick="notReady('수행평가 채점')">수행평가 채점</div>
+      <div class="ct" onclick="notReady('세부능력 및 특기사항 지원')">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <div class="class-banner">
+      <div>
+        <div class="cb-meta">2026학년도 1학기 | 국어 | 학년 구분 없음</div>
+        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="users"></i>공동 평가 중</span></div>
+      </div>
+      <div class="cb-right">
+        <span class="cb-students"><i data-lucide="users" style="width:16px;height:16px"></i>참여 학생 20명</span>
+        <button class="btn-banner" onclick="notReady('참여 학생 관리')">관리</button>
+      </div>
+    </div>
+
+<!-- D안: 대시보드 형식 -->
+    <div class="share-dash">
+      <div class="dash-hd">
+        <div class="dash-title"><i data-lucide="users"></i>공동 평가 · 검토 선생님 3명</div>
+        <button class="btn-subtle btn-sm" onclick="openShareModal()"><i data-lucide="settings-2" style="width:14px;height:14px"></i>공동 평가 선생님 관리</button>
+      </div>
+      <div class="dash-summary">
+        <span class="dash-chip unread"><span style="width:6px;height:6px;border-radius:50%;background:#f2525f"></span>미확인 댓글 <b>5</b>개</span>
+        <span class="dash-chip recent"><i data-lucide="activity"></i>최근 24시간 활동 <b>3</b>건</span>
+        <span class="dash-chip total"><i data-lucide="message-circle"></i>총 댓글 <b>9</b>개</span>
+      </div>
+      <div class="dash-toolbar">
+        <button class="dash-sort" onclick="notReady('정렬 변경')">
+          <i data-lucide="arrow-up-down"></i>정렬: 이름순
+          <i data-lucide="chevron-down"></i>
+        </button>
+      </div>
+      <table class="dash-table">
+        <thead>
+          <tr>
+            <th style="width:32%">선생님</th>
+            <th style="width:22%">공유 범위</th>
+            <th style="width:26%">활동 상태</th>
+            <th style="width:12%">미확인</th>
+            <th style="width:8%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="dash-teacher">
+                <div class="dash-teacher-ic" style="background:#eefcf4;color:#27724b"><i data-lucide="user"></i></div>
+                <div>
+                  <div class="dash-teacher-nm">김민준 선생님</div>
+                  <div class="dash-teacher-subj">국어</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="rv-preset plus"><i data-lucide="package"></i>수업 + 세특</span></td>
+            <td><span class="dash-activity stale"><i data-lucide="message-circle"></i>3일 전 댓글 남김</span></td>
+            <td><span class="dash-unread-empty">—</span></td>
+            <td class="dash-actions">
+              <div class="rv-menu-wrap" style="display:inline-block">
+                <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
+                <div class="rv-menu">
+                  <button onclick="openShareModal()"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
+                  <div class="rv-menu-div"></div>
+                  <button class="danger" onclick="revokeReviewer('김민준')"><i data-lucide="user-x" style="width:15px;height:15px"></i>공동 평가 권한 회수</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="dash-teacher">
+                <div class="dash-teacher-ic" style="background:#e9f2ff;color:#365eef"><i data-lucide="user"></i></div>
+                <div>
+                  <div class="dash-teacher-nm">박수정 선생님</div>
+                  <div class="dash-teacher-subj">국어</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="rv-preset plus"><i data-lucide="package"></i>수업 + 세특</span></td>
+            <td><span class="dash-activity recent"><i data-lucide="message-circle"></i>어제 댓글 남김</span></td>
+            <td><button class="dash-unread" onclick="jumpToUnread('박수정', this, event)" title="박수정 선생님이 남긴 미확인 댓글 확인하기"><span class="dot"></span>5<span class="arrow"><i data-lucide="arrow-right"></i></span></button></td>
+            <td class="dash-actions">
+              <div class="rv-menu-wrap" style="display:inline-block">
+                <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
+                <div class="rv-menu">
+                  <button onclick="openShareModal()"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
+                  <div class="rv-menu-div"></div>
+                  <button class="danger" onclick="revokeReviewer('박수정')"><i data-lucide="user-x" style="width:15px;height:15px"></i>공동 평가 권한 회수</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div class="dash-teacher">
+                <div class="dash-teacher-ic" style="background:#fff7ed;color:#ea580c"><i data-lucide="user"></i></div>
+                <div>
+                  <div class="dash-teacher-nm">이지혜 선생님</div>
+                  <div class="dash-teacher-subj">역사</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="rv-preset basic"><i data-lucide="package"></i>수업</span></td>
+            <td><span class="dash-activity none"><i data-lucide="circle-slash"></i>아직 활동 없음</span></td>
+            <td><span class="dash-unread-empty">—</span></td>
+            <td class="dash-actions">
+              <div class="rv-menu-wrap" style="display:inline-block">
+                <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
+                <div class="rv-menu">
+                  <button onclick="openShareModal()"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
+                  <div class="rv-menu-div"></div>
+                  <button class="danger" onclick="revokeReviewer('이지혜')"><i data-lucide="user-x" style="width:15px;height:15px"></i>공동 평가 권한 회수</button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================
      SCENE 3b: Owner — 댓글 확인 화면 (보러가기 클릭 시)
      → 수행평가 채점 탭으로 이동 + 댓글 사이드 패널 자동 오픈
 ================================================ -->
@@ -1015,13 +1344,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       </div>
     </div>
 
-    <div class="comment-strip" style="border-color:#a3c3ff;background:#e9f2ff;">
-      <div class="cs-icon"><i data-lucide="corner-down-right"></i></div>
-      <div class="cs-text">👉 <b>박수정 선생님</b>의 댓글로 이동했어요. 우측 패널에서 댓글을 확인하고 답글을 남기실 수 있어요.</div>
-      <button class="btn-ghost btn-sm" onclick="goScene('owner-class-shared')">수업 홈으로 돌아가기</button>
-    </div>
-
-    <div style="margin-bottom:20px;">
+<div style="margin-bottom:20px;">
       <h2 style="font-size:22px; font-weight:600;">국어 수행평가 채점</h2>
       <p style="font-size:14px; color:#6d7381; margin-top:6px;">AI가 채점 초안을 만들어 드립니다. 선생님이 검토 후 최종 확정해 주세요.</p>
     </div>
@@ -1030,7 +1353,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       <div class="scoring-item">
         <div class="si-head">
           <div>
-            <div class="si-title">(고) 자기주도 독서 활동 <span style="color:#f2525f;font-size:12px;margin-left:6px">● 댓글 2</span></div>
+            <div class="si-title">(고) 자기주도 독서 활동 <button onclick="event.stopPropagation(); goScene('student-scoring-detail'); setTimeout(()=>openCommentSide('수행평가 채점'), 200);" style="background:#fef2f2;color:#ab303a;font-size:12px;margin-left:6px;padding:2px 10px;border-radius:100px;border:1px solid #fecaca;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><span style="width:5px;height:5px;border-radius:50%;background:#f2525f"></span>미확인 댓글 2 →</button></div>
             <div class="si-meta">06/19 등록 · 채점 진행 중</div>
           </div>
           <div class="si-status">
@@ -1090,11 +1413,10 @@ body.nav-expanded .main-wrap { margin-left:222px; }
         </div>
         <div class="sem-grid">
           <div class="cc" onclick="switchPersona('reviewer'); goScene('reviewer-class')">
-            <span class="cc-noti">신규</span>
             <div class="cc-name">2학년 국어 (심화반)</div>
             <div class="cc-evals">수행평가 5개</div>
             <div class="cc-share-info"><i data-lucide="user"></i>홍길동 선생님이 공유</div>
-            <div class="cc-tags"><span class="tag tag-subj">국어</span><span class="tag tag-shared-in">공유받음</span></div>
+            <div class="cc-tags"><span class="tag tag-subj">국어</span><span class="tag tag-shared-in">공유받음</span><span class="tag tag-unread"><span class="tag-dot"></span>미확인 댓글 3개</span></div>
           </div>
           <div class="cc" onclick="notReady('공유받은 수업 진입')">
             <div class="cc-name">3학년 통합사회</div>
@@ -1141,14 +1463,13 @@ body.nav-expanded .main-wrap { margin-left:222px; }
   <div class="page-wrap">
     <div class="readonly-ribbon">
       <i data-lucide="eye"></i>
-      <div class="rr-text"><b>읽기 전용 모드</b> · 홍길동 선생님이 공유한 수업이에요. 편집·수정은 안 되지만, 각 탭에서 <b>댓글</b>로 의견을 남길 수 있어요.<div class="rr-meta">공개 탭: 수업 홈 · 수행평가 설계 · 수행평가 채점</div></div>
-      <button class="btn-outline btn-sm" onclick="openCommentSide('수업 홈')"><i data-lucide="message-circle" style="width:14px;height:14px"></i>댓글 3</button>
+      <div class="rr-text"><b>읽기 전용 모드</b> · 홍길동 선생님이 공유한 수업이에요. 편집·수정은 안 되지만, 각 탭에서 <b>댓글</b>로 의견을 남길 수 있어요.</div>
     </div>
 
     <div class="class-banner">
       <div>
         <div class="cb-meta">2026학년도 1학기 | 국어 | 학년 구분 없음 | <span>홍길동 선생님 수업</span></div>
-        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="eye"></i>읽기 전용</span></div>
+        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="eye"></i>읽기 전용</span> <span class="share-badge" style="background:rgba(255,255,255,.25)"><i data-lucide="package"></i>공유 범위 : 수업 + 세특</span></div>
       </div>
       <div class="cb-right">
         <span class="cb-students"><i data-lucide="users" style="width:16px;height:16px"></i>참여 학생 20명</span>
@@ -1156,24 +1477,16 @@ body.nav-expanded .main-wrap { margin-left:222px; }
     </div>
 
     <div class="class-home-grid">
-      <!-- 관찰 기록 (읽기 전용) -->
-      <div class="obs-card">
-        <div class="obs-hd">
-          <div class="obs-title">관찰 기록</div>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <button class="btn-ghost btn-sm" onclick="openCommentSide('관찰 기록')" style="color:#3151c4"><i data-lucide="message-circle" style="width:14px;height:14px"></i>댓글 1</button>
-            <button class="obs-detail-link">상세 보기</button>
-          </div>
+      <!-- 내가 남긴 댓글 (2차 채점자용 · 관찰 기록 대체) -->
+      <div class="my-comments-card">
+        <div class="mc-hd">
+          <div class="mc-title"><i data-lucide="message-circle"></i>내가 남긴 댓글</div>
+          <span class="mc-count">총 <b>5</b>건</span>
         </div>
-        <select class="obs-select" disabled style="cursor:not-allowed;background-color:#f6f7f9;color:#9ea3ad;"><option>학생 선택 (읽기 전용)</option></select>
-        <div class="obs-tags" style="opacity:.6;pointer-events:none;">
-          <span class="obs-tag">질문 활동</span><span class="obs-tag">활발함</span><span class="obs-tag">뛰어난 집중력</span><span class="obs-tag">적극적</span><span class="obs-tag">참여</span><span class="obs-tag">소통</span><span class="obs-tag">배려</span><span class="obs-tag">존중</span><span class="obs-tag">협력</span><span class="obs-tag">창의적 아이디어</span>
+        <div class="mc-desc">이 수업을 공유하고 있는 선생님들과 소통한 내역이에요. 클릭하면 해당 댓글 위치로 이동해요.</div>
+        <div class="mc-list" id="myCommentsList">
+          <!-- 렌더링됨 -->
         </div>
-
-        <div class="obs-log-title">기록 내역</div>
-        <div class="obs-log-row" style="grid-template-columns:52px 62px 62px 1fr;"><span>07/31</span><span>10103</span><span>김삼삼</span><span>추진력, 실험 활동</span></div>
-        <div class="obs-log-row" style="grid-template-columns:52px 62px 62px 1fr;"><span>07/31</span><span>10102</span><span>김이이</span><span>활발함</span></div>
-        <div class="obs-log-row" style="grid-template-columns:52px 62px 62px 1fr;"><span>07/31</span><span>10101</span><span>김일일</span><span>질문 활동, 활발함, 뛰어난 집중력, 적극적, 참여</span></div>
       </div>
 
       <!-- 수행평가 목록 (읽기 전용) -->
@@ -1212,7 +1525,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 
         <div class="eval-item">
           <div class="eval-top">
-            <div class="eval-name">(고) 자기주도 독서 활동 <span style="color:#f2525f;font-size:12px;margin-left:6px">● 댓글 2</span></div>
+            <div class="eval-name">(고) 자기주도 독서 활동 <button onclick="event.stopPropagation(); goScene('student-scoring-detail'); setTimeout(()=>openCommentSide('수행평가 채점'), 200);" style="background:#fef2f2;color:#ab303a;font-size:12px;margin-left:6px;padding:2px 10px;border-radius:100px;border:1px solid #fecaca;cursor:pointer;font-weight:600;display:inline-flex;align-items:center;gap:4px;vertical-align:middle;"><span style="width:5px;height:5px;border-radius:50%;background:#f2525f"></span>미확인 댓글 2 →</button></div>
             <div class="eval-date">06/19 등록</div>
           </div>
           <div class="eval-desc">수행평가 채점이 진행 중입니다. <a href="javascript:goScene('reviewer-scoring')">수행평가 채점 탭</a>에서 결과를 확인할 수 있어요.</div>
@@ -1229,11 +1542,8 @@ body.nav-expanded .main-wrap { margin-left:222px; }
   </div>
 </div>
 
-<!-- ================================================
-     SCENE 5b: Reviewer — 수행평가 설계 상세 (읽기 전용)
-     → 채점기준 A 클릭 시 이 화면으로 이동 + 채점기준 A 강조
-================================================ -->
-<div class="scene" id="scene-reviewer-eval-detail">
+<!-- SCENE 5b (수행평가 설계 상세 - 채점기준 A 강조) 는 v0.4에서 제거됨 -->
+<div class="scene" id="scene-reviewer-eval-detail-removed" style="display:none;" aria-hidden="true">
   <div class="class-tabs">
     <div class="tab-band-inner">
       <div class="ct" onclick="goScene('reviewer-class')">수업 홈</div>
@@ -1444,6 +1754,440 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 </div>
 
 <!-- ================================================
+     신규 scene들 (v0.4 sync, 1차/2차 시점 동일 페이지에서 리본으로 구분)
+     각 scene는 URL 해시 파라미터 `?role=reviewer`로 2차 시점 전환 가능
+     여기선 데모 단순화 위해 동일 페이지 사용 (읽기 전용 리본은 케이스 네비 안내로 대체)
+================================================ -->
+
+<!-- 화면 A: 수행평가 설계 목록 -->
+<div class="scene" id="scene-eval-plan-list">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
+      <div class="ct active">수행평가 설계</div>
+      <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
+      <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
+      <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <div class="class-banner">
+      <div>
+        <div class="cb-meta">2026학년도 1학기 | 국어 | 학년 구분 없음</div>
+        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="users"></i>공동 평가 중</span></div>
+      </div>
+      <div class="cb-right">
+        <span class="cb-students"><i data-lucide="users" style="width:16px;height:16px"></i>참여 학생 20명</span>
+        <button class="btn-banner" onclick="notReady('참여 학생 관리')">관리</button>
+      </div>
+    </div>
+    <div class="pg-h">
+      <div class="pg-h-l">
+        <h1 class="pg-h1">국어 수행평가 설계</h1>
+        <div class="pg-h-desc">수행평가는 새롭게 설계하거나 만들어 둔 평가계획을 가져올 수 있습니다.</div>
+      </div>
+      <button class="btn-make"><i data-lucide="plus" style="width:16px;height:16px"></i>수행평가 만들기</button>
+    </div>
+    <div class="eval-plan-grid">
+      <div class="epc" onclick="goScene('eval-plan-detail')">
+        <div class="epc-title">(고) 읽기 자료 분석을 통한 주제 통합 탐구</div>
+        <div class="epc-foot">
+          <span class="epc-meta">26.08.03 수정됨 · 교내 공개</span>
+          <div class="epc-actions">
+            <button class="epc-ic-btn" title="복사"><i data-lucide="file"></i></button>
+            <button class="epc-ic-btn" title="다운로드"><i data-lucide="download"></i></button>
+            <button class="epc-ic-btn" title="삭제"><i data-lucide="trash-2"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="epc" onclick="goScene('eval-plan-detail')">
+        <div class="epc-title">(고) 자기주도 독서 활동</div>
+        <div class="epc-foot">
+          <span class="epc-meta">26.07.11 수정됨 · 교내 공개</span>
+          <div class="epc-actions">
+            <button class="epc-ic-btn" title="복사"><i data-lucide="file"></i></button>
+            <button class="epc-ic-btn" title="다운로드"><i data-lucide="download"></i></button>
+            <button class="epc-ic-btn" title="삭제"><i data-lucide="trash-2"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 화면 B: 수행평가 설계 상세 편집 -->
+<div class="scene" id="scene-eval-plan-detail">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
+      <div class="ct active">수행평가 설계</div>
+      <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
+      <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
+      <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <button class="back-link" onclick="goScene('eval-plan-list')"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>이전으로</button>
+    <h1 class="page-h1">수행평가 설계 수정</h1>
+    <p class="page-sub">수행평가, 채점 방식, 채점 기준을 수정할 수 있습니다.</p>
+
+    <div class="ed-sec">
+      <div class="ed-sec-hd"><span class="ed-sec-title">기본 정보</span></div>
+      <input class="ed-inp-ro" value="(고) 자기주도 독서 활동">
+      <div class="ed-radio-line"><span class="ed-radio on"><span class="ring-ro"></span>교내 공개</span><span class="ed-radio"><span class="ring-ro"></span>비공개</span></div>
+    </div>
+
+    <div class="ed-sec">
+      <div class="ed-sec-hd"><span class="ed-sec-title">성취기준</span><span class="ed-sec-count">1개 / 10개</span></div>
+      <div class="crit-card">
+        <div class="crit-card-hd"><span class="crit-card-name">성취기준 1</span></div>
+        <div style="font-size:13px;color:#3b3f4c;line-height:1.6;margin-bottom:12px;">[12독작01-02] 독서의 목적과 자신의 맥락을 고려하여 가치 있는 글이나 자료를 탐색하고 선정한다.</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead><tr><th style="background:#f9fafb;padding:8px;text-align:center;width:40px;border-bottom:1px solid #dde1e8;">A</th><td style="padding:8px;border-bottom:1px solid #f1f3f5;">자신의 독서 목적을 정확하게 파악하고 자료의 상황 맥락을 고려하여 가치 있는 글이나 자료를 탐색하고 자료가 독서 목적과 자료의 상황 맥락에 부합하는지, 타당성과 신뢰성을...</td></tr></thead>
+          <tbody>
+            <tr><th style="background:#f9fafb;padding:8px;text-align:center;border-bottom:1px solid #f1f3f5;">B</th><td style="padding:8px;border-bottom:1px solid #f1f3f5;">자신의 독서 목적을 정확하게 파악하고 자료의 상황 맥락을 고려하여 가치 있는 글이나 자료를 탐색하고 자료가 독서 목적과 자료의 상황...</td></tr>
+            <tr><th style="background:#f9fafb;padding:8px;text-align:center;border-bottom:1px solid #f1f3f5;">C</th><td style="padding:8px;border-bottom:1px solid #f1f3f5;">자신의 독서 목적과 자료의 상황 맥락을 고려하여 가치 있는 글이나 자료를 탐색하고 자료가 독서 목적과 자료의 상황 맥락에 부합하는지 평가...</td></tr>
+            <tr><th style="background:#f9fafb;padding:8px;text-align:center;border-bottom:1px solid #f1f3f5;">D</th><td style="padding:8px;border-bottom:1px solid #f1f3f5;">자신의 독서 목적이나 자료의 상황 맥락을 일부 고려하여 관련 있는 글이나 자료를 탐색하고 수집할 수 있다.</td></tr>
+            <tr><th style="background:#f9fafb;padding:8px;text-align:center;">E</th><td style="padding:8px;">자신의 독서 목적이나 자료의 상황 맥락을 제한적인 수준에서 고려하여 부분적으로 관련 있는 글이나 자료를 수집한다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ed-sec">
+      <div class="ed-sec-hd"><span class="ed-sec-title">채점기준</span><span class="ed-sec-count">6개 / 15개</span></div>
+      <div class="crit-card"><div class="crit-card-hd"><span class="crit-card-name">채점기준 1</span></div><div class="crit-flex"><div class="crit-elem">책 선정 이유</div><div class="sc-tbl"><div class="sc-row"><div class="sc-score">10</div><div class="sc-desc">책을 선택한 동기를 독서 전 기대와 연결하여 구체적으로 서술하고…</div></div><div class="sc-row"><div class="sc-score">8</div><div class="sc-desc">책을 선택한 동기를 독서 전 기대와 연결하여 서술하였으나…</div></div><div class="sc-row"><div class="sc-score">6</div><div class="sc-desc">책을 선택한 계기가 동기를 간단하게 제시했으나 독서 전 기대는 부족함</div></div></div></div></div>
+      <div class="crit-card"><div class="crit-card-hd"><span class="crit-card-name">채점기준 2</span></div><div class="crit-flex"><div class="crit-elem">핵심 내용 요약</div><div class="sc-tbl"><div class="sc-row"><div class="sc-score">10</div><div class="sc-desc">작품의 주요 사건 전체, 중심 주장과 근거, 핵심 개념과 주제를 빠짐없이…</div></div><div class="sc-row"><div class="sc-score">8</div><div class="sc-desc">작품의 주요 내용과 주장을 전반적으로 파악하며 대체로 논리적인 순서로…</div></div><div class="sc-row"><div class="sc-score">6</div><div class="sc-desc">작품의 부분적인 내용이나 표면적인 사건 위주로 기술하여 핵심 주장이나…</div></div></div></div></div>
+      <div style="text-align:center;padding:20px;color:#9ea3ad;font-size:13px;">⋯ 나머지 채점기준 3~6도 동일 구조 (데모 간소화)</div>
+    </div>
+
+    <div class="ed-sec">
+      <div class="ed-sec-hd"><span class="ed-sec-title">점수 산출 방법</span></div>
+      <div class="ed-radio-line" style="margin-top:0;"><span class="ed-radio on"><span class="ring-ro"></span>채점기준 배점 그대로 적용</span><span class="ed-radio"><span class="ring-ro"></span>점수 구간별 등급으로 환산</span></div>
+      <div class="score-tbl-ro"><div class="head">영역 만점</div><div class="head">최소 점수</div><div class="val">60</div><div class="val">36</div></div>
+    </div>
+
+    <div class="ed-sec">
+      <div class="ed-sec-hd"><span class="ed-sec-title">과제물 업로드 방법</span></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div style="border:2px solid #416bff;background:#f4f8ff;border-radius:8px;padding:16px;"><div style="font-weight:600;margin-bottom:6px;">선생님 직접 일괄 업로드</div><div style="font-size:12px;color:#6d7381;line-height:1.5;">학생 과제물을 PDF나 이미지 파일(JPG, PNG)로 업로드합니다.</div></div>
+        <div style="border:1px solid #dde1e8;border-radius:8px;padding:16px;"><div style="font-weight:600;margin-bottom:6px;">학생 직접 입력 또는 제출</div><div style="font-size:12px;color:#6d7381;line-height:1.5;">학생이 업로드하여 과제 직접 입력하거나 파일로 제출합니다.</div></div>
+        <div style="border:1px solid #dde1e8;border-radius:8px;padding:16px;"><div style="font-weight:600;margin-bottom:6px;">과제물 없이 바로 채점</div><div style="font-size:12px;color:#6d7381;line-height:1.5;">과제물을 업로드하지 않고 채점을 진행합니다.</div></div>
+      </div>
+    </div>
+
+    <div style="text-align:right;margin-top:20px;"><button class="btn-solid" style="height:44px;padding:0 24px;"><i data-lucide="check" style="width:15px;height:15px"></i>설계 수정</button></div>
+  </div>
+</div>
+
+<!-- 화면 C: 과제물 관리 목록 -->
+<div class="scene" id="scene-hw-list">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
+      <div class="ct" onclick="goScene('eval-plan-list')">수행평가 설계</div>
+      <div class="ct active">과제물 관리</div>
+      <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
+      <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <div class="pg-h"><div class="pg-h-l"><h1 class="pg-h1">국어 과제물 관리</h1><div class="pg-h-desc">학생 제출 현황을 실시간으로 확인하고, 필요한 경우 직접 업로드할 수 있습니다.</div></div></div>
+
+    <div class="acc-item">
+      <div class="acc-hd">
+        <div class="acc-hd-l"><span class="chev"><i data-lucide="chevron-down"></i></span><div><div class="acc-hd-name">(고) 읽기 자료 분석을 통한 주제 통합 탐구</div><div class="acc-hd-meta">선생님 과제물 업로드 · 마감 완료</div></div></div>
+        <div class="acc-hd-r"><button class="btn-ghost btn-sm" disabled><i data-lucide="qr-code" style="width:14px;height:14px"></i>과제 제출 QR</button></div>
+      </div>
+      <table class="hw-table">
+        <thead><tr><th>반</th><th>상태</th><th>제출 현황</th><th>미제출</th><th>기간</th><th>관리</th></tr></thead>
+        <tbody>
+          <tr><td>1-1반</td><td><span class="hw-badge hw-b-closed">마감</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:45%"></div></div>9/20</td><td>11</td><td>-</td><td><button class="hw-link" onclick="goScene('hw-submission-detail')"><i data-lucide="list"></i>과제 제출 현황</button></td></tr>
+          <tr><td>1-10반</td><td><span class="hw-badge hw-b-done">완료</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:100%"></div></div>2/2</td><td>0</td><td>-</td><td><button class="hw-link"><i data-lucide="list"></i>과제 제출 현황</button></td></tr>
+          <tr><td>1-91반</td><td><span class="hw-badge hw-b-closed">마감</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:0%"></div></div>0/5</td><td>5</td><td>-</td><td><button class="hw-link"><i data-lucide="list"></i>과제 제출 현황</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-hd">
+        <div class="acc-hd-l"><span class="chev"><i data-lucide="chevron-down"></i></span><div><div class="acc-hd-name">(고) 자기주도 독서 활동</div><div class="acc-hd-meta">선생님 과제물 업로드 · 마감 전</div></div></div>
+        <div class="acc-hd-r"><button class="btn-ghost btn-sm" disabled><i data-lucide="qr-code" style="width:14px;height:14px"></i>과제 제출 QR</button></div>
+      </div>
+      <table class="hw-table">
+        <thead><tr><th>반</th><th>상태</th><th>제출 현황</th><th>미제출</th><th>기간</th><th>관리</th></tr></thead>
+        <tbody>
+          <tr><td>1-1반</td><td><span class="hw-badge hw-b-progress">진행</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:15%"></div></div>3/20</td><td>17</td><td>-</td><td><button class="hw-link"><i data-lucide="list"></i>과제 제출 현황</button></td></tr>
+          <tr><td>1-10반</td><td><span class="hw-badge hw-b-progress">진행</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:0%"></div></div>0/2</td><td>2</td><td>-</td><td><button class="hw-link"><i data-lucide="list"></i>과제 제출 현황</button></td></tr>
+          <tr><td>1-91반</td><td><span class="hw-badge hw-b-progress">진행</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:0%"></div></div>0/5</td><td>5</td><td>-</td><td><button class="hw-link"><i data-lucide="list"></i>과제 제출 현황</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 화면 D: 과제 제출 현황 상세 (1-1반) -->
+<div class="scene" id="scene-hw-submission-detail">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
+      <div class="ct" onclick="goScene('eval-plan-list')">수행평가 설계</div>
+      <div class="ct active">과제물 관리</div>
+      <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
+      <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <button class="back-link" onclick="goScene('hw-list')"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>이전으로</button>
+    <div class="pg-h"><div class="pg-h-l"><h1 class="pg-h1">1학년 1반 과제 제출 현황</h1><div class="pg-h-desc">(고) 읽기 자료 분석을 통한 주제 통합 탐구 과제 제출 현황을 확인하고 파일을 직접 업로드 할 수 있습니다.</div></div>
+      <button class="btn-solid" style="height:40px"><i data-lucide="upload" style="width:15px;height:15px"></i>학급 PDF 업로드</button>
+    </div>
+
+    <div class="miss-banner">
+      <i data-lucide="alert-circle"></i>
+      <div style="flex:1">
+        <div class="mb-title">미제출 학생</div>
+        <div class="mb-list">10110 김십십, 10111 김십일, 10112 김십이, 10113 김십삼, 10114 김십사, 10115 김십오, 10116 김십육, 10117 김십칠, 10118 김십팔, 10119 김십구, 10120 김이십</div>
+      </div>
+      <span class="mb-time">08/03 18:13:55 기준 <i data-lucide="refresh-cw" style="width:11px;height:11px;margin-left:2px"></i></span>
+    </div>
+
+    <div class="section-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div><div style="font-size:16px;font-weight:600;">(고) 읽기 자료 분석을 통한 주제 통합 탐구</div><div style="font-size:13px;color:#6d7381;margin-top:4px">업로드된 과제를 다운받거나 변경 또는 삭제할 수 있습니다.</div></div>
+        <div style="display:flex;gap:6px"><button class="btn-outline btn-sm"><i data-lucide="download" style="width:13px;height:13px"></i>과제물 다운로드</button><button class="btn-outline btn-sm" style="color:#f2525f;border-color:#fecaca"><i data-lucide="trash-2" style="width:13px;height:13px"></i>과제물 삭제</button></div>
+      </div>
+      <table class="subs-table">
+        <thead><tr><th><input type="checkbox"></th><th>학번</th><th>이름</th><th>제출 상태</th><th>최근 제출 일시</th><th>제출 상세</th><th>과제물 관리</th></tr></thead>
+        <tbody>
+          <tr><td><input type="checkbox"></td><td>10101</td><td>김일일</td><td><span class="hw-badge hw-b-done">제출 완료</span></td><td>06/29 11:08 선생님 업로드</td><td><i data-lucide="paperclip" style="width:12px;height:12px;color:#6d7381;vertical-align:middle"></i> <span style="color:#3151c4;font-size:12px">파일 첨부</span> 김일일_260629업로드.pdf</td><td><button class="hw-link">↻ 변경/삭제</button></td></tr>
+          <tr><td><input type="checkbox"></td><td>10102</td><td>김이이</td><td><span class="hw-badge hw-b-done">제출 완료</span></td><td>06/29 11:08 선생님 업로드</td><td><i data-lucide="paperclip" style="width:12px;height:12px;color:#6d7381;vertical-align:middle"></i> 김이이_260629업로드.pdf</td><td><button class="hw-link">↻ 변경/삭제</button></td></tr>
+          <tr><td><input type="checkbox"></td><td>10103</td><td>김삼삼</td><td><span class="hw-badge hw-b-done">제출 완료</span></td><td>06/29 11:08 선생님 업로드</td><td><i data-lucide="paperclip" style="width:12px;height:12px;color:#6d7381;vertical-align:middle"></i> 김삼삼_260629업로드.pdf</td><td><button class="hw-link">↻ 변경/삭제</button></td></tr>
+          <tr style="color:#9ea3ad"><td><input type="checkbox"></td><td>10110</td><td>김십십</td><td><span class="hw-badge hw-b-closed">미제출</span></td><td>-</td><td>-</td><td><button class="hw-link"><i data-lucide="folder-plus" style="width:13px;height:13px"></i>업로드</button></td></tr>
+          <tr style="color:#9ea3ad"><td><input type="checkbox"></td><td>10111</td><td>김십일</td><td><span class="hw-badge hw-b-closed">미제출</span></td><td>-</td><td>-</td><td><button class="hw-link"><i data-lucide="folder-plus" style="width:13px;height:13px"></i>업로드</button></td></tr>
+          <tr><td colspan="7" style="text-align:center;color:#9ea3ad;font-size:12px;padding:14px;">⋯ 나머지 학생 (데모 간소화)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 화면 E: 수행평가 채점 목록 -->
+<div class="scene" id="scene-scoring-list">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
+      <div class="ct" onclick="goScene('eval-plan-list')">수행평가 설계</div>
+      <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
+      <div class="ct active">수행평가 채점</div>
+      <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <div class="pg-h"><div class="pg-h-l"><h1 class="pg-h1">국어 수행평가 채점</h1><div class="pg-h-desc">AI가 채점 초안을 만들어 드립니다. 선생님이 검토 후 최종 확정해 주세요.</div></div></div>
+
+    <div class="acc-item">
+      <div class="acc-hd">
+        <div class="acc-hd-l"><span class="chev"><i data-lucide="chevron-down"></i></span><div><div class="acc-hd-name">(고) 읽기 자료 분석을 통한 주제 통합 탐구</div><div class="acc-hd-meta">AI 채점 가능 · 마감 완료</div></div></div>
+        <div class="acc-hd-r"><button class="btn-outline btn-sm"><i data-lucide="share-2" style="width:13px;height:13px"></i>결과 공개</button><button class="btn-outline btn-sm"><i data-lucide="undo" style="width:13px;height:13px"></i>마감 취소</button></div>
+      </div>
+      <table class="hw-table">
+        <thead><tr><th>학급</th><th>상태</th><th>선생님 채점 현황</th><th>원점수 평균</th><th>AI 채점</th><th>AI 채점 결과</th><th>관리</th></tr></thead>
+        <tbody>
+          <tr><td>1-1반</td><td><span class="hw-badge hw-b-done">완료</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:10%"></div></div>2/20</td><td>0</td><td><button class="btn-subtle btn-sm" onclick="goScene('scoring-class-detail')"><i data-lucide="wand-sparkles" style="width:12px;height:12px"></i>재실행</button></td><td><button class="btn-subtle btn-sm">결과 확인</button></td><td><button class="hw-link" onclick="goScene('scoring-class-detail')"><i data-lucide="list"></i>학급 채점 현황</button></td></tr>
+          <tr><td>1-10반</td><td><span class="hw-badge hw-b-done">완료</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:0%"></div></div>0/2</td><td>-</td><td><button class="btn-solid btn-sm"><i data-lucide="wand-sparkles" style="width:12px;height:12px"></i>AI 채점 실행</button></td><td><button class="btn-subtle btn-sm" disabled>결과 확인</button></td><td><button class="hw-link">학급 채점 현황</button></td></tr>
+          <tr><td>1-91반</td><td><span class="hw-badge hw-b-done">완료</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:0%"></div></div>0/5</td><td>-</td><td><button class="btn-solid btn-sm"><i data-lucide="wand-sparkles" style="width:12px;height:12px"></i>AI 채점 실행</button></td><td><button class="btn-subtle btn-sm" disabled>결과 확인</button></td><td><button class="hw-link">학급 채점 현황</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="acc-item">
+      <div class="acc-hd">
+        <div class="acc-hd-l"><span class="chev"><i data-lucide="chevron-down"></i></span><div><div class="acc-hd-name">(고) 자기주도 독서 활동</div><div class="acc-hd-meta">AI 채점 가능 · 마감 전</div></div></div>
+        <div class="acc-hd-r"><button class="btn-outline btn-sm"><i data-lucide="share-2" style="width:13px;height:13px"></i>결과 공개</button><button class="btn-solid btn-sm"><i data-lucide="check" style="width:13px;height:13px"></i>마감</button></div>
+      </div>
+      <table class="hw-table">
+        <thead><tr><th>학급</th><th>상태</th><th>선생님 채점 현황</th><th>원점수 평균</th><th>AI 채점</th><th>AI 채점 결과</th><th>관리</th></tr></thead>
+        <tbody>
+          <tr><td>1-1반</td><td><span class="hw-badge hw-b-progress">진행</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:45%"></div></div>9/20</td><td><b>52</b></td><td><button class="btn-solid btn-sm" onclick="goScene('scoring-class-detail')"><i data-lucide="wand-sparkles" style="width:12px;height:12px"></i>재실행</button></td><td><button class="btn-subtle btn-sm">결과 확인</button></td><td><button class="hw-link" onclick="goScene('scoring-class-detail')"><i data-lucide="list"></i>학급 채점 현황</button></td></tr>
+          <tr><td>1-10반</td><td><span class="hw-badge hw-b-progress">진행</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:0%"></div></div>0/2</td><td>-</td><td><button class="btn-solid btn-sm"><i data-lucide="wand-sparkles" style="width:12px;height:12px"></i>AI 채점 실행</button></td><td><button class="btn-subtle btn-sm" disabled>결과 확인</button></td><td><button class="hw-link">학급 채점 현황</button></td></tr>
+          <tr><td>1-91반</td><td><span class="hw-badge hw-b-progress">진행</span></td><td><div class="progress-bar" style="width:120px;margin:0 auto"><div class="progress-fill" style="width:0%"></div></div>0/5</td><td>-</td><td><button class="btn-solid btn-sm"><i data-lucide="wand-sparkles" style="width:12px;height:12px"></i>AI 채점 실행</button></td><td><button class="btn-subtle btn-sm" disabled>결과 확인</button></td><td><button class="hw-link">학급 채점 현황</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 화면 F: 학급 채점 현황 (1-1반) -->
+<div class="scene" id="scene-scoring-class-detail">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
+      <div class="ct" onclick="goScene('eval-plan-list')">수행평가 설계</div>
+      <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
+      <div class="ct active">수행평가 채점</div>
+      <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <button class="back-link" onclick="goScene('scoring-list')"><i data-lucide="chevron-left" style="width:18px;height:18px"></i>이전으로</button>
+    <div class="pg-h"><div class="pg-h-l"><h1 class="pg-h1">1-1반 채점 현황</h1><div class="pg-h-desc">(고) 자기주도 독서 활동 AI 채점 결과를 확인하고 점수를 확정하세요. 수정이 필요한 학생은 개별 조정할 수 있습니다.</div></div>
+      <button class="btn-solid" style="background:#319d64;height:40px"><i data-lucide="download" style="width:15px;height:15px"></i>채점 결과 다운로드</button>
+    </div>
+
+    <div class="step-cards">
+      <div class="step-card"><div class="step-num">1단계. AI 채점</div><div class="step-title">AI 채점</div><div class="step-desc">학급 단위의 AI 채점을 실행합니다.</div><button class="step-btn"><i data-lucide="wand-sparkles" style="width:15px;height:15px"></i>AI 채점 시작하기</button></div>
+      <div class="step-card"><div class="step-num">2단계. 점수 검토·확정</div><div class="step-title">점수 검토·확정</div><div class="step-desc">AI 예상 점수를 토대로 수정이 필요한 학생만 조정하세요.</div><button class="step-btn subtle"><i data-lucide="check" style="width:15px;height:15px"></i>점수 일괄 확정하기</button></div>
+      <div class="step-card"><div class="step-num">3단계. 채점 결과 공개</div><div class="step-title">채점 결과 공개</div><div class="step-desc">선생님의 채점 결과와 피드백을 학생에게 공유합니다.</div><button class="step-btn subtle"><i data-lucide="share-2" style="width:15px;height:15px"></i>학생에게 결과 공개하기</button></div>
+    </div>
+
+    <div class="section-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div><div style="font-size:16px;font-weight:600;">(고) 자기주도 독서 활동의 과제</div><div style="font-size:13px;color:#6d7381;margin-top:4px">AI 채점을 실행하고, 채점 결과를 참고하여 선생님이 최종 채점을 진행합니다.</div></div>
+        <div style="display:flex;gap:6px"><button class="btn-outline btn-sm"><i data-lucide="rotate-ccw" style="width:12px;height:12px"></i>초기화</button><button class="btn-outline btn-sm"><i data-lucide="edit-3" style="width:12px;height:12px"></i>점수 일괄 수정</button><button class="btn-subtle btn-sm"><i data-lucide="bar-chart-3" style="width:12px;height:12px"></i>AI 채점 결과 확인</button></div>
+      </div>
+      <table class="subs-table">
+        <thead><tr><th>학번</th><th>이름</th><th>AI 채점 결과</th><th>AI 점수</th><th>최종 점수</th><th>채점 상태</th><th>학생 채점</th></tr></thead>
+        <tbody>
+          <tr><td>10101</td><td>김일일</td><td>채점 완료</td><td>(54)</td><td><b>54</b></td><td><span class="hw-badge hw-b-done">완료</span></td><td><button class="hw-link" onclick="goScene('student-scoring-detail')"><i data-lucide="user"></i>상세 보기</button></td></tr>
+          <tr><td>10102</td><td>김이이</td><td>채점 완료</td><td>(52)</td><td><b>52</b></td><td><span class="hw-badge hw-b-done">완료</span></td><td><button class="hw-link"><i data-lucide="user"></i>상세 보기</button></td></tr>
+          <tr><td>10103</td><td>김삼삼</td><td>채점 완료</td><td>(52)</td><td><b>52</b></td><td><span class="hw-badge hw-b-done">완료</span></td><td><button class="hw-link"><i data-lucide="user"></i>상세 보기</button></td></tr>
+          <tr><td>10104</td><td>김사사</td><td>과제 미제출</td><td>(52)</td><td><b>52</b></td><td><span class="hw-badge hw-b-done">완료</span></td><td><button class="hw-link"><i data-lucide="user"></i>상세 보기</button></td></tr>
+          <tr><td>10110</td><td>김십십</td><td>과제 미제출</td><td>-</td><td>-</td><td><span class="hw-badge" style="background:#fef2f2;color:#ab303a">미채점</span></td><td><button class="hw-link"><i data-lucide="user"></i>상세 보기</button></td></tr>
+          <tr><td colspan="7" style="text-align:center;color:#9ea3ad;font-size:12px;padding:14px;">⋯ 나머지 학생 (데모 간소화)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- 화면 G: 학생 채점 상세 (김일일) -->
+<div class="scene" id="scene-student-scoring-detail">
+  <div style="background:#f6f7f9;min-height:calc(100vh - 56px);padding:16px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <button class="btn-solid" style="background:#365eef" onclick="goScene('scoring-class-detail')"><i data-lucide="chevron-left" style="width:14px;height:14px"></i>목록으로</button>
+        <select class="obs-select" style="width:220px;height:38px">
+          <option>10101 김일일 (완료)</option><option>10102 김이이 (완료)</option><option>10103 김삼삼 (완료)</option>
+        </select>
+        <span style="font-size:14px;color:#6d7381">20명 중 9명 채점 완료</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;font-size:14px;color:#6d7381">
+        <button class="btn-ghost btn-sm">← 이전 학생</button>
+        <span>|</span>
+        <button class="btn-ghost btn-sm">다음 학생 →</button>
+        <button class="btn-outline btn-sm"><i data-lucide="download" style="width:13px;height:13px"></i></button>
+        <button class="btn-solid btn-sm">저장 후 다음 →</button>
+      </div>
+    </div>
+
+    <div class="stu-scoring-wrap">
+      <div class="stu-pdf-panel">
+        <div class="stu-pdf-hd"><span>김수_260616업로드 · 07/09 16:04 업로드</span><span>< 1 / 2 > 100%</span></div>
+        <div class="stu-pdf-body">
+          <div style="border:1px solid #dde1e8;padding:20px;background:#fff">
+            <div style="font-weight:600;margin-bottom:10px">2학기 독서 수행평가</div>
+            <div style="text-align:center;font-size:20px;font-weight:600;padding:14px;border:1px solid #222631;margin-bottom:20px">독후 활동 보고서</div>
+            <div style="font-weight:600;margin-bottom:8px">1. 책 선정 이유 <span style="font-weight:400;font-size:13px;color:#6d7381">(왜 이 책을 골랐는지, 읽기 전 기대했던 점을 작성해 봅시다.)</span></div>
+            <div style="border:1px solid #dde1e8;padding:10px;min-height:100px;font-family:cursive;color:#3b3f4c;line-height:1.8">내가 '사라진 스푼'을 고른 이유는 원소에 대한 다양한 이야기가 얽혀있다는 점에 흥미가 갔기 때문이다. 그저 과학적 지식인줄 알았던 주기율표에 대해 다양한 이야기가 있다는 것이 신기했고 궁금해져서 선택하였다. 또 이 책을 통해 내가 화학에 대해 가져야 할 태도를 배울 수 있기를 기대하면서 이 책을 골랐다.</div>
+            <div style="font-weight:600;margin:20px 0 8px">2. 핵심 내용 요약 <span style="font-weight:400;font-size:13px;color:#6d7381">(책의 주요 주장과 근거, 핵심 개념, 주제 등을 요약해 봅시다.)</span></div>
+            <div style="border:1px solid #dde1e8;padding:10px;min-height:100px;font-family:cursive;color:#3b3f4c;line-height:1.8">'사라진 스푼'은 각 원소들에 대한 역사와 이야기를 나타내고 있다. 주기율표가 어떻게 탄생하기 되었는지와 멘델레예프가 주기율표를 만든 후 남은 원소들을 다양한 과학자들이 찾는 과정을 담고 있고 또한 그 원소들이 우리 인간 문명에 어떠한 영향을 끼쳤는지를 나타내고 있다. 예를 들어 우라늄과 플루토늄 같은 원소를 발견한 뒤 원자폭탄 발명에 영향을 미쳐 전쟁에도 큰 영향...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stu-scoring-panel">
+        <div class="stu-total-hd">
+          <div class="stu-total">총점 <b>54</b> / 60 점</div>
+          <div class="stu-status-radio">
+            <label><input type="radio" name="stu-st" checked>채점 진행</label>
+            <label><input type="radio" name="stu-st">미응시</label>
+            <label><input type="radio" name="stu-st">미제출</label>
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div style="font-size:16px;font-weight:600">채점 결과</div>
+          <button class="btn-outline btn-sm"><i data-lucide="check" style="width:12px;height:12px"></i>AI 점수 적용</button>
+        </div>
+        <div style="border:1px solid #f1f3f5;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:#6d7381;margin-bottom:2px">채점기준</div></div>
+
+        <div class="stu-crit-item"><div class="stu-crit-nm">책 선정 이유</div><div class="stu-score-pills"><div class="stu-score-pill on">10</div><div class="stu-score-pill">8</div><div class="stu-score-pill">6</div></div></div>
+        <div class="stu-crit-item"><div class="stu-crit-nm">핵심 내용 요약</div><div class="stu-score-pills"><div class="stu-score-pill">10</div><div class="stu-score-pill on">8</div><div class="stu-score-pill">6</div></div></div>
+        <div class="stu-crit-item"><div class="stu-crit-nm">생각의 변화</div><div class="stu-score-pills"><div class="stu-score-pill on">10</div><div class="stu-score-pill">8</div><div class="stu-score-pill">6</div></div></div>
+        <div class="stu-crit-item"><div class="stu-crit-nm">진로·관심사와의 연계</div><div class="stu-score-pills"><div class="stu-score-pill on">10</div><div class="stu-score-pill">8</div><div class="stu-score-pill">6</div></div></div>
+        <div class="stu-crit-item"><div class="stu-crit-nm">종합 평가·후속 탐구 계획</div><div class="stu-score-pills"><div class="stu-score-pill">10</div><div class="stu-score-pill on">8</div><div class="stu-score-pill">6</div></div></div>
+        <div class="stu-crit-item"><div class="stu-crit-nm">보고서 구성 및 형식</div><div class="stu-score-pills"><div class="stu-score-pill">10</div><div class="stu-score-pill on">8</div><div class="stu-score-pill">6</div></div></div>
+
+        <div style="background:#f4f8ff;border-radius:8px;padding:14px;margin-top:16px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px"><i data-lucide="sparkles" style="width:15px;height:15px;color:#365eef"></i>AI 채점 근거 및 피드백</div>
+          <div style="display:flex;gap:6px;margin-bottom:10px">
+            <button class="btn-subtle btn-sm" style="flex:1">과제물 분석 AI</button>
+            <button class="btn-outline btn-sm" style="flex:1">루브릭 기반 AI</button>
+          </div>
+          <div style="font-size:13px;color:#3b3f4c;line-height:1.6">응답에서 원소에 대한 다양한 이야기에 흥미를 느껴 책을 선택했다는 동기를 분명히 밝히고 있음. 단순한 과학 지식으로만 알았던 주기율표에 숨은 '다양한 이야기'에 대한 호기심을 이유로 제시하여 작품의 내용 방향성과 연결하고 있음…</div>
+        </div>
+
+        <div style="margin-top:16px">
+          <div style="font-size:14px;font-weight:600;margin-bottom:8px">선생님 직접 피드백</div>
+          <textarea style="width:100%;min-height:80px;border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;font-family:inherit;font-size:14px" placeholder="채점 완료 시, 학생에게 제공되는 과제 피드백 내용입니다."></textarea>
+          <div style="text-align:right;font-size:11px;color:#9ea3ad;margin-top:4px">0자 / 0 byte</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 화면 H: 세부능력 및 특기사항 지원 -->
+<div class="scene" id="scene-sr-list">
+  <div class="class-tabs">
+    <div class="tab-band-inner">
+      <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
+      <div class="ct" onclick="goScene('eval-plan-list')">수행평가 설계</div>
+      <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
+      <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
+      <div class="ct active">세부능력 및 특기사항 지원</div>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <div class="pg-h"><div class="pg-h-l"><h1 class="pg-h1">국어 세부능력 및 특기사항 지원</h1><div class="pg-h-desc">AI Assistant가 세부능력 및 특기사항 기록 작성을 도와드려요! 단, AI 생성 결과는 항상 선생님의 최종 확인이 필요합니다.</div></div>
+      <button class="btn-solid" style="height:40px"><i data-lucide="settings" style="width:15px;height:15px"></i>생성 옵션 설정</button>
+    </div>
+
+    <div class="section-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <select class="obs-select" style="width:140px;height:38px"><option>1학년 1반</option><option>1학년 10반</option></select>
+        <div style="display:flex;gap:6px"><button class="btn-outline btn-sm"><i data-lucide="eye" style="width:13px;height:13px"></i>점수 보이기</button><button class="btn-outline btn-sm"><i data-lucide="download" style="width:13px;height:13px"></i>전체 AI 기록 가져오기</button><button class="btn-solid btn-sm"><i data-lucide="check" style="width:13px;height:13px"></i>저장</button></div>
+      </div>
+      <table class="sr-table">
+        <thead><tr><th style="width:60px">학번</th><th style="width:70px">이름</th><th style="width:60px">총점</th><th>AI Assistant가 생성한 기록</th><th>선생님 직접 작성</th><th style="width:80px;text-align:center">기록 근거</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>10101</td><td>김일일</td><td>54</td>
+            <td><div class="sr-content">작품의 주제와 화학공학 진로와의 연계를 단계적으로 정리함으로써 진로 의식을 바탕으로 독서를 설계하는 모습을 보여줌. 우라늄과 플루토늄, 원자폭탄 사례를 통해 기술 발전이 가져온 이익뿐 아니라 윤리적 책임을 함께 서술하고, 바나듐의 의약품 활용, 가돌리늄의 MRI 활용 등 구체적인 기술 적용 사례를 발췌·정리하여 화학공학자가 장래에 연구할 수 있는 이익 중심 기술의 방향성을 그려 냄으로써 진로 인식을 심화함…</div><div class="sr-actions-row"><span style="font-size:11px;color:#9ea3ad;margin-right:auto">1258 Byte</span><button class="sr-ic"><i data-lucide="thumbs-up"></i></button><button class="sr-ic"><i data-lucide="thumbs-down"></i></button><button class="sr-ic" style="background:#e9f2ff;color:#3151c4"><i data-lucide="wand-sparkles"></i></button><button class="sr-ic"><i data-lucide="copy"></i></button></div></td>
+            <td><div class="sr-content">작품의 주제와 화학공학 진로와의 연계를 단계적으로 정리함으로써 진로 의식을 바탕으로 독서를 설계하는 모습을 보여줌. 우라늄과 플루토늄, 원자폭탄 사례를 통해 기술 발전이 가져온 이익뿐 아니라 윤리적 책임을 함께 서술하고…</div><div style="font-size:11px;color:#9ea3ad;margin-top:6px">512자 · 1258 Byte</div></td>
+            <td style="text-align:center"><button class="hw-link" style="font-size:12px">→<br>기록 근거</button></td>
+          </tr>
+          <tr>
+            <td>10102</td><td>김이이</td><td>52</td>
+            <td><div class="sr-content">'자기주도 독서 활동의 과제'에서 책 선택 이유를 미술 입시 준비 상황과 평소 미술에 대한 높은 관심과 연결하여 설득력 있게 제시하고, '내가 하는 일이 세상을 바꿀 수 있다'는 제목에서 느낀 놀라움과 궁금증을 독서 전 기대와 연계해 구체적인 내적 독백 형식으로 서술하여 자신의 기존 인식과 가치관을 분명히 드러냄…</div><div class="sr-actions-row"><span style="font-size:11px;color:#9ea3ad;margin-right:auto">1105 Byte</span><button class="sr-ic"><i data-lucide="thumbs-up"></i></button><button class="sr-ic"><i data-lucide="thumbs-down"></i></button><button class="sr-ic" style="background:#e9f2ff;color:#3151c4"><i data-lucide="wand-sparkles"></i></button><button class="sr-ic"><i data-lucide="copy"></i></button></div></td>
+            <td><div class="sr-content">전지 기술과 인공광합성에 대한 높은 관심을 바탕으로 관련 도서와 읽기 자료를 스스로 선정해 꾸준히 탐독하고 핵심 내용을 정리하며, 과제 문항을 성실히 완성하고 논리적 구성을 유지하려는 태도를 보임…</div><div style="font-size:11px;color:#9ea3ad;margin-top:6px">487자 · 1105 Byte</div></td>
+            <td style="text-align:center"><button class="hw-link" style="font-size:12px">→<br>기록 근거</button></td>
+          </tr>
+          <tr><td colspan="6" style="text-align:center;color:#9ea3ad;font-size:12px;padding:14px;">⋯ 나머지 학생 (데모 간소화)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="background:#e9f2ff;border:1px solid #ccdfff;border-radius:8px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;gap:8px;font-size:13px;color:#3151c4">
+      <i data-lucide="sparkles" style="width:15px;height:15px"></i>
+      <span><b>AI 기록 다듬기</b>&nbsp;&nbsp;학생을 선택하고 요청사항을 자유롭게 입력해 AI 기록을 다듬어 보세요.</span>
+      <button class="btn-solid btn-sm" style="margin-left:auto"><i data-lucide="user-plus" style="width:12px;height:12px"></i>학생 선택하기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================
      SCENE 7: 잠금 / 권한 없음 안내 (엣지 케이스)
 ================================================ -->
 <div class="scene" id="scene-locked">
@@ -1477,8 +2221,10 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       <div class="field">
         <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;">
           <span>함께 볼 선생님 <span style="color:#6d7381;font-weight:400">(현재 3명 선택됨)</span></span>
-          <button class="btn-subtle btn-sm" onclick="openLinkPopover(this, event)" style="height:32px;font-size:13px;position:relative;">
-            <i data-lucide="link" style="width:14px;height:14px"></i>초대 링크 생성
+          <div class="link-btn-wrap" style="position:relative;">
+            <button class="btn-subtle btn-sm" onclick="openLinkPopover(event)" style="height:32px;font-size:13px;">
+              <i data-lucide="link" style="width:14px;height:14px"></i>초대 링크 생성
+            </button>
             <div class="link-popover" id="linkPopover">
               <div class="lp-title"><i data-lucide="link" style="width:15px;height:15px;color:#365eef"></i>초대 링크</div>
               <div class="lp-desc">이 링크로 접속하면 같은 학교 선생님이 이 수업을 검토할 수 있어요. 계정 로그인은 필요해요.</div>
@@ -1488,7 +2234,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
               </div>
               <div class="lp-meta">만료 없음 · 언제든 회수 가능</div>
             </div>
-          </button>
+          </div>
         </div>
         <div class="teacher-search">
           <input class="text-input" placeholder="이름·과목으로 검색 (예: 박수정, 국어)">
@@ -1496,32 +2242,27 @@ body.nav-expanded .main-wrap { margin-left:222px; }
         <div class="teacher-list">
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check checked"><i data-lucide="check"></i></div>
-            <div class="t-name">박수정 선생님</div>
-            <div class="t-subj">국어</div>
+            <div class="t-name-wrap"><span class="t-name">박수정 선생님</span><span class="t-subj">국어</span></div>
             <span class="rv-preset plus" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업 + 세특</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check checked"><i data-lucide="check"></i></div>
-            <div class="t-name">김민준 선생님</div>
-            <div class="t-subj">국어</div>
+            <div class="t-name-wrap"><span class="t-name">김민준 선생님</span><span class="t-subj">국어</span></div>
             <span class="rv-preset plus" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업 + 세특</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check checked"><i data-lucide="check"></i></div>
-            <div class="t-name">이지혜 선생님</div>
-            <div class="t-subj">역사</div>
+            <div class="t-name-wrap"><span class="t-name">이지혜 선생님</span><span class="t-subj">역사</span></div>
             <span class="rv-preset basic" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check"></div>
-            <div class="t-name">최민아 선생님</div>
-            <div class="t-subj">사회</div>
+            <div class="t-name-wrap"><span class="t-name">최민아 선생님</span><span class="t-subj">사회</span></div>
             <span style="font-size:12px;color:#9ea3ad;">미공유</span>
           </div>
           <div class="t-item" onclick="toggleTeacher(this)">
             <div class="t-check"></div>
-            <div class="t-name">정하나 선생님</div>
-            <div class="t-subj">수학</div>
+            <div class="t-name-wrap"><span class="t-name">정하나 선생님</span><span class="t-subj">수학</span></div>
             <span style="font-size:12px;color:#9ea3ad;">미공유</span>
           </div>
         </div>
@@ -1565,7 +2306,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
             <div class="preset-desc">세부능력 및 특기사항까지 함께 검토</div>
           </div>
         </div>
-        <div class="field-help">공유 후에도 언제든 프리셋을 바꿀 수 있어요. 세특 미포함으로 바꾸면 세특 메뉴 접근이 즉시 차단되고, 그 메뉴 댓글도 열람할 수 없어요.</div>
+        <div class="field-help">공유 후에도 언제든 범위를 바꿀 수 있어요. 세특 미포함으로 바꾸면 세특 메뉴 접근이 즉시 차단되고, 그 메뉴 댓글도 열람할 수 없어요.</div>
       </div>
     </div>
     <div class="m-foot">
@@ -1583,7 +2324,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
     <div class="cs-head-top">
       <div class="cs-title"><span class="cs-drag-hint" title="드래그로 이동"><i data-lucide="grip-vertical"></i></span><i data-lucide="message-circle" style="width:17px;height:17px;color:#365eef"></i>댓글</div>
       <div style="display:flex;gap:2px;">
-        <button class="m-close" onclick="minimizeCommentSide()" title="최소화"><i data-lucide="minus"></i></button>
+        <button class="m-close" onclick="toggleMinimize(event)" title="접기/펴기" id="minToggleBtn"><i data-lucide="chevron-down"></i></button>
         <button class="m-close" onclick="hideCommentAll()" title="닫기"><i data-lucide="x"></i></button>
       </div>
     </div>
@@ -1593,147 +2334,11 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       <span class="shared-cnt"><i data-lucide="users"></i>공유된 선생님 <b id="csSharedCnt">3</b>명</span>
     </div>
   </div>
-  <div class="cs-filter-row">
-    <div class="cs-filter-wrap">
-      <button class="cs-filter" onclick="toggleFilterMenu(event)">
-        <i data-lucide="filter" style="width:13px;height:13px"></i>
-        <span id="csFilterLabel">전체 보기</span>
-        <i data-lucide="chevron-down" style="width:13px;height:13px"></i>
-      </button>
-      <div class="cs-filter-menu" id="csFilterMenu">
-        <button class="on" data-author="all" onclick="setFilter('all', '전체 보기')">전체 보기<i data-lucide="check" class="check" style="width:14px;height:14px"></i></button>
-        <div class="rv-menu-div"></div>
-        <button data-author="박수정" onclick="setFilter('박수정', '박수정 선생님')">박수정 선생님 <span style="color:#5d26c4;font-size:11px;font-weight:500;background:#ebdfff;padding:1px 5px;border-radius:3px;margin-left:auto">2차</span></button>
-        <button data-author="김민준" onclick="setFilter('김민준', '김민준 선생님')">김민준 선생님 <span style="color:#5d26c4;font-size:11px;font-weight:500;background:#ebdfff;padding:1px 5px;border-radius:3px;margin-left:auto">2차</span></button>
-        <button data-author="홍길동" onclick="setFilter('홍길동', '홍길동 선생님 (1차)')">홍길동 선생님 <span style="color:#3151c4;font-size:11px;font-weight:500;background:#e9f2ff;padding:1px 5px;border-radius:3px;margin-left:auto">1차</span></button>
-      </div>
-    </div>
-    <span class="cs-count-text">총 <b id="csTotalCnt">3</b>개 댓글</span>
+  <div class="cs-scope-row" id="csScopeRow">
+    <!-- 탭에 따라 동적 렌더링 -->
   </div>
   <div class="cs-body" id="csBody">
     <!-- 댓글 목록은 renderComments()에서 동적 렌더링됨 -->
-  </div>
-  <div style="display:none;" id="csBodyLegacyPlaceholder" aria-hidden="true">
-    <div class="comment-item highlight unread">
-      <div class="ci-head">
-        <span class="ci-unread-dot" title="안 읽은 댓글"></span>
-        <div class="ci-avatar">박수</div>
-        <div class="ci-nm">
-          <span class="ci-name">박수정 선생님</span>
-          <span class="ci-role reviewer">2차</span>
-        </div>
-        <span class="ci-time">07/31 10:08</span>
-      </div>
-      <div class="ci-body">1-1반 김일일 학생 논술 답안, 3번 문항 근거 채점기준 4점으로 봐도 될까요? 자료 인용이 충분해 보여서요.</div>
-      <div class="ci-target" onclick="notReady('해당 위치로 이동')"><i data-lucide="corner-down-right"></i>1-1반 · 김일일 · 3번 문항</div>
-      <div class="ci-actions">
-        <button class="ci-react-btn on" onclick="toggleReact(this, '👀')"><span>👀</span><span class="rc">2</span></button>
-        <button class="ci-react-btn on" onclick="toggleReact(this, '👍')"><span>👍</span><span class="rc">1</span></button>
-        <button class="ci-react-add" onclick="toggleEmojiPop(this, event)" title="반응 추가"><i data-lucide="smile-plus"></i>
-          <div class="emoji-pop">
-            <button onclick="addReact(this, '👍')">👍</button>
-            <button onclick="addReact(this, '❤️')">❤️</button>
-            <button onclick="addReact(this, '👀')">👀</button>
-            <button onclick="addReact(this, '✅')">✅</button>
-            <button onclick="addReact(this, '🎉')">🎉</button>
-          </div>
-        </button>
-        <button class="ci-reply-btn" onclick="toggleReplyForm(this)"><i data-lucide="corner-down-right" style="width:12px;height:12px"></i>답글</button>
-      </div>
-      <div class="ci-replies">
-        <div class="ci-reply">
-          <div class="ci-head">
-            <div class="ci-avatar" style="background:#eefcf4;color:#27724b">홍길</div>
-            <div class="ci-nm">
-              <span class="ci-name">홍길동 선생님</span>
-              <span class="ci-role owner">1차</span>
-            </div>
-            <span class="ci-time">07/31 10:45</span>
-          </div>
-          <div class="ci-body">그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요. 필요하면 오후에 함께 볼까요?</div>
-        </div>
-      </div>
-      <div class="ci-reply-form">
-        <textarea placeholder="답글을 남겨주세요"></textarea>
-        <div class="actions">
-          <button class="btn-ghost btn-sm" onclick="toggleReplyForm(this)">취소</button>
-          <button class="btn-solid btn-sm" onclick="submitReply(this)">답글 등록</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="comment-item unread">
-      <div class="ci-head">
-        <span class="ci-unread-dot" title="안 읽은 댓글"></span>
-        <div class="ci-avatar">박수</div>
-        <div class="ci-nm">
-          <span class="ci-name">박수정 선생님</span>
-          <span class="ci-role reviewer">2차</span>
-        </div>
-        <span class="ci-time">07/31 11:22</span>
-      </div>
-      <div class="ci-body">1-2반은 채점기준 A의 배점 분포가 좀 넓어 보여요. 3점~5점 구간이 다른 반보다 촘촘한데 이유가 있을까요?</div>
-      <div class="ci-target" onclick="jumpToTarget('reviewer-eval-detail', 'crit-A')"><i data-lucide="corner-down-right"></i>1-2반 · 채점기준 A</div>
-      <div class="ci-actions">
-        <button class="ci-react-add" onclick="toggleEmojiPop(this, event)" title="반응 추가"><i data-lucide="smile-plus"></i>
-          <div class="emoji-pop">
-            <button onclick="addReact(this, '👍')">👍</button>
-            <button onclick="addReact(this, '❤️')">❤️</button>
-            <button onclick="addReact(this, '👀')">👀</button>
-            <button onclick="addReact(this, '✅')">✅</button>
-            <button onclick="addReact(this, '🎉')">🎉</button>
-          </div>
-        </button>
-        <button class="ci-reply-btn" onclick="toggleReplyForm(this)"><i data-lucide="corner-down-right" style="width:12px;height:12px"></i>답글</button>
-      </div>
-      <div class="ci-reply-form">
-        <textarea placeholder="답글을 남겨주세요"></textarea>
-        <div class="actions">
-          <button class="btn-ghost btn-sm" onclick="toggleReplyForm(this)">취소</button>
-          <button class="btn-solid btn-sm" onclick="submitReply(this)">답글 등록</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="comment-item">
-      <div class="ci-head">
-        <div class="ci-avatar" style="background:#eefcf4;color:#27724b">김민</div>
-        <div class="ci-nm">
-          <span class="ci-name">김민준 선생님</span>
-          <span class="ci-role reviewer">2차</span>
-        </div>
-        <span class="ci-time">07/30 15:33</span>
-        <div class="ci-own-menu-wrap">
-          <button class="ci-own-menu-btn" onclick="toggleOwnMenu(this, event)" title="내 댓글 관리"><i data-lucide="more-vertical"></i></button>
-          <div class="ci-own-menu">
-            <button onclick="editComment(this)"><i data-lucide="pencil"></i>수정</button>
-            <button class="danger" onclick="deleteComment(this)"><i data-lucide="trash-2"></i>삭제</button>
-          </div>
-        </div>
-      </div>
-      <div class="ci-body">전체적으로 채점기준이 명확해서 이해가 쉬웠습니다. 참고할게요. <span style="color:#9ea3ad; font-size:12px;">(수정됨)</span></div>
-      <div class="ci-actions">
-        <button class="ci-react-btn on" onclick="toggleReact(this, '✅')"><span>✅</span><span class="rc">2</span></button>
-        <button class="ci-react-add" onclick="toggleEmojiPop(this, event)" title="반응 추가"><i data-lucide="smile-plus"></i>
-          <div class="emoji-pop">
-            <button onclick="addReact(this, '👍')">👍</button>
-            <button onclick="addReact(this, '❤️')">❤️</button>
-            <button onclick="addReact(this, '👀')">👀</button>
-            <button onclick="addReact(this, '✅')">✅</button>
-            <button onclick="addReact(this, '🎉')">🎉</button>
-          </div>
-        </button>
-        <button class="ci-reply-btn" onclick="toggleReplyForm(this)"><i data-lucide="corner-down-right" style="width:12px;height:12px"></i>답글</button>
-      </div>
-      <div class="ci-reply-form">
-        <textarea placeholder="답글을 남겨주세요"></textarea>
-        <div class="actions">
-          <button class="btn-ghost btn-sm" onclick="toggleReplyForm(this)">취소</button>
-          <button class="btn-solid btn-sm" onclick="submitReply(this)">답글 등록</button>
-        </div>
-      </div>
-    </div>
-
   </div>
   <div class="comment-write">
     <div class="cw-context" id="cwContext">
@@ -1748,6 +2353,9 @@ body.nav-expanded .main-wrap { margin-left:222px; }
     </div>
   </div>
 </aside>
+
+<!-- ===== 미확인 댓글 탭별 breakdown 팝오버 ===== -->
+<div class="unread-pop" id="unreadPop"></div>
 
 <!-- ===== 미니 레일 (접힘 상태) ===== -->
 <div class="comment-rail" id="commentRail" onclick="expandCommentSide()">
@@ -1777,13 +2385,17 @@ body.nav-expanded .main-wrap { margin-left:222px; }
       <button class="persona-btn on" id="pbOwner" onclick="switchPersona('owner')">1차 채점자 (홍길동)</button>
       <button class="persona-btn" id="pbReviewer" onclick="switchPersona('reviewer')">2차 채점자 (박수정)</button>
     </div>
+    <div style="padding:8px 10px;font-size:11px;color:#9ea3ad;border:1px dashed #3a3f4c;border-radius:4px;margin-bottom:8px;line-height:1.4">
+      💡 댓글 컨텍스트/스코프 링크 클릭 시 실제 상세 화면으로 이동 (2차 시점이면 읽기 전용 리본 자동 표시)
+    </div>
 
     <div id="ownerCases">
       <div class="case-group">
         <div class="case-group-t">1차 채점자 시점</div>
         <button class="case-btn on" data-scene="owner-home"><span class="n">1</span>내 수업 홈</button>
         <button class="case-btn" data-scene="owner-class-nosetup"><span class="n">2</span>수업 홈 (공동 평가 미설정)</button>
-        <button class="case-btn" data-scene="owner-class-shared"><span class="n">3</span>수업 홈 (공유 중 · 검토자 리스트)</button>
+        <button class="case-btn" data-scene="owner-class-shared"><span class="n">3A</span>수업 홈 · A안 (로우 리스트)</button>
+        <button class="case-btn" data-scene="owner-class-shared-d"><span class="n">3D</span>수업 홈 · D안 (대시보드)</button>
         <button class="case-btn" data-scene="owner-comments-view"><span class="n">4</span>댓글 확인 (보러가기 클릭 시)</button>
         <button class="case-btn" onclick="openShareModal(); return false;"><span class="n">M</span>공동 평가 설정 모달</button>
       </div>
@@ -1794,13 +2406,12 @@ body.nav-expanded .main-wrap { margin-left:222px; }
         <div class="case-group-t">2차 채점자 시점 (게이트웨이 ⓐ)</div>
         <button class="case-btn" data-scene="reviewer-home"><span class="n">5</span>홈 (공유받은 수업 카드)</button>
         <button class="case-btn" data-scene="reviewer-class"><span class="n">6</span>공유받은 수업 (수업 홈)</button>
-        <button class="case-btn" data-scene="reviewer-eval-detail"><span class="n">7</span>수행평가 설계 상세 (채점기준 A 강조)</button>
-        <button class="case-btn" data-scene="reviewer-scoring"><span class="n">8</span>수행평가 채점 탭 (읽기 전용 + 댓글)</button>
-        <button class="case-btn" onclick="openCommentSide('수행평가 채점'); return false;"><span class="n">C</span>댓글 사이드 패널</button>
+        <button class="case-btn" data-scene="reviewer-scoring"><span class="n">7</span>수행평가 채점 탭 (읽기 전용 + 댓글)</button>
+        <button class="case-btn" onclick="openCommentSide('수행평가 채점'); return false;"><span class="n">C</span>댓글 플로팅 창</button>
       </div>
       <div class="case-group">
         <div class="case-group-t">엣지 케이스</div>
-        <button class="case-btn" data-scene="locked"><span class="n">9</span>권한 해제됨 (잠금)</button>
+        <button class="case-btn" data-scene="locked"><span class="n">8</span>권한 해제됨 (잠금)</button>
       </div>
     </div>
 
@@ -1835,8 +2446,8 @@ function goScene(id) {
   // - 자동 오픈 (full): 특정 시나리오
   // - 미니 레일만 표시: 관련 있는 다른 시나리오
   // - 완전 숨김: 관련 없는 시나리오
-  const AUTO_OPEN = { 'owner-comments-view':'수행평가 채점', 'reviewer-scoring':'수행평가 채점', 'reviewer-eval-detail':'수행평가 설계' };
-  const RAIL_ONLY = { 'reviewer-class':'수업 홈', 'owner-class-shared':'수업 홈' };
+  const AUTO_OPEN = { 'owner-comments-view':'수행평가 채점', 'reviewer-scoring':'수행평가 채점', 'owner-class-shared':'수업 홈', 'owner-class-shared-d':'수업 홈', 'reviewer-class':'수업 홈' };
+  const RAIL_ONLY = {};
   if (AUTO_OPEN[id]) {
     openCommentSide(AUTO_OPEN[id]);
   } else if (RAIL_ONLY[id]) {
@@ -1849,6 +2460,14 @@ function goScene(id) {
   history.replaceState(null, '', '#' + id);
   window.scrollTo(0, 0);
   lucide.createIcons();
+  // 탭 안 읽음 dot 표시 갱신
+  setTimeout(updateTabDots, 50);
+  // 2차 채점자 수업 홈이면 "내가 남긴 댓글" 렌더링
+  if (id === 'reviewer-class') {
+    setTimeout(() => renderMyComments('박수정'), 60);
+  }
+  // 2차 채점자 모드에서 신규 화면 진입 시 상단에 읽기 전용 리본 자동 삽입
+  setTimeout(injectReviewerStrip, 60);
 }
 
 function switchPersona(p) {
@@ -1857,8 +2476,26 @@ function switchPersona(p) {
   document.getElementById('ownerCases').style.display = p === 'owner' ? '' : 'none';
   document.getElementById('reviewerCases').style.display = p === 'reviewer' ? '' : 'none';
   document.getElementById('userName').textContent = p === 'owner' ? '홍길동 선생님(대표교사)' : '박수정 선생님';
+  // 2차 채점자 모드 body 클래스
+  document.body.classList.toggle('reviewer-mode', p === 'reviewer');
   if (p === 'owner') goScene('owner-home');
   else goScene('reviewer-home');
+}
+// 신규 A~H scene 진입 시 상단에 읽기 전용 리본 자동 삽입 (2차 채점자 모드일 때)
+function injectReviewerStrip() {
+  document.querySelectorAll('.rv-mode-strip.dyn').forEach(el => el.remove());
+  if (!document.body.classList.contains('reviewer-mode')) return;
+  const activeScene = document.querySelector('.scene.active');
+  if (!activeScene) return;
+  const pw = activeScene.querySelector('.page-wrap');
+  if (!pw) return;
+  const NEW_SCENES = ['scene-eval-plan-list','scene-eval-plan-detail','scene-hw-list','scene-hw-submission-detail','scene-scoring-list','scene-scoring-class-detail','scene-sr-list'];
+  if (!NEW_SCENES.includes(activeScene.id)) return;
+  const strip = document.createElement('div');
+  strip.className = 'rv-mode-strip dyn';
+  strip.innerHTML = '<i data-lucide="eye"></i><span><b>읽기 전용 모드</b> · 홍길동 선생님이 공유한 수업이에요. 편집·수정은 안 되지만 각 항목에서 <b>댓글</b>로 의견을 남길 수 있어요.</span><button class="btn-outline btn-sm rv-allow" onclick="openCommentSide(\'수업 홈\')" style="margin-left:auto"><i data-lucide="message-circle" style="width:14px;height:14px"></i>댓글 보기</button>';
+  pw.insertBefore(strip, pw.firstChild);
+  lucide.createIcons();
 }
 
 function openShareModal() { document.getElementById('shareModal').classList.add('open'); lucide.createIcons(); }
@@ -1879,10 +2516,9 @@ function pickPreset(el, key) {
   el.parentElement.querySelectorAll('.preset-card').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
 }
-function openLinkPopover(btn, e) {
+function openLinkPopover(e) {
   if (e) e.stopPropagation();
-  const pop = btn.querySelector('.link-popover');
-  pop.classList.toggle('open');
+  document.getElementById('linkPopover').classList.toggle('open');
   lucide.createIcons();
 }
 function copyLinkUrl(e) {
@@ -1911,56 +2547,174 @@ const SHARED_COUNT_BY_TAB = { '수업 홈':3, '수행평가 설계':2, '과제�
 // - 세특 지원: 학급
 const COMMENTS_BY_TAB = {
   '수업 홈': [
-    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 10:08', body:'수업 홈에서 관찰 기록 태그 정리가 잘 되어있네요. 참고할게요.', reacts:[{emoji:'👍',n:1,mine:true}], unread:true }
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 10:08', body:'수업 홈에서 수행평가 진행 상황이 한눈에 잘 보이네요. 스텝 배지로 어느 단계인지 파악하기 편해요.', reacts:[{emoji:'👍',n:1,mine:true}], unread:true, depth:1 },
+    { author:'홍길동', role:'owner', scope:null, subject:'국어', time:'07/31 08:15', body:'2학기부터는 참여 학생 명단이 살짝 바뀔 예정이에요. 미리 참고 부탁드려요!', reacts:[{emoji:'✅',n:1,mine:true}], depth:1 }
   ],
   '수행평가 설계': [
-    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 10:08', target:'(고) 자기주도 독서 활동', body:'채점기준 A "주장의 명확성" 급간 배점이 8-5-4-3-1로 되어있는데, 4점과 3점 구간이 좀 촘촘해 보여요.', reacts:[{emoji:'👀',n:2,mine:true}], jumpTo:{scene:'reviewer-eval-detail', targetId:'crit-A'}, unread:true,
-      replies:[{ author:'홍길동', role:'owner', scope:null, time:'07/31 10:45', body:'그 부분은 논리 흐름의 미묘한 차이를 잡으려고 나눴어요. 실채점 결과 보고 조정 검토 예정입니다.' }]
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 09:20', body:'이번 학기 수행평가 설계 전체적으로 학생 중심으로 잘 짜여져 있네요.', reacts:[], depth:1 },
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 10:08', body:'채점기준 A "주장의 명확성" 급간 배점이 8-5-4-3-1로 되어있는데, 4점과 3점 구간이 좀 촘촘해 보여요.', reacts:[{emoji:'👀',n:2,mine:true}], unread:true, depth:2, eval:'(고) 자기주도 독서 활동',
+      replies:[{ author:'홍길동', role:'owner', scope:null, subject:'국어', time:'07/31 10:45', body:'그 부분은 논리 흐름의 미묘한 차이를 잡으려고 나눴어요. 실채점 결과 보고 조정 검토 예정입니다.' }]
     },
-    { author:'김민준', role:'reviewer', scope:'plus', time:'07/30 15:33', target:'(고) 읽기 자료 분석을 통한 주제 통합 탐구', body:'전체적으로 채점기준이 명확해서 이해가 쉬웠습니다.', reacts:[{emoji:'✅',n:2,mine:true}] }
+    { author:'김민준', role:'reviewer', scope:'plus', subject:'국어', time:'07/30 15:33', body:'전체적으로 채점기준이 명확해서 이해가 쉬웠습니다.', reacts:[{emoji:'✅',n:2,mine:true}], depth:2, eval:'(고) 읽기 자료 분석을 통한 주제 통합 탐구' }
   ],
   '과제물 관리': [
-    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 11:22', target:'(고) 자기주도 독서 활동 > 1-1반', body:'1-1반 미제출 학생 11명은 다른 반에 비해 많네요. 별도 안내가 필요할 것 같아요.', reacts:[], unread:true },
-    { author:'이지혜', role:'reviewer', scope:'basic', time:'07/30 14:12', target:'(고) 읽기 자료 분석을 통한 주제 통합 탐구 > 1-10반', body:'1-10반은 이미 마감 완료됐네요. 진행 잘 되었나 보네요!', reacts:[{emoji:'🎉',n:1,mine:false}] }
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 08:30', body:'수행평가별로 마감일이 비슷하네요. 학생들 부담이 몰릴 수 있어 다음엔 분산 고려해봐도 좋을 것 같아요.', reacts:[], depth:1 },
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 11:22', body:'1-1반 미제출 학생 11명은 다른 반에 비해 많네요. 별도 안내가 필요할 것 같아요.', reacts:[], unread:true, depth:2, eval:'(고) 자기주도 독서 활동', class:'1-1반' },
+    { author:'이지혜', role:'reviewer', scope:'basic', subject:'역사', time:'07/30 14:12', body:'1-10반은 이미 마감 완료됐네요. 진행 잘 되었나 보네요!', reacts:[{emoji:'🎉',n:1,mine:false}], depth:2, eval:'(고) 읽기 자료 분석을 통한 주제 통합 탐구', class:'1-10반' }
   ],
   '수행평가 채점': [
-    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 10:08', target:'(고) 자기주도 독서 활동 > 1-1반 > 10101 김일일 학생', body:'김일일 학생 논술 답안, 3번 문항 근거 채점기준 4점으로 봐도 될까요? 자료 인용이 충분해 보여서요.', reacts:[{emoji:'👀',n:2,mine:true},{emoji:'👍',n:1,mine:true}], unread:true,
-      replies:[{ author:'홍길동', role:'owner', scope:null, time:'07/31 10:45', body:'그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요. 필요하면 오후에 함께 볼까요?' }]
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 07:45', body:'전체적으로 채점 진도가 잘 나가고 있네요. 확인 완료 시 알려주세요!', reacts:[], depth:1 },
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/30 16:10', body:'1-1반 평균 점수가 82점대네요. 학급별 편차가 있는데 확인해봐도 좋겠어요.', reacts:[], depth:2, eval:'(고) 자기주도 독서 활동', class:'1-1반' },
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 10:08', body:'김일일 학생 논술 답안, 3번 문항 근거 채점기준 4점으로 봐도 될까요? 자료 인용이 충분해 보여서요.', reacts:[{emoji:'👀',n:2,mine:true},{emoji:'👍',n:1,mine:true}], unread:true, depth:3, eval:'(고) 자기주도 독서 활동', class:'1-1반', student:'10101 김일일',
+      replies:[{ author:'홍길동', role:'owner', scope:null, subject:'국어', time:'07/31 10:45', body:'그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요. 필요하면 오후에 함께 볼까요?' }]
     },
-    { author:'박수정', role:'reviewer', scope:'plus', time:'07/31 11:22', target:'(고) 자기주도 독서 활동 > 1-1반 > 10103 김삼삼 학생', body:'김삼삼 학생 주장은 명확한데 근거 부분에서 5점 준 이유가 궁금해요.', reacts:[], unread:true },
-    { author:'김민준', role:'reviewer', scope:'plus', time:'07/30 15:33', target:'(고) 읽기 자료 분석을 통한 주제 통합 탐구 > 1-1반', body:'1-1반 평균 82.4점 잘 나왔네요. 채점기준 잘 잡으신 것 같습니다.', reacts:[{emoji:'✅',n:1,mine:true}] }
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 11:22', body:'김삼삼 학생 주장은 명확한데 근거 부분에서 5점 준 이유가 궁금해요.', reacts:[], unread:true, depth:3, eval:'(고) 자기주도 독서 활동', class:'1-1반', student:'10103 김삼삼' },
+    { author:'김민준', role:'reviewer', scope:'plus', subject:'국어', time:'07/30 15:33', body:'김일일 학생 답안, 채점기준 근거 부분 명료해서 좋네요. 참고하겠습니다.', reacts:[{emoji:'✅',n:1,mine:true}], depth:3, eval:'(고) 읽기 자료 분석을 통한 주제 통합 탐구', class:'1-1반', student:'10101 김일일' }
   ],
   '세부능력 및 특기사항 지원': [
-    { author:'김민준', role:'reviewer', scope:'plus', time:'07/31 09:15', target:'1학년 1반', body:'1학년 1반 세특 초안 봤어요. AI 생성 기록이 학생별 특성을 잘 잡아냈네요.', reacts:[{emoji:'👍',n:1,mine:true}], unread:true },
-    { author:'박수정', role:'reviewer', scope:'plus', time:'07/30 16:40', target:'1학년 10반', body:'1학년 10반은 학생 수가 적어서 개별 특성이 잘 드러나겠어요. 마감 전 한번 더 검토 부탁드려요.', reacts:[] },
+    { author:'김민준', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 09:15', body:'1학년 1반 세특 초안 봤어요. AI 생성 기록이 학생별 특성을 잘 잡아냈네요.', reacts:[{emoji:'👍',n:1,mine:true}], unread:true, depth:1, class:'1학년 1반' },
+    { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/30 16:40', body:'1학년 10반은 학생 수가 적어서 개별 특성이 잘 드러나겠어요. 마감 전 한번 더 검토 부탁드려요.', reacts:[], depth:1, class:'1학년 10반' },
     // 삭제된 댓글 예시
-    { author:'이지혜', role:'reviewer', scope:'basic', time:'07/30 09:41', body:'', deleted:true }
+    { author:'이지혜', role:'reviewer', scope:'basic', subject:'역사', time:'07/30 09:41', body:'', deleted:true, depth:1, class:'1학년 1반' }
   ]
 };
+
+// ===== 탭·depth별 컨텍스트 문자열 · 이동 화면 매핑 (v0.4 스펙) =====
+function buildContext(c, tab) {
+  const d = c.depth;
+  if (!d) return null;
+  switch (tab) {
+    case '수업 홈': return null; // 화면 전체 대상, 컨텍스트 표시 없음
+    case '수행평가 설계':
+      return d === 1 ? '설계 목록' : (c.eval + ' 상세');
+    case '과제물 관리':
+      return d === 1 ? '과제물 목록' : (c.eval + ' > ' + c.class + ' 제출 현황');
+    case '수행평가 채점':
+      return d === 1 ? '채점 현황 목록' :
+             d === 2 ? (c.eval + ' > ' + c.class + ' 채점 현황') :
+             (c.eval + ' > ' + c.class + ' > ' + c.student + ' 채점 결과');
+    case '세부능력 및 특기사항 지원':
+      return c.class + ' 세특 기록';
+    default: return null;
+  }
+}
+function contextToScene(c, tab) {
+  const d = c.depth;
+  switch (tab) {
+    case '수업 홈': return 'owner-class-shared';
+    case '수행평가 설계': return d === 1 ? 'eval-plan-list' : 'eval-plan-detail';
+    case '과제물 관리': return d === 1 ? 'hw-list' : 'hw-submission-detail';
+    case '수행평가 채점': return d === 1 ? 'scoring-list' : d === 2 ? 'scoring-class-detail' : 'student-scoring-detail';
+    case '세부능력 및 특기사항 지원': return 'sr-list';
+    default: return 'owner-class-shared';
+  }
+}
 
 function renderComments(tabName) {
   const body = document.getElementById('csBody');
   if (!body) return;
-  const list = COMMENTS_BY_TAB[tabName] || [];
+  let list = COMMENTS_BY_TAB[tabName] || [];
+  // 스코프 필터 적용 (특정 값 선택 시 그 값 매칭 · 1depth는 필터 없으면 항상 포함 · 필터 있으면 제외)
+  Object.keys(scopeFilters).forEach(field => {
+    const val = scopeFilters[field];
+    list = list.filter(c => c[field] === val);
+  });
+  // 작성자 필터 적용 (미확인 팝오버 점프 시 세팅됨)
+  if (authorFilter) list = list.filter(c => c.author === authorFilter);
+  renderAuthorChip();
+  // 카운트 갱신
+  const cntEl = document.getElementById('csTotalCnt');
+  if (cntEl) cntEl.textContent = list.filter(c=>!c.deleted).length;
   if (list.length === 0) {
-    body.innerHTML = '<div class="cs-empty">이 탭에는 아직 댓글이 없어요.</div>';
-    document.getElementById('csTotalCnt').textContent = 0;
+    body.innerHTML = '<div class="cs-empty">조건에 맞는 댓글이 없어요.</div>';
     return;
   }
-  body.innerHTML = list.map((c, i) => renderCommentItem(c, i)).join('');
-  document.getElementById('csTotalCnt').textContent = list.length;
+  body.innerHTML = list.map((c, i) => renderCommentItem(c, i, tabName)).join('');
   lucide.createIcons();
 }
-function renderCommentItem(c, idx) {
-  if (c.deleted) {
-    return '<div class="comment-item deleted"><div class="ci-head"><span class="ci-name" style="color:#9ea3ad;">' + c.author + ' 선생님</span><span class="ci-role reviewer">' + (c.role==='owner'?'1차':'2차') + '</span><span class="ci-time">' + c.time + '</span></div><div class="ci-body-deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다.</div></div>';
+// 댓글 컨텍스트(target) 클릭 → 탭에 맞는 상세 화면으로 이동
+const TAB_TO_SCENE = {
+  '수업 홈': 'owner-class-shared',
+  '수행평가 설계': 'eval-plan-detail',
+  '과제물 관리': 'hw-submission-detail',
+  '수행평가 채점': 'student-scoring-detail',
+  '세부능력 및 특기사항 지원': 'sr-list',
+  '관찰 기록': 'owner-class-shared'
+};
+function jumpToCommentTarget(tabName) {
+  const scene = TAB_TO_SCENE[tabName];
+  if (!scene) { toastMsg('이동할 화면이 없어요.', true); return; }
+  goScene(scene);
+  toastMsg('댓글이 남겨진 위치로 이동했어요.', true);
+}
+
+// v0.4: 컨텍스트 클릭 시 화면 이동하되 댓글창 상태(열림/탭/필터) 그대로 유지
+function jumpToContextKeepPanel(sceneId, tabName) {
+  const wasOpen = document.getElementById('commentSide').classList.contains('open');
+  const wasTab = document.getElementById('csTabName').textContent;
+  const wasScopeFilters = Object.assign({}, scopeFilters);
+  const wasAuthor = authorFilter;
+  // 임시로 keepPanel 플래그 세팅
+  window._keepCommentPanel = true;
+  goScene(sceneId);
+  window._keepCommentPanel = false;
+  // 판넬 상태 복원 (goScene 안 hideCommentAll이 호출되어도 재적용)
+  setTimeout(() => {
+    if (wasOpen) {
+      // 탭·필터를 이전 상태로 복원해서 다시 열기
+      scopeFilters = wasScopeFilters;
+      authorFilter = wasAuthor;
+      openCommentSide(wasTab);
+      // openCommentSide 안에서 scopeFilters를 리셋하므로 다시 세팅
+      scopeFilters = wasScopeFilters;
+      authorFilter = wasAuthor;
+      renderComments(wasTab);
+    }
+    toastMsg('댓글이 남겨진 위치로 이동했어요.', true);
+  }, 100);
+}
+// 스코프 dropdown 하단 "바로가기" 링크
+function jumpFromScope(tabName) {
+  const SCOPE_LINK_SCENE = {
+    '수행평가 설계': 'eval-plan-detail',
+    '과제물 관리': 'hw-submission-detail',
+    '수행평가 채점': 'scoring-class-detail',
+    '세부능력 및 특기사항 지원': 'sr-list'
+  };
+  const scene = SCOPE_LINK_SCENE[tabName];
+  if (scene) {
+    goScene(scene);
+    toastMsg(tabName + ' 상세 화면으로 이동했어요.', true);
   }
+}
+function renderHeadRow(c) {
   const roleClass = c.role === 'owner' ? 'owner' : 'reviewer';
   const roleLabel = c.role === 'owner' ? '1차' : '2차';
+  const subject = c.subject ? '<span style="font-size:12px;color:#6d7381;">' + c.subject + '</span>' : '';
   const scopeChip = c.scope === 'plus' ? '<span class="ci-scope plus">수업+세특</span>' :
                    c.scope === 'basic' ? '<span class="ci-scope basic">수업</span>' : '';
   const unreadDot = c.unread ? '<span class="ci-unread-dot" title="안 읽은 댓글"></span>' : '';
-  const targetChip = c.target ? '<div class="ci-target" onclick="' + (c.jumpTo ? "jumpToTarget('" + c.jumpTo.scene + "','" + c.jumpTo.targetId + "')" : "notReady('해당 위치로 이동')") + '"><i data-lucide="corner-down-right"></i>' + c.target + '</div>' : '';
+  return '<div class="ci-head">'
+    + unreadDot
+    + '<span class="ci-nm">'
+      + '<span class="ci-role ' + roleClass + '">' + roleLabel + '</span>'
+      + '<span class="ci-name">' + c.author + ' 선생님</span>'
+      + subject
+      + scopeChip
+    + '</span>'
+    + '<span class="ci-time">' + c.time + '</span>'
+  + '</div>';
+}
+function renderCommentItem(c, idx, tabName) {
+  if (c.deleted) {
+    const roleClass = c.role === 'owner' ? 'owner' : 'reviewer';
+    const roleLabel = c.role === 'owner' ? '1차' : '2차';
+    const subject = c.subject ? '<span style="font-size:12px;color:#9ea3ad;">' + c.subject + '</span>' : '';
+    return '<div class="comment-item deleted"><div class="ci-head"><span class="ci-nm"><span class="ci-role ' + roleClass + '" style="opacity:.6">' + roleLabel + '</span><span class="ci-name" style="color:#9ea3ad;">' + c.author + ' 선생님</span>' + subject + '</span><span class="ci-time">' + c.time + '</span></div><div class="ci-body-deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다.</div></div>';
+  }
+  const ctxStr = buildContext(c, tabName);
+  const targetScene = ctxStr ? contextToScene(c, tabName) : null;
+  const targetChip = ctxStr ? '<div class="ci-target" onclick="jumpToContextKeepPanel(\'' + targetScene + '\', \'' + tabName + '\')"><i data-lucide="corner-down-right"></i>' + ctxStr + '</div>' : '';
   const reactsHTML = (c.reacts || []).map(r =>
     '<button class="ci-react-btn ' + (r.mine ? 'on' : '') + '" onclick="toggleReact(this, \'' + r.emoji + '\')"><span>' + r.emoji + '</span><span class="rc">' + r.n + '</span></button>'
   ).join('');
@@ -1968,14 +2722,11 @@ function renderCommentItem(c, idx) {
   const ownMenuHTML = (c.author === '김민준' || c.author === '박수정') ? '' :
     '<div class="ci-own-menu-wrap"><button class="ci-own-menu-btn" onclick="toggleOwnMenu(this, event)" title="내 댓글 관리"><i data-lucide="more-vertical"></i></button><div class="ci-own-menu"><button onclick="editComment(this)"><i data-lucide="pencil"></i>수정</button><button class="danger" onclick="deleteComment(this)"><i data-lucide="trash-2"></i>삭제</button></div></div>';
   const repliesHTML = (c.replies || []).map(r => {
-    const rRoleClass = r.role === 'owner' ? 'owner' : 'reviewer';
-    const rRoleLabel = r.role === 'owner' ? '1차' : '2차';
-    const rScope = r.scope === 'plus' ? '<span class="ci-scope plus">수업+세특</span>' : r.scope === 'basic' ? '<span class="ci-scope basic">수업</span>' : '';
-    return '<div class="ci-reply"><div class="ci-head"><span class="ci-nm"><span class="ci-name">' + r.author + ' 선생님</span><span class="ci-role ' + rRoleClass + '">' + rRoleLabel + '</span>' + rScope + '</span><span class="ci-time">' + r.time + '</span></div><div class="ci-body">' + r.body + '</div></div>';
+    return '<div class="ci-reply">' + renderHeadRow(r) + '<div class="ci-body">' + r.body + '</div></div>';
   }).join('');
   const repliesBlock = repliesHTML ? '<div class="ci-replies">' + repliesHTML + '</div>' : '';
   return '<div class="comment-item ' + (c.unread ? 'unread' : '') + '">'
-    + '<div class="ci-head">' + unreadDot + '<span class="ci-nm"><span class="ci-name">' + c.author + ' 선생님</span><span class="ci-role ' + roleClass + '">' + roleLabel + '</span>' + scopeChip + '</span><span class="ci-time">' + c.time + '</span></div>'
+    + renderHeadRow(c)
     + '<div class="ci-body">' + c.body + '</div>'
     + targetChip
     + '<div class="ci-actions">' + reactsHTML + emojiPop + '<button class="ci-reply-btn" onclick="toggleReplyForm(this)"><i data-lucide="corner-down-right" style="width:12px;height:12px"></i>답글</button>' + ownMenuHTML + '</div>'
@@ -2000,14 +2751,84 @@ function openCommentSide(target) {
   side.classList.add('open');
   side.classList.remove('min');
   document.getElementById('commentRail').classList.remove('show');
+  renderScopeRow(t);
   renderComments(t);
-  // 필터 초기화
-  const flabel = document.getElementById('csFilterLabel');
-  if (flabel) flabel.textContent = '전체 보기';
   lucide.createIcons();
 }
-function minimizeCommentSide() {
-  document.getElementById('commentSide').classList.add('min');
+// ===== 스코프 필터 (탭별 독립 dropdown, 개별 선택 · 실제 필터링) =====
+const TAB_FILTER_FIELDS = {
+  '수업 홈': [],
+  '수행평가 설계': ['eval'],
+  '과제물 관리': ['eval', 'class'],
+  '수행평가 채점': ['eval', 'class', 'student'],
+  '세부능력 및 특기사항 지원': ['class']
+};
+const FIELD_LABELS = { eval:'설계명', class:'학급', student:'학생' };
+let scopeFilters = {}; // { eval: null|'값', class: null|'값', student: null|'값' }
+let authorFilter = null; // 미확인 팝오버 점프 시 내부 필터 (UI 없음)
+
+function getUniqueValues(tabName, field) {
+  const set = new Set();
+  (COMMENTS_BY_TAB[tabName] || []).forEach(c => { if (c[field]) set.add(c[field]); });
+  return Array.from(set);
+}
+
+function renderScopeRow(tabName) {
+  const row = document.getElementById('csScopeRow');
+  if (!row) return;
+  scopeFilters = {}; // 탭 진입 시 필터 초기화
+  const fields = TAB_FILTER_FIELDS[tabName] || [];
+  if (fields.length === 0) { row.classList.remove('show'); row.innerHTML = ''; return; }
+  let html = '';
+  fields.forEach(field => {
+    const values = getUniqueValues(tabName, field);
+    html += '<select class="cs-scope-dd" onchange="setScopeFilter(\'' + field + '\', this.value)">'
+      + '<option value="">' + FIELD_LABELS[field] + ' 전체</option>'
+      + values.map(v => '<option value="' + v + '">' + v + '</option>').join('')
+      + '</select>';
+  });
+  html += '<span style="margin-left:auto;font-size:12px;color:#6d7381">총 <b id="csTotalCnt">' + (COMMENTS_BY_TAB[tabName]||[]).filter(c=>!c.deleted).length + '</b>개 댓글</span>';
+  row.innerHTML = html;
+  row.classList.add('show');
+  lucide.createIcons();
+}
+function setScopeFilter(field, value) {
+  if (value === '') delete scopeFilters[field];
+  else scopeFilters[field] = value;
+  renderComments(document.getElementById('csTabName').textContent);
+}
+function clearAuthorFilter() {
+  authorFilter = null;
+  renderAuthorChip();
+  renderComments(document.getElementById('csTabName').textContent);
+}
+function renderAuthorChip() {
+  let chip = document.getElementById('csAuthorChip');
+  if (!chip) {
+    chip = document.createElement('div');
+    chip.id = 'csAuthorChip';
+    chip.className = 'cs-author-chip';
+    const body = document.getElementById('csBody');
+    body.parentElement.insertBefore(chip, body);
+  }
+  if (authorFilter) {
+    chip.innerHTML = '<i data-lucide="user"></i>' + authorFilter + ' 선생님이 남긴 댓글만 보는 중<button onclick="clearAuthorFilter()"><i data-lucide="x"></i></button>';
+    chip.style.display = 'flex';
+    lucide.createIcons();
+  } else {
+    chip.style.display = 'none';
+  }
+}
+function toggleMinimize(e) {
+  if (e) e.stopPropagation();
+  const side = document.getElementById('commentSide');
+  side.classList.toggle('min');
+  const btn = document.getElementById('minToggleBtn');
+  btn.innerHTML = side.classList.contains('min')
+    ? '<i data-lucide="chevron-up"></i>'
+    : '<i data-lucide="chevron-down"></i>';
+  btn.title = side.classList.contains('min') ? '펴기' : '접기';
+  lucide.createIcons();
 }
 function showCommentRail(target) {
   const cnt = COMMENT_COUNT_BY_TAB[target] ?? 0;
@@ -2110,8 +2931,9 @@ function deleteComment(btn) {
   const item = btn.closest('.comment-item');
   const name = item.querySelector('.ci-name').textContent;
   const time = item.querySelector('.ci-time').textContent;
-  const role = item.querySelector('.ci-role').outerHTML;
-  item.innerHTML = '<div class="ci-head"><div class="ci-avatar" style="background:#f1f3f5;color:#9ea3ad"><i data-lucide="user"></i></div><div class="ci-nm"><span class="ci-name" style="color:#9ea3ad;">' + name + '</span>' + role + '</div><span class="ci-time">' + time + '</span></div><div class="ci-body-deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다.</div>';
+  const roleEl = item.querySelector('.ci-role');
+  const roleHTML = roleEl ? '<span class="ci-role ' + (roleEl.classList.contains('owner') ? 'owner' : 'reviewer') + '" style="opacity:.6">' + roleEl.textContent + '</span>' : '';
+  item.innerHTML = '<div class="ci-head"><span class="ci-nm">' + roleHTML + '<span class="ci-name" style="color:#9ea3ad;">' + name + '</span></span><span class="ci-time">' + time + '</span></div><div class="ci-body-deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다.</div>';
   item.classList.add('deleted');
   item.classList.remove('unread');
   lucide.createIcons();
@@ -2132,6 +2954,79 @@ function updateRailCount() {
     el.style.display = unread > 0 ? 'inline-flex' : 'none';
   }
 }
+// 2차 채점자의 "내가 남긴 댓글" 리스트 렌더링
+function renderMyComments(myName) {
+  const list = document.getElementById('myCommentsList');
+  if (!list) return;
+  const items = [];
+  for (const tab in COMMENTS_BY_TAB) {
+    (COMMENTS_BY_TAB[tab] || []).forEach(c => {
+      if (c.author === myName && !c.deleted) {
+        items.push({ ...c, tab });
+      }
+    });
+  }
+  // 최신순 정렬 (time 문자열 역순)
+  items.sort((a,b) => (b.time || '').localeCompare(a.time || ''));
+  if (items.length === 0) {
+    list.innerHTML = '<div class="mc-empty">아직 남긴 댓글이 없어요.</div>';
+    return;
+  }
+  list.innerHTML = items.map((c, i) => {
+    const tabIcon = TAB_ICONS[c.tab] || 'message-circle';
+    const hasReply = c.replies && c.replies.length > 0;
+    // 예시: 최신 2개 항목에 미확인(빨간 dot) 표시
+    const isUnread = i < 2;
+    const target = c.target ? '<div class="mc-target"><i data-lucide="corner-down-right"></i>' + c.target + '</div>' : '';
+    let footItems = [];
+    if (hasReply) {
+      const newReply = c.replies.some(r => r.role === 'owner');
+      footItems.push('<span class="mc-foot-item ' + (newReply ? 'has-new' : '') + '"><i data-lucide="corner-down-right"></i>답글 ' + c.replies.length + '건</span>');
+    }
+    const reactCnt = (c.reacts || []).reduce((s, r) => s + r.n, 0);
+    if (reactCnt > 0) {
+      footItems.push('<span class="mc-foot-item"><i data-lucide="smile"></i>반응 ' + reactCnt + '</span>');
+    }
+    const unreadDot = isUnread ? '<span style="width:7px;height:7px;border-radius:50%;background:#f2525f;display:inline-block;margin-right:6px" title="안 읽은 댓글"></span>' : '';
+    return '<div class="mc-item ' + (hasReply ? 'has-reply' : '') + '" onclick="jumpToMyComment(\'' + c.tab + '\', \'' + (c.target || '').replace(/'/g, "\\'") + '\')">'
+      + '<div class="mc-meta"><span style="display:inline-flex;align-items:center">' + unreadDot + '<span class="mc-tab-chip"><i data-lucide="' + tabIcon + '"></i>' + c.tab + '</span></span><span class="mc-time">' + c.time + '</span></div>'
+      + target
+      + '<div class="mc-body">' + c.body + '</div>'
+      + (footItems.length ? '<div class="mc-foot">' + footItems.join('') + '</div>' : '')
+      + '</div>';
+  }).join('');
+  lucide.createIcons();
+}
+function jumpToMyComment(tabName, target) {
+  const targetScene = TAB_TO_SCENE[tabName] || 'reviewer-class';
+  goScene(targetScene);
+  setTimeout(() => {
+    openCommentSide(tabName);
+    toastMsg('내가 남긴 댓글 위치로 이동했어요.', true);
+  }, 200);
+}
+// 탭에 안 읽음 dot 표시 (공동 평가 미설정 scene은 제외)
+const NO_DOTS_SCENES = new Set(['owner-class-nosetup']);
+function updateTabDots() {
+  const activeScene = document.querySelector('.scene.active');
+  const skip = activeScene && NO_DOTS_SCENES.has(activeScene.id);
+  document.querySelectorAll('.class-tabs .ct').forEach(tab => {
+    // 기존 dot 제거
+    tab.querySelectorAll('.ct-unread-dot').forEach(d => d.remove());
+    if (skip) return; // 미설정 scene이면 dot 생성 안 함
+    // 탭 이름 추출 (아이콘·잠금 표시 제외)
+    const clone = tab.cloneNode(true);
+    clone.querySelectorAll('svg, i').forEach(el => el.remove());
+    const text = clone.textContent.trim();
+    const cnt = (COMMENTS_BY_TAB[text] || []).filter(c => c.unread && !c.deleted).length;
+    if (cnt > 0) {
+      const dot = document.createElement('span');
+      dot.className = 'ct-unread-dot';
+      dot.title = '읽지 않은 댓글 ' + cnt + '개';
+      tab.appendChild(dot);
+    }
+  });
+}
 function toggleReplyForm(btn) {
   const item = btn.closest('.comment-item');
   if (!item) { const inner = btn.closest('.ci-reply-form'); if (inner) inner.classList.remove('open'); return; }
@@ -2146,6 +3041,28 @@ function submitReply(btn) {
   form.querySelector('textarea').value = '';
   form.classList.remove('open');
   toastMsg('답글이 등록되었어요.');
+}
+
+// ===== 공유한 수업 보기 토글 (내 수업 홈) =====
+function toggleSharedOnly(el) {
+  el.classList.toggle('on');
+  const onlyShared = el.classList.contains('on');
+  const grid = document.getElementById('ownerClassGrid');
+  if (!grid) return;
+  let visible = 0, shared = 0;
+  grid.querySelectorAll('.cc').forEach(card => {
+    const isShared = card.dataset.shared === '1';
+    if (isShared) shared++;
+    const show = !onlyShared || isShared;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  const meta = document.getElementById('semMeta');
+  if (meta) {
+    meta.textContent = onlyShared
+      ? '공유 중 ' + shared + '개만 보는 중'
+      : '진행 중 ' + visible + '개 · 공유 중 ' + shared + '개 · 보관 중 0개';
+  }
 }
 
 // ===== 검토자 개별 관리 팝오버 =====
@@ -2167,59 +3084,13 @@ function toggleFilterMenu(e) {
   document.getElementById('csFilterMenu').classList.toggle('open');
   lucide.createIcons();
 }
+// v0.4: 작성자 필터 (UI dropdown 제거됨. 미확인 팝오버 점프 시 내부적으로 authorFilter 사용)
 function setFilter(author, label) {
-  document.getElementById('csFilterLabel').textContent = label;
-  document.getElementById('csFilterMenu').classList.remove('open');
-
-  // 활성 표시
-  document.querySelectorAll('#csFilterMenu button').forEach(b => {
-    b.classList.remove('on');
-    const existing = b.querySelector('.check');
-    if (existing) existing.remove();
-  });
-  const activeBtn = document.querySelector('#csFilterMenu button[data-author="' + author + '"]');
-  if (activeBtn) {
-    activeBtn.classList.add('on');
-    if (!activeBtn.querySelector('.check')) {
-      const i = document.createElement('i');
-      i.setAttribute('data-lucide', 'check');
-      i.className = 'check';
-      i.style.cssText = 'width:14px;height:14px;margin-left:auto;';
-      activeBtn.appendChild(i);
-    }
-  }
-
-  // 필터링
-  const items = document.querySelectorAll('#csBody .comment-item');
-  let visibleCount = 0;
-  items.forEach(item => {
-    let matches = false;
-    if (author === 'all') matches = true;
-    else {
-      const names = item.querySelectorAll('.ci-name');
-      names.forEach(n => { if (n.textContent.includes(author)) matches = true; });
-    }
-    item.style.display = matches ? '' : 'none';
-    if (matches) visibleCount++;
-  });
-  document.getElementById('csTotalCnt').textContent = visibleCount;
-
-  // 빈 상태 처리
-  let emptyEl = document.getElementById('csEmpty');
-  if (visibleCount === 0) {
-    if (!emptyEl) {
-      emptyEl = document.createElement('div');
-      emptyEl.id = 'csEmpty';
-      emptyEl.className = 'cs-empty';
-      emptyEl.textContent = '이 조건에 맞는 댓글이 없어요.';
-      document.getElementById('csBody').appendChild(emptyEl);
-    }
-    emptyEl.style.display = '';
-  } else if (emptyEl) {
-    emptyEl.style.display = 'none';
-  }
-  lucide.createIcons();
+  if (author === 'all' || !author) authorFilter = null;
+  else authorFilter = author;
+  renderComments(document.getElementById('csTabName').textContent);
 }
+function toggleFilterMenu() { /* UI 제거됨 · noop */ }
 
 // 바깥 클릭 시 팝오버 닫기
 document.addEventListener('click', function(e) {
@@ -2235,6 +3106,10 @@ document.addEventListener('click', function(e) {
   }
   if (!e.target.closest('.ci-own-menu-wrap')) {
     document.querySelectorAll('.ci-own-menu.open').forEach(m => m.classList.remove('open'));
+  }
+  if (!e.target.closest('.link-btn-wrap')) {
+    const lp = document.getElementById('linkPopover');
+    if (lp) lp.classList.remove('open');
   }
 });
 
@@ -2259,6 +3134,105 @@ function toggleCaseNav() {
 // Wire up all case-btn clicks with data-scene
 document.querySelectorAll('.case-btn[data-scene]').forEach(btn => {
   btn.addEventListener('click', () => goScene(btn.dataset.scene));
+});
+
+// ===== 미확인 댓글 배지 클릭 → 탭별 breakdown 팝오버 → 특정 탭 선택 → 이동 =====
+const TAB_ICONS = {
+  '수업 홈': 'home',
+  '수행평가 설계': 'scissors',
+  '과제물 관리': 'clipboard-list',
+  '수행평가 채점': 'wand-sparkles',
+  '세부능력 및 특기사항 지원': 'smile'
+};
+function getUnreadBreakdown(authorName) {
+  const breakdown = {};
+  for (const tab in COMMENTS_BY_TAB) {
+    const cnt = (COMMENTS_BY_TAB[tab] || []).filter(c => c.author === authorName && c.unread && !c.deleted).length;
+    if (cnt > 0) breakdown[tab] = cnt;
+  }
+  return breakdown;
+}
+function jumpToUnread(authorName, btnEl, e) {
+  if (e) e.stopPropagation();
+  const breakdown = getUnreadBreakdown(authorName);
+  const tabs = Object.keys(breakdown);
+  if (tabs.length === 0) {
+    toastMsg('미확인 댓글이 없어요.');
+    return;
+  }
+  // 1개 탭만 있으면 바로 이동 (팝오버 스킵)
+  if (tabs.length === 1) {
+    jumpToTabUnread(tabs[0], authorName);
+    return;
+  }
+  // 여러 탭이면 팝오버로 breakdown 표시
+  const pop = document.getElementById('unreadPop');
+  const total = Object.values(breakdown).reduce((a,b) => a+b, 0);
+  let html = '<div class="unread-pop-title"><i data-lucide="message-circle"></i><span>' + authorName + ' 선생님 미확인 댓글</span><span class="cnt">' + total + '건</span></div>';
+  html += '<div class="unread-pop-list">';
+  for (const tab of tabs) {
+    const icon = TAB_ICONS[tab] || 'circle';
+    html += '<button class="unread-pop-item" onclick="jumpToTabUnread(\'' + tab + '\', \'' + authorName + '\')">'
+      + '<span class="up-ic"><i data-lucide="' + icon + '"></i></span>'
+      + '<span class="up-name">' + tab + '</span>'
+      + '<span class="up-cnt">' + breakdown[tab] + '건</span>'
+      + '<span class="up-arrow"><i data-lucide="arrow-right"></i></span>'
+      + '</button>';
+  }
+  html += '</div>';
+  pop.innerHTML = html;
+  // 버튼 아래에 위치 (뷰포트 밖 벗어나지 않게)
+  const rect = btnEl.getBoundingClientRect();
+  const popWidth = 280;
+  let left = rect.left;
+  if (left + popWidth > window.innerWidth - 12) left = window.innerWidth - popWidth - 12;
+  pop.style.top = (rect.bottom + 6) + 'px';
+  pop.style.left = left + 'px';
+  pop.classList.add('open');
+  lucide.createIcons();
+}
+function jumpToTabUnread(tabName, authorName) {
+  // 팝오버 닫기
+  document.getElementById('unreadPop').classList.remove('open');
+  // 탭별 상세 화면 매핑 (팝오버에서 선택 시 이동)
+  // - 수업 홈 → 수업 홈 (전체 컨텍스트)
+  // - 수행평가 설계 → 설계 상세 편집 화면
+  // - 과제물 관리 → 학급 제출 현황 (여러 학생 개관)
+  // - 수행평가 채점 → 학급 채점 현황 (여러 학생 개관, 학생 개별 상세는 컨텍스트 링크로 이동)
+  // - 세특 → 세특 지원 (학급 단위)
+  const UNREAD_SCENE_MAP = {
+    '수업 홈': 'owner-class-shared',
+    '수행평가 설계': 'eval-plan-detail',
+    '과제물 관리': 'hw-submission-detail',
+    '수행평가 채점': 'scoring-class-detail',
+    '세부능력 및 특기사항 지원': 'sr-list'
+  };
+  const targetScene = UNREAD_SCENE_MAP[tabName] || 'owner-comments-view';
+  goScene(targetScene);
+  setTimeout(() => {
+    // 댓글 패널을 해당 탭 컨텍스트로 강제 오픈
+    openCommentSide(tabName);
+    setTimeout(() => {
+      setFilter(authorName, authorName + ' 선생님');
+      setTimeout(() => {
+        const firstUnread = document.querySelector('#csBody .comment-item.unread');
+        if (firstUnread) {
+          firstUnread.scrollIntoView({ behavior:'smooth', block:'center' });
+          firstUnread.style.transition = 'background .3s';
+          firstUnread.style.background = '#fef3c7';
+          setTimeout(() => { firstUnread.style.background = ''; }, 1500);
+        }
+      }, 100);
+    }, 150);
+    toastMsg(authorName + ' 선생님이 ' + tabName + ' 탭에 남긴 미확인 댓글로 이동했어요.', true);
+  }, 200);
+}
+// 팝오버 바깥 클릭 시 닫기
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.unread-pop') && !e.target.closest('.rv-unread-btn') && !e.target.closest('.dash-unread')) {
+    const p = document.getElementById('unreadPop');
+    if (p) p.classList.remove('open');
+  }
 });
 
 // ===== 댓글의 위치 이동 링크 ↔ 실제 스크롤 =====
@@ -2307,10 +3281,17 @@ function jumpToTarget(sceneId, targetElId) {
   document.addEventListener('mouseup', () => {
     if (dragging) { dragging = false; hd.style.cursor = ''; }
   });
-  // 최소화 상태에서 헤더 클릭 시 확장
+  // 최소화 상태에서 헤더 클릭 시 확장 (드래그 아닐 때만)
+  let downX = 0, downY = 0;
+  hd.addEventListener('mousedown', e => { downX = e.clientX; downY = e.clientY; });
   hd.addEventListener('click', e => {
     if (e.target.closest('button')) return;
-    if (side.classList.contains('min')) side.classList.remove('min');
+    if (Math.abs(e.clientX - downX) > 3 || Math.abs(e.clientY - downY) > 3) return; // drag
+    if (side.classList.contains('min')) {
+      side.classList.remove('min');
+      const btn = document.getElementById('minToggleBtn');
+      if (btn) { btn.innerHTML = '<i data-lucide="chevron-down"></i>'; btn.title = '접기'; lucide.createIcons(); }
+    }
   });
 })();
 
