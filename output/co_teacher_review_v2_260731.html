@@ -503,12 +503,15 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .ci-reply .ci-head { margin-bottom:4px; }
 .ci-reply .ci-body { font-size:13px; padding-left:2px; line-height:1.5; }
 
-/* 대댓글 접기/펼치기 (3개 이상일 때) */
-.ci-replies-toggle { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:#3151c4; background:none; padding:6px 0; cursor:pointer; font-weight:500; font-family:inherit; align-self:flex-start; }
+/* 대댓글 접기/펼치기 (3개 이상일 때) — data-expanded 속성 기반 */
+.ci-replies-toggle { display:inline-flex !important; align-items:center; gap:4px; font-size:12px; color:#3151c4; background:none; border:none; padding:6px 0; cursor:pointer; font-weight:500; font-family:inherit; align-self:flex-start; }
 .ci-replies-toggle:hover { text-decoration:underline; }
-.ci-replies-toggle svg { width:12px; height:12px; transition:transform .15s; }
+.ci-replies-toggle svg { width:12px; height:12px; }
+.ci-replies-more { display:flex !important; flex-direction:column; gap:10px; margin-top:10px; }
+.ci-replies[data-expanded="false"] .ci-replies-more { display:none !important; }
+.ci-replies[data-expanded="true"] .ci-replies-more { display:flex !important; }
+/* 하위호환 (이전 클래스명) */
 .ci-replies-hidden { display:none; }
-.ci-replies-toggle.open svg { transform:rotate(180deg); }
 .ci-reply-form { margin:8px 0 0 12px; padding-left:12px; border-left:2px dashed #ccdfff; display:none; }
 .ci-reply-form.open { display:block; }
 .ci-reply-form textarea { width:100%; min-height:52px; border:1px solid #d9d9d9; border-radius:6px; padding:8px 10px; font-size:13px; font-family:inherit; resize:vertical; }
@@ -2749,21 +2752,19 @@ function renderCommentItem(c, idx, tabName) {
       + '<div class="ci-actions">' + rReactsHTML + rEmojiPop + '</div>'
       + '</div>';
   });
-  // 3개 이상이면 첫 1개만 보이고 나머지는 접힘 (펼치기 버튼)
+  // 3개 이상이면 첫 1개만 보이고 나머지는 접힘 (data-expanded 방식)
   let repliesBlock = '';
   if (replyItems.length > 0) {
     if (replyItems.length <= 2) {
-      // 2개 이하는 그대로 전부 표시
       repliesBlock = '<div class="ci-replies">' + replyItems.join('') + '</div>';
     } else {
-      // 3개 이상: 첫 1개 표시 + 나머지 접힘 + 토글 버튼
       const first = replyItems[0];
       const rest = replyItems.slice(1).join('');
       const hiddenCnt = replyItems.length - 1;
-      repliesBlock = '<div class="ci-replies">'
+      repliesBlock = '<div class="ci-replies" data-expanded="false">'
         + first
-        + '<button class="ci-replies-toggle" onclick="toggleRepliesExpand(this)"><i data-lucide="chevron-down"></i>이전 답글 ' + hiddenCnt + '개 더 보기</button>'
-        + '<div class="ci-replies-hidden" style="display:none">' + rest + '</div>'
+        + '<button type="button" class="ci-replies-toggle" onclick="event.stopPropagation(); toggleRepliesExpand(this); return false;"><i data-lucide="chevron-down"></i>이전 답글 ' + hiddenCnt + '개 더 보기</button>'
+        + '<div class="ci-replies-more">' + rest + '</div>'
         + '</div>';
     }
   }
@@ -3073,30 +3074,19 @@ function updateTabDots() {
     }
   });
 }
-// 대댓글 접기/펼치기 (3개 이상일 때) — inline style 기반, getComputedStyle로 실제 상태 감지
+// 대댓글 접기/펼치기 — data-expanded 속성만 토글, CSS가 처리
 function toggleRepliesExpand(el) {
-  const btn = el.closest ? el.closest('.ci-replies-toggle') : el;
+  const btn = el && el.closest ? el.closest('.ci-replies-toggle') : el;
   if (!btn) return;
-  const replies = btn.closest('.ci-replies');
-  if (!replies) return;
-  const hidden = replies.querySelector('.ci-replies-hidden');
-  if (!hidden) return;
-  const currentDisplay = window.getComputedStyle(hidden).display;
-  const isOpen = currentDisplay !== 'none';
-  if (isOpen) {
-    hidden.style.display = 'none';
-    btn.classList.remove('open');
-    const cnt = hidden.querySelectorAll('.ci-reply').length;
-    btn.innerHTML = '<i data-lucide="chevron-down"></i>이전 답글 ' + cnt + '개 더 보기';
-  } else {
-    hidden.style.display = 'flex';
-    hidden.style.flexDirection = 'column';
-    hidden.style.gap = '10px';
-    hidden.style.marginTop = '10px';
-    btn.classList.add('open');
-    btn.innerHTML = '<i data-lucide="chevron-up"></i>답글 접기';
-  }
-  lucide.createIcons();
+  const container = btn.closest('.ci-replies');
+  if (!container) return;
+  const isExpanded = container.getAttribute('data-expanded') === 'true';
+  container.setAttribute('data-expanded', isExpanded ? 'false' : 'true');
+  const cnt = container.querySelectorAll('.ci-replies-more .ci-reply').length;
+  btn.innerHTML = isExpanded
+    ? '<i data-lucide="chevron-down"></i>이전 답글 ' + cnt + '개 더 보기'
+    : '<i data-lucide="chevron-up"></i>답글 접기';
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
 function toggleReplyForm(btn) {
   const item = btn.closest('.comment-item');
