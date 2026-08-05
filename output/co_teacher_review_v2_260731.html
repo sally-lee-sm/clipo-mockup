@@ -167,6 +167,12 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .cc-share-info { display:flex; align-items:center; gap:6px; font-size:13px; color:#27724b; margin-top:8px; }
 .cc-share-info svg { width:14px; height:14px; }
 
+/* 크로스체크 뱃지 (수업 카드 · 배너 공통) */
+.cc-crosscheck { display:inline-flex; align-items:center; gap:6px; height:28px; padding:0 12px; border-radius:100px; background:#dbf1e0; color:#27724b; border:1px solid #93e3b9; font-size:13px; font-weight:600; margin-top:10px; align-self:flex-start; }
+.cc-crosscheck svg { width:14px; height:14px; color:#1ab864; }
+.crosscheck-banner { background:#dbf1e0 !important; color:#27724b !important; border:1px solid #93e3b9; padding:4px 12px !important; height:auto !important; }
+.crosscheck-banner svg { color:#1ab864 !important; }
+
 /* ⓐ 게이트웨이: 학기별 서브 그룹 */
 .sub-div { display:flex; align-items:center; gap:10px; margin:22px 0 14px; }
 .sub-div-label { font-size:15px; font-weight:600; color:#3b3f4c; display:inline-flex; align-items:center; gap:6px; flex-shrink:0; }
@@ -453,7 +459,7 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .ci-target:hover { background:#ccdfff; }
 .ci-target svg { width:11px; height:11px; }
 
-.ci-actions { margin:8px 0 0 38px; display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
+.ci-actions { margin:8px 0 0 0; display:flex; align-items:center; gap:4px; flex-wrap:wrap; }
 .ci-react-btn { height:26px; padding:0 8px; border-radius:100px; background:#f6f7f9; border:1px solid #dde1e8; color:#3b3f4c; font-size:12px; font-weight:500; display:inline-flex; align-items:center; gap:4px; cursor:pointer; }
 .ci-react-btn:hover { background:#e9f2ff; border-color:#a3c3ff; color:#3151c4; }
 .ci-react-btn.on { background:#e9f2ff; border-color:#a3c3ff; color:#3151c4; }
@@ -497,7 +503,12 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 .ci-reply .ci-head { margin-bottom:4px; }
 .ci-reply .ci-body { font-size:13px; padding-left:2px; line-height:1.5; }
 
-.ci-actions { margin:8px 0 0 0; }
+/* 대댓글 접기/펼치기 (3개 이상일 때) */
+.ci-replies-toggle { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:#3151c4; background:none; padding:6px 0; cursor:pointer; font-weight:500; font-family:inherit; align-self:flex-start; }
+.ci-replies-toggle:hover { text-decoration:underline; }
+.ci-replies-toggle svg { width:12px; height:12px; transition:transform .15s; }
+.ci-replies-hidden { display:none; }
+.ci-replies-toggle.open svg { transform:rotate(180deg); }
 .ci-reply-form { margin:8px 0 0 12px; padding-left:12px; border-left:2px dashed #ccdfff; display:none; }
 .ci-reply-form.open { display:block; }
 .ci-reply-form textarea { width:100%; min-height:52px; border:1px solid #d9d9d9; border-radius:6px; padding:8px 10px; font-size:13px; font-family:inherit; resize:vertical; }
@@ -849,8 +860,8 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
           <div class="cc" data-shared="1" onclick="goScene('owner-class-shared')">
             <div class="cc-name">2학년 국어 (심화반)</div>
             <div class="cc-evals">수행평가 5개</div>
-            <div class="cc-share-info"><i data-lucide="users"></i>공동 평가 · 검토자 3명</div>
-            <div class="cc-tags"><span class="tag tag-subj">국어</span><span class="tag tag-shared-out">공유 중</span><span class="tag tag-unread"><span class="tag-dot"></span>미확인 댓글 5개</span></div>
+            <div class="cc-crosscheck"><i data-lucide="shield-check"></i>공동 평가 · 검토자 3명</div>
+            <div class="cc-tags"><span class="tag tag-subj">국어</span><span class="tag tag-unread"><span class="tag-dot"></span>미확인 댓글 5개</span></div>
           </div>
           <div class="cc" data-shared="0" onclick="goScene('owner-class-nosetup')">
             <div class="cc-name">3학년 문학</div>
@@ -1040,7 +1051,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
     <div class="class-banner">
       <div>
         <div class="cb-meta">2026학년도 1학기 | 국어 | 학년 구분 없음</div>
-        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="users"></i>공동 평가 중</span></div>
+        <div class="cb-title">국어 <span class="share-badge crosscheck-banner"><i data-lucide="shield-check"></i>공동 평가 · 검토자 3명</span></div>
       </div>
       <div class="cb-right">
         <span class="cb-students"><i data-lucide="users" style="width:16px;height:16px"></i>참여 학생 20명</span>
@@ -1203,7 +1214,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
     <div class="class-banner">
       <div>
         <div class="cb-meta">2026학년도 1학기 | 국어 | 학년 구분 없음</div>
-        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="users"></i>공동 평가 중</span></div>
+        <div class="cb-title">국어 <span class="share-badge crosscheck-banner"><i data-lucide="shield-check"></i>공동 평가 · 검토자 3명</span></div>
       </div>
       <div class="cb-right">
         <span class="cb-students"><i data-lucide="users" style="width:16px;height:16px"></i>참여 학생 20명</span>
@@ -1336,7 +1347,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
     <div class="class-banner">
       <div>
         <div class="cb-meta">2026학년도 1학기 | 국어 | 학년 구분 없음</div>
-        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="users"></i>공동 평가 중</span></div>
+        <div class="cb-title">국어 <span class="share-badge crosscheck-banner"><i data-lucide="shield-check"></i>공동 평가 · 검토자 3명</span></div>
       </div>
       <div class="cb-right">
         <span class="cb-students"><i data-lucide="users" style="width:16px;height:16px"></i>참여 학생 20명</span>
@@ -1774,7 +1785,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
     <div class="class-banner">
       <div>
         <div class="cb-meta">2026학년도 1학기 | 국어 | 학년 구분 없음</div>
-        <div class="cb-title">국어 <span class="share-badge"><i data-lucide="users"></i>공동 평가 중</span></div>
+        <div class="cb-title">국어 <span class="share-badge crosscheck-banner"><i data-lucide="shield-check"></i>공동 평가 · 검토자 3명</span></div>
       </div>
       <div class="cb-right">
         <span class="cb-students"><i data-lucide="users" style="width:16px;height:16px"></i>참여 학생 20명</span>
@@ -2566,7 +2577,13 @@ const COMMENTS_BY_TAB = {
     { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 07:45', body:'전체적으로 채점 진도가 잘 나가고 있네요. 확인 완료 시 알려주세요!', reacts:[], depth:1 },
     { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/30 16:10', body:'1-1반 평균 점수가 82점대네요. 학급별 편차가 있는데 확인해봐도 좋겠어요.', reacts:[], depth:2, eval:'(고) 자기주도 독서 활동', class:'1-1반' },
     { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 10:08', body:'김일일 학생 논술 답안, 3번 문항 근거 채점기준 4점으로 봐도 될까요? 자료 인용이 충분해 보여서요.', reacts:[{emoji:'👀',n:2,mine:true},{emoji:'👍',n:1,mine:true}], unread:true, depth:3, eval:'(고) 자기주도 독서 활동', class:'1-1반', student:'10101 김일일',
-      replies:[{ author:'홍길동', role:'owner', scope:null, subject:'국어', time:'07/31 10:45', body:'그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요. 필요하면 오후에 함께 볼까요?' }]
+      replies:[
+        { author:'홍길동', role:'owner', scope:null, subject:'국어', time:'07/31 10:45', body:'그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요. 필요하면 오후에 함께 볼까요?', reacts:[{emoji:'👀',n:2,mine:true}] },
+        { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 11:02', body:'아 결론 연결 부분 다시 보니 그렇네요. 3점 동의합니다. 오후 3시 이후면 언제든 가능해요.', reacts:[{emoji:'✅',n:1,mine:true}] },
+        { author:'김민준', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 11:20', body:'저도 같은 답안 채점할 때 헷갈렸던 부분이에요. 논리적 연결 기준을 좀 더 명시하면 좋을 것 같습니다.', reacts:[{emoji:'👍',n:2,mine:true}] },
+        { author:'홍길동', role:'owner', scope:null, subject:'국어', time:'07/31 11:35', body:'좋은 의견 감사합니다. 다음 채점기준 업데이트 시 반영할게요.', reacts:[{emoji:'❤️',n:1,mine:false}] },
+        { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 11:50', body:'좋습니다. 그럼 이 학생은 3점으로 확정하시죠.', reacts:[] }
+      ]
     },
     { author:'박수정', role:'reviewer', scope:'plus', subject:'국어', time:'07/31 11:22', body:'김삼삼 학생 주장은 명확한데 근거 부분에서 5점 준 이유가 궁금해요.', reacts:[], unread:true, depth:3, eval:'(고) 자기주도 독서 활동', class:'1-1반', student:'10103 김삼삼' },
     { author:'김민준', role:'reviewer', scope:'plus', subject:'국어', time:'07/30 15:33', body:'김일일 학생 답안, 채점기준 근거 부분 명료해서 좋네요. 참고하겠습니다.', reacts:[{emoji:'✅',n:1,mine:true}], depth:3, eval:'(고) 읽기 자료 분석을 통한 주제 통합 탐구', class:'1-1반', student:'10101 김일일' }
@@ -2718,13 +2735,38 @@ function renderCommentItem(c, idx, tabName) {
   const reactsHTML = (c.reacts || []).map(r =>
     '<button class="ci-react-btn ' + (r.mine ? 'on' : '') + '" onclick="toggleReact(this, \'' + r.emoji + '\')"><span>' + r.emoji + '</span><span class="rc">' + r.n + '</span></button>'
   ).join('');
-  const emojiPop = '<button class="ci-react-add" onclick="toggleEmojiPop(this, event)" title="반응 추가"><i data-lucide="smile-plus"></i><div class="emoji-pop"><button onclick="addReact(this,\'👍\')">👍</button><button onclick="addReact(this,\'❤️\')">❤️</button><button onclick="addReact(this,\'👀\')">👀</button><button onclick="addReact(this,\'✅\')">✅</button><button onclick="addReact(this,\'🎉\')">🎉</button></div></button>';
+  const emojiPop = '<button class="ci-react-add" onclick="toggleEmojiPop(this, event)" title="반응 추가"><i data-lucide="smile-plus"></i><div class="emoji-pop" style="display:none"><button onclick="addReact(this,\'👍\')">👍</button><button onclick="addReact(this,\'❤️\')">❤️</button><button onclick="addReact(this,\'👀\')">👀</button><button onclick="addReact(this,\'✅\')">✅</button><button onclick="addReact(this,\'🎉\')">🎉</button></div></button>';
   const ownMenuHTML = (c.author === '김민준' || c.author === '박수정') ? '' :
     '<div class="ci-own-menu-wrap"><button class="ci-own-menu-btn" onclick="toggleOwnMenu(this, event)" title="내 댓글 관리"><i data-lucide="more-vertical"></i></button><div class="ci-own-menu"><button onclick="editComment(this)"><i data-lucide="pencil"></i>수정</button><button class="danger" onclick="deleteComment(this)"><i data-lucide="trash-2"></i>삭제</button></div></div>';
-  const repliesHTML = (c.replies || []).map(r => {
-    return '<div class="ci-reply">' + renderHeadRow(r) + '<div class="ci-body">' + r.body + '</div></div>';
-  }).join('');
-  const repliesBlock = repliesHTML ? '<div class="ci-replies">' + repliesHTML + '</div>' : '';
+  const replies = c.replies || [];
+  const replyItems = replies.map(r => {
+    // 대댓글에도 이모티콘 반응 지원
+    const rReactsHTML = (r.reacts || []).map(rc =>
+      '<button class="ci-react-btn ' + (rc.mine ? 'on' : '') + '" onclick="toggleReact(this, \'' + rc.emoji + '\')"><span>' + rc.emoji + '</span><span class="rc">' + rc.n + '</span></button>'
+    ).join('');
+    const rEmojiPop = '<button class="ci-react-add" onclick="toggleEmojiPop(this, event)" title="반응 추가"><i data-lucide="smile-plus"></i><div class="emoji-pop" style="display:none"><button onclick="addReact(this,\'👍\')">👍</button><button onclick="addReact(this,\'❤️\')">❤️</button><button onclick="addReact(this,\'👀\')">👀</button><button onclick="addReact(this,\'✅\')">✅</button><button onclick="addReact(this,\'🎉\')">🎉</button></div></button>';
+    return '<div class="ci-reply">' + renderHeadRow(r) + '<div class="ci-body">' + r.body + '</div>'
+      + '<div class="ci-actions">' + rReactsHTML + rEmojiPop + '</div>'
+      + '</div>';
+  });
+  // 3개 이상이면 첫 1개만 보이고 나머지는 접힘 (펼치기 버튼)
+  let repliesBlock = '';
+  if (replyItems.length > 0) {
+    if (replyItems.length <= 2) {
+      // 2개 이하는 그대로 전부 표시
+      repliesBlock = '<div class="ci-replies">' + replyItems.join('') + '</div>';
+    } else {
+      // 3개 이상: 첫 1개 표시 + 나머지 접힘 + 토글 버튼
+      const first = replyItems[0];
+      const rest = replyItems.slice(1).join('');
+      const hiddenCnt = replyItems.length - 1;
+      repliesBlock = '<div class="ci-replies">'
+        + first
+        + '<button class="ci-replies-toggle" onclick="toggleRepliesExpand(this)"><i data-lucide="chevron-down"></i>이전 답글 ' + hiddenCnt + '개 더 보기</button>'
+        + '<div class="ci-replies-hidden" style="display:none">' + rest + '</div>'
+        + '</div>';
+    }
+  }
   return '<div class="comment-item ' + (c.unread ? 'unread' : '') + '">'
     + renderHeadRow(c)
     + '<div class="ci-body">' + c.body + '</div>'
@@ -2894,8 +2936,12 @@ function toggleReact(btn, emoji) {
 }
 function toggleEmojiPop(btn, e) {
   if (e) e.stopPropagation();
-  document.querySelectorAll('.emoji-pop.open').forEach(p => { if (p !== btn.querySelector('.emoji-pop')) p.classList.remove('open'); });
-  btn.querySelector('.emoji-pop').classList.toggle('open');
+  const pop = btn.querySelector('.emoji-pop');
+  if (!pop) return;
+  const isOpen = pop.style.display === 'inline-flex' || pop.style.display === 'flex';
+  // 다른 팝오버 모두 닫기
+  document.querySelectorAll('.emoji-pop').forEach(p => { if (p !== pop) p.style.display = 'none'; });
+  pop.style.display = isOpen ? 'none' : 'inline-flex';
 }
 function addReact(el, emoji) {
   const item = el.closest('.comment-item');
@@ -3027,6 +3073,31 @@ function updateTabDots() {
     }
   });
 }
+// 대댓글 접기/펼치기 (3개 이상일 때) — inline style 기반, getComputedStyle로 실제 상태 감지
+function toggleRepliesExpand(el) {
+  const btn = el.closest ? el.closest('.ci-replies-toggle') : el;
+  if (!btn) return;
+  const replies = btn.closest('.ci-replies');
+  if (!replies) return;
+  const hidden = replies.querySelector('.ci-replies-hidden');
+  if (!hidden) return;
+  const currentDisplay = window.getComputedStyle(hidden).display;
+  const isOpen = currentDisplay !== 'none';
+  if (isOpen) {
+    hidden.style.display = 'none';
+    btn.classList.remove('open');
+    const cnt = hidden.querySelectorAll('.ci-reply').length;
+    btn.innerHTML = '<i data-lucide="chevron-down"></i>이전 답글 ' + cnt + '개 더 보기';
+  } else {
+    hidden.style.display = 'flex';
+    hidden.style.flexDirection = 'column';
+    hidden.style.gap = '10px';
+    hidden.style.marginTop = '10px';
+    btn.classList.add('open');
+    btn.innerHTML = '<i data-lucide="chevron-up"></i>답글 접기';
+  }
+  lucide.createIcons();
+}
 function toggleReplyForm(btn) {
   const item = btn.closest('.comment-item');
   if (!item) { const inner = btn.closest('.ci-reply-form'); if (inner) inner.classList.remove('open'); return; }
@@ -3102,7 +3173,7 @@ document.addEventListener('click', function(e) {
     if (fm) fm.classList.remove('open');
   }
   if (!e.target.closest('.ci-react-add')) {
-    document.querySelectorAll('.emoji-pop.open').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.emoji-pop').forEach(p => p.style.display = 'none');
   }
   if (!e.target.closest('.ci-own-menu-wrap')) {
     document.querySelectorAll('.ci-own-menu.open').forEach(m => m.classList.remove('open'));
