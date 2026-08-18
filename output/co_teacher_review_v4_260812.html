@@ -930,12 +930,11 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .sec-item-link svg { width:12px; height:12px; }
 
 /* ===== [v4] 2차 채점자 좌우 분할 (scene-reviewer-class) ===== */
-/* .rv-split은 사이드바 오른쪽부터 뷰포트 우측 벽까지 전체 채움 */
-.rv-split { margin-left:222px; display:flex; align-items:stretch; min-height:calc(100vh - 56px); background:#f6f7f9; }
-body:not(.nav-expanded) .rv-split { margin-left:60px; }
+/* .rv-split은 .main-wrap 안에 있어 이미 LNB 폭만큼 오프셋됨 · 여기서는 폭만 100% 채움 */
+.rv-split { display:flex; align-items:stretch; min-height:calc(100vh - 56px); background:#f6f7f9; }
 
 /* 좌측 · 남은 폭 전부 사용 + 내부 스크롤 */
-.rv-main { flex:1; min-width:0; padding:24px 32px 60px; max-width:calc(100vw - 222px - 420px); }
+.rv-main { flex:1; min-width:0; padding:24px 32px 60px; }
 .rv-main .readonly-ribbon { margin-bottom:16px; }
 .rv-main .class-banner { margin-bottom:24px; }
 
@@ -1032,8 +1031,134 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
 .rvd-upload-tag { display:inline-flex; align-items:center; gap:3px; font-size:11px; color:#5d26c4; background:#faf5ff; padding:2px 8px; border-radius:100px; font-weight:600; margin-left:auto; border:1px solid #d5bfff; }
 .rvd-upload-desc { font-size:13px; color:#3b3f4c; line-height:1.55; }
 
+/* ===== AI 채점 결과 요약 뷰어 ===== */
+.rvd-ai-alert { display:flex; align-items:center; gap:8px; padding:12px 16px; background:#f4f8ff; border:1px solid #ccdfff; border-radius:8px; margin-bottom:12px; font-size:13px; color:#3151c4; }
+.rvd-ai-alert svg { width:16px; height:16px; color:#365eef; flex-shrink:0; }
+.rvd-ai-summary { display:grid; grid-template-columns:1fr 1fr 1fr; border:1px solid #dde1e8; border-radius:8px; overflow:hidden; }
+.rvd-ai-summary-cell { padding:16px; text-align:center; border-right:1px solid #f1f3f5; background:#fff; }
+.rvd-ai-summary-cell:last-child { border-right:none; }
+.rvd-ai-summary-cell .k { font-size:13px; color:#6d7381; font-weight:500; margin-bottom:8px; }
+.rvd-ai-summary-cell .v { font-size:20px; font-weight:600; color:#222631; line-height:1.25; }
+.rvd-ai-summary-cell .v.accent { color:#365eef; }
+.rvd-ai-note { font-size:12px; color:#6d7381; margin-top:10px; }
+.rvd-ai-chart-card { border:1px solid #dde1e8; border-radius:8px; padding:16px; background:#fff; }
+.rvd-ai-chart-hd { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.rvd-ai-chart-nm { font-size:14px; font-weight:600; color:#222631; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rvd-ai-avg { display:inline-flex; align-items:center; height:22px; padding:0 8px; background:#e9f2ff; color:#3151c4; border:1px solid #ccdfff; border-radius:100px; font-size:11px; font-weight:600; flex-shrink:0; }
+.rvd-ai-chart-body { width:100%; }
+.rvd-ai-svg { display:block; width:100%; }
+.rvd-ai-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+/* ===== 학급 채점 현황 뷰어 · 테이블 ===== */
+.rvd-cs-tbl-wrap { border:1px solid #dde1e8; border-radius:8px; overflow:hidden; }
+.rvd-cs-tbl { width:100%; border-collapse:collapse; font-size:14px; }
+.rvd-cs-tbl thead th { background:#f9fafb; color:#6d7381; font-weight:600; font-size:13px; padding:14px 12px; text-align:center; border-bottom:1px solid #dde1e8; }
+.rvd-cs-tbl tbody td { padding:14px 12px; text-align:center; color:#222631; border-bottom:1px solid #f1f3f5; }
+.rvd-cs-tbl tbody tr:last-child td { border-bottom:none; }
+.rvd-cs-tbl tbody tr:hover td { background:#fafbfc; }
+.rvd-cs-tbl tbody td b { font-weight:700; }
+
+/* ===== 학생별 채점 상세 뷰어 ===== */
+/* 상단 툴바 · 드롭다운 + 이전/다음 */
+.rvd-sd-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; padding:12px 14px; background:#f9fafb; border:1px solid #dde1e8; border-radius:8px; }
+.rvd-sd-select { min-width:260px; height:36px; padding:0 12px; border:1px solid #dde1e8; border-radius:6px; background:#fff; font-size:13px; color:#222631; font-family:inherit; cursor:pointer; }
+.rvd-sd-select:focus { outline:none; border-color:#365eef; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+.rvd-sd-nav { display:flex; gap:6px; }
+.rvd-sd-nav .btn-outline { display:inline-flex; align-items:center; gap:4px; height:36px; padding:0 12px; border:1px solid #dde1e8; background:#fff; color:#3b3f4c; border-radius:6px; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; }
+.rvd-sd-nav .btn-outline:hover:not([disabled]) { border-color:#365eef; color:#365eef; }
+.rvd-sd-nav .btn-outline[disabled] { opacity:.4; cursor:not-allowed; }
+.rvd-sd-nav .btn-outline svg { width:14px; height:14px; }
+
+/* 경고 배너 (확인 필요 · 미채점 등) */
+.rvd-sd-warn { display:flex; align-items:center; gap:8px; padding:12px 16px; background:#fef2f2; border:1px solid #fca5a5; border-radius:8px; margin-bottom:14px; font-size:13px; color:#ab303a; }
+.rvd-sd-warn svg { width:16px; height:16px; color:#dc2626; flex-shrink:0; }
+
+/* 좌우 스플릿 */
+.rvd-sd-split { display:flex; gap:14px; align-items:flex-start; }
+.rvd-sd-left { flex:0 0 44%; min-height:820px; background:#fff; border:1px solid #dde1e8; border-radius:10px; padding:20px; position:sticky; top:70px; }
+.rvd-sd-left-ph { height:calc(820px - 40px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:#f6f7f9; border:1px dashed #dde1e8; border-radius:8px; color:#9ea3ad; }
+.rvd-sd-left-ph svg { width:40px; height:40px; }
+.rvd-sd-left-t { font-size:14px; font-weight:600; color:#6d7381; }
+.rvd-sd-left-desc { font-size:12px; text-align:center; line-height:1.6; }
+.rvd-sd-right { flex:1; min-width:0; }
+
+/* 채점기준 카드 */
+.rvd-sd-crit { padding:16px 0; border-bottom:1px solid #f1f3f5; }
+.rvd-sd-crit:last-child { border-bottom:none; padding-bottom:0; }
+.rvd-sd-crit:first-child { padding-top:0; }
+.rvd-sd-crit-nm { font-size:14px; font-weight:600; color:#222631; margin-bottom:10px; }
+.rvd-sd-pills { display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap; }
+.rvd-sd-pill-item { display:flex; flex-direction:column; align-items:center; gap:3px; }
+.rvd-sd-pill { min-width:44px; height:32px; padding:0 12px; border:1.5px solid #dde1e8; background:#fff; color:#9ea3ad; border-radius:6px; font-size:14px; font-weight:600; display:inline-flex; align-items:center; justify-content:center; }
+.rvd-sd-pill.ai { background:#f1f3f5; color:#3b3f4c; border-color:#dde1e8; }
+.rvd-sd-pill.final { background:#365eef; color:#fff; border-color:#365eef; }
+.rvd-sd-pill.both { background:#365eef; color:#fff; border-color:#9ca3af; box-shadow:0 0 0 3px #f1f3f5; }
+.rvd-sd-pill-lbl { font-size:10px; color:#6d7381; height:12px; font-weight:600; letter-spacing:-.2px; white-space:nowrap; }
+.rvd-sd-rationale { font-size:13px; color:#3b3f4c; line-height:1.65; padding:10px 12px; background:#f9fafb; border-radius:6px; }
+/* 총점 뱃지 (섹션 헤더 우측) */
+.rvd-sd-total-badge { margin-left:auto; display:inline-flex; align-items:center; gap:4px; height:28px; padding:0 12px; background:#e9f2ff; color:#3151c4; border:1px solid #a3c3ff; border-radius:100px; font-size:13px; font-weight:500; }
+.rvd-sd-total-badge b { font-weight:700; color:#365eef; }
+.rvd-sd-total-badge .grd { color:#5d26c4; margin-left:2px; }
+/* 채점근거 같이보기 체크박스 */
+.rvd-sd-rationale-toggle { display:inline-flex; align-items:center; gap:6px; margin-bottom:12px; font-size:12px; font-weight:500; color:#3b3f4c; cursor:pointer; user-select:none; }
+.rvd-sd-rationale-toggle input { position:absolute; opacity:0; pointer-events:none; }
+.rvd-sd-cb-dot { width:16px; height:16px; border:1.5px solid #dde1e8; border-radius:4px; background:#fff; position:relative; flex-shrink:0; transition:.15s; }
+.rvd-sd-rationale-toggle input:checked + .rvd-sd-cb-dot { background:#365eef; border-color:#365eef; }
+.rvd-sd-rationale-toggle input:checked + .rvd-sd-cb-dot::after { content:''; position:absolute; left:4px; top:1px; width:5px; height:9px; border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg); }
+/* 채점근거 숨김 상태 */
+.rvd-sd-scoring-sec.hide-rationale .rvd-sd-rationale { display:none; }
+.rvd-sd-scoring-sec.hide-rationale .rvd-sd-crit { padding:12px 0; }
+
+.rvd-sd-empty { padding:24px; text-align:center; color:#9ea3ad; font-size:13px; }
+
+/* AI 피드백 탭 */
+.rvd-sd-ai-tabs { display:flex; gap:0; margin-bottom:14px; border-radius:8px; background:#f1f3f5; padding:4px; }
+.rvd-sd-ai-tab { flex:1; height:34px; padding:0 12px; background:transparent; border:none; border-radius:6px; font-size:13px; font-weight:600; color:#6d7381; cursor:pointer; font-family:inherit; }
+.rvd-sd-ai-tab.active { background:#fff; color:#365eef; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+.rvd-sd-ai-content { font-size:13px; color:#3b3f4c; line-height:1.75; padding:14px 16px; background:#f4f8ff; border:1px solid #ccdfff; border-radius:8px; }
+/* 과제물 분석 AI 내부 서브 헤더 · 라디오 */
+.rvd-sd-ai-sub-hd { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid #ccdfff; }
+.rvd-sd-ai-sub-t { font-size:13px; font-weight:600; color:#222631; }
+.rvd-sd-ai-sub-radio { display:flex; gap:12px; }
+.rvd-sd-radio { display:inline-flex; align-items:center; gap:5px; font-size:12px; font-weight:500; color:#6d7381; cursor:pointer; user-select:none; }
+.rvd-sd-radio input { position:absolute; opacity:0; pointer-events:none; }
+.rvd-sd-radio-dot { width:14px; height:14px; border:1.5px solid #dde1e8; border-radius:50%; background:#fff; position:relative; flex-shrink:0; }
+.rvd-sd-radio.active { color:#365eef; font-weight:600; }
+.rvd-sd-radio.active .rvd-sd-radio-dot { border-color:#365eef; }
+.rvd-sd-radio.active .rvd-sd-radio-dot::after { content:''; position:absolute; inset:2px; border-radius:50%; background:#365eef; }
+/* 채점요소별 보기 카드 */
+.rvd-sd-ai-crit { padding:10px 0; border-bottom:1px dashed #ccdfff; }
+.rvd-sd-ai-crit:last-child { border-bottom:none; padding-bottom:0; }
+.rvd-sd-ai-crit:first-child { padding-top:0; }
+.rvd-sd-ai-crit-nm { font-size:13px; font-weight:600; color:#3151c4; margin-bottom:6px; }
+.rvd-sd-ai-crit-txt { font-size:13px; color:#3b3f4c; line-height:1.65; }
+
+/* ===== 세특 학급 뷰어 ===== */
+.rvd-se-toolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:14px; }
+.rvd-se-toggle { display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 14px; border:1px solid #dde1e8; background:#fff; color:#3b3f4c; border-radius:6px; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; }
+.rvd-se-toggle svg { width:14px; height:14px; }
+.rvd-se-toggle:hover { border-color:#365eef; color:#365eef; }
+.rvd-se-toggle.off { background:#f1f3f5; color:#6d7381; }
+.rvd-se-tbl-wrap { border:1px solid #dde1e8; border-radius:8px; overflow:hidden; background:#fff; }
+.rvd-se-tbl { width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
+.rvd-se-tbl thead th { background:#f9fafb; color:#6d7381; font-weight:600; font-size:13px; padding:14px 12px; text-align:center; border-bottom:1px solid #dde1e8; }
+.rvd-se-tbl tbody td { padding:16px 12px; color:#222631; border-bottom:1px solid #f1f3f5; vertical-align:top; }
+.rvd-se-tbl tbody tr:last-child td { border-bottom:none; }
+.rvd-se-tbl tbody tr:hover td { background:#fafbfc; }
+.rvd-se-no, .rvd-se-nm, .rvd-se-total { text-align:center; font-weight:500; }
+.rvd-se-total { font-weight:600; }
+.rvd-se-teacher-cell { padding:16px 18px; }
+.rvd-se-teacher-txt { font-size:13px; color:#3b3f4c; line-height:1.75; word-break:keep-all; white-space:pre-wrap; }
+.rvd-se-teacher-meta { font-size:11px; color:#9ea3ad; margin-top:8px; text-align:right; }
+
+/* 선생님 피드백 */
+.rvd-sd-teacher { font-size:13px; color:#3b3f4c; line-height:1.75; padding:14px 16px; background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; min-height:60px; }
+
 /* 우측 댓글 패널 · 화면 우측 벽에 고정 · 헤더 아래부터 하단까지 */
-.rv-right { width:420px; flex-shrink:0; background:#fff; border-left:1px solid #dde1e8; display:flex; flex-direction:column; position:sticky; top:56px; align-self:flex-start; height:calc(100vh - 56px); overflow:hidden; }
+/* 우측 댓글 패널 · 화면 우측 벽에 뷰포트 기준으로 항상 풀 높이 고정 */
+.rv-right { width:420px; background:#fff; border-left:1px solid #dde1e8; display:flex; flex-direction:column; position:fixed; top:56px; right:0; bottom:0; overflow:hidden; z-index:5; }
+/* rv-right가 fixed로 흐름에서 빠졌으므로 rv-main이 그 밑에 깔리지 않도록 우측 공간 확보 */
+.rv-split { padding-right:420px; }
 .rv-right-hd { padding:14px 16px 10px; border-bottom:1px solid #f1f3f5; }
 .rv-right-title { font-size:15px; font-weight:600; color:#222631; display:inline-flex; align-items:center; gap:6px; }
 .rv-right-title svg { width:16px; height:16px; color:#365eef; }
@@ -1059,6 +1184,58 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
 .rv-new-cmt { border-top:1px solid #f1f3f5; padding:12px 16px; background:#fafbfc; }
 .rv-new-cmt-hint { font-size:11px; color:#6d7381; margin-bottom:6px; display:inline-flex; align-items:center; gap:4px; }
 .rv-new-cmt-hint svg { color:#365eef; }
+/* 컨텍스트 배너 · 입력창 위 · 남기는 위치 표시 */
+.rv-write-ctx { margin-bottom:8px; padding:8px 10px; border-radius:6px; background:#f1f3f5; border:1px solid #dde1e8; }
+.rv-write-ctx.active { background:#f4f8ff; border-color:#ccdfff; }
+.rv-write-ctx-hd { display:flex; align-items:center; gap:5px; font-size:11px; color:#6d7381; font-weight:500; margin-bottom:4px; }
+.rv-write-ctx-hd svg { width:12px; height:12px; color:#9ea3ad; }
+.rv-write-ctx.active .rv-write-ctx-hd { color:#3151c4; }
+.rv-write-ctx.active .rv-write-ctx-hd svg { color:#365eef; }
+.rv-write-ctx-body { display:flex; align-items:center; gap:6px; }
+.rv-write-ctx-lbl { flex:1; min-width:0; font-size:12px; font-weight:600; color:#3151c4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.rv-write-ctx-clear { display:inline-flex; align-items:center; gap:2px; height:22px; padding:0 8px; border:1px solid #a3c3ff; background:#fff; color:#3151c4; border-radius:100px; font-size:11px; font-weight:500; cursor:pointer; font-family:inherit; flex-shrink:0; }
+.rv-write-ctx-clear:hover { background:#e9f2ff; border-color:#365eef; }
+.rv-write-ctx-clear svg { width:11px; height:11px; }
+
+/* ================================================
+   플로팅 댓글 창 (오너)
+================================================ */
+.fcw-panel { position:fixed; top:80px; right:24px; width:380px; max-height:620px; background:#fff; border:1px solid #dde1e8; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,.18); z-index:100; display:flex; flex-direction:column; overflow:hidden; }
+.fcw-hd { padding:12px 14px; background:#f9fafb; border-bottom:1px solid #f1f3f5; cursor:move; display:flex; align-items:center; justify-content:space-between; gap:8px; user-select:none; }
+.fcw-hd-l { display:flex; align-items:center; gap:8px; min-width:0; flex:1; }
+.fcw-hd-l > svg { width:18px; height:18px; color:#365eef; flex-shrink:0; }
+.fcw-hd-t { font-size:13px; font-weight:600; color:#222631; }
+.fcw-count { color:#6d7381; font-weight:500; margin-left:2px; }
+.fcw-ctx-label { font-size:11px; color:#3151c4; font-weight:500; margin-top:2px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:280px; }
+.fcw-close { width:28px; height:28px; padding:0; background:transparent; border:none; border-radius:6px; color:#6d7381; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+.fcw-close:hover { background:#f1f3f5; color:#222631; }
+.fcw-close svg { width:16px; height:16px; }
+.fcw-body { flex:1; overflow-y:auto; padding:10px 12px; }
+.fcw-body::-webkit-scrollbar { width:6px; }
+.fcw-body::-webkit-scrollbar-thumb { background:#dde1e8; border-radius:3px; }
+.fcw-body .cr-cmt { flex-direction:column; align-items:stretch; padding:10px 12px; margin-bottom:6px; font-size:12px; }
+.fcw-body .cr-cmt .cr-cmt-text { font-size:12px; }
+.fcw-body .cr-cmt-actions { flex-direction:row; margin-top:6px; }
+
+/* 클릭한 댓글 하이라이팅 (yellow pulse) */
+@keyframes fcw-pulse {
+  0%   { background:#fef3c7; box-shadow:0 0 0 0 rgba(251,191,36,.4); }
+  50%  { background:#fef9c3; box-shadow:0 0 0 4px rgba(251,191,36,.15); }
+  100% { background:#fef9c3; box-shadow:0 0 0 0 rgba(251,191,36,0); }
+}
+.fcw-body .cr-cmt.fcw-highlight { animation:fcw-pulse 1.8s ease-out; background:#fef9c3; border-color:#fde68a !important; }
+
+/* ================================================
+   AI 채점 결과 요약 모달 (오너)
+================================================ */
+.ai-sum-modal { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:200; display:flex; align-items:flex-start; justify-content:center; padding:48px 20px; overflow-y:auto; }
+.ai-sum-modal-wrap { width:100%; max-width:820px; background:#fff; border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,.3); display:flex; flex-direction:column; max-height:calc(100vh - 96px); overflow:hidden; }
+.ai-sum-modal-hd { display:flex; align-items:center; justify-content:space-between; padding:16px 20px; border-bottom:1px solid #f1f3f5; }
+.ai-sum-modal-hd > span { font-size:16px; font-weight:600; color:#222631; }
+.ai-sum-modal-x { width:32px; height:32px; padding:0; background:transparent; border:none; border-radius:6px; color:#6d7381; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+.ai-sum-modal-x:hover { background:#f1f3f5; color:#222631; }
+.ai-sum-modal-x svg { width:18px; height:18px; }
+.ai-sum-modal-body { padding:20px; overflow-y:auto; flex:1; }
 .rv-new-cmt-input { width:100%; min-height:60px; padding:8px 10px; border:1px solid #dde1e8; border-radius:6px; font-size:13px; resize:vertical; font-family:inherit; background:#fff; box-sizing:border-box; }
 .rv-new-cmt-input:focus { outline:none; border-color:#365eef; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
 .rv-new-cmt-actions { display:flex; align-items:center; justify-content:flex-end; margin-top:6px; }
@@ -1546,7 +1723,7 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
               <div class="cr-sec-sub">이 수업을 열람하고 검토 의견을 남길 수 있는 선생님이에요.</div>
             </div>
           </div>
-          <button class="btn-subtle btn-sm" onclick="openShareModal()"><i data-lucide="settings-2" style="width:14px;height:14px"></i>공동 평가 선생님 관리</button>
+          <button class="btn-subtle btn-sm" onclick="openShareModal()"><i data-lucide="settings-2" style="width:14px;height:14px"></i>공동 평가 설정</button>
         </div>
         <div class="cr-teacher-list">
           <div class="cr-teacher-row">
@@ -1654,7 +1831,7 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
         </div>
         <div class="empty-title">아직 공동 평가를 시작하지 않았어요.</div>
         <div class="empty-desc">이 수업을 같은 학교 선생님께 검토 요청하고 의견을 받아보세요.<br>선생님별로 공유 범위를 설정하여 공개할 수 있어요.</div>
-        <button class="btn-solid" onclick="openShareModal()" style="height:40px; padding:0 20px"><i data-lucide="plus" style="width:16px;height:16px;margin-right:6px"></i>공동 평가 시작</button>
+        <button class="btn-solid" onclick="openShareModal()" style="height:40px; padding:0 20px"><i data-lucide="plus" style="width:16px;height:16px;margin-right:6px"></i>공동 평가 설정</button>
       </div>
      </div>
     </div>
@@ -1932,7 +2109,7 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
     <div class="rv-main">
       <div class="readonly-ribbon">
         <i data-lucide="eye"></i>
-        <div class="rr-text"><b>홍길동 선생님</b>이 공유한 수업입니다. 해당 수업은 보기 전용이며 수정 불가입니다.</div>
+        <div class="rr-text"><b>홍길동 선생님</b>이 공유한 수업입니다. 해당 수업은 읽기 전용으로 검토 후 댓글로 의견 교환이 가능합니다.</div>
       </div>
 
       <div class="class-banner">
@@ -1967,7 +2144,7 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
           <div class="sec-item rv-item" data-ctx-type="design" data-eval="(고) 읽기 자료 분석을 통한 주제 통합 탐구" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"design","eval":"(고) 읽기 자료 분석을 통한 주제 통합 탐구"}'></span>
             <div class="sec-item-l"><div class="sec-item-nm">(고) 읽기 자료 분석을 통한 주제 통합 탐구</div><div class="sec-item-desc">26.07.11 수정</div></div>
-            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); notReady('상세 뷰어')">자세히 보기<i data-lucide="external-link"></i></button></div>
+            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('design', '(고) 읽기 자료 분석을 통한 주제 통합 탐구')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
           <div class="sec-item rv-item" data-ctx-type="design" data-eval="(고) 문학 작품 감상 및 비평문 쓰기" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"design","eval":"(고) 문학 작품 감상 및 비평문 쓰기"}'></span>
@@ -1989,11 +2166,11 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
         <div class="sec-body">
           <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 자기주도 독서 활동" data-class="1-1" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"grading","eval":"(고) 자기주도 독서 활동","class":"1-1"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">(고) 자기주도 독서 활동 · 1-1반</div><div class="sec-item-desc">채점 현황 <b style="color:#222631">9/20</b>, 원점수 평균 <b style="color:#222631">14.4</b></div></div>
+            <div class="sec-item-l"><div class="sec-item-nm">(고) 자기주도 독서 활동 · 1-1반</div><div class="sec-item-desc">채점 현황 <b style="color:#222631">9/20</b>, 원점수 평균 <b style="color:#222631">51.1</b></div></div>
             <div class="sec-item-r">
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('AI 채점 결과 요약')">AI 채점 결과 요약</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학급 채점 현황')">학급 채점 현황</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학생별 상세 보기')">학생별 상세 보기</button>
+              <button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-ai-summary', '(고) 자기주도 독서 활동:1-1')">AI 채점 결과 요약<i data-lucide="external-link"></i></button>
+              <button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-class-status', '(고) 자기주도 독서 활동:1-1')">학급 채점 현황<i data-lucide="external-link"></i></button>
+              <button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-student', '(고) 자기주도 독서 활동:1-1:10101')">학생별 상세 보기<i data-lucide="external-link"></i></button>
             </div>
           </div>
           <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 자기주도 독서 활동" data-class="1-10" onclick="rvFilterByItem(this)">
@@ -2039,17 +2216,17 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
           <div class="sec-item rv-item" data-ctx-type="seteuk" data-class="1학년 1반" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"seteuk","class":"1학년 1반"}'></span>
             <div class="sec-item-l"><div class="sec-item-nm">1학년 1반 · 20명</div></div>
-            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); notReady('상세 뷰어')">자세히 보기<i data-lucide="external-link"></i></button></div>
+            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('seteuk-class', '1학년 1반')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
           <div class="sec-item rv-item" data-ctx-type="seteuk" data-class="1학년 10반" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"seteuk","class":"1학년 10반"}'></span>
             <div class="sec-item-l"><div class="sec-item-nm">1학년 10반 · 2명</div></div>
-            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); notReady('상세 뷰어')">자세히 보기<i data-lucide="external-link"></i></button></div>
+            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('seteuk-class', '1학년 10반')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
           <div class="sec-item rv-item" data-ctx-type="seteuk" data-class="1학년 91반" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"seteuk","class":"1학년 91반"}'></span>
             <div class="sec-item-l"><div class="sec-item-nm">1학년 91반 · 5명</div></div>
-            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); notReady('상세 뷰어')">자세히 보기<i data-lucide="external-link"></i></button></div>
+            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('seteuk-class', '1학년 91반')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
         </div>
       </div>
@@ -2094,7 +2271,9 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
       </div>
       <div class="rv-cmt-list" id="rvCommentsList"><!-- 렌더링 --></div>
       <div class="rv-new-cmt">
-        <textarea class="rv-new-cmt-input" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
+        <!-- 컨텍스트 배너 · 댓글이 남겨질 위치 명시 -->
+        <div class="rv-write-ctx" id="rvWriteCtx"><!-- renderRvComments에서 갱신 --></div>
+        <textarea class="rv-new-cmt-input" id="rvNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
         <div class="rv-new-cmt-actions">
           <button class="btn-solid btn-sm" onclick="rvSubmitComment()">등록</button>
         </div>
@@ -2764,6 +2943,36 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
 
 <footer class="site-footer">© 2026. Datadriven Inc. All rights reserved. · CLIPO 공동 평가 v0.4 목업</footer>
 
+<!-- ================================================
+     플로팅 댓글 창 (오너 · 원본 화면에서 댓글 참조)
+================================================ -->
+<div class="fcw-panel" id="fcwPanel" style="display:none">
+  <div class="fcw-hd">
+    <div class="fcw-hd-l">
+      <i data-lucide="message-square-quote"></i>
+      <div>
+        <div class="fcw-hd-t">댓글 <span class="fcw-count">0개</span></div>
+        <div class="fcw-ctx-label" title="">컨텍스트</div>
+      </div>
+    </div>
+    <button class="fcw-close" onclick="fcwClose()" title="닫기"><i data-lucide="x"></i></button>
+  </div>
+  <div class="fcw-body"><!-- 댓글 카드 --></div>
+</div>
+
+<!-- ================================================
+     AI 채점 결과 요약 모달 (오너 · scoring-class-detail 위 오버레이)
+================================================ -->
+<div class="ai-sum-modal" id="aiSummaryModal" style="display:none" onclick="if(event.target===this)closeAiSummaryModal()">
+  <div class="ai-sum-modal-wrap">
+    <div class="ai-sum-modal-hd">
+      <span>AI 채점 결과 확인</span>
+      <button class="ai-sum-modal-x" onclick="closeAiSummaryModal()" title="닫기"><i data-lucide="x"></i></button>
+    </div>
+    <div class="ai-sum-modal-body"><!-- 동적 렌더 --></div>
+  </div>
+</div>
+
 </div><!-- /main-wrap -->
 
 <!-- ================================================
@@ -2852,7 +3061,7 @@ body:not(.nav-expanded) .rv-split { margin-left:60px; }
     </div>
     <div class="m-foot">
       <button class="btn-ghost" onclick="closeShareModal()">취소</button>
-      <button class="btn-solid" onclick="saveShare()">공동 평가 시작</button>
+      <button class="btn-solid" onclick="saveShare()">설정 완료</button>
     </div>
   </div>
 </div>
@@ -4074,8 +4283,15 @@ const CR_COMMENTS = [
     ctxType:'seteuk', ctxData:{ class:'1학년 1반' },
     text:'1학년 1반 세특 초안 봤어요. AI 생성 기록이 학생별 특성을 잘 잡아냈네요.' },
   { id:'c4', author:'박수정', time:'2026/08/11 11:20', unread:true, resolved:false, replies:[], reacts:[],
-    ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1' },
+    ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1', subtype:'class_status' },
     text:'1-1반 채점 진행 상황 공유 부탁드립니다. 아직 시작 안 되어있는 것 같아요.' },
+  { id:'c4b', author:'박수정', time:'2026/08/13 09:20', unread:true, resolved:false,
+    replies:[
+      { author:'홍길동', time:'2026/08/13 10:05', reacts:[], text:'맞아요. AI가 후반 항목을 조금 후하게 준 편이라, 제가 8점대로 하향 조정 중이에요.' }
+    ],
+    reacts:[{emoji:'👀', count:1, mine:false}],
+    ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1', subtype:'ai_summary' },
+    text:'AI 채점 결과 요약 봤어요. 총점 평균 51점대인데 "보고서 구성 및 양식" 항목 10점 비중이 좀 높아 보여요. 한번 재확인해봐도 좋을 것 같아요.' },
   { id:'c5', author:'박수정', time:'2026/08/10 14:40', unread:true, resolved:false, replies:[],
     reacts:[{emoji:'👀', count:1, mine:false}],
     ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1', student:'10103 김삼삼' },
@@ -4092,7 +4308,7 @@ const CR_COMMENTS = [
     ctxType:'seteuk', ctxData:{ class:'1학년 3반' },
     text:'세특 문구 톤이 잘 맞네요. 학생별 활동 근거도 잘 드러나요.' },
   { id:'c8', author:'김민준', time:'2026/08/08 11:00', unread:false, resolved:false, replies:[], reacts:[],
-    ctxType:'grading', ctxData:{ eval:'(고) 읽기 자료 분석', class:'1-10' },
+    ctxType:'grading', ctxData:{ eval:'(고) 읽기 자료 분석', class:'1-10', subtype:'ai_summary' },
     text:'1-10반 채점 결과 확인했습니다. 평균이 안정적이네요.' },
   { id:'c9', author:'박수정', time:'2026/08/07 10:15', unread:false, resolved:false, replies:[], reacts:[],
     ctxType:'design', ctxData:{ eval:'(고) 문학 작품 감상 및 비평문 쓰기' },
@@ -4133,6 +4349,8 @@ function crCtxLabel(c) {
   if (c.ctxType === 'grading') {
     let s = '[채점] ' + d.eval + ' · ' + d.class;
     if (d.student) s += ' · ' + d.student;
+    else if (d.subtype === 'ai_summary') s += ' · AI 채점 결과 요약';
+    else if (d.subtype === 'class_status') s += ' · 학급 채점 현황';
     return s;
   }
   if (c.ctxType === 'seteuk') return '[세특] ' + d.class;
@@ -4238,7 +4456,7 @@ function renderCmtCard(c, opts) {
     + '</div>'
     + '<div class="cr-cmt-actions">'
     +   readBtn
-    +   '<button class="btn-ghost btn-sm" onclick="event.stopPropagation(); notReady(\'보러 가기\')">보러 가기 →</button>'
+    +   '<button class="btn-ghost btn-sm" onclick="event.stopPropagation(); openCommentContext(\'' + c.id + '\')">보러 가기 →</button>'
     + '</div>'
     + '</div>';
 }
@@ -4386,6 +4604,10 @@ function rvMatchesCtx(c, ctx) {
   if (c.ctxType !== ctx.type) return false;
   if (ctx.eval && c.ctxData.eval !== ctx.eval) return false;
   if (ctx.class && c.ctxData.class !== ctx.class) return false;
+  // subtype이 지정되면 subtype이 일치하는 댓글만 (좁은 컨텍스트)
+  if (ctx.subtype && c.ctxData.subtype !== ctx.subtype) return false;
+  // 학생 컨텍스트가 지정되면 해당 학생 댓글만
+  if (ctx.student && c.ctxData.student !== ctx.student) return false;
   return true;
 }
 
@@ -4415,8 +4637,73 @@ function rvFilterByItem(el) {
 }
 // ===== [v4] 리뷰어 상세 뷰어 =====
 const EVAL_DETAIL_DATA = {
+  '(고) 읽기 자료 분석을 통한 주제 통합 탐구': {
+    name:'(고) 읽기 자료 분석을 통한 주제 통합 탐구',
+    subject:'국어',
+    courseName:'국어',
+    visibility:'교내 공개',
+    achievements: [
+      { code:'[12독작01-13]', text:'다양한 글을 주제 통합적으로 읽고 학습의 목적과 교과의 특성을 고려하여 학습을 위한 글을 쓴다.', direct:true,
+        grades:[
+          { level:'A', desc:'다양한 관점과 형식을 가진 여러 편의 글에 나타난 정보를 비판적으로 재구성하며 주제 통합적으로 읽고, 학습의 목적과 교과의 특성을 고려하여 특정 주제나 화제에 대해 학습한 내용을 체계적으로 구조화하고 쓰기 윤리를 준수하며 학습을 위한 글을 쓸 수 있다.' },
+          { level:'B', desc:'다양한 관점과 형식을 가진 여러 편의 글에 나타난 정보를 재구성하며 주제 통합적으로 읽고, 학습의 목적과 교과의 특성을 고려하여 특정 주제나 화제에 대해 학습한 내용을 구조화하고 쓰기 윤리를 준수하며 학습을 위한 글을 쓸 수 있다.' },
+          { level:'C', desc:'다양한 관점과 형식을 가진 여러 편의 글을 주제 통합적으로 읽고, 학습의 목적과 교과의 특성을 고려하여 특정 주제나 화제에 대해 학습한 내용을 구조화하고 쓰기 윤리를 인식하며 학습을 위한 글을 쓸 수 있다.' },
+          { level:'D', desc:'관점이나 형식이 다른 여러 편의 글을 비교하며 읽고, 읽은 내용을 일부 활용하며 학습의 목적을 고려하여 학습을 위한 글을 쓸 수 있다.' },
+          { level:'E', desc:'관점이나 형식이 다른 두 편의 글을 부분적으로 비교하며 읽고, 읽은 내용을 제한적인 수준에서 활용하여 학습을 위한 글을 쓴다.' }
+        ]
+      }
+    ],
+    criteria: [
+      { name:'탐구 질문의 적절성', type:'주관식 급간 배점', max:3,
+        grades:[
+          { level:'3.0', desc:'제시문제와의 관련성이 분명하고 탐구 가치가 있는 질문을 구체적으로 제시하며, 탐구 질문 선정 이유를 논리적이고 설득력 있게 설명함' },
+          { level:'2.0', desc:'제시문제와의 관련성이 있으며 탐구 가치가 있는 질문을 제시하고, 탐구 질문 선정 이유를 대체로 타당하게 설명함' },
+          { level:'1.0', desc:'제시문제와의 관련성이 다소 불분명하거나 탐구 가치가 제한적인 질문을 제시하며, 탐구 질문 선정 이유 설명이 피상적이거나 일부만 제시함' }
+        ]
+      },
+      { name:'자료 조사 및 출처 제시', type:'주관식 급간 배점', max:3,
+        grades:[
+          { level:'3.0', desc:'탐구 질문 해결을 위해 신뢰할 수 있는 출처의 자료를 폭넓게 활용하고, 핵심 내용을 정확히 요약하며, 사용한 자료의 출처를 빠짐없이 제시함' },
+          { level:'2.0', desc:'탐구 질문 해결을 위해 비교적 신뢰할 수 있는 자료를 활용하고, 핵심 내용을 대체로 정확히 요약하며, 주요 자료의 출처를 제시함' },
+          { level:'1.0', desc:'탐구 질문 해결을 위한 자료 활용이 제한적이거나 신뢰성이 낮고, 핵심 내용 요약이 부정확하거나 일부 누락되며, 자료 출처 제시가 불완전함' }
+        ]
+      },
+      { name:'탐구 내용의 충실성', type:'주관식 급간 배점', max:3,
+        grades:[
+          { level:'3.0', desc:'탐구 질문에 대한 답이 구체적이고 논리적으로 전개되며, 관련 개념과 원리를 정확히 설명하고, 제시문 및 조사 자료의 내용을 풍부하게 활용함' },
+          { level:'2.0', desc:'탐구 질문에 대한 답이 전반적으로 타당하게 제시되며, 관련 개념과 원리를 대체로 정확히 설명하고, 제시문 및 조사 자료의 내용을 적절히 활용함' },
+          { level:'1.0', desc:'탐구 질문에 대한 답이 단편적이거나 논리 전개가 약하며, 관련 개념과 원리 설명이 부정확하거나 모호하고, 제시문 및 조사 자료 활용이 미흡함' }
+        ]
+      },
+      { name:'탐구 내용의 정리와 의의 제시', type:'주관식 급간 배점', max:3,
+        grades:[
+          { level:'3.0', desc:'탐구 과정을 통해 얻게 된 내용을 명확하게 요약·정리하고, 전자공학 패러다임 전환의 의의와 한계를 균형 있게 제시하며, 자신의 생각과 시사점을 논리적으로 서술함' },
+          { level:'2.0', desc:'탐구 과정을 통해 얻게 된 내용을 대체로 분명하게 정리하고, 전자공학 패러다임 전환의 의의나 시사점을 중심으로 자신의 생각을 제시함' },
+          { level:'1.0', desc:'탐구 과정을 통해 얻게 된 내용의 정리가 미흡하거나 모호하며, 전자공학 패러다임 전환의 의의 제시가 피상적이거나 자신의 생각 제시가 부족함' }
+        ]
+      },
+      { name:'구성 및 분량 준수', type:'주관식 급간 배점', max:3,
+        grades:[
+          { level:'3.0', desc:'도입-전개-정리의 구조가 분명하고 문단이 논리적으로 배열되어 있으며, 주어진 분량 기준을 충실히 지키고 내용의 밀도가 높음' },
+          { level:'2.0', desc:'도입-전개-정리의 구조가 대체로 갖추어져 있고 문단 배열이 비교적 자연스러우며, 분량 기준을 대체로 준수함' },
+          { level:'1.0', desc:'글의 전체 구조가 불분명하거나 문단 배열이 어색하며, 분량 기준을 크게 초과하거나 미달하여 내용 전개가 부적절함' }
+        ]
+      },
+      { name:'문장 표현 및 맞춤법', type:'주관식 급간 배점', max:3,
+        grades:[
+          { level:'3.0', desc:'문장이 자연스럽고 정확하게 구성되어 내용 전달이 명료하며, 맞춤법과 띄어쓰기를 거의 틀리지 않고 어휘 선택이 적절함' },
+          { level:'2.0', desc:'문장이 전반적으로 자연스럽고 글의 내용 전달에 큰 지장이 없으며, 맞춤법과 띄어쓰기에 오류가 있으나 이해에 방해가 되지 않음' },
+          { level:'1.0', desc:'문장이 어색하거나 비문이 자주 나타나 내용 이해가 어렵고, 맞춤법과 띄어쓰기 오류가 많이 나타나 글의 완성도가 떨어짐' }
+        ]
+      }
+    ],
+    scoreMethod: { mode:'채점기준 배점 그대로 적용', maxScore:18, minScore:6, absent:0, exempt:0 },
+    upload: { name:'선생님 직접 일괄 업로드', tag:'AI 자동 채점 지원', desc:'학생 과제물을 PDF나 이미지 파일(JPG, PNG)로 업로드합니다.' }
+  },
   '(고) 자기주도 독서 활동': {
     name:'(고) 자기주도 독서 활동',
+    subject:'국어',
+    courseName:'국어',
     visibility:'교내 공개',
     achievements: [
       { code:'[12독01-02]', text:'독서의 목적과 자신의 맥락을 고려하여 가치 있는 글이나 자료를 탐색하고 선별한다.', direct:true,
@@ -4478,6 +4765,636 @@ const EVAL_DETAIL_DATA = {
   }
 };
 
+// ===== AI 채점 결과 요약 데이터 (평가명:반 키) =====
+// 뷰어 전용 · 오너의 실제 AI 채점 결과를 그대로 노출 (읽기 전용)
+const SCORING_AI_SUMMARY_DATA = {
+  '(고) 자기주도 독서 활동:1-1': {
+    evalName:'(고) 자기주도 독서 활동',
+    className:'1학년 1반',
+    classKey:'1-1',
+    total:20, aiSuccess:9, aiFail:0, unscored:11,
+    totalDist:{
+      avg:51.1, maxScore:60,
+      buckets:[
+        { label:'35점', n:0 },
+        { label:'40점', n:0 },
+        { label:'45점', n:1 },
+        { label:'50점', n:3 },
+        { label:'55점', n:4 },
+        { label:'60점', n:1 }
+      ]
+    },
+    // 6개 채점기준 · 각 max 10점 · 급간 6/8/10
+    criteriaDist:[
+      { name:'책 선정 이유',            avg:8.9, max:10, buckets:[{label:'6점',n:1},{label:'8점',n:3},{label:'10점',n:5}] },
+      { name:'핵심 내용 요약',          avg:8.4, max:10, buckets:[{label:'6점',n:1},{label:'8점',n:5},{label:'10점',n:3}] },
+      { name:'생각의 변화',              avg:8.7, max:10, buckets:[{label:'6점',n:0},{label:'8점',n:5},{label:'10점',n:4}] },
+      { name:'진로·관심사와의 연계',    avg:8.2, max:10, buckets:[{label:'6점',n:2},{label:'8점',n:4},{label:'10점',n:3}] },
+      { name:'종합 평가·후속 탐구 계획', avg:8.4, max:10, buckets:[{label:'6점',n:1},{label:'8점',n:5},{label:'10점',n:3}] },
+      { name:'보고서 구성 및 양식',      avg:8.9, max:10, buckets:[{label:'6점',n:1},{label:'8점',n:3},{label:'10점',n:5}] }
+    ]
+  }
+};
+
+// 인라인 SVG 막대 그래프 · Figma 스펙 재현
+function renderBarChartSVG(buckets, opts) {
+  opts = opts || {};
+  const W = opts.width || 640;
+  const H = 156;
+  const padL = 8, padR = 8, padTop = 24, padBottom = 30;
+  const chartW = W - padL - padR;
+  const chartH = H - padTop - padBottom;
+  const maxN = Math.max.apply(null, buckets.map(b => b.n).concat([1]));
+  const slot = chartW / buckets.length;
+  const barW = Math.min(slot - 12, 44);
+  // 그리드 라인 (5줄)
+  let grid = '';
+  for (let i = 0; i <= 4; i++) {
+    const y = padTop + (chartH * i / 4);
+    grid += '<line x1="' + padL + '" y1="' + y + '" x2="' + (W - padR) + '" y2="' + y + '" stroke="#f1f3f5" stroke-width="1"/>';
+  }
+  // 막대 + 라벨
+  let bars = '';
+  buckets.forEach((b, i) => {
+    const cx = padL + slot * i + slot / 2;
+    const h = b.n > 0 ? Math.max((b.n / maxN) * chartH, 4) : 0;
+    const y = padTop + chartH - h;
+    const x = cx - barW / 2;
+    if (h > 0) {
+      bars += '<rect x="' + x + '" y="' + y + '" width="' + barW + '" height="' + h + '" fill="#365eef" rx="3" ry="3"/>';
+      bars += '<text x="' + cx + '" y="' + (y - 6) + '" text-anchor="middle" font-size="11" fill="#3b3f4c" font-weight="600">' + b.n + '명</text>';
+    }
+    bars += '<text x="' + cx + '" y="' + (H - 10) + '" text-anchor="middle" font-size="11" fill="#6d7381">' + b.label + '</text>';
+  });
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" width="100%" height="' + H + '" class="rvd-ai-svg">'
+    + grid + bars + '</svg>';
+}
+
+function renderScoringAiSummaryHTML(d) {
+  // 채점 요소별 그리드 (2열)
+  const critHtml = d.criteriaDist.map(c =>
+    '<div class="rvd-ai-chart-card">'
+    + '<div class="rvd-ai-chart-hd">'
+    +   '<span class="rvd-ai-chart-nm" title="' + c.name + '">' + c.name + '</span>'
+    +   '<span class="rvd-ai-avg">평균 ' + c.avg + '점</span>'
+    + '</div>'
+    + '<div class="rvd-ai-chart-body">' + renderBarChartSVG(c.buckets) + '</div>'
+    + '</div>'
+  ).join('');
+
+  return '<div class="rvd-hd">'
+    + '<div>'
+    +   '<div class="rvd-title">AI 채점 결과 요약</div>'
+    +   '<div class="rvd-sub">' + d.evalName + ' · ' + d.className + '</div>'
+    + '</div>'
+    + '<div class="rvd-badges">'
+    +   '<span class="rvd-badge readonly"><i data-lucide="eye"></i>읽기 전용</span>'
+    + '</div>'
+    + '</div>'
+
+    // 안내 알림
+    + '<div class="rvd-ai-alert">'
+    +   '<i data-lucide="wand-sparkles"></i>'
+    +   '<span>AI 채점 결과는 참고용 초안입니다. 선생님께서 직접 확인 후 수정해 주세요.</span>'
+    + '</div>'
+
+    // 채점 결과 요약 (3분할 카드)
+    + '<section class="rvd-sec">'
+    +   '<div class="rvd-sec-hd"><span class="rvd-sec-t">채점 결과 요약</span></div>'
+    +   '<div class="rvd-ai-summary">'
+    +     '<div class="rvd-ai-summary-cell"><div class="k">전체</div><div class="v">' + d.total + '명</div></div>'
+    +     '<div class="rvd-ai-summary-cell"><div class="k">AI 채점 성공</div><div class="v accent">' + d.aiSuccess + '명</div></div>'
+    +     '<div class="rvd-ai-summary-cell"><div class="k">AI 채점 실패</div><div class="v">' + d.aiFail + '명</div></div>'
+    +   '</div>'
+    +   '<div class="rvd-ai-note">※ 미채점 학생의 채점 결과는 점수 분포에 반영되지 않습니다.</div>'
+    + '</section>'
+
+    // 총점 점수 분포
+    + '<section class="rvd-sec">'
+    +   '<div class="rvd-sec-hd"><span class="rvd-sec-t">총점 점수 분포</span></div>'
+    +   '<div class="rvd-ai-chart-card">'
+    +     '<div class="rvd-ai-chart-hd">'
+    +       '<span class="rvd-ai-chart-nm">' + d.className + ' : ' + d.evalName + '</span>'
+    +       '<span class="rvd-ai-avg">평균 ' + d.totalDist.avg + '점</span>'
+    +     '</div>'
+    +     '<div class="rvd-ai-chart-body">' + renderBarChartSVG(d.totalDist.buckets, {width:720}) + '</div>'
+    +   '</div>'
+    + '</section>'
+
+    // 채점 요소별 점수 분포 (2열 그리드)
+    + '<section class="rvd-sec">'
+    +   '<div class="rvd-sec-hd"><span class="rvd-sec-t">채점 요소별 점수 분포</span><span class="rvd-sec-cnt">' + d.criteriaDist.length + '개</span></div>'
+    +   '<div class="rvd-ai-grid">' + critHtml + '</div>'
+    + '</section>';
+}
+
+// ===== 학급 채점 현황 데이터 (평가명:반) =====
+// 뷰어 전용 · Figma 스크린샷 기준 11행 (완료 7 · 미채점 2 · 확인 필요 1 · 진행 중 1)
+// stStatus: 'done' | 'unscored' | 'warn'
+const SCORING_CLASS_STATUS_DATA = {
+  '(고) 자기주도 독서 활동:1-1': {
+    evalName:'(고) 자기주도 독서 활동',
+    className:'1학년 1반',
+    classKey:'1-1',
+    students:[
+      { no:'10101', name:'김일일', aiStatus:'채점 완료', aiScore:54, finalScore:54, stStatus:'done' },
+      { no:'10102', name:'김이이', aiStatus:'채점 완료', aiScore:52, finalScore:52, stStatus:'done' },
+      { no:'10103', name:'김삼삼', aiStatus:'채점 완료', aiScore:52, finalScore:52, stStatus:'done' },
+      { no:'10104', name:'김사사', aiStatus:'채점 중',   aiScore:48, finalScore:48, stStatus:'done' },
+      { no:'10105', name:'김오오', aiStatus:'채점 완료', aiScore:56, finalScore:56, stStatus:'done' },
+      { no:'10106', name:'김육육', aiStatus:'채점 완료', aiScore:50, finalScore:50, stStatus:'done' },
+      { no:'10107', name:'김칠칠', aiStatus:'채점 중',   aiScore:46, finalScore:46, stStatus:'done' },
+      { no:'10108', name:'김팔팔', aiStatus:null,        aiScore:null, finalScore:null, stStatus:'unscored' },
+      { no:'10109', name:'김구구', aiStatus:null,        aiScore:null, finalScore:null, stStatus:'unscored' },
+      { no:'10110', name:'김열열', aiStatus:'채점 중',   aiScore:40, finalScore:40, stStatus:'done' },
+      { no:'10111', name:'김하나', aiStatus:'채점 완료', aiScore:0,  finalScore:null, stStatus:'warn' }
+    ]
+  }
+};
+
+function renderClassStatusHTML(d) {
+  const stBadge = { done:'완료', unscored:'미채점', warn:'확인 필요' };
+  const stCls   = { done:'hw-b-done', unscored:'hw-b-none', warn:'hw-b-closed' };
+  const rowsHtml = d.students.map(s => {
+    const nz = v => (v == null ? '-' : v);
+    const finalCell = (s.finalScore == null) ? '-' : ('<b>' + s.finalScore + '</b>');
+    const aiScoreCell = (s.aiScore == null) ? '-' : ('(' + s.aiScore + ')');
+    const detailKey = d.evalName + ':' + d.classKey + ':' + s.no;
+    const detailBtn = (s.stStatus === 'unscored')
+      ? '<button class="hw-link" disabled style="opacity:.4;cursor:not-allowed"><i data-lucide="user"></i>상세 보기</button>'
+      : '<button class="hw-link" onclick="rvOpenDetail(\'grading-student\', \'' + detailKey + '\')"><i data-lucide="user"></i>상세 보기</button>';
+    return '<tr>'
+      + '<td>' + s.no + '</td>'
+      + '<td>' + s.name + '</td>'
+      + '<td>' + nz(s.aiStatus) + '</td>'
+      + '<td>' + aiScoreCell + '</td>'
+      + '<td>' + finalCell + '</td>'
+      + '<td><span class="hw-badge ' + stCls[s.stStatus] + '">' + stBadge[s.stStatus] + '</span></td>'
+      + '<td>' + detailBtn + '</td>'
+      + '</tr>';
+  }).join('');
+
+  return '<div class="rvd-hd">'
+    + '<div>'
+    +   '<div class="rvd-title">' + d.className + ' 채점 현황</div>'
+    +   '<div class="rvd-sub">' + d.className + '의 AI 채점 결과와 최종 점수를 확인할 수 있어요. · ' + d.evalName + '</div>'
+    + '</div>'
+    + '<div class="rvd-badges">'
+    +   '<span class="rvd-badge readonly"><i data-lucide="eye"></i>읽기 전용</span>'
+    + '</div>'
+    + '</div>'
+    + '<section class="rvd-sec">'
+    +   '<div class="rvd-sec-hd">'
+    +     '<span class="rvd-sec-t">학생 채점 현황</span>'
+    +     '<span class="rvd-sec-cnt">' + d.students.length + '명</span>'
+    +   '</div>'
+    +   '<div class="rvd-cs-tbl-wrap">'
+    +     '<table class="rvd-cs-tbl">'
+    +       '<thead><tr>'
+    +         '<th>학번</th><th>이름</th><th>AI 채점 결과</th><th>AI 점수</th><th>최종 점수</th><th>채점 상태</th><th>학생 채점</th>'
+    +       '</tr></thead>'
+    +       '<tbody>' + rowsHtml + '</tbody>'
+    +     '</table>'
+    +   '</div>'
+    + '</section>';
+}
+
+// ===== 학생별 채점 상세 데이터 =====
+// key = 'evalName:classKey:studentNo'
+// criteria[i]: options 배열 · aiScore(회색 pill) · finalScore(진파 pill)
+const STUDENT_SCORING_DETAIL_DATA = {
+  '(고) 자기주도 독서 활동:1-1:10101': {
+    evalName:'(고) 자기주도 독서 활동', classKey:'1-1', no:'10101', name:'김일일',
+    book:'『파친코』(이민진)',
+    criteria:[
+      { name:'책 선정 이유', options:[10,8,6], aiScore:10, finalScore:10,
+        rationale:'『파친코』를 선택한 계기를 "조부모님이 겪은 재일교포 역사에 대한 관심"으로 구체적으로 서술함. 작품 주제(정체성·이주)와 자신의 진로(국제학) 관련성이 명확히 드러나 선택 이유의 타당성이 분명함.' },
+      { name:'핵심 내용 요약', options:[10,8,6], aiScore:10, finalScore:8,
+        rationale:'선자, 요셉, 노아, 모자수 3대에 걸친 서사를 시간순으로 요약함. 다만 도쿄 이주 이후 1930~40년대 재일한인 정책·사회적 배경 설명이 다소 축약되어 있어 8점으로 조정.' },
+      { name:'생각의 변화', options:[10,8,6], aiScore:8, finalScore:10,
+        rationale:'독서 전 "재일교포 = 사회적 편견의 대상"이라는 단편적 인식에서, 독서 후 "역사적 맥락 속 정체성 형성 과정"으로 확장된 변화를 구체 사례와 함께 서술함. 근거가 충분해 10점으로 상향.' },
+      { name:'진로·관심사와의 연계', options:[10,8,6], aiScore:8, finalScore:8,
+        rationale:'국제학 관심과 연계하여 이주민 정책 문제의식을 제시함. 다만 구체적 진학 계획·향후 학습 로드맵과의 연결이 다소 일반적임.' },
+      { name:'종합 평가·후속 탐구 계획', options:[10,8,6], aiScore:8, finalScore:8,
+        rationale:'『파친코』의 서사 구조가 세대 간 정체성 계승을 잘 드러낸다는 관점에서 종합 평가. 후속 탐구로 "한국계 미국인 문학과의 비교"를 제시했으나 구체적 방법론 서술은 다소 부족.' },
+      { name:'보고서 구성 및 양식', options:[10,8,6], aiScore:10, finalScore:10,
+        rationale:'도입-전개-정리 구조가 명확하고 분량 기준 준수. 맞춤법·문장 표현 정확하며 어휘 선택이 적절함.' }
+    ],
+    aiFeedback:{
+      assignment:'『파친코』를 통해 세대에 걸친 정체성 변화를 성찰한 점이 인상적입니다.\n\n[잘한 점]\n- 조부모 세대의 역사적 경험을 자신의 진로 관심과 연결한 관점이 신선함\n- 3대(선자-노아-모자수)에 걸친 서사를 시간순으로 명확히 정리함\n- 독서 전후 인식 변화를 구체적 사례와 함께 서술한 부분이 설득력 있음\n\n[보완할 점]\n- 도쿄 이주 이후 사회적 배경(1930~40년대 재일한인 정책)에 대한 서술이 축약되어 있어 보완 필요\n- 후속 탐구 계획에서 "한국계 미국인 문학"과의 비교 방법이 구체화되면 좋겠음',
+      rubric:'채점기준별 강점/개선점을 정리했습니다.\n\n[책 선정 이유 · 생각의 변화 — 10점]\n진로 연계 관점이 뚜렷하고 사례가 풍부함.\n\n[핵심 내용 요약 — 8점]\n3대 서사 구조는 잘 잡았으나 시대적 배경 설명이 짧아 8점 수준.\n\n[진로 연계 · 종합 평가 — 8점]\n관심 분야와의 관련성은 제시되었으나 구체적 진학·직업 계획과의 연결 밀도가 아쉬움.\n\n[보고서 구성 및 양식 — 10점]\n형식·분량·맞춤법 모두 준수함.'
+    },
+    teacherFeedback:'『파친코』를 자신의 진로 관심(국제학·이주민 정책)과 연결한 관점이 특히 좋았어요. 3대에 걸친 서사를 놓치지 않고 정리한 것도 훌륭합니다. 다음 독서에서는 소설 속 사회·역사적 배경을 조금 더 조사해서 근거로 활용해보면 서술이 한결 두터워질 거예요. 후속 탐구 주제로 제시한 "한국계 미국인 문학과의 비교"도 방법론을 구체화해서 실제로 진행해보길 기대합니다.'
+  },
+  '(고) 자기주도 독서 활동:1-1:10102': {
+    evalName:'(고) 자기주도 독서 활동', classKey:'1-1', no:'10102', name:'김이이',
+    book:'『데미안』(헤르만 헤세)',
+    criteria:[
+      { name:'책 선정 이유', options:[10,8,6], aiScore:10, finalScore:10,
+        rationale:'"성장기 자아 탐색"이라는 관심에서 출발해 『데미안』을 선택한 계기를 구체적으로 서술함.' },
+      { name:'핵심 내용 요약', options:[10,8,6], aiScore:8, finalScore:10,
+        rationale:'싱클레어의 이원적 세계(밝음/어둠) 인식과 데미안·에바 부인을 통한 자아 통합 과정을 논리적으로 요약함. 상향 조정.' },
+      { name:'생각의 변화', options:[10,8,6], aiScore:10, finalScore:8,
+        rationale:'독서 전 "성장 = 부모·사회의 기대에 부응"이라는 인식에서 "내면의 목소리에 귀 기울이는 과정"으로 변화. 사례가 다소 추상적이어서 8점.' },
+      { name:'진로·관심사와의 연계', options:[10,8,6], aiScore:8, finalScore:8,
+        rationale:'심리학 관심과 연계하여 청소년 정체성 형성 이론에 대한 호기심을 제시함.' },
+      { name:'종합 평가·후속 탐구 계획', options:[10,8,6], aiScore:8, finalScore:8,
+        rationale:'후속 탐구로 융의 개성화 이론 학습을 제시. 방향은 좋으나 구체적 실행 계획이 부족.' },
+      { name:'보고서 구성 및 양식', options:[10,8,6], aiScore:8, finalScore:8,
+        rationale:'전반적으로 구조가 명확하나 일부 문장에서 맞춤법 오류가 있음.' }
+    ],
+    aiFeedback:{
+      assignment:'『데미안』을 자신의 성장 과정과 연결한 통찰이 돋보입니다.\n\n[잘한 점]\n- 이원적 세계관에 대한 이해를 자신의 청소년기 경험과 연결함\n- 심리학이라는 진로 관심과 자연스럽게 연계함\n\n[보완할 점]\n- 생각의 변화 서술이 다소 추상적이어서 구체적 사례가 더 필요함\n- 후속 탐구 계획의 실행 방법이 구체화되면 좋겠음',
+      rubric:'[책 선정 이유·핵심 내용 요약 — 10점]\n선정 이유와 서사 이해도 모두 우수함.\n\n[생각의 변화·진로 연계·종합 평가·보고서 구성 — 8점]\n관점은 좋으나 구체성이 다소 부족한 편.'
+    },
+    teacherFeedback:'헤세의 상징적 세계관을 잘 이해하고 자신의 성장과 연결한 시도가 좋았습니다. 심리학 진로와 연계한 접근도 자연스러웠어요. 다음에는 감상을 뒷받침할 구체적인 장면·인용을 더 활용해보세요.'
+  },
+  '(고) 자기주도 독서 활동:1-1:10103': {
+    evalName:'(고) 자기주도 독서 활동', classKey:'1-1', no:'10103', name:'김삼삼',
+    book:'『아몬드』(손원평)',
+    criteria:[
+      { name:'책 선정 이유', options:[10,8,6], aiScore:8, finalScore:10,
+        rationale:'"타인의 감정을 이해한다는 것"에 대한 관심에서 출발한 선정 이유가 진솔하게 서술됨. 상향.' },
+      { name:'핵심 내용 요약', options:[10,8,6], aiScore:10, finalScore:8,
+        rationale:'주인공 윤재의 감정 인식 발달 과정을 요약함. 다만 후반부 곤이와의 관계 변화가 다소 압축됨.' },
+      { name:'생각의 변화', options:[10,8,6], aiScore:8, finalScore:8,
+        rationale:'"감정 표현이 어색한 사람"에 대한 인식 변화를 서술. 사례가 충분히 구체적임.' },
+      { name:'진로·관심사와의 연계', options:[10,8,6], aiScore:10, finalScore:8,
+        rationale:'교육학 관심과 연계했으나 실제 교육 현장에서의 적용 방안 서술이 다소 일반적.' },
+      { name:'종합 평가·후속 탐구 계획', options:[10,8,6], aiScore:8, finalScore:10,
+        rationale:'후속 탐구로 "감정 발달 심리학 문헌 조사"를 제시하며 구체적 참고 도서까지 언급. 상향.' },
+      { name:'보고서 구성 및 양식', options:[10,8,6], aiScore:8, finalScore:8,
+        rationale:'구조는 무난하나 인용 부분과 자신의 견해 구분이 부분적으로 모호함.' }
+    ],
+    aiFeedback:{
+      assignment:'『아몬드』를 자신의 진로(교육학)와 진솔하게 연결한 감상문입니다.\n\n[잘한 점]\n- 타인 이해에 대한 관심에서 출발한 선정 이유가 진솔함\n- 후속 탐구 계획에서 구체적 참고 문헌을 제시한 점이 우수함\n\n[보완할 점]\n- 교육 현장 적용 방안이 다소 일반론에 머무름\n- 소설 후반부(곤이와의 관계) 요약이 압축되어 아쉬움',
+      rubric:'[책 선정 이유·종합 평가 — 10점]\n선정 이유와 후속 탐구 모두 구체적임.\n\n[핵심 요약·생각의 변화·진로 연계·보고서 구성 — 8점]\n전반적으로 좋으나 세부 구체성 보완 여지 있음.'
+    },
+    teacherFeedback:'감정 인식이라는 소설의 주제를 자신의 진로(교육학)와 연결한 접근이 인상적이었습니다. 특히 후속 탐구로 감정 발달 관련 문헌까지 제시한 것이 훌륭해요. 다음에는 실제 교육 현장 사례를 조사해서 근거로 추가해보면 서술이 더 설득력 있어집니다.'
+  },
+  '(고) 자기주도 독서 활동:1-1:10111': {
+    evalName:'(고) 자기주도 독서 활동', classKey:'1-1', no:'10111', name:'김하나',
+    book:'—',
+    warnNotice:'제출된 파일에서 텍스트를 인식하기 어려워 AI 채점이 정상적으로 진행되지 않았습니다. 학생 원본 확인 후 선생님이 직접 채점해 주세요.',
+    criteria:[
+      { name:'책 선정 이유',            options:[10,8,6], aiScore:0, finalScore:null, rationale:'AI 채점 실패' },
+      { name:'핵심 내용 요약',          options:[10,8,6], aiScore:0, finalScore:null, rationale:'AI 채점 실패' },
+      { name:'생각의 변화',              options:[10,8,6], aiScore:0, finalScore:null, rationale:'AI 채점 실패' },
+      { name:'진로·관심사와의 연계',    options:[10,8,6], aiScore:0, finalScore:null, rationale:'AI 채점 실패' },
+      { name:'종합 평가·후속 탐구 계획', options:[10,8,6], aiScore:0, finalScore:null, rationale:'AI 채점 실패' },
+      { name:'보고서 구성 및 양식',      options:[10,8,6], aiScore:0, finalScore:null, rationale:'AI 채점 실패' }
+    ],
+    aiFeedback:{
+      assignment:'제출된 파일에서 텍스트 인식이 어려워 피드백을 생성하지 못했습니다.',
+      rubric:'제출된 파일에서 텍스트 인식이 어려워 피드백을 생성하지 못했습니다.'
+    },
+    teacherFeedback:'(아직 작성되지 않았어요.)'
+  }
+};
+
+// 학생별 상세 뷰 현재 키 (네비게이션용)
+window._rvSdCurrent = null;
+
+// 미채점·상세데이터 없음 → 자동 스텁 생성
+function _rvSdMakeStub(studentRow, classData) {
+  return {
+    evalName: classData.evalName, classKey: classData.classKey,
+    no: studentRow.no, name: studentRow.name, book:'—',
+    warnNotice: studentRow.stStatus === 'unscored'
+      ? '아직 AI 채점이 실행되지 않았습니다.'
+      : '상세 데이터가 준비 중입니다.',
+    criteria: [],
+    aiFeedback: { assignment:'(피드백이 아직 생성되지 않았어요.)', rubric:'(피드백이 아직 생성되지 않았어요.)' },
+    teacherFeedback: '(아직 작성되지 않았어요.)'
+  };
+}
+
+function renderStudentDetailHTML(d, classData) {
+  // 학생 드롭다운 옵션 (전체 11명 · 미채점은 라벨에 표시)
+  const dropOpts = classData.students.map(s => {
+    const suffix = s.stStatus === 'unscored' ? ' (미채점)' :
+                   s.stStatus === 'warn' ? ' (확인 필요)' : '';
+    const key = d.classKey.split(':').length > 1 ? d.classKey : (d.evalName + ':' + d.classKey);
+    const optKey = d.evalName + ':' + d.classKey + ':' + s.no;
+    const currentKey = d.evalName + ':' + d.classKey + ':' + d.no;
+    const sel = (s.no === d.no) ? ' selected' : '';
+    return '<option value="' + optKey + '"' + sel + '>' + s.no + ' ' + s.name + suffix + '</option>';
+  }).join('');
+
+  // 이전/다음 학생 판단
+  const idx = classData.students.findIndex(s => s.no === d.no);
+  const hasPrev = idx > 0;
+  const hasNext = idx >= 0 && idx < classData.students.length - 1;
+
+  // 채점기준별 점수 카드
+  const critHtml = d.criteria.length === 0 ? '' : d.criteria.map((c, i) => {
+    const pillsHtml = c.options.map(v => {
+      const isAi = (v === c.aiScore);
+      const isFinal = (v === c.finalScore);
+      const cls = isAi && isFinal ? 'rvd-sd-pill both' :
+                  isFinal ? 'rvd-sd-pill final' :
+                  isAi ? 'rvd-sd-pill ai' : 'rvd-sd-pill';
+      const lbl = isAi && isFinal ? 'AI · 최종' :
+                  isFinal ? '최종' :
+                  isAi ? 'AI 초안' : '';
+      return '<div class="rvd-sd-pill-item">'
+        + '<div class="' + cls + '">' + v + '점</div>'
+        + '<div class="rvd-sd-pill-lbl">' + lbl + '</div>'
+        + '</div>';
+    }).join('');
+    return '<div class="rvd-sd-crit">'
+      + '<div class="rvd-sd-crit-nm">' + (i+1) + ') ' + c.name + '</div>'
+      + '<div class="rvd-sd-pills">' + pillsHtml + '</div>'
+      + '<div class="rvd-sd-rationale">' + (c.rationale || '(채점 근거가 작성되지 않았어요.)') + '</div>'
+      + '</div>';
+  }).join('');
+
+  const warnBanner = d.warnNotice
+    ? '<div class="rvd-sd-warn"><i data-lucide="triangle-alert"></i><span>' + d.warnNotice + '</span></div>'
+    : '';
+
+  // AI 피드백 텍스트 · \n → <br>
+  const nl2br = t => (t || '').split('\n').map(x => x || '&nbsp;').join('<br>');
+
+  // 총점·최대점 계산 + 등급
+  const _totalCalc = (function(){
+    let total = 0, hasNull = false, max = 0;
+    d.criteria.forEach(function(c){
+      if (c.finalScore == null) hasNull = true;
+      else total += c.finalScore;
+      if (c.options && c.options.length) max += Math.max.apply(null, c.options);
+    });
+    return { total: hasNull ? null : total, max: max };
+  })();
+  const _grade = (function(t, m){
+    if (t == null || m === 0) return '–';
+    const pct = t / m;
+    if (pct >= 0.9) return 'A';
+    if (pct >= 0.8) return 'B';
+    if (pct >= 0.7) return 'C';
+    if (pct >= 0.6) return 'D';
+    return 'E';
+  })(_totalCalc.total, _totalCalc.max);
+  const totalBadgeHtml = (d.criteria.length === 0)
+    ? ''
+    : '<span class="rvd-sd-total-badge">총점 <b>' + (_totalCalc.total == null ? '–' : _totalCalc.total) + '</b> / ' + _totalCalc.max + ' 점 <b class="grd">(' + _grade + ')</b></span>';
+
+  // 채점근거 같이보기 체크박스 (criteria가 있을 때만)
+  const rationaleToggleHtml = (d.criteria.length === 0)
+    ? ''
+    : '<label class="rvd-sd-rationale-toggle"><input type="checkbox" checked onchange="rvSdToggleRationale(this)"><span class="rvd-sd-cb-dot"></span>채점근거 같이보기</label>';
+
+  // 과제물 분석 AI · 채점요소별 서브뷰 (미리 계산해서 문자열 하나로)
+  const aiByCritHtml = (d.criteria.length === 0)
+    ? '<div class="rvd-sd-empty" style="padding:20px 0">채점 결과가 없어 요소별 피드백을 표시할 수 없어요.</div>'
+    : d.criteria.map(function(c, i){
+        return '<div class="rvd-sd-ai-crit">'
+          + '<div class="rvd-sd-ai-crit-nm">' + (i+1) + ') ' + c.name + '</div>'
+          + '<div class="rvd-sd-ai-crit-txt">' + (c.rationale || '피드백이 없어요.') + '</div>'
+          + '</div>';
+      }).join('');
+
+  return '<div class="rvd-hd">'
+    + '<div>'
+    +   '<div class="rvd-title">' + d.no + ' ' + d.name + ' · 채점 상세</div>'
+    +   '<div class="rvd-sub">' + d.evalName + ' · ' + classData.className + (d.book && d.book !== '—' ? ' · ' + d.book : '') + '</div>'
+    + '</div>'
+    + '<div class="rvd-badges">'
+    +   '<span class="rvd-badge readonly"><i data-lucide="eye"></i>읽기 전용</span>'
+    + '</div>'
+    + '</div>'
+
+    // 상단 툴바 · 드롭다운 + 이전/다음
+    + '<div class="rvd-sd-toolbar">'
+    +   '<select class="rvd-sd-select" onchange="rvSdJumpStudent(this)">' + dropOpts + '</select>'
+    +   '<div class="rvd-sd-nav">'
+    +     '<button class="btn-outline btn-sm" ' + (hasPrev ? 'onclick="rvSdNav(-1)"' : 'disabled') + '><i data-lucide="chevron-left"></i>이전 학생</button>'
+    +     '<button class="btn-outline btn-sm" ' + (hasNext ? 'onclick="rvSdNav(1)"' : 'disabled') + '>다음 학생<i data-lucide="chevron-right"></i></button>'
+    +   '</div>'
+    + '</div>'
+
+    + warnBanner
+
+    // 좌우 스플릿
+    + '<div class="rvd-sd-split">'
+    // 좌 · 학생 과제물 placeholder
+    +   '<div class="rvd-sd-left">'
+    +     '<div class="rvd-sd-left-ph">'
+    +       '<i data-lucide="file-text"></i>'
+    +       '<div class="rvd-sd-left-t">학생 과제물</div>'
+    +       '<div class="rvd-sd-left-desc">' + d.name + ' 학생의 제출 파일<br>(뷰어 목업 · 실제 파일은 표시되지 않습니다)</div>'
+    +     '</div>'
+    +   '</div>'
+
+    // 우 · 채점 결과 + AI 피드백 + 선생님 피드백
+    +   '<div class="rvd-sd-right">'
+    // 점수 및 채점근거
+    +     '<section class="rvd-sec rvd-sd-scoring-sec">'
+    +       '<div class="rvd-sec-hd">'
+    +         '<i data-lucide="circle-check-big" style="width:16px;height:16px;color:#365eef"></i>'
+    +         '<span class="rvd-sec-t">점수 및 채점근거</span>'
+    +         totalBadgeHtml
+    +       '</div>'
+    +       rationaleToggleHtml
+    +       (critHtml || '<div class="rvd-sd-empty">채점 결과가 없습니다.</div>')
+    +     '</section>'
+
+    // AI 피드백 (탭)
+    +     '<section class="rvd-sec rvd-sd-ai-tabs-wrap">'
+    +       '<div class="rvd-sec-hd"><i data-lucide="bot" style="width:16px;height:16px;color:#365eef"></i><span class="rvd-sec-t">AI 피드백</span></div>'
+    +       '<div class="rvd-sd-ai-tabs">'
+    +         '<button class="rvd-sd-ai-tab active" onclick="rvSdSwitchAiTab(this, \'assignment\')">과제물 분석 AI</button>'
+    +         '<button class="rvd-sd-ai-tab" onclick="rvSdSwitchAiTab(this, \'rubric\')">루브릭 기반 AI</button>'
+    +       '</div>'
+    // 과제물 분석 AI · 하위 라디오 (잘한 점·보완할 점 / 채점요소별 보기)
+    +       '<div class="rvd-sd-ai-content" data-tab="assignment">'
+    +         '<div class="rvd-sd-ai-sub-hd">'
+    +           '<span class="rvd-sd-ai-sub-t">피드백 초안</span>'
+    +           '<div class="rvd-sd-ai-sub-radio">'
+    +             '<label class="rvd-sd-radio active"><input type="radio" name="rvSdAiSub_' + d.no + '" value="proscons" checked onchange="rvSdSwitchAiSubview(this, \'proscons\')"><span class="rvd-sd-radio-dot"></span>잘한 점·보완할 점</label>'
+    +             '<label class="rvd-sd-radio"><input type="radio" name="rvSdAiSub_' + d.no + '" value="bycrit" onchange="rvSdSwitchAiSubview(this, \'bycrit\')"><span class="rvd-sd-radio-dot"></span>채점요소별 보기</label>'
+    +           '</div>'
+    +         '</div>'
+    +         '<div class="rvd-sd-ai-sub" data-sub="proscons">' + nl2br(d.aiFeedback.assignment) + '</div>'
+    +         '<div class="rvd-sd-ai-sub" data-sub="bycrit" style="display:none">' + aiByCritHtml + '</div>'
+    +       '</div>'
+    +       '<div class="rvd-sd-ai-content" data-tab="rubric" style="display:none">' + nl2br(d.aiFeedback.rubric) + '</div>'
+    +     '</section>'
+
+    // 선생님 직접 피드백
+    +     '<section class="rvd-sec">'
+    +       '<div class="rvd-sec-hd"><i data-lucide="pen-line" style="width:16px;height:16px;color:#365eef"></i><span class="rvd-sec-t">선생님 직접 피드백</span></div>'
+    +       '<div class="rvd-sd-teacher">' + nl2br(d.teacherFeedback) + '</div>'
+    +     '</section>'
+    +   '</div>'
+    + '</div>';
+}
+
+// ===== 학생 상세 · 네비게이션 헬퍼 =====
+function rvSdJumpStudent(select) {
+  rvOpenDetail('grading-student', select.value);
+}
+function rvSdNav(dir) {
+  const key = window._rvSdCurrent;
+  if (!key) return;
+  const parts = key.split(':');
+  const eval_ = parts[0], classKey = parts[1], no = parts[2];
+  const cls = SCORING_CLASS_STATUS_DATA[eval_ + ':' + classKey];
+  if (!cls) return;
+  const idx = cls.students.findIndex(s => s.no === no);
+  const nextIdx = idx + dir;
+  if (nextIdx < 0 || nextIdx >= cls.students.length) return;
+  const nextKey = eval_ + ':' + classKey + ':' + cls.students[nextIdx].no;
+  rvOpenDetail('grading-student', nextKey);
+}
+function rvSdSwitchAiTab(btn, which) {
+  const wrap = btn.closest('.rvd-sd-ai-tabs-wrap');
+  if (!wrap) return;
+  wrap.querySelectorAll('.rvd-sd-ai-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  wrap.querySelectorAll('.rvd-sd-ai-content').forEach(c => {
+    c.style.display = (c.getAttribute('data-tab') === which) ? '' : 'none';
+  });
+}
+// 채점근거 같이보기 체크박스 토글
+function rvSdToggleRationale(cb) {
+  const sec = cb.closest('.rvd-sd-scoring-sec');
+  if (!sec) return;
+  sec.classList.toggle('hide-rationale', !cb.checked);
+}
+// 과제물 분석 AI 내부 서브 라디오 (잘한 점·보완할 점 / 채점요소별 보기)
+function rvSdSwitchAiSubview(radio, which) {
+  const scope = radio.closest('.rvd-sd-ai-content');
+  if (!scope) return;
+  scope.querySelectorAll('.rvd-sd-radio').forEach(l => l.classList.remove('active'));
+  radio.closest('.rvd-sd-radio').classList.add('active');
+  scope.querySelectorAll('.rvd-sd-ai-sub').forEach(el => {
+    el.style.display = (el.getAttribute('data-sub') === which) ? '' : 'none';
+  });
+}
+
+// ===== 세특 · 학급별 학생 세특 데이터 =====
+// 뷰어 전용 · 오너의 선생님 직접 작성 결과 노출 (읽기 전용)
+const SETEUK_CLASS_DATA = {
+  '1학년 1반': {
+    className:'1학년 1반', classKey:'1-1',
+    students:[
+      { no:'10101', name:'김일일', total:54, teacherWrote:'『파친코』(이민진)를 통해 재일교포 3대의 정체성 형성 과정을 자신의 진로 관심인 국제학·이주민 정책과 연계하여 서술함. 조부모 세대의 역사적 경험을 논거로 삼아 사회사와 개인사의 접점을 분석하는 관점이 돋보이며, 후속 탐구 주제로 한국계 미국인 문학과의 비교를 제시하여 확장적 사고 태도를 보여줌. 도쿄 이주 이후 시대적 배경 서술이 다소 축약된 점은 아쉬우나 전체 서사 구조를 정합적으로 파악한 점에서 자기주도적 독서 역량이 우수함.' },
+      { no:'10102', name:'김이이', total:52, teacherWrote:'『데미안』(헤르만 헤세)을 통해 자아 탐색이라는 청소년기 과제에 진지하게 접근함. 이원적 세계관을 자신의 성장 경험과 연결하여 서술한 점이 인상적이며, 심리학 진로 관심과의 연계 속에서 융의 개성화 이론에 대한 심화 학습 계획을 제시함. 상징적 서사에 대한 이해와 자기 반성적 태도가 균형 있게 드러남.' },
+      { no:'10103', name:'김삼삼', total:52, teacherWrote:'『아몬드』(손원평)를 읽고 감정 인식이라는 문학적 주제를 자신의 진로(교육학)와 진솔하게 연결함. 후속 탐구로 감정 발달 심리학 관련 문헌 조사 계획을 구체적으로 제시하여 학습 지향성을 잘 드러내며, 특히 곤이와 윤재의 관계 변화에 대한 서술에서 타인 이해의 관점 전환을 논리적으로 정리함.' },
+      { no:'10104', name:'김사사', total:48, teacherWrote:'『82년생 김지영』(조남주)을 통해 세대별 여성 서사의 사회적 맥락을 정리하고, 자신의 진로(사회복지) 관심과 연계함. 통계 자료와 소설 서사를 병렬적으로 활용하여 문제의식을 뒷받침한 점이 우수하나, 대안 제시 부분이 다소 원론적임.' },
+      { no:'10105', name:'김오오', total:56, teacherWrote:'『사피엔스』(유발 하라리)를 통해 인지 혁명·농업 혁명·과학 혁명의 흐름을 자기 언어로 재구성함. 특히 "허구의 힘"이라는 개념을 자신의 진로 관심(경제학) 속 화폐·기업 개념으로 확장하여 설명한 점이 인상적이며, 방대한 시간축을 요약하면서도 핵심 개념을 놓치지 않는 정리력이 돋보임.' },
+      { no:'10106', name:'김육육', total:50, teacherWrote:'『미움받을 용기』(기시미 이치로)를 읽고 아들러 심리학의 핵심 개념을 자신의 대인관계 고민과 연결하여 서술함. "과제의 분리" 개념을 실제 사례에 적용해 본 시도가 진솔하며, 심리학 문헌에 대한 후속 학습 의지를 구체적 도서 목록과 함께 제시함.' },
+      { no:'10107', name:'김칠칠', total:46, teacherWrote:'『총 균 쇠』(재레드 다이아몬드)를 통해 문명의 발전 격차를 지리·환경 결정론 관점에서 정리함. 방대한 내용을 대륙별로 구조화한 시도는 좋으나 저자의 관점에 대한 비판적 검토가 다소 부족한 편임. 후속 탐구로 대안적 역사관 학습을 제시.' },
+      { no:'10108', name:'김팔팔', total:null, teacherWrote:'『정의란 무엇인가』(마이클 샌델)를 통해 공리주의·자유주의·공동체주의의 대비를 정리함. 트롤리 딜레마 사례를 중심으로 각 입장의 논리 구조를 명료하게 설명하며, 자신의 진로(법학) 관심과 연결하여 정의 원리의 실제 적용 문제를 고민함. 사고 깊이가 인상적임.' },
+      { no:'10109', name:'김구구', total:null, teacherWrote:'『코스모스』(칼 세이건)를 통해 우주와 인간의 관계에 대한 관점 확장을 서술함. 과학적 사실과 인문학적 성찰을 균형 있게 다루려는 시도가 돋보이며, 진로 관심(천문학·과학교육) 속에서 대중과학의 사회적 역할에 대한 문제의식을 제시함.' },
+      { no:'10110', name:'김열열', total:40, teacherWrote:'『이기적 유전자』(리처드 도킨스)를 읽고 유전자 중심 진화론의 핵심 개념을 정리함. "밈" 개념을 문화 확산 사례에 적용해 본 시도가 흥미로우나, 저자의 결정론적 관점에 대한 비판적 성찰이 다소 얕음. 진로(생명공학) 연계 서술은 자연스러움.' },
+      { no:'10111', name:'김하나', total:null, teacherWrote:'『부러진 사다리』(키스 페인)를 통해 경제적 불평등이 개인 심리에 미치는 영향을 정리함. 통계와 심리학 실험 결과를 결합한 저자의 접근에 대해 자신의 견해를 서술하며, 사회학 진로 관심과 연계하여 후속 학습 계획을 제시함.' },
+      { no:'10112', name:'김열둘', total:50, teacherWrote:'『팩트풀니스』(한스 로슬링)를 통해 세계에 대한 통념적 인식과 실제 데이터의 차이를 확인함. 10가지 본능적 오해에 대한 저자의 설명을 자신의 사례에 적용해 본 시도가 진솔하며, 데이터 리터러시의 중요성을 진로 관심(통계학)과 연계하여 서술함.' },
+      { no:'10113', name:'김열셋', total:48, teacherWrote:'『이방인』(알베르 카뮈)을 통해 부조리 철학의 핵심 개념을 정리함. 뫼르소의 무관심한 태도를 실존주의 관점에서 해석하려는 시도가 돋보이나, 카뮈의 원 텍스트와 후대 해석의 차이에 대한 인식은 다소 부족함.' },
+      { no:'10114', name:'김열넷', total:44, teacherWrote:'『죄와 벌』(도스토옙스키)을 통해 죄의식과 구원의 문제를 라스콜니코프의 심리 변화 중심으로 정리함. 인물의 내면 서술에 대한 이해도가 우수하며, 자신의 진로(윤리학) 관심 속에서 도덕적 판단의 사회적·심리적 조건을 고민함.' },
+      { no:'10115', name:'김열다섯', total:52, teacherWrote:'『1984』(조지 오웰)를 통해 전체주의 사회의 통제 메커니즘을 언어·감시·역사 왜곡의 관점에서 분석함. 현대 디지털 환경과의 비교를 시도한 점이 인상적이며, 진로 관심(정치학)과 연계하여 민주주의 제도의 취약점에 대한 문제의식을 제시함.' },
+      { no:'10116', name:'김열여섯', total:38, teacherWrote:'『어린 왕자』(생텍쥐페리)를 재독하며 어릴 때와 다른 관점의 변화를 서술함. 어른의 관점에서 각 별의 인물이 상징하는 바를 다시 해석한 시도가 진솔하나, 문학적 상징에 대한 심화 분석은 아쉬움.' },
+      { no:'10117', name:'김열일곱', total:46, teacherWrote:'『노인과 바다』(헤밍웨이)를 통해 인간의 존엄과 자연 앞의 겸손이라는 주제를 정리함. 산티아고의 사투를 자신의 학습 태도와 연결하려는 시도가 진솔하며, 헤밍웨이의 간결한 문체 특징을 사례와 함께 설명함.' },
+      { no:'10118', name:'김열여덟', total:54, teacherWrote:'『위대한 개츠비』(피츠제럴드)를 통해 아메리칸 드림의 허구성과 계급 문제를 정리함. 초록 불빛의 상징성 분석이 심도 있으며, 자신의 진로(경영학) 관심과 연계하여 성공의 의미에 대한 사회학적 성찰을 제시함.' },
+      { no:'10119', name:'김열아홉', total:42, teacherWrote:'『총 균 쇠』(재레드 다이아몬드)를 통해 문명 발달의 지리적 요인을 정리함. 저자의 결정론적 관점에 대한 비판적 검토가 다소 부족하나, 방대한 내용을 자기 언어로 요약하려는 시도가 성실함.' },
+      { no:'10120', name:'김스물', total:50, teacherWrote:'『삼국지』(나관중, 이문열 편역)를 통해 인물별 리더십 유형을 비교 분석함. 유비·조조·손권의 통치 스타일을 현대 조직 리더십 이론과 연결하려는 시도가 흥미로우며, 진로 관심(경영학) 속에서 상황에 따른 리더십의 유연성에 대한 성찰을 제시함.' }
+    ]
+  },
+  '1학년 10반': {
+    className:'1학년 10반', classKey:'1-10',
+    students:[
+      { no:'11001', name:'박일일', total:56, teacherWrote:'『다크호스』(토드 로즈)를 통해 표준화된 성공 경로에 대한 비판적 관점을 정리함. 자신만의 학습 리듬을 찾아가는 과정에 대한 성찰이 진솔하며, 진로 관심(교육공학) 속에서 개별화 학습의 가능성을 구체적으로 탐색함.' },
+      { no:'11002', name:'박이이', total:50, teacherWrote:'『넛지』(리처드 탈러)를 통해 행동경제학의 핵심 개념을 정리함. 선택 설계 사례를 학교 환경에 적용해 본 시도가 창의적이며, 진로 관심(공공정책) 속에서 정책 설계의 심리적 기반에 대한 문제의식을 제시함.' }
+    ]
+  },
+  '1학년 91반': {
+    className:'1학년 91반', classKey:'1-91',
+    students:[
+      { no:'19101', name:'최일일', total:52, teacherWrote:'『총, 균, 쇠』(재레드 다이아몬드)를 통해 문명 발달의 환경적 요인을 정리하며, 특히 유라시아 대륙의 지리적 이점을 자신의 언어로 재구성함. 후속 탐구로 대안적 문명사 관점 학습을 제시.' },
+      { no:'19102', name:'최이이', total:48, teacherWrote:'『코스모스』(칼 세이건)를 통해 우주적 관점에서 본 인간의 위치를 정리함. 과학적 서술과 시적 표현의 균형에 대한 감상이 진솔하며, 진로 관심(천체물리학) 속에서 대중과학의 역할을 고민함.' },
+      { no:'19103', name:'최삼삼', total:44, teacherWrote:'『사피엔스』(유발 하라리)를 읽고 세 번의 혁명(인지·농업·과학)을 자기 언어로 요약함. 저자의 관점에 대한 비판적 검토가 다소 부족하나, 방대한 내용을 구조화하려는 시도는 성실함.' },
+      { no:'19104', name:'최사사', total:50, teacherWrote:'『이기적 유전자』(리처드 도킨스)를 통해 유전자 중심 진화론과 밈 이론을 정리함. 문화 확산 사례에 밈 개념을 적용해 본 시도가 흥미로우며, 진로 관심(생물학) 속에서 진화론의 다양한 해석에 대한 관심을 표현함.' },
+      { no:'19105', name:'최오오', total:46, teacherWrote:'『정의란 무엇인가』(마이클 샌델)를 통해 정의 원리의 세 가지 접근을 정리함. 트롤리 딜레마와 소득 재분배 사례를 통해 각 입장의 논리를 명료하게 설명하며, 진로 관심(법학)과 연계하여 정의 판단의 사회적 조건을 고민함.' }
+    ]
+  }
+};
+
+// 세특 뷰어 · 점수 표시 상태 (true = 총점 O, false = 마스킹)
+window._rvSeShowScore = true;
+window._rvSeCurrentClass = null;
+
+function renderSeteukClassHTML(className) {
+  const d = SETEUK_CLASS_DATA[className];
+  if (!d) return '<div class="rvd-sd-empty">해당 반 데이터가 없어요.</div>';
+
+  // 반 드롭다운 옵션 (전체 반)
+  const dropOpts = Object.keys(SETEUK_CLASS_DATA).map(cn => {
+    const sel = (cn === className) ? ' selected' : '';
+    return '<option value="' + cn + '"' + sel + '>' + cn + '</option>';
+  }).join('');
+
+  const show = window._rvSeShowScore;
+  const toggleLbl = show ? '점수 숨기기' : '점수 보이기';
+  const toggleIc = show ? 'eye-off' : 'eye';
+
+  const rowsHtml = d.students.map(s => {
+    const totalCell = (s.total == null) ? '–' : (show ? String(s.total) : '–');
+    return '<tr>'
+      + '<td class="rvd-se-no">' + s.no + '</td>'
+      + '<td class="rvd-se-nm">' + s.name + '</td>'
+      + '<td class="rvd-se-total">' + totalCell + '</td>'
+      + '<td class="rvd-se-teacher-cell">'
+      +   '<div class="rvd-se-teacher-txt">' + (s.teacherWrote || '(아직 작성되지 않았어요.)') + '</div>'
+      +   '<div class="rvd-se-teacher-meta">' + (s.teacherWrote ? (s.teacherWrote.length + '자 · ' + new Blob([s.teacherWrote]).size + 'Byte') : '0자 · 0Byte') + '</div>'
+      + '</td>'
+      + '</tr>';
+  }).join('');
+
+  return '<div class="rvd-hd">'
+    + '<div>'
+    +   '<div class="rvd-title">세부능력 및 특기사항</div>'
+    +   '<div class="rvd-sub">' + d.className + ' · 참여 학생 ' + d.students.length + '명</div>'
+    + '</div>'
+    + '<div class="rvd-badges">'
+    +   '<span class="rvd-badge readonly"><i data-lucide="eye"></i>읽기 전용</span>'
+    + '</div>'
+    + '</div>'
+
+    // 상단 툴바 · 반 드롭다운 + 점수 토글
+    + '<div class="rvd-se-toolbar">'
+    +   '<select class="rvd-sd-select" onchange="rvSeJumpClass(this)">' + dropOpts + '</select>'
+    +   '<button class="rvd-se-toggle' + (show ? '' : ' off') + '" onclick="rvSeToggleScore()">'
+    +     '<i data-lucide="' + toggleIc + '"></i>' + toggleLbl
+    +   '</button>'
+    + '</div>'
+
+    // 테이블 · 학번 · 이름 · 총점 · 선생님 직접 작성
+    + '<div class="rvd-se-tbl-wrap">'
+    +   '<table class="rvd-se-tbl">'
+    +     '<thead><tr>'
+    +       '<th style="width:70px">학번</th>'
+    +       '<th style="width:80px">이름</th>'
+    +       '<th style="width:70px">총점</th>'
+    +       '<th>선생님 직접 작성</th>'
+    +     '</tr></thead>'
+    +     '<tbody>' + rowsHtml + '</tbody>'
+    +   '</table>'
+    + '</div>';
+}
+
+// 세특 · 반 스위칭
+function rvSeJumpClass(select) {
+  rvOpenDetail('seteuk-class', select.value);
+}
+// 세특 · 점수 토글 (반 재렌더)
+function rvSeToggleScore() {
+  window._rvSeShowScore = !window._rvSeShowScore;
+  if (window._rvSeCurrentClass) {
+    rvOpenDetail('seteuk-class', window._rvSeCurrentClass);
+  }
+}
+
 function rvOpenDetail(type, key) {
   const wrap = document.getElementById('rvDetailView');
   const list = document.getElementById('rvListView');
@@ -4492,6 +5409,51 @@ function rvOpenDetail(type, key) {
     rvFilterMenu = 'design';
     const menuSel = document.getElementById('rvFilterMenu');
     if (menuSel) menuSel.value = 'design';
+  } else if (type === 'grading-ai-summary') {
+    const d = SCORING_AI_SUMMARY_DATA[key];
+    if (!d) { toastMsg('AI 채점 요약 데이터가 없어요.', true); return; }
+    content.innerHTML = renderScoringAiSummaryHTML(d);
+    // 우측 댓글 필터 자동 세팅 (채점 · 해당 반 · AI 요약)
+    rvActiveCtx = { type:'grading', eval:d.evalName, class:d.classKey, subtype:'ai_summary' };
+    rvFilterMenu = 'grading';
+    const menuSel = document.getElementById('rvFilterMenu');
+    if (menuSel) menuSel.value = 'grading';
+  } else if (type === 'grading-class-status') {
+    const d = SCORING_CLASS_STATUS_DATA[key];
+    if (!d) { toastMsg('학급 채점 현황 데이터가 없어요.', true); return; }
+    content.innerHTML = renderClassStatusHTML(d);
+    // 우측 댓글 필터 자동 세팅 (채점 · 해당 반 · 학급 채점 현황)
+    rvActiveCtx = { type:'grading', eval:d.evalName, class:d.classKey, subtype:'class_status' };
+    rvFilterMenu = 'grading';
+    const menuSel = document.getElementById('rvFilterMenu');
+    if (menuSel) menuSel.value = 'grading';
+  } else if (type === 'seteuk-class') {
+    // key = className (e.g. '1학년 1반')
+    if (!SETEUK_CLASS_DATA[key]) { toastMsg('반 데이터가 없어요.', true); return; }
+    window._rvSeCurrentClass = key;
+    content.innerHTML = renderSeteukClassHTML(key);
+    // 우측 댓글 필터 · [세특] {반}
+    rvActiveCtx = { type:'seteuk', class:key };
+    rvFilterMenu = 'seteuk';
+    const menuSel = document.getElementById('rvFilterMenu');
+    if (menuSel) menuSel.value = 'seteuk';
+  } else if (type === 'grading-student') {
+    // key = 'evalName:classKey:studentNo'
+    const parts = key.split(':');
+    const eval_ = parts[0], classKey = parts[1], no = parts[2];
+    const cls = SCORING_CLASS_STATUS_DATA[eval_ + ':' + classKey];
+    if (!cls) { toastMsg('학급 데이터가 없어요.', true); return; }
+    const studentRow = cls.students.find(s => s.no === no);
+    if (!studentRow) { toastMsg('학생을 찾을 수 없어요.', true); return; }
+    let d = STUDENT_SCORING_DETAIL_DATA[key];
+    if (!d) d = _rvSdMakeStub(studentRow, cls);
+    window._rvSdCurrent = key;
+    content.innerHTML = renderStudentDetailHTML(d, cls);
+    // 우측 댓글 필터 · 학생 컨텍스트
+    rvActiveCtx = { type:'grading', eval:eval_, class:classKey, student: no + ' ' + studentRow.name };
+    rvFilterMenu = 'grading';
+    const menuSel = document.getElementById('rvFilterMenu');
+    if (menuSel) menuSel.value = 'grading';
   }
   list.style.display = 'none';
   wrap.style.display = '';
@@ -4563,6 +5525,16 @@ function renderEvalDetailHTML(d) {
     + '</div>'
     + '</div>'
 
+    // 기본 정보
+    + '<section class="rvd-sec">'
+    +   '<div class="rvd-sec-hd"><span class="rvd-sec-t">기본 정보</span></div>'
+    +   '<dl class="rvd-info">'
+    +     '<dt>교과</dt><dd>' + (d.subject || '—') + '</dd>'
+    +     '<dt>과목</dt><dd>' + (d.courseName || '—') + '</dd>'
+    +     '<dt>수행평가명</dt><dd>' + d.name + '</dd>'
+    +   '</dl>'
+    + '</section>'
+
     // 성취기준
     + '<section class="rvd-sec">'
     +   '<div class="rvd-sec-hd"><span class="rvd-sec-t">성취기준</span><span class="rvd-sec-cnt">' + d.achievements.length + '개 / 10개</span></div>'
@@ -4606,6 +5578,8 @@ function rvClearFilter() {
   document.querySelectorAll('.scene.active .rv-item').forEach(x => x.classList.remove('active'));
   renderRvComments();
 }
+// 입력창 배너에서 컨텍스트 해제 (수업 전체로) · 리스트 필터도 함께 해제
+function rvClearWriteCtx() { rvClearFilter(); }
 function rvSetFilter(f) { rvFilter = f; rvExpanded = false; renderRvComments(); }
 function rvSetAuthorFilter(v) { rvFilterAuthor = v; rvExpanded = false; renderRvComments(); }
 function rvSetMenuFilter(v) { rvFilterMenu = v; rvExpanded = false; renderRvComments(); }
@@ -4617,6 +5591,9 @@ function rvCtxLabelText(ctx) {
   if (d.type === 'design') return '[설계] ' + d.eval;
   if (d.type === 'grading') {
     let s = '[채점] ' + d.eval + ' · ' + d.class;
+    if (d.subtype === 'ai_summary') s += ' · AI 채점 결과 요약';
+    else if (d.subtype === 'class_status') s += ' · 학급 채점 현황';
+    else if (d.student) s += ' · ' + d.student;
     return s;
   }
   if (d.type === 'seteuk') return '[세특] ' + d.class;
@@ -4674,7 +5651,34 @@ function renderRvComments() {
     }
   }
 
-  // (rv-new-cmt-hint 제거됨)
+  // 입력창 위 · 컨텍스트 배너 갱신
+  const writeCtxEl = document.getElementById('rvWriteCtx');
+  const writeInp = document.getElementById('rvNewCmtInput');
+  if (writeCtxEl) {
+    if (rvActiveCtx) {
+      const label = rvCtxLabelText(rvActiveCtx);
+      writeCtxEl.className = 'rv-write-ctx active';
+      writeCtxEl.innerHTML =
+        '<div class="rv-write-ctx-hd">'
+        + '<i data-lucide="at-sign"></i>'
+        + '<span>이 댓글은 아래 위치에 남겨져요</span>'
+        + '</div>'
+        + '<div class="rv-write-ctx-body">'
+        + '<span class="rv-write-ctx-lbl" title="' + label.replace(/"/g,'&quot;') + '">' + label + '</span>'
+        + '<button class="rv-write-ctx-clear" onclick="rvClearWriteCtx()" title="컨텍스트 해제 · 수업 전체에 남기기"><i data-lucide="x"></i>해제</button>'
+        + '</div>';
+      if (writeInp) writeInp.placeholder = label + '에 대한 검토 의견을 남겨보세요';
+    } else {
+      writeCtxEl.className = 'rv-write-ctx';
+      writeCtxEl.innerHTML =
+        '<div class="rv-write-ctx-hd">'
+        + '<i data-lucide="message-square"></i>'
+        + '<span>수업 전체에 남기는 댓글이에요</span>'
+        + '</div>';
+      if (writeInp) writeInp.placeholder = '궁금한 점이나 검토 의견을 남겨보세요';
+    }
+    if (window.lucide && lucide.createIcons) lucide.createIcons();
+  }
 
   // 목록 렌더 (공용 카드 컴포넌트 사용)
   if (list.length === 0) {
@@ -4720,10 +5724,159 @@ function markAllCmtRead() {
   renderCrComments();
 }
 
+// ============================================================
+// 오너 · 플로팅 댓글 창 (Floating Comment Window) + 라우터
+// ============================================================
+window._fcwHighlightId = null;
+window._fcwCtx = null;
+window._fcwOpen = false;
+
+// 컨텍스트 → 원본 씬 라우팅
+function openCommentContext(commentId) {
+  const c = CR_COMMENTS.find(x => x.id === commentId);
+  if (!c) { toastMsg('댓글을 찾을 수 없어요.', true); return; }
+  const d = c.ctxData || {};
+
+  // 컨텍스트 저장 + 하이라이트 대상 지정
+  window._fcwHighlightId = commentId;
+  window._fcwCtx = { type: c.ctxType, ...d };
+
+  // 씬 라우팅
+  if (c.ctxType === 'design') {
+    goScene('eval-plan-detail');
+  } else if (c.ctxType === 'grading') {
+    if (d.student) {
+      // [채점] · 학생별 상세
+      goScene('student-scoring-detail');
+    } else if (d.subtype === 'ai_summary') {
+      // [채점] · AI 요약 → 학급 상세 + 모달 자동 오픈
+      goScene('scoring-class-detail');
+      setTimeout(function(){ openAiSummaryModal(d.eval, d.class); }, 100);
+    } else {
+      // [채점] · 학급 채점 현황 or 기본
+      goScene('scoring-class-detail');
+    }
+  } else if (c.ctxType === 'seteuk') {
+    goScene('sr-list');
+    // 반 드롭다운 자동 선택
+    setTimeout(function(){
+      const sel = document.querySelector('#scene-sr-list .obs-select');
+      if (sel && d.class) {
+        const target = Array.from(sel.options).find(o => o.textContent.trim() === d.class);
+        if (target) sel.value = target.value;
+      }
+    }, 100);
+  }
+  // 플로팅 창 오픈 (기존 열려있으면 갱신)
+  fcwOpen();
+}
+
+function fcwOpen() {
+  window._fcwOpen = true;
+  const p = document.getElementById('fcwPanel');
+  if (!p) return;
+  p.style.display = 'flex';
+  fcwRender();
+}
+function fcwClose() {
+  window._fcwOpen = false;
+  window._fcwCtx = null;
+  window._fcwHighlightId = null;
+  const p = document.getElementById('fcwPanel');
+  if (p) p.style.display = 'none';
+}
+function fcwRender() {
+  const p = document.getElementById('fcwPanel');
+  if (!p) return;
+  const ctx = window._fcwCtx;
+  const highlightId = window._fcwHighlightId;
+  // 컨텍스트 라벨
+  let ctxLabel = '전체 댓글';
+  if (ctx) {
+    if (ctx.type === 'design') ctxLabel = '[설계] ' + (ctx.eval || '—');
+    else if (ctx.type === 'grading') {
+      ctxLabel = '[채점] ' + (ctx.eval || '—') + ' · ' + (ctx.class || '—');
+      if (ctx.subtype === 'ai_summary') ctxLabel += ' · AI 채점 결과 요약';
+      else if (ctx.subtype === 'class_status') ctxLabel += ' · 학급 채점 현황';
+      else if (ctx.student) ctxLabel += ' · ' + ctx.student;
+    } else if (ctx.type === 'seteuk') ctxLabel = '[세특] ' + (ctx.class || '—');
+  }
+  // 매칭 댓글 리스트 (rvMatchesCtx 재사용)
+  let list = ctx ? CR_COMMENTS.filter(c => rvMatchesCtx(c, ctx)) : CR_COMMENTS.slice();
+  // 최신순 정렬 그대로 · 리스트 렌더 (renderCmtCard 재사용 + fcw-highlight 클래스)
+  const cardsHtml = list.length === 0
+    ? '<div style="text-align:center;color:#9ea3ad;font-size:13px;padding:30px 20px;">이 컨텍스트에 다른 댓글이 없어요.</div>'
+    : list.map(function(c){
+        let card = renderCmtCard(c);
+        if (c.id === highlightId) card = card.replace('class="cr-cmt', 'class="cr-cmt fcw-highlight');
+        return card;
+      }).join('');
+  p.querySelector('.fcw-ctx-label').textContent = ctxLabel;
+  p.querySelector('.fcw-body').innerHTML = cardsHtml;
+  p.querySelector('.fcw-count').textContent = list.length + '개';
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+}
+
+// ============================================================
+// 플로팅 창 드래그
+// ============================================================
+function fcwInitDrag() {
+  const p = document.getElementById('fcwPanel');
+  if (!p) return;
+  const hd = p.querySelector('.fcw-hd');
+  let dragging = false, startX = 0, startY = 0, panelX = 0, panelY = 0;
+  hd.addEventListener('mousedown', function(e){
+    if (e.target.closest('.fcw-close')) return; // 닫기 버튼은 드래그 제외
+    dragging = true;
+    startX = e.clientX; startY = e.clientY;
+    const rect = p.getBoundingClientRect();
+    panelX = rect.left; panelY = rect.top;
+    p.style.right = 'auto';
+    p.style.left = panelX + 'px';
+    p.style.top = panelY + 'px';
+    document.body.style.userSelect = 'none';
+  });
+  document.addEventListener('mousemove', function(e){
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    let nx = panelX + dx;
+    let ny = panelY + dy;
+    // 뷰포트 경계 클램프
+    nx = Math.max(0, Math.min(window.innerWidth - p.offsetWidth, nx));
+    ny = Math.max(0, Math.min(window.innerHeight - 60, ny));
+    p.style.left = nx + 'px';
+    p.style.top = ny + 'px';
+  });
+  document.addEventListener('mouseup', function(){
+    if (dragging) { dragging = false; document.body.style.userSelect = ''; }
+  });
+}
+
+// ============================================================
+// AI 채점 결과 요약 모달 (오너 원본용 스텁)
+// ============================================================
+function openAiSummaryModal(evalName, classKey) {
+  const key = evalName + ':' + (classKey || '1-1');
+  const d = SCORING_AI_SUMMARY_DATA[key] || SCORING_AI_SUMMARY_DATA['(고) 자기주도 독서 활동:1-1'];
+  const modal = document.getElementById('aiSummaryModal');
+  if (!modal || !d) return;
+  const body = modal.querySelector('.ai-sum-modal-body');
+  // 뷰어와 동일한 렌더 재사용
+  body.innerHTML = renderScoringAiSummaryHTML(d);
+  modal.style.display = 'flex';
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+}
+function closeAiSummaryModal() {
+  const modal = document.getElementById('aiSummaryModal');
+  if (modal) modal.style.display = 'none';
+}
+
 // Init: read URL hash or default to owner-home
 const initScene = location.hash ? location.hash.slice(1) : 'owner-home';
 goScene(initScene);
 lucide.createIcons();
+fcwInitDrag();
 </script>
 </body>
 </html>
