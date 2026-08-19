@@ -343,13 +343,13 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 
 /* Teacher search & select */
 .teacher-search { position:relative; margin-bottom:12px; }
-.teacher-list { max-height:180px; overflow-y:auto; border:1px solid #dde1e8; border-radius:6px; }
-.t-item { display:flex; align-items:center; gap:12px; padding:12px 14px; cursor:pointer; }
+.teacher-list { max-height:280px; overflow-y:auto; border:1px solid #dde1e8; border-radius:8px; }
+.t-item { display:flex; align-items:center; gap:14px; padding:16px 18px; cursor:pointer; }
 .t-item:hover { background:#f6f7f9; }
 .t-item + .t-item { border-top:1px solid #f1f3f5; }
-.t-check { width:20px; height:20px; border:1.5px solid #d9d9d9; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
-.t-check.checked { background:#416bff; border-color:#416bff; color:#fff; }
-.t-check svg { width:14px; height:14px; }
+.t-check { width:24px; height:24px; border:2px solid #d9d9d9; border-radius:6px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+.t-check.checked { background:#365eef; border-color:#365eef; color:#fff; }
+.t-check svg { width:16px; height:16px; }
 .t-name { font-size:15px; font-weight:500; flex:1; }
 .t-subj { font-size:13px; color:#6d7381; }
 
@@ -415,6 +415,11 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 
 /* ===== 댓글 플로팅 창 (드래그 가능) ===== */
 .comment-side { position:fixed; top:76px; left:auto; right:24px; bottom:auto; width:420px; height:calc(100vh - 100px); background:#fff; border:1px solid #dde1e8; border-radius:12px; z-index:100; display:none; flex-direction:column; box-shadow:0 12px 40px rgba(0,0,0,.18); overflow:hidden; }
+
+/* 접힘 상태 · 원형 파란 버튼 (rv-right와 통일) */
+.comment-side.collapsed { width:56px; height:56px; border-radius:50%; background:#365eef; border:none; box-shadow:0 8px 24px rgba(54,94,239,.35); overflow:visible; }
+.comment-side.collapsed > *:not(.cs-collapsed-tab) { display:none !important; }
+.comment-side.collapsed .cs-collapsed-tab { display:flex; }
 .comment-side.open { display:flex; }
 .comment-side.min { height:52px; overflow:hidden; }
 .comment-side.min .cs-filter-row, .comment-side.min .cs-body, .comment-side.min .comment-write { display:none; }
@@ -828,8 +833,8 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .cr-cnt.cr-cnt-resolved b { color:#1e6c48; }
 
 /* 댓글 툴바 */
-.cr-cmt-toolbar { display:flex; align-items:center; justify-content:space-between; padding:8px 0 8px; margin-bottom:0; gap:8px; }
-.cr-cmt-subfilters { display:flex; gap:8px; padding:0 0 12px; align-items:center; }
+.cr-cmt-subfilters { display:flex; gap:8px; padding:8px 0 8px; align-items:center; }
+.cr-cmt-toolbar { display:flex; align-items:center; justify-content:space-between; padding:0 0 12px; margin-bottom:0; gap:8px; }
 .cr-filter-group { display:inline-flex; gap:2px; background:#f1f3f5; padding:3px; border-radius:8px; }
 .cr-filter-btn { padding:6px 14px; border-radius:6px; background:transparent; color:#6d7381; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; border:none; }
 .cr-filter-btn:hover { color:#3151c4; }
@@ -845,8 +850,8 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .cr-cmt-state-badge.resolved { background:#eefcf4; color:#1e6c48; border:1px solid #b0e5c8; }
 
 /* 확인함 처리된 로우는 옅게 */
-.cr-cmt.resolved { opacity:.75; background:#f9fafb; }
-.cr-cmt.resolved .cr-cmt-text { color:#6d7381; }
+/* 읽음 처리된 댓글도 정상 밝기 유지 (비활성 느낌 제거) */
+.cr-cmt.resolved { background:#fff; }
 
 /* 댓글 우측 액션 그룹 */
 .cr-cmt-actions { display:flex; flex-direction:column; gap:4px; flex-shrink:0; align-items:flex-end; }
@@ -871,6 +876,13 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .crt-unread { display:inline-flex; align-items:center; gap:4px; font-size:11px; color:#ab303a; background:#fef2f2; padding:2px 8px; border-radius:100px; font-weight:600; border:1px solid #fecaca; }
 .crt-unread .dot { width:5px; height:5px; border-radius:50%; background:#f2525f; }
 .crt-meta { font-size:12px; color:#6d7381; margin-top:2px; }
+/* 한 줄 배열 (이름·이메일·과목·서브텍스트 인라인) */
+.crt-info-line { display:flex; align-items:center; gap:10px; flex:1; min-width:0; flex-wrap:wrap; }
+.crt-info-line .crt-name { font-size:14px; font-weight:600; color:#222631; }
+.crt-info-line .crt-email { font-size:12px; color:#9ea3ad; }
+.crt-info-line .crt-meta { font-size:12px; color:#6d7381; margin-top:0; }
+.crt-revoke { flex-shrink:0; color:#ab303a; border-color:#fca5a5; }
+.crt-revoke:hover { background:#fef2f2; border-color:#dc2626; color:#dc2626; }
 
 /* 공유 범위 카드 */
 .cr-scope-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:10px; }
@@ -913,8 +925,17 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .sec-t { font-size:16px; font-weight:600; color:#222631; }
 .sec-cnt { font-size:12px; color:#6d7381; margin-left:6px; }
 .sec-hd-r { display:flex; align-items:center; gap:8px; }
-.sec-hd-r .chev { color:#9ea3ad; transition:transform .15s; }
-.sec-hd-r .chev svg { width:16px; height:16px; }
+.sec-hd-r .chev { color:#9ea3ad; transition:transform .15s; display:inline-flex; align-items:center; }
+.sec-hd-r .chev svg { width:18px; height:18px; }
+.sec.closed .sec-hd-r .chev { transform:rotate(-90deg); }
+.sec-hd:hover .chev { color:#365eef; }
+
+/* sec-flat · 하위 메뉴 없이 헤더 자체가 아이템 역할 */
+.sec-flat { cursor:pointer; padding:16px 20px; }
+.sec-flat .sec-hd { padding-bottom:0; align-items:center; }
+.sec-flat .rv-left-dot { margin-right:4px; }
+.sec-flat .sec-sub { font-size:12px; color:#6d7381; font-weight:500; margin-top:2px; }
+.sec-flat.active { background:#f4f8ff; border-color:#a3c3ff; }
 .sec.closed .chev { transform:rotate(-90deg); }
 .sec-body { padding:0 0 16px; }
 .sec.closed .sec-body { display:none; }
@@ -928,6 +949,13 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .sec-item-link { display:inline-flex; align-items:center; gap:4px; height:28px; padding:0 12px; border-radius:6px; background:#fff; border:1px solid #ccdfff; color:#3151c4; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; }
 .sec-item-link:hover { background:#e9f2ff; border-color:#a3c3ff; }
 .sec-item-link svg { width:12px; height:12px; }
+/* sec-item 중앙 뱃지 (전체 · 미확인 댓글 카운트) */
+.sec-item-c { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+.sec-badge { display:inline-flex; align-items:center; gap:4px; height:24px; padding:0 8px; border-radius:100px; font-size:11px; font-weight:600; }
+.sec-badge.total { background:#f1f3f5; color:#3b3f4c; }
+.sec-badge.total svg { width:11px; height:11px; color:#6d7381; }
+.sec-badge.unread { background:#fef2f2; color:#dc2626; border:1px solid #fca5a5; }
+.sec-badge.unread .unread-dot { width:6px; height:6px; border-radius:50%; background:#dc2626; }
 
 /* ===== [v4] 2차 채점자 좌우 분할 (scene-reviewer-class) ===== */
 /* .rv-split은 .main-wrap 안에 있어 이미 LNB 폭만큼 오프셋됨 · 여기서는 폭만 100% 채움 */
@@ -1064,6 +1092,12 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .rvd-sd-select { min-width:260px; height:36px; padding:0 12px; border:1px solid #dde1e8; border-radius:6px; background:#fff; font-size:13px; color:#222631; font-family:inherit; cursor:pointer; }
 .rvd-sd-select:focus { outline:none; border-color:#365eef; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
 .rvd-sd-nav { display:flex; gap:6px; }
+/* 통합 뷰어 · [학생별 상세 보기] CTA (강조 파란 버튼) */
+.rvd-stu-cta { display:inline-flex; align-items:center; gap:6px; height:38px; padding:0 16px; background:#365eef; color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; box-shadow:0 2px 6px rgba(54,94,239,.25); transition:background .15s, transform .05s; }
+.rvd-stu-cta:hover { background:#2a4bc4; box-shadow:0 4px 10px rgba(54,94,239,.35); }
+.rvd-stu-cta:active { transform:translateY(1px); }
+.rvd-stu-cta svg { width:15px; height:15px; }
+.rvd-stu-cta svg:last-child { width:14px; height:14px; margin-left:2px; opacity:.85; }
 .rvd-sd-nav .btn-outline { display:inline-flex; align-items:center; gap:4px; height:36px; padding:0 12px; border:1px solid #dde1e8; background:#fff; color:#3b3f4c; border-radius:6px; font-size:13px; font-weight:500; cursor:pointer; font-family:inherit; }
 .rvd-sd-nav .btn-outline:hover:not([disabled]) { border-color:#365eef; color:#365eef; }
 .rvd-sd-nav .btn-outline[disabled] { opacity:.4; cursor:not-allowed; }
@@ -1159,6 +1193,40 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .rv-right { width:420px; background:#fff; border-left:1px solid #dde1e8; display:flex; flex-direction:column; position:fixed; top:56px; right:0; bottom:0; overflow:hidden; z-index:5; }
 /* rv-right가 fixed로 흐름에서 빠졌으므로 rv-main이 그 밑에 깔리지 않도록 우측 공간 확보 */
 .rv-split { padding-right:420px; }
+
+/* 접기 버튼 (펼침 상태 · 헤더 우측) */
+.rv-right-hd { position:relative; }
+.rv-toggle-btn { position:absolute; top:12px; right:12px; width:28px; height:28px; padding:0; background:transparent; border:none; border-radius:6px; color:#6d7381; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+.rv-toggle-btn:hover { background:#f1f3f5; color:#365eef; }
+.rv-toggle-btn svg { width:16px; height:16px; }
+
+/* [1차 채점자] 접힘 · 원형 파란 버튼 (cs · fcw) */
+.cs-collapsed-tab, .fcw-collapsed-tab { display:none; width:100%; height:100%; padding:0; background:transparent; border:none; color:#fff; cursor:move; align-items:center; justify-content:center; position:relative; font-family:inherit; border-radius:50%; }
+.cs-collapsed-tab:active, .fcw-collapsed-tab:active { cursor:grabbing; }
+/* 접힘 원형 상태에서도 드래그 활성 (touch 이동 방지) */
+.comment-side.collapsed, .fcw-panel.collapsed { touch-action:none; }
+.cs-collapsed-tab svg, .fcw-collapsed-tab svg { width:24px; height:24px; }
+
+/* [2차 채점자] 접힘 · 우측 세로 띠 (기본 숨김) */
+.rv-collapsed-tab { display:none; width:100%; height:100%; padding:16px 0; background:transparent; border:none; color:#6d7381; cursor:pointer; flex-direction:column; align-items:center; gap:6px; font-family:inherit; position:relative; }
+.rv-collapsed-tab:hover { background:#f9fafb; color:#365eef; }
+.rv-collapsed-tab svg { width:18px; height:18px; }
+.rv-collapsed-label { writing-mode:vertical-rl; text-orientation:mixed; font-size:12px; font-weight:600; letter-spacing:1px; margin-top:6px; }
+
+/* 미확인 뱃지 공용 */
+.collapsed-unread-badge { position:absolute; min-width:20px; height:20px; padding:0 5px; border-radius:20px; background:#dc2626; color:#fff; font-size:11px; font-weight:700; display:none; align-items:center; justify-content:center; border:2px solid #fff; box-sizing:content-box; }
+.collapsed-unread-badge.on { display:flex; }
+/* 원형 버튼 뱃지 · 우상단 */
+.cs-collapsed-tab .collapsed-unread-badge,
+.fcw-collapsed-tab .collapsed-unread-badge { top:-4px; right:-4px; }
+/* 세로 띠 뱃지 · 상단 중앙 */
+.rv-collapsed-tab .collapsed-unread-badge { top:8px; left:50%; transform:translateX(-50%); }
+
+/* body.rv-collapsed 상태 · 우측 세로 띠 40px (2차 채점자용) */
+body.rv-collapsed .rv-right { width:40px; height:auto; top:56px; bottom:0; right:0; border:none; border-left:1px solid #dde1e8; border-radius:0; background:#fff; box-shadow:none; overflow:hidden; }
+body.rv-collapsed .rv-right > *:not(.rv-collapsed-tab) { display:none !important; }
+body.rv-collapsed .rv-right .rv-collapsed-tab { display:flex; }
+body.rv-collapsed .rv-split { padding-right:40px; }
 .rv-right-hd { padding:14px 16px 10px; border-bottom:1px solid #f1f3f5; }
 .rv-right-title { font-size:15px; font-weight:600; color:#222631; display:inline-flex; align-items:center; gap:6px; }
 .rv-right-title svg { width:16px; height:16px; color:#365eef; }
@@ -1196,11 +1264,19 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .rv-write-ctx-clear { display:inline-flex; align-items:center; gap:2px; height:22px; padding:0 8px; border:1px solid #a3c3ff; background:#fff; color:#3151c4; border-radius:100px; font-size:11px; font-weight:500; cursor:pointer; font-family:inherit; flex-shrink:0; }
 .rv-write-ctx-clear:hover { background:#e9f2ff; border-color:#365eef; }
 .rv-write-ctx-clear svg { width:11px; height:11px; }
+.rv-write-ctx-lbl.muted { color:#6d7381; font-weight:500; }
+.rv-write-ctx-reapply { display:inline-flex; align-items:center; gap:3px; height:22px; padding:0 8px; border:1px solid #a3c3ff; background:#e9f2ff; color:#3151c4; border-radius:100px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; flex-shrink:0; }
+.rv-write-ctx-reapply:hover { background:#365eef; color:#fff; border-color:#365eef; }
+.rv-write-ctx-reapply svg { width:11px; height:11px; }
 
 /* ================================================
    플로팅 댓글 창 (오너)
 ================================================ */
 .fcw-panel { position:fixed; top:80px; right:24px; width:380px; max-height:620px; background:#fff; border:1px solid #dde1e8; border-radius:12px; box-shadow:0 12px 40px rgba(0,0,0,.18); z-index:100; display:flex; flex-direction:column; overflow:hidden; }
+/* 접힘 상태 · 원형 파란 버튼 (rv-right · commentSide와 통일) */
+.fcw-panel.collapsed { width:56px; height:56px; max-height:56px; border-radius:50%; background:#365eef; border:none; box-shadow:0 8px 24px rgba(54,94,239,.35); overflow:visible; }
+.fcw-panel.collapsed > *:not(.fcw-collapsed-tab) { display:none !important; }
+.fcw-panel.collapsed .fcw-collapsed-tab { display:flex; }
 .fcw-hd { padding:12px 14px; background:#f9fafb; border-bottom:1px solid #f1f3f5; cursor:move; display:flex; align-items:center; justify-content:space-between; gap:8px; user-select:none; }
 .fcw-hd-l { display:flex; align-items:center; gap:8px; min-width:0; flex:1; }
 .fcw-hd-l > svg { width:18px; height:18px; color:#365eef; flex-shrink:0; }
@@ -1210,6 +1286,18 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .fcw-close { width:28px; height:28px; padding:0; background:transparent; border:none; border-radius:6px; color:#6d7381; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
 .fcw-close:hover { background:#f1f3f5; color:#222631; }
 .fcw-close svg { width:16px; height:16px; }
+/* 플로팅 창 · 입력창 (상단) */
+.fcw-new-cmt { padding:10px 12px; background:#fafbfc; border-bottom:1px solid #f1f3f5; }
+.fcw-write-hint { display:flex; align-items:center; gap:5px; font-size:11px; color:#3151c4; margin-bottom:6px; font-weight:500; }
+.fcw-write-hint svg { width:12px; height:12px; color:#365eef; }
+.fcw-new-cmt-input { width:100%; min-height:50px; padding:8px 10px; border:1px solid #dde1e8; border-radius:6px; font-size:12px; resize:vertical; font-family:inherit; background:#fff; box-sizing:border-box; }
+.fcw-new-cmt-input:focus { outline:none; border-color:#365eef; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+.fcw-new-cmt-actions { display:flex; justify-content:flex-end; margin-top:6px; }
+/* 플로팅 창 · 필터 */
+.fcw-filter-row { padding:8px 12px; border-bottom:1px solid #f1f3f5; display:flex; flex-direction:column; gap:6px; }
+.fcw-subfilters { display:flex; gap:6px; }
+.fcw-subfilters .cls-select-mini { flex:1; height:28px; font-size:11px; }
+.fcw-filter-row .cr-filter-group { justify-content:center; }
 .fcw-body { flex:1; overflow-y:auto; padding:10px 12px; }
 .fcw-body::-webkit-scrollbar { width:6px; }
 .fcw-body::-webkit-scrollbar-thumb { background:#dde1e8; border-radius:3px; }
@@ -1223,7 +1311,12 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
   50%  { background:#fef9c3; box-shadow:0 0 0 4px rgba(251,191,36,.15); }
   100% { background:#fef9c3; box-shadow:0 0 0 0 rgba(251,191,36,0); }
 }
-.fcw-body .cr-cmt.fcw-highlight { animation:fcw-pulse 1.8s ease-out; background:#fef9c3; border-color:#fde68a !important; }
+.fcw-body .cr-cmt.fcw-highlight,
+.rv-cmt-list .cr-cmt.fcw-highlight { animation:fcw-pulse 1.8s ease-out; background:#fef9c3; border-color:#fde68a !important; }
+
+/* [보러 가기]로 진입한 클릭 댓글 · 좌측 세로 바 하이라이팅 (Notion 스타일) */
+.cr-cmt.hl-clicked { position:relative; border:1px solid #a3c3ff !important; box-shadow:0 0 0 3px rgba(54,94,239,.08); }
+.cr-cmt.hl-clicked::before { content:''; position:absolute; left:-1px; top:-1px; bottom:-1px; width:4px; background:#365eef; border-radius:8px 0 0 8px; }
 
 /* ================================================
    AI 채점 결과 요약 모달 (오너)
@@ -1236,6 +1329,149 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .ai-sum-modal-x:hover { background:#f1f3f5; color:#222631; }
 .ai-sum-modal-x svg { width:18px; height:18px; }
 .ai-sum-modal-body { padding:20px; overflow-y:auto; flex:1; }
+
+/* ================================================
+   확인 다이얼로그 (권한 회수 · 삭제 등 · 공통 모달)
+================================================ */
+.cfm-modal { position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:250; display:flex; align-items:center; justify-content:center; padding:20px; }
+.cfm-wrap { width:100%; max-width:400px; background:#fff; border-radius:12px; padding:28px 24px 20px; box-shadow:0 20px 60px rgba(0,0,0,.3); text-align:center; }
+.cfm-ic { width:48px; height:48px; border-radius:50%; background:#fef2f2; color:#dc2626; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px; }
+.cfm-ic svg { width:22px; height:22px; }
+.cfm-title { font-size:16px; font-weight:600; color:#222631; margin-bottom:8px; line-height:1.4; }
+.cfm-desc { font-size:13px; color:#6d7381; line-height:1.55; margin-bottom:20px; }
+.cfm-actions { display:flex; gap:8px; }
+.cfm-btn { flex:1; height:44px; padding:0 16px; border-radius:8px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+.cfm-cancel { background:#fff; border:1px solid #dde1e8; color:#3b3f4c; }
+.cfm-cancel:hover { background:#f6f7f9; }
+.cfm-confirm { background:#dc2626; border:none; color:#fff; }
+.cfm-confirm:hover { background:#b91c1c; }
+
+/* ================================================
+   OSD (Owner Student Detail · scene-student-scoring-detail)
+   Figma 284:3327 원본 편집 화면
+================================================ */
+.osd-topbar { display:flex; align-items:center; justify-content:space-between; padding:12px 20px; background:#fff; border-bottom:1px solid #dde1e8; }
+.osd-topbar-l { display:flex; align-items:center; gap:12px; }
+.osd-topbar-r { display:flex; align-items:center; gap:8px; }
+.osd-back { display:inline-flex; align-items:center; gap:4px; height:34px; padding:0 10px; background:transparent; border:none; color:#3b3f4c; font-size:13px; font-weight:500; cursor:pointer; border-radius:6px; font-family:inherit; }
+.osd-back:hover { background:#f1f3f5; }
+.osd-back svg { width:16px; height:16px; }
+.osd-student-sel { min-width:220px; height:34px; padding:0 10px; border:1px solid #dde1e8; border-radius:6px; font-size:13px; background:#fff; font-family:inherit; }
+.osd-count { font-size:13px; color:#6d7381; }
+.osd-nav-btn { display:inline-flex; align-items:center; gap:3px; height:32px; padding:0 10px; background:transparent; border:none; color:#3b3f4c; font-size:12px; font-weight:500; cursor:pointer; border-radius:6px; font-family:inherit; }
+.osd-nav-btn:hover { background:#f1f3f5; color:#3151c4; }
+.osd-nav-btn svg { width:14px; height:14px; }
+.osd-icon-btn { width:34px; height:34px; padding:0; background:#fff; border:1px solid #dde1e8; border-radius:6px; color:#3b3f4c; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; }
+.osd-icon-btn:hover { border-color:#365eef; color:#365eef; }
+.osd-icon-btn svg { width:15px; height:15px; }
+.osd-save-btn { display:inline-flex; align-items:center; gap:5px; height:34px; padding:0 14px; background:#365eef; border:none; color:#fff; font-size:13px; font-weight:600; cursor:pointer; border-radius:6px; font-family:inherit; }
+.osd-save-btn:hover { background:#2a4bc4; }
+.osd-save-btn svg { width:14px; height:14px; }
+
+.osd-body { display:flex; gap:16px; padding:16px 20px; background:#f6f7f9; min-height:calc(100vh - 56px - 58px); align-items:flex-start; }
+.osd-left { flex:0 0 44%; background:#fff; border:1px solid #dde1e8; border-radius:10px; overflow:hidden; position:sticky; top:70px; }
+.osd-file-tabs { display:flex; gap:0; border-bottom:1px solid #dde1e8; background:#f9fafb; }
+.osd-file-tab { padding:10px 16px; font-size:13px; color:#6d7381; cursor:pointer; border-right:1px solid #f1f3f5; background:#f9fafb; }
+.osd-file-tab.active { background:#fff; color:#3151c4; font-weight:600; border-bottom:2px solid #365eef; margin-bottom:-1px; }
+.osd-pdf-toolbar { display:flex; align-items:center; justify-content:space-between; padding:8px 14px; background:#f9fafb; border-bottom:1px solid #f1f3f5; font-size:12px; color:#6d7381; }
+.osd-pdf-nav { display:flex; align-items:center; gap:6px; }
+.osd-pdf-nav button { width:24px; height:24px; padding:0; background:transparent; border:none; color:#6d7381; cursor:pointer; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; }
+.osd-pdf-nav button:hover { background:#f1f3f5; color:#3151c4; }
+.osd-pdf-nav button svg { width:14px; height:14px; }
+.osd-pdf-nav b { color:#222631; font-weight:600; }
+.osd-pdf-viewer { padding:20px; background:#e5e7eb; min-height:800px; display:flex; align-items:flex-start; justify-content:center; }
+.osd-pdf-page { width:100%; max-width:520px; min-height:720px; background:#fff; border:1px solid #dde1e8; border-radius:4px; display:flex; align-items:center; justify-content:center; color:#c4c7d0; }
+.osd-pdf-page svg { width:48px; height:48px; }
+
+.osd-right { flex:1; min-width:0; display:flex; flex-direction:column; gap:12px; }
+.osd-score-hd { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 16px; background:#fff; border:1px solid #dde1e8; border-radius:10px; }
+.osd-total { font-size:16px; font-weight:500; color:#222631; display:inline-flex; align-items:center; gap:4px; }
+.osd-total b { font-weight:700; color:#365eef; font-size:20px; }
+.osd-total .grd { color:#5d26c4; font-weight:600; font-size:14px; margin-left:2px; }
+.osd-status-radio { display:flex; gap:14px; }
+.osd-radio { display:inline-flex; align-items:center; gap:5px; font-size:13px; color:#6d7381; cursor:pointer; user-select:none; font-weight:500; }
+.osd-radio input { position:absolute; opacity:0; pointer-events:none; }
+.osd-radio .dot { width:14px; height:14px; border:1.5px solid #dde1e8; border-radius:50%; background:#fff; position:relative; }
+.osd-radio.active { color:#365eef; font-weight:600; }
+.osd-radio.active .dot { border-color:#365eef; }
+.osd-radio.active .dot::after { content:''; position:absolute; inset:2px; border-radius:50%; background:#365eef; }
+
+.osd-sec { padding:16px 18px; background:#fff; border:1px solid #dde1e8; border-radius:10px; }
+.osd-sec-hd { display:flex; align-items:center; gap:8px; margin-bottom:14px; padding-bottom:10px; border-bottom:1px solid #f1f3f5; }
+.osd-sec-hd svg { width:16px; height:16px; }
+.osd-sec-t { font-size:14px; font-weight:600; color:#222631; flex:1; }
+.osd-info-btn { width:24px; height:24px; padding:0; background:transparent; border:none; color:#9ea3ad; cursor:pointer; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; }
+.osd-info-btn:hover { background:#f1f3f5; color:#6d7381; }
+.osd-info-btn svg { width:14px; height:14px; }
+.osd-sec-toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.osd-cb { display:inline-flex; align-items:center; gap:6px; font-size:13px; color:#3b3f4c; cursor:pointer; user-select:none; }
+.osd-cb input { position:absolute; opacity:0; pointer-events:none; }
+.osd-cb .dot { width:16px; height:16px; border:1.5px solid #dde1e8; border-radius:4px; background:#fff; position:relative; flex-shrink:0; }
+.osd-cb input:checked + .dot { background:#365eef; border-color:#365eef; }
+.osd-cb input:checked + .dot::after { content:''; position:absolute; left:4px; top:1px; width:5px; height:9px; border:solid #fff; border-width:0 2px 2px 0; transform:rotate(45deg); }
+.osd-sec-tools { display:flex; gap:6px; }
+.osd-tool-btn { display:inline-flex; align-items:center; gap:4px; height:32px; padding:0 10px; background:#fff; border:1px solid #dde1e8; color:#3b3f4c; font-size:12px; font-weight:500; cursor:pointer; border-radius:6px; font-family:inherit; }
+.osd-tool-btn:hover { border-color:#365eef; color:#365eef; }
+.osd-tool-btn.primary { background:#e9f2ff; color:#3151c4; border-color:#a3c3ff; }
+.osd-tool-btn.primary:hover { background:#d4e4ff; }
+.osd-tool-btn svg { width:13px; height:13px; }
+
+.osd-crit { padding:14px 0; border-bottom:1px solid #f1f3f5; }
+.osd-crit:last-of-type { border-bottom:none; padding-bottom:0; }
+.osd-crit:first-of-type { padding-top:0; }
+.osd-crit-nm { font-size:14px; font-weight:600; color:#222631; margin-bottom:10px; }
+.osd-pills { display:flex; gap:8px; margin-bottom:10px; }
+.osd-pill { min-width:44px; height:32px; padding:0 12px; border:1.5px solid #dde1e8; background:#fff; color:#6d7381; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+.osd-pill:hover { border-color:#365eef; color:#365eef; }
+.osd-pill.on { background:#365eef; color:#fff; border-color:#365eef; }
+.osd-rationale { font-size:13px; color:#3b3f4c; line-height:1.65; padding:10px 12px; background:#f9fafb; border-radius:6px; }
+.osd-ai-notice { display:flex; align-items:center; gap:6px; margin-top:14px; padding:10px 12px; background:#f4f8ff; border:1px solid #ccdfff; border-radius:6px; font-size:12px; color:#3151c4; }
+.osd-ai-notice svg { width:14px; height:14px; color:#365eef; flex-shrink:0; }
+
+.osd-ai-tabs { display:flex; gap:0; margin-bottom:12px; }
+.osd-ai-tab { flex:1; height:38px; padding:0 12px; background:#f9fafb; border:1px solid #dde1e8; color:#6d7381; font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
+.osd-ai-tab:first-child { border-radius:6px 0 0 6px; border-right:none; }
+.osd-ai-tab:last-child { border-radius:0 6px 6px 0; }
+.osd-ai-tab.active { background:#e9f2ff; color:#3151c4; border-color:#a3c3ff; }
+.osd-ai-box { padding:14px; background:#f4f8ff; border:1px solid #ccdfff; border-radius:8px; }
+.osd-ai-sub-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid #ccdfff; }
+.osd-ai-sub-t { font-size:13px; font-weight:600; color:#222631; }
+.osd-ai-sub-radio { display:flex; gap:12px; }
+.osd-ai-txt { font-size:13px; color:#3b3f4c; line-height:1.75; }
+.osd-ai-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:12px; border-top:1px solid #ccdfff; }
+.osd-ai-meta { font-size:12px; color:#6d7381; }
+.osd-ai-bottom-btns { display:flex; gap:6px; }
+
+.osd-teacher-input { width:100%; min-height:100px; padding:12px; border:1px solid #dde1e8; border-radius:6px; font-family:inherit; font-size:13px; line-height:1.7; box-sizing:border-box; resize:vertical; }
+.osd-teacher-input:focus { outline:none; border-color:#365eef; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+.osd-teacher-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:10px; }
+.osd-teacher-meta { font-size:12px; color:#9ea3ad; }
+
+/* ================================================
+   OSR (Owner Seteuk · scene-sr-list) · Figma 6143:25072
+================================================ */
+.osr-toolbar { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:12px; }
+.osr-toolbar-r { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+.osr-save-time { display:inline-flex; align-items:center; gap:4px; font-size:12px; color:#6d7381; margin-right:6px; }
+.osr-save-time svg { color:#319d64; }
+.osr-table { width:100%; border-collapse:collapse; font-size:13px; table-layout:fixed; }
+.osr-table thead th { background:#f9fafb; color:#6d7381; font-weight:600; font-size:13px; padding:12px 10px; text-align:center; border-bottom:1px solid #dde1e8; }
+.osr-table tbody td { padding:14px 10px; color:#222631; border-bottom:1px solid #f1f3f5; vertical-align:top; }
+.osr-c { text-align:center; font-weight:500; }
+.osr-total { font-weight:700; font-size:14px; }
+.osr-cell { padding:14px 12px; }
+.osr-ai-txt, .osr-teacher-txt { font-size:12.5px; color:#3b3f4c; line-height:1.65; word-break:keep-all; }
+.osr-cell-btm { display:flex; align-items:center; gap:4px; margin-top:8px; padding-top:8px; border-top:1px dashed #f1f3f5; }
+.osr-byte { font-size:11px; color:#9ea3ad; margin-right:auto; }
+.osr-ic { display:inline-flex; align-items:center; gap:3px; height:26px; padding:0 8px; background:#fff; border:1px solid #dde1e8; border-radius:4px; color:#6d7381; cursor:pointer; font-family:inherit; font-size:11px; font-weight:500; }
+.osr-ic svg { width:12px; height:12px; }
+.osr-ic:hover { border-color:#365eef; color:#365eef; }
+.osr-ic.active { background:#e9f2ff; color:#3151c4; border-color:#a3c3ff; }
+.osr-teacher-meta { font-size:11px; color:#9ea3ad; margin-top:6px; text-align:right; }
+.osr-evidence { display:inline-flex; flex-direction:column; align-items:center; gap:2px; padding:6px 8px; background:transparent; border:none; color:#3151c4; cursor:pointer; font-family:inherit; font-size:11px; font-weight:500; }
+.osr-evidence svg { width:14px; height:14px; }
+.osr-evidence:hover { color:#365eef; text-decoration:underline; }
+.osr-hint { background:#e9f2ff; border:1px solid #ccdfff; border-radius:8px; padding:12px 16px; margin-top:12px; display:flex; align-items:center; gap:8px; font-size:13px; color:#3151c4; }
 .rv-new-cmt-input { width:100%; min-height:60px; padding:8px 10px; border:1px solid #dde1e8; border-radius:6px; font-size:13px; resize:vertical; font-family:inherit; background:#fff; box-sizing:border-box; }
 .rv-new-cmt-input:focus { outline:none; border-color:#365eef; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
 .rv-new-cmt-actions { display:flex; align-items:center; justify-content:flex-end; margin-top:6px; }
@@ -1308,17 +1544,23 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 .cs-empty { padding:40px 20px; text-align:center; color:#9ea3ad; font-size:13px; }
 
 /* [v4] 사이드바 상단 통일 (댓글 내역 스타일) */
-.cs-title { display:flex; align-items:flex-start; gap:8px; flex:1; }
+.cs-title { display:flex; align-items:center; gap:8px; flex:1; min-width:0; }
+.cs-drag-hint { display:inline-flex; align-items:center; color:#9ea3ad; flex-shrink:0; }
+.cs-drag-hint svg { width:14px; height:14px; }
 .cs-ic-round { width:32px; height:32px; border-radius:8px; background:#e9f2ff; color:#365eef; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
 .cs-ic-round svg { width:16px; height:16px; }
+.cs-title-text { display:flex; align-items:center; min-width:0; }
+.cs-title-main { font-size:15px; font-weight:600; color:#222631; }
+.cs-head-top .m-close { width:28px; height:28px; }
 .cs-title-text { flex:1; min-width:0; }
 .cs-title-main { font-size:15px; font-weight:600; color:#222631; }
 .cs-title-sub { font-size:11px; color:#6d7381; margin-top:2px; line-height:1.4; }
-.cs-filter-bar { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:10px 0 0; flex-wrap:wrap; }
-.cs-filter-bar .cr-filter-group { flex-wrap:wrap; }
-.cs-filter-bar .btn-outline { white-space:nowrap; }
-.cs-subfilters { display:flex; gap:6px; padding-top:8px; }
+/* commentSide 패널 · 필터 영역 (헤더 밖으로 이동됨) */
+.cs-subfilters { display:flex; gap:6px; padding:10px 16px 6px; }
 .cs-subfilters .cls-select-mini { flex:1; height:30px; font-size:11px; }
+.cs-filter-bar { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:6px 16px 10px; border-bottom:1px solid #f1f3f5; flex-wrap:wrap; }
+.cs-filter-bar .cr-filter-group { flex-wrap:wrap; }
+.cs-filter-bar .btn-outline { white-space:nowrap; font-size:11px; padding:0 8px; }
 
 /* [v4] 댓글 재열기 플로팅 버튼 */
 .cmt-reopen-fab { position:fixed; right:24px; bottom:80px; width:56px; height:56px; border-radius:50%; background:#365eef; color:#fff; border:none; box-shadow:0 6px 20px rgba(65,107,255,.35); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; z-index:150; transition:transform .12s, box-shadow .12s; }
@@ -1601,10 +1843,10 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
   <div class="class-tabs">
     <div class="tab-band-inner">
       <div class="ct active" data-subtab="home" onclick="switchOwnerSubTab('home', this)">수업 홈</div>
-      <div class="ct" onclick="notReady('수행평가 설계')">수행평가 설계</div>
-      <div class="ct" onclick="notReady('과제물 관리')">과제물 관리</div>
-      <div class="ct" onclick="notReady('수행평가 채점')">수행평가 채점</div>
-      <div class="ct" onclick="notReady('세부능력 및 특기사항 지원')">세부능력 및 특기사항 지원</div>
+      <div class="ct" onclick="goScene('eval-plan-list')">수행평가 설계</div>
+      <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
+      <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
+      <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
       <div class="ct tab-cr" data-subtab="cr" onclick="switchOwnerSubTab('cr', this)">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
@@ -1728,48 +1970,33 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
         <div class="cr-teacher-list">
           <div class="cr-teacher-row">
             <div class="rv-avatar" style="background:#eefcf4;color:#27724b"><i data-lucide="user"></i></div>
-            <div class="crt-info">
-              <div class="crt-name">김민준 선생님 <span class="crt-email">minjoon@naver.com</span> <span class="crt-subj">국어</span></div>
-              <div class="crt-meta">공유 범위 : <b>수업 + 세특</b> · 남긴 댓글 <b>5개</b></div>
+            <div class="crt-info-line">
+              <span class="crt-name">김민준 선생님</span>
+              <span class="crt-email">minjoon@naver.com</span>
+              <span class="crt-subj">국어</span>
+              <span class="crt-meta">공유 범위 : <b>수업 + 세특</b> · 작성한 댓글 <b>5개</b></span>
             </div>
-            <div class="rv-menu-wrap">
-              <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
-              <div class="rv-menu">
-                <button onclick="notReady('공유 범위 변경')"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
-                <div class="rv-menu-div"></div>
-                <button class="danger" onclick="revokeReviewer('김민준')"><i data-lucide="user-x" style="width:15px;height:15px"></i>검토 권한 회수</button>
-              </div>
-            </div>
+            <button class="btn-outline btn-sm crt-revoke" onclick="revokeReviewer('김민준')"><i data-lucide="user-x" style="width:13px;height:13px"></i>권한 회수</button>
           </div>
           <div class="cr-teacher-row">
             <div class="rv-avatar"><i data-lucide="user"></i></div>
-            <div class="crt-info">
-              <div class="crt-name">박수정 선생님 <span class="crt-email">soojung@datadriven.kr</span> <span class="crt-subj">국어</span></div>
-              <div class="crt-meta">공유 범위 : <b>수업 + 세특</b> · 남긴 댓글 <b>8개</b></div>
+            <div class="crt-info-line">
+              <span class="crt-name">박수정 선생님</span>
+              <span class="crt-email">soojung@datadriven.kr</span>
+              <span class="crt-subj">국어</span>
+              <span class="crt-meta">공유 범위 : <b>수업 + 세특</b> · 작성한 댓글 <b>8개</b></span>
             </div>
-            <div class="rv-menu-wrap">
-              <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
-              <div class="rv-menu">
-                <button onclick="notReady('공유 범위 변경')"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
-                <div class="rv-menu-div"></div>
-                <button class="danger" onclick="revokeReviewer('박수정')"><i data-lucide="user-x" style="width:15px;height:15px"></i>검토 권한 회수</button>
-              </div>
-            </div>
+            <button class="btn-outline btn-sm crt-revoke" onclick="revokeReviewer('박수정')"><i data-lucide="user-x" style="width:13px;height:13px"></i>권한 회수</button>
           </div>
           <div class="cr-teacher-row">
             <div class="rv-avatar" style="background:#fff7ed;color:#ea580c"><i data-lucide="user"></i></div>
-            <div class="crt-info">
-              <div class="crt-name">이지혜 선생님 <span class="crt-email">jihye.lee@test.clipo.ai</span> <span class="crt-subj">역사</span></div>
-              <div class="crt-meta">공유 범위 : <b>수업</b> · 남긴 댓글 <b>0개</b></div>
+            <div class="crt-info-line">
+              <span class="crt-name">이지혜 선생님</span>
+              <span class="crt-email">jihye.lee@test.clipo.ai</span>
+              <span class="crt-subj">역사</span>
+              <span class="crt-meta">공유 범위 : <b>수업</b> · 작성한 댓글 <b>0개</b></span>
             </div>
-            <div class="rv-menu-wrap">
-              <button class="btn-ghost btn-sm" onclick="toggleReviewerMenu(this, event)" title="검토자 관리"><i data-lucide="more-horizontal" style="width:16px;height:16px"></i></button>
-              <div class="rv-menu">
-                <button onclick="notReady('공유 범위 변경')"><i data-lucide="settings-2" style="width:15px;height:15px;color:#365eef"></i>공유 범위 변경</button>
-                <div class="rv-menu-div"></div>
-                <button class="danger" onclick="revokeReviewer('이지혜')"><i data-lucide="user-x" style="width:15px;height:15px"></i>검토 권한 회수</button>
-              </div>
-            </div>
+            <button class="btn-outline btn-sm crt-revoke" onclick="revokeReviewer('이지혜')"><i data-lucide="user-x" style="width:13px;height:13px"></i>권한 회수</button>
           </div>
         </div>
       </section>
@@ -1785,21 +2012,14 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
             </div>
           </div>
         </div>
-        <div class="cr-cmt-toolbar">
-          <div class="cr-filter-group">
-            <button class="cr-filter-btn active" data-filter="all" onclick="setCrFilter('all')">전체 <span class="cr-filter-n" id="cnAll">8</span></button>
-            <button class="cr-filter-btn" data-filter="unread" onclick="setCrFilter('unread')">안 읽음 <span class="cr-filter-n unread" id="cnUnread">5</span></button>
-            <button class="cr-filter-btn" data-filter="resolved" onclick="setCrFilter('resolved')">읽음 <span class="cr-filter-n resolved" id="cnResolved">2</span></button>
-          </div>
-          <button class="btn-outline btn-sm" onclick="markAllCmtRead()"><i data-lucide="check-check" style="width:13px;height:13px"></i>모두 읽음으로 처리</button>
-        </div>
+        <!-- 작성자·메뉴 필터 (위) -->
         <div class="cr-cmt-subfilters">
           <select class="cls-select-mini" id="crFilterAuthor" onchange="setCrAuthorFilter(this.value)">
             <option value="all">작성자: 전체</option>
+            <option value="홍길동">홍길동 선생님 (본인)</option>
             <option value="박수정">박수정 선생님</option>
             <option value="김민준">김민준 선생님</option>
             <option value="이지혜">이지혜 선생님</option>
-            <option value="홍길동">홍길동 선생님 (본인)</option>
           </select>
           <select class="cls-select-mini" id="crFilterMenu" onchange="setCrMenuFilter(this.value)">
             <option value="all">메뉴: 전체</option>
@@ -1807,6 +2027,15 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
             <option value="grading">채점</option>
             <option value="seteuk">세특</option>
           </select>
+        </div>
+        <!-- 전체/안읽음/읽음 상태 필터 (아래) -->
+        <div class="cr-cmt-toolbar">
+          <div class="cr-filter-group">
+            <button class="cr-filter-btn active" data-filter="all" onclick="setCrFilter('all')">전체 <span class="cr-filter-n" id="cnAll">8</span></button>
+            <button class="cr-filter-btn" data-filter="unread" onclick="setCrFilter('unread')">안 읽음 <span class="cr-filter-n unread" id="cnUnread">5</span></button>
+            <button class="cr-filter-btn" data-filter="resolved" onclick="setCrFilter('resolved')">읽음 <span class="cr-filter-n resolved" id="cnResolved">2</span></button>
+          </div>
+          <button class="btn-outline btn-sm" onclick="markAllCmtRead()"><i data-lucide="check-check" style="width:13px;height:13px"></i>모두 읽음으로 처리</button>
         </div>
         <div class="cr-comments-list" id="crCommentsList">
           <!-- 최신 5개 · JS 렌더링 -->
@@ -1971,11 +2200,8 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
   </div>
 </div>
 
-<!-- ================================================
-     SCENE 3b: Owner — 댓글 확인 화면 (보러가기 클릭 시)
-     → 수행평가 채점 탭으로 이동 + 댓글 사이드 패널 자동 오픈
-================================================ -->
-<div class="scene" id="scene-owner-comments-view">
+<!-- SCENE 3b (scene-owner-comments-view) 는 [시나리오 4] 삭제와 함께 제거됨 · 각 인디케이터별 [보러 가기 →]는 시나리오 3에서 확인 -->
+<div class="scene" id="scene-owner-comments-view-REMOVED" style="display:none" aria-hidden="true">
   <div class="class-tabs">
     <div class="tab-band-inner">
       <div class="ct" onclick="goScene('owner-class-shared')">수업 홈</div>
@@ -2139,22 +2365,25 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
           <div class="sec-item rv-item" data-ctx-type="design" data-eval="(고) 자기주도 독서 활동" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"design","eval":"(고) 자기주도 독서 활동"}'></span>
             <div class="sec-item-l"><div class="sec-item-nm">(고) 자기주도 독서 활동</div><div class="sec-item-desc">26.08.03 수정</div></div>
+            <div class="sec-item-c" data-cnt-for='{"type":"design","eval":"(고) 자기주도 독서 활동"}'></div>
             <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('design', '(고) 자기주도 독서 활동')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
           <div class="sec-item rv-item" data-ctx-type="design" data-eval="(고) 읽기 자료 분석을 통한 주제 통합 탐구" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"design","eval":"(고) 읽기 자료 분석을 통한 주제 통합 탐구"}'></span>
             <div class="sec-item-l"><div class="sec-item-nm">(고) 읽기 자료 분석을 통한 주제 통합 탐구</div><div class="sec-item-desc">26.07.11 수정</div></div>
+            <div class="sec-item-c" data-cnt-for='{"type":"design","eval":"(고) 읽기 자료 분석을 통한 주제 통합 탐구"}'></div>
             <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('design', '(고) 읽기 자료 분석을 통한 주제 통합 탐구')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
           <div class="sec-item rv-item" data-ctx-type="design" data-eval="(고) 문학 작품 감상 및 비평문 쓰기" onclick="rvFilterByItem(this)">
             <span class="rv-left-dot" data-cnt-for='{"type":"design","eval":"(고) 문학 작품 감상 및 비평문 쓰기"}'></span>
             <div class="sec-item-l"><div class="sec-item-nm">(고) 문학 작품 감상 및 비평문 쓰기</div><div class="sec-item-desc">26.07.14 수정</div></div>
+            <div class="sec-item-c" data-cnt-for='{"type":"design","eval":"(고) 문학 작품 감상 및 비평문 쓰기"}'></div>
             <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); notReady('상세 뷰어')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
         </div>
       </div>
 
-      <!-- 채점 결과 -->
+      <!-- 채점 결과 · 수행평가 단위 통합 (반은 뷰어 내 드롭다운) -->
       <div class="sec">
         <div class="sec-hd" onclick="toggleSec(this)">
           <div class="sec-hd-l">
@@ -2164,69 +2393,35 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
           <div class="sec-hd-r"><span class="chev"><i data-lucide="chevron-down"></i></span></div>
         </div>
         <div class="sec-body">
-          <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 자기주도 독서 활동" data-class="1-1" onclick="rvFilterByItem(this)">
-            <span class="rv-left-dot" data-cnt-for='{"type":"grading","eval":"(고) 자기주도 독서 활동","class":"1-1"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">(고) 자기주도 독서 활동 · 1-1반</div><div class="sec-item-desc">채점 현황 <b style="color:#222631">9/20</b>, 원점수 평균 <b style="color:#222631">51.1</b></div></div>
-            <div class="sec-item-r">
-              <button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-ai-summary', '(고) 자기주도 독서 활동:1-1')">AI 채점 결과 요약<i data-lucide="external-link"></i></button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-class-status', '(고) 자기주도 독서 활동:1-1')">학급 채점 현황<i data-lucide="external-link"></i></button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-student', '(고) 자기주도 독서 활동:1-1:10101')">학생별 상세 보기<i data-lucide="external-link"></i></button>
-            </div>
+          <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 자기주도 독서 활동" onclick="rvFilterByItem(this)">
+            <span class="rv-left-dot" data-cnt-for='{"type":"grading","eval":"(고) 자기주도 독서 활동"}'></span>
+            <div class="sec-item-l"><div class="sec-item-nm">(고) 자기주도 독서 활동</div><div class="sec-item-desc">학급 2개</div></div>
+            <div class="sec-item-c" data-cnt-for='{"type":"grading","eval":"(고) 자기주도 독서 활동"}'></div>
+            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-combined', '(고) 자기주도 독서 활동:1-1')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
-          <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 자기주도 독서 활동" data-class="1-10" onclick="rvFilterByItem(this)">
-            <span class="rv-left-dot" data-cnt-for='{"type":"grading","eval":"(고) 자기주도 독서 활동","class":"1-10"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">(고) 자기주도 독서 활동 · 1-10반</div><div class="sec-item-desc">채점 현황 <b style="color:#222631">0/2</b>, 원점수 평균 <b style="color:#222631">—</b></div></div>
-            <div class="sec-item-r">
-              <button class="sec-item-link" disabled style="opacity:.5;cursor:not-allowed">AI 채점 결과 요약</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학급 채점 현황')">학급 채점 현황</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학생별 상세 보기')">학생별 상세 보기</button>
-            </div>
-          </div>
-          <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 읽기 자료 분석" data-class="1-1" onclick="rvFilterByItem(this)">
-            <span class="rv-left-dot" data-cnt-for='{"type":"grading","eval":"(고) 읽기 자료 분석","class":"1-1"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">(고) 읽기 자료 분석 · 1-1반</div><div class="sec-item-desc">채점 현황 <b style="color:#222631">20/20</b>, 원점수 평균 <b style="color:#222631">24.7</b></div></div>
-            <div class="sec-item-r">
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('AI 채점 결과 요약')">AI 채점 결과 요약</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학급 채점 현황')">학급 채점 현황</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학생별 상세 보기')">학생별 상세 보기</button>
-            </div>
-          </div>
-          <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 읽기 자료 분석" data-class="1-10" onclick="rvFilterByItem(this)">
-            <span class="rv-left-dot" data-cnt-for='{"type":"grading","eval":"(고) 읽기 자료 분석","class":"1-10"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">(고) 읽기 자료 분석 · 1-10반</div><div class="sec-item-desc">채점 현황 <b style="color:#222631">2/2</b>, 원점수 평균 <b style="color:#222631">23.9</b></div></div>
-            <div class="sec-item-r">
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('AI 채점 결과 요약')">AI 채점 결과 요약</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학급 채점 현황')">학급 채점 현황</button>
-              <button class="sec-item-link" onclick="event.stopPropagation(); notReady('학생별 상세 보기')">학생별 상세 보기</button>
-            </div>
+          <div class="sec-item rv-item" data-ctx-type="grading" data-eval="(고) 읽기 자료 분석" onclick="rvFilterByItem(this)">
+            <span class="rv-left-dot" data-cnt-for='{"type":"grading","eval":"(고) 읽기 자료 분석"}'></span>
+            <div class="sec-item-l"><div class="sec-item-nm">(고) 읽기 자료 분석</div><div class="sec-item-desc">학급 2개</div></div>
+            <div class="sec-item-c" data-cnt-for='{"type":"grading","eval":"(고) 읽기 자료 분석"}'></div>
+            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('grading-combined', '(고) 읽기 자료 분석:1-1')">자세히 보기<i data-lucide="external-link"></i></button></div>
           </div>
         </div>
       </div>
 
-      <!-- 세부능력 및 특기사항 지원 -->
-      <div class="sec">
-        <div class="sec-hd" onclick="toggleSec(this)">
+      <!-- 세부능력 및 특기사항 지원 · 하위 메뉴 없이 단일 행 (헤더에 컨트롤 통합) -->
+      <div class="sec sec-flat rv-item" data-ctx-type="seteuk" onclick="rvFilterByItem(this)">
+        <div class="sec-hd">
           <div class="sec-hd-l">
+            <span class="rv-left-dot" data-cnt-for='{"type":"seteuk"}'></span>
             <div class="ic" style="background:#faf5ff;color:#5d26c4"><i data-lucide="notebook-pen"></i></div>
-            <span class="sec-t">세부능력 및 특기사항 지원</span>
+            <div>
+              <span class="sec-t">세부능력 및 특기사항 지원</span>
+              <div class="sec-sub">학급 3개</div>
+            </div>
           </div>
-          <div class="sec-hd-r"><span class="chev"><i data-lucide="chevron-down"></i></span></div>
-        </div>
-        <div class="sec-body">
-          <div class="sec-item rv-item" data-ctx-type="seteuk" data-class="1학년 1반" onclick="rvFilterByItem(this)">
-            <span class="rv-left-dot" data-cnt-for='{"type":"seteuk","class":"1학년 1반"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">1학년 1반 · 20명</div></div>
-            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('seteuk-class', '1학년 1반')">자세히 보기<i data-lucide="external-link"></i></button></div>
-          </div>
-          <div class="sec-item rv-item" data-ctx-type="seteuk" data-class="1학년 10반" onclick="rvFilterByItem(this)">
-            <span class="rv-left-dot" data-cnt-for='{"type":"seteuk","class":"1학년 10반"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">1학년 10반 · 2명</div></div>
-            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('seteuk-class', '1학년 10반')">자세히 보기<i data-lucide="external-link"></i></button></div>
-          </div>
-          <div class="sec-item rv-item" data-ctx-type="seteuk" data-class="1학년 91반" onclick="rvFilterByItem(this)">
-            <span class="rv-left-dot" data-cnt-for='{"type":"seteuk","class":"1학년 91반"}'></span>
-            <div class="sec-item-l"><div class="sec-item-nm">1학년 91반 · 5명</div></div>
-            <div class="sec-item-r"><button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('seteuk-class', '1학년 91반')">자세히 보기<i data-lucide="external-link"></i></button></div>
+          <div class="sec-hd-r">
+            <div class="sec-item-c" data-cnt-for='{"type":"seteuk"}'></div>
+            <button class="sec-item-link" onclick="event.stopPropagation(); rvOpenDetail('seteuk-class', '1학년 1반')">자세히 보기<i data-lucide="external-link"></i></button>
           </div>
         </div>
       </div>
@@ -2239,27 +2434,37 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       </div>
     </div>
 
-    <!-- 우측 · 댓글 창 상시 고정 -->
+    <!-- 우측 · 댓글 창 상시 고정 · 접기/펼치기 지원 -->
     <aside class="rv-right">
+      <!-- 접힘 상태 · 우측 세로 띠 (클릭 시 펼침) -->
+      <button class="rv-collapsed-tab" onclick="toggleRvCollapse()" title="댓글 패널 펼치기">
+        <span class="collapsed-unread-badge" id="rvCollapsedBadge">0</span>
+        <i data-lucide="chevron-left"></i>
+        <i data-lucide="message-circle"></i>
+        <span class="rv-collapsed-label">댓글 내역</span>
+      </button>
       <div class="rv-right-hd">
         <div class="rv-right-title"><i data-lucide="message-circle"></i>댓글 내역</div>
-        <div class="rv-right-ctx-slot" id="rvCtxSlot" style="display:none">
-          <span class="rv-ctx-chip"><span class="rv-ctx-label" id="rvCtxLabel">전체</span> <button class="rv-ctx-x" onclick="rvClearFilter()" title="필터 해제"><i data-lucide="x"></i></button></span>
+        <button class="rv-toggle-btn" onclick="toggleRvCollapse()" title="댓글 패널 접기"><i data-lucide="chevrons-right"></i></button>
+        <!-- [옵션A 통합] 상단 필터 chip 제거 · 하단 rv-write-ctx 배너가 필터+작성 위치 통합 표시 -->
+      </div>
+      <!-- 입력창 · 상단 배치 -->
+      <div class="rv-new-cmt">
+        <div class="rv-write-ctx" id="rvWriteCtx"><!-- renderRvComments에서 갱신 --></div>
+        <textarea class="rv-new-cmt-input" id="rvNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
+        <div class="rv-new-cmt-actions">
+          <button class="btn-solid btn-sm" onclick="rvSubmitComment()">등록</button>
         </div>
       </div>
+      <!-- 필터 · 작성자/메뉴가 위, 전체/안읽음/읽음이 아래 (Sally 요청 순서 바꾸기) -->
       <div class="rv-filter-row">
-        <div class="cr-filter-group">
-          <button class="cr-filter-btn active" data-rv-filter="all" onclick="rvSetFilter('all')">전체 <span class="cr-filter-n" id="rvCnAll">0</span></button>
-          <button class="cr-filter-btn" data-rv-filter="unread" onclick="rvSetFilter('unread')">안 읽음 <span class="cr-filter-n unread" id="rvCnUnread">0</span></button>
-          <button class="cr-filter-btn" data-rv-filter="resolved" onclick="rvSetFilter('resolved')">읽음 <span class="cr-filter-n resolved" id="rvCnResolved">0</span></button>
-        </div>
         <div class="rv-subfilters">
           <select class="cls-select-mini" id="rvFilterAuthor" onchange="rvSetAuthorFilter(this.value)">
             <option value="all">작성자: 전체</option>
-            <option value="박수정">박수정 선생님</option>
+            <option value="박수정">박수정 선생님 (본인)</option>
+            <option value="홍길동">홍길동 선생님</option>
             <option value="김민준">김민준 선생님</option>
             <option value="이지혜">이지혜 선생님</option>
-            <option value="홍길동">홍길동 선생님</option>
           </select>
           <select class="cls-select-mini" id="rvFilterMenu" onchange="rvSetMenuFilter(this.value)">
             <option value="all">메뉴: 전체</option>
@@ -2268,16 +2473,13 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
             <option value="seteuk">세특</option>
           </select>
         </div>
-      </div>
-      <div class="rv-cmt-list" id="rvCommentsList"><!-- 렌더링 --></div>
-      <div class="rv-new-cmt">
-        <!-- 컨텍스트 배너 · 댓글이 남겨질 위치 명시 -->
-        <div class="rv-write-ctx" id="rvWriteCtx"><!-- renderRvComments에서 갱신 --></div>
-        <textarea class="rv-new-cmt-input" id="rvNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
-        <div class="rv-new-cmt-actions">
-          <button class="btn-solid btn-sm" onclick="rvSubmitComment()">등록</button>
+        <div class="cr-filter-group">
+          <button class="cr-filter-btn active" data-rv-filter="all" onclick="rvSetFilter('all')">전체 <span class="cr-filter-n" id="rvCnAll">0</span></button>
+          <button class="cr-filter-btn" data-rv-filter="unread" onclick="rvSetFilter('unread')">안 읽음 <span class="cr-filter-n unread" id="rvCnUnread">0</span></button>
+          <button class="cr-filter-btn" data-rv-filter="resolved" onclick="rvSetFilter('resolved')">읽음 <span class="cr-filter-n resolved" id="rvCnResolved">0</span></button>
         </div>
       </div>
+      <div class="rv-cmt-list" id="rvCommentsList"><!-- 렌더링 · 최신순 --></div>
     </aside>
   </div>
 </div>
@@ -2508,6 +2710,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
       <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
       <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+      <div class="ct tab-cr" onclick="goToOwnerCrTab()">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
   <div class="page-wrap">
@@ -2564,6 +2767,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
       <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
       <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+      <div class="ct tab-cr" onclick="goToOwnerCrTab()">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
   <div class="page-wrap">
@@ -2629,6 +2833,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="ct active">과제물 관리</div>
       <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
       <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+      <div class="ct tab-cr" onclick="goToOwnerCrTab()">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
   <div class="page-wrap">
@@ -2675,6 +2880,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="ct active">과제물 관리</div>
       <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
       <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+      <div class="ct tab-cr" onclick="goToOwnerCrTab()">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
   <div class="page-wrap">
@@ -2721,6 +2927,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
       <div class="ct active">수행평가 채점</div>
       <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+      <div class="ct tab-cr" onclick="goToOwnerCrTab()">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
   <div class="page-wrap">
@@ -2767,6 +2974,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
       <div class="ct active">수행평가 채점</div>
       <div class="ct" onclick="goScene('sr-list')">세부능력 및 특기사항 지원</div>
+      <div class="ct tab-cr" onclick="goToOwnerCrTab()">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
   <div class="page-wrap">
@@ -2801,79 +3009,200 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
   </div>
 </div>
 
-<!-- 화면 G: 학생 채점 상세 (김일일) -->
+<!-- 화면 G: 학생 채점 상세 (김일일 · Figma 284:3327 원본) -->
 <div class="scene" id="scene-student-scoring-detail">
-  <div style="background:#f6f7f9;min-height:calc(100vh - 56px);padding:16px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-      <div style="display:flex;align-items:center;gap:14px;">
-        <button class="btn-solid" style="background:#365eef" onclick="goScene('scoring-class-detail')"><i data-lucide="chevron-left" style="width:14px;height:14px"></i>목록으로</button>
-        <select class="obs-select" style="width:220px;height:38px">
-          <option>10101 김일일 (완료)</option><option>10102 김이이 (완료)</option><option>10103 김삼삼 (완료)</option>
-        </select>
-        <span style="font-size:14px;color:#6d7381">20명 중 9명 채점 완료</span>
+  <!-- 상단 그레이딩 바 (Figma GradingBar_teacher) -->
+  <div class="osd-topbar">
+    <div class="osd-topbar-l">
+      <button class="osd-back" onclick="goScene('scoring-class-detail')"><i data-lucide="chevron-left"></i>목록으로</button>
+      <select class="osd-student-sel">
+        <option>10101 김일일 (완료)</option>
+        <option>10102 김이이 (완료)</option>
+        <option>10103 김삼삼 (완료)</option>
+        <option>10104 김사사 (완료)</option>
+        <option>10105 김오오 (완료)</option>
+        <option>10108 김팔팔 (미채점)</option>
+        <option>10111 김하나 (확인 필요)</option>
+      </select>
+      <span class="osd-count">20명 중 9명 채점 완료</span>
+    </div>
+    <div class="osd-topbar-r">
+      <button class="osd-nav-btn"><i data-lucide="chevron-left"></i>이전 학생</button>
+      <button class="osd-nav-btn">다음 학생<i data-lucide="chevron-right"></i></button>
+      <button class="osd-icon-btn" title="다운로드"><i data-lucide="download"></i></button>
+      <button class="osd-save-btn"><i data-lucide="check"></i>저장 후 다음</button>
+    </div>
+  </div>
+
+  <div class="osd-body">
+    <!-- 좌 · 학생 과제물 뷰어 -->
+    <div class="osd-left">
+      <!-- 파일 탭 -->
+      <div class="osd-file-tabs">
+        <div class="osd-file-tab active">클리포를 통한 제출</div>
+        <div class="osd-file-tab">10101_김기덕_과제..</div>
+        <div class="osd-file-tab">10101_김기덕_과제..</div>
       </div>
-      <div style="display:flex;align-items:center;gap:14px;font-size:14px;color:#6d7381">
-        <button class="btn-ghost btn-sm">← 이전 학생</button>
-        <span>|</span>
-        <button class="btn-ghost btn-sm">다음 학생 →</button>
-        <button class="btn-outline btn-sm"><i data-lucide="download" style="width:13px;height:13px"></i></button>
-        <button class="btn-solid btn-sm">저장 후 다음 →</button>
+      <!-- PDF 툴바 -->
+      <div class="osd-pdf-toolbar">
+        <span class="osd-pdf-meta">03/21 14:00 업로드</span>
+        <div class="osd-pdf-nav">
+          <button><i data-lucide="chevron-left"></i></button>
+          <span><b>4</b> / 12</span>
+          <button><i data-lucide="chevron-right"></i></button>
+          <button><i data-lucide="rotate-cw"></i></button>
+          <span>100%</span>
+          <button><i data-lucide="zoom-in"></i></button>
+          <button><i data-lucide="zoom-out"></i></button>
+        </div>
+      </div>
+      <!-- 과제물 표시 영역 (placeholder) -->
+      <div class="osd-pdf-viewer">
+        <div class="osd-pdf-page">
+          <i data-lucide="image"></i>
+        </div>
       </div>
     </div>
 
-    <div class="stu-scoring-wrap">
-      <div class="stu-pdf-panel">
-        <div class="stu-pdf-hd"><span>김수_260616업로드 · 07/09 16:04 업로드</span><span>< 1 / 2 > 100%</span></div>
-        <div class="stu-pdf-body">
-          <div style="border:1px solid #dde1e8;padding:20px;background:#fff">
-            <div style="font-weight:600;margin-bottom:10px">2학기 독서 수행평가</div>
-            <div style="text-align:center;font-size:20px;font-weight:600;padding:14px;border:1px solid #222631;margin-bottom:20px">독후 활동 보고서</div>
-            <div style="font-weight:600;margin-bottom:8px">1. 책 선정 이유 <span style="font-weight:400;font-size:13px;color:#6d7381">(왜 이 책을 골랐는지, 읽기 전 기대했던 점을 작성해 봅시다.)</span></div>
-            <div style="border:1px solid #dde1e8;padding:10px;min-height:100px;font-family:cursive;color:#3b3f4c;line-height:1.8">내가 '사라진 스푼'을 고른 이유는 원소에 대한 다양한 이야기가 얽혀있다는 점에 흥미가 갔기 때문이다. 그저 과학적 지식인줄 알았던 주기율표에 대해 다양한 이야기가 있다는 것이 신기했고 궁금해져서 선택하였다. 또 이 책을 통해 내가 화학에 대해 가져야 할 태도를 배울 수 있기를 기대하면서 이 책을 골랐다.</div>
-            <div style="font-weight:600;margin:20px 0 8px">2. 핵심 내용 요약 <span style="font-weight:400;font-size:13px;color:#6d7381">(책의 주요 주장과 근거, 핵심 개념, 주제 등을 요약해 봅시다.)</span></div>
-            <div style="border:1px solid #dde1e8;padding:10px;min-height:100px;font-family:cursive;color:#3b3f4c;line-height:1.8">'사라진 스푼'은 각 원소들에 대한 역사와 이야기를 나타내고 있다. 주기율표가 어떻게 탄생하기 되었는지와 멘델레예프가 주기율표를 만든 후 남은 원소들을 다양한 과학자들이 찾는 과정을 담고 있고 또한 그 원소들이 우리 인간 문명에 어떠한 영향을 끼쳤는지를 나타내고 있다. 예를 들어 우라늄과 플루토늄 같은 원소를 발견한 뒤 원자폭탄 발명에 영향을 미쳐 전쟁에도 큰 영향...</div>
-          </div>
+    <!-- 우 · 채점 패널 -->
+    <div class="osd-right">
+      <!-- 총점 + 상태 라디오 -->
+      <div class="osd-score-hd">
+        <div class="osd-total">총점 <b>54</b> / 60 점 <span class="grd">(A)</span></div>
+        <div class="osd-status-radio">
+          <label class="osd-radio active"><input type="radio" name="stu-st" checked><span class="dot"></span>채점 진행</label>
+          <label class="osd-radio"><input type="radio" name="stu-st"><span class="dot"></span>미제출</label>
+          <label class="osd-radio"><input type="radio" name="stu-st"><span class="dot"></span>미응시</label>
         </div>
       </div>
 
-      <div class="stu-scoring-panel">
-        <div class="stu-total-hd">
-          <div class="stu-total">총점 <b>54</b> / 60 점</div>
-          <div class="stu-status-radio">
-            <label><input type="radio" name="stu-st" checked>채점 진행</label>
-            <label><input type="radio" name="stu-st">미응시</label>
-            <label><input type="radio" name="stu-st">미제출</label>
+      <!-- 점수 및 채점근거 섹션 -->
+      <section class="osd-sec">
+        <div class="osd-sec-hd">
+          <i data-lucide="circle-check-big" style="color:#365eef"></i>
+          <span class="osd-sec-t">점수 및 채점근거</span>
+          <button class="osd-info-btn" title="도움말"><i data-lucide="help-circle"></i></button>
+        </div>
+        <div class="osd-sec-toolbar">
+          <label class="osd-cb"><input type="checkbox" checked><span class="dot"></span>채점근거 같이보기</label>
+          <div class="osd-sec-tools">
+            <button class="osd-tool-btn"><i data-lucide="check"></i>AI 점수 적용</button>
+            <button class="osd-tool-btn"><i data-lucide="rotate-ccw"></i>점수 재설정</button>
           </div>
         </div>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-          <div style="font-size:16px;font-weight:600">채점 결과</div>
-          <button class="btn-outline btn-sm"><i data-lucide="check" style="width:12px;height:12px"></i>AI 점수 적용</button>
-        </div>
-        <div style="border:1px solid #f1f3f5;border-radius:8px;padding:12px 14px;margin-bottom:12px"><div style="font-size:13px;font-weight:500;color:#6d7381;margin-bottom:2px">채점기준</div></div>
-
-        <div class="stu-crit-item"><div class="stu-crit-nm">책 선정 이유</div><div class="stu-score-pills"><div class="stu-score-pill on">10</div><div class="stu-score-pill">8</div><div class="stu-score-pill">6</div></div></div>
-        <div class="stu-crit-item"><div class="stu-crit-nm">핵심 내용 요약</div><div class="stu-score-pills"><div class="stu-score-pill">10</div><div class="stu-score-pill on">8</div><div class="stu-score-pill">6</div></div></div>
-        <div class="stu-crit-item"><div class="stu-crit-nm">생각의 변화</div><div class="stu-score-pills"><div class="stu-score-pill on">10</div><div class="stu-score-pill">8</div><div class="stu-score-pill">6</div></div></div>
-        <div class="stu-crit-item"><div class="stu-crit-nm">진로·관심사와의 연계</div><div class="stu-score-pills"><div class="stu-score-pill on">10</div><div class="stu-score-pill">8</div><div class="stu-score-pill">6</div></div></div>
-        <div class="stu-crit-item"><div class="stu-crit-nm">종합 평가·후속 탐구 계획</div><div class="stu-score-pills"><div class="stu-score-pill">10</div><div class="stu-score-pill on">8</div><div class="stu-score-pill">6</div></div></div>
-        <div class="stu-crit-item"><div class="stu-crit-nm">보고서 구성 및 형식</div><div class="stu-score-pills"><div class="stu-score-pill">10</div><div class="stu-score-pill on">8</div><div class="stu-score-pill">6</div></div></div>
-
-        <div style="background:#f4f8ff;border-radius:8px;padding:14px;margin-top:16px">
-          <div style="font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px"><i data-lucide="sparkles" style="width:15px;height:15px;color:#365eef"></i>AI 채점 근거 및 피드백</div>
-          <div style="display:flex;gap:6px;margin-bottom:10px">
-            <button class="btn-subtle btn-sm" style="flex:1">과제물 분석 AI</button>
-            <button class="btn-outline btn-sm" style="flex:1">루브릭 기반 AI</button>
+        <div class="osd-crit">
+          <div class="osd-crit-nm">1) 책 선정 이유</div>
+          <div class="osd-pills">
+            <button class="osd-pill on">10</button>
+            <button class="osd-pill">8</button>
+            <button class="osd-pill">6</button>
           </div>
-          <div style="font-size:13px;color:#3b3f4c;line-height:1.6">응답에서 원소에 대한 다양한 이야기에 흥미를 느껴 책을 선택했다는 동기를 분명히 밝히고 있음. 단순한 과학 지식으로만 알았던 주기율표에 숨은 '다양한 이야기'에 대한 호기심을 이유로 제시하여 작품의 내용 방향성과 연결하고 있음…</div>
+          <div class="osd-rationale">『파친코』(이민진)를 선택한 계기를 "조부모님이 겪은 재일교포 역사에 대한 관심"으로 구체적으로 서술함. 작품 주제(정체성·이주)와 자신의 진로(국제학) 관련성이 명확히 드러나 선택 이유의 타당성이 분명함.</div>
         </div>
 
-        <div style="margin-top:16px">
-          <div style="font-size:14px;font-weight:600;margin-bottom:8px">선생님 직접 피드백</div>
-          <textarea style="width:100%;min-height:80px;border:1px solid #d9d9d9;border-radius:6px;padding:10px 12px;font-family:inherit;font-size:14px" placeholder="채점 완료 시, 학생에게 제공되는 과제 피드백 내용입니다."></textarea>
-          <div style="text-align:right;font-size:11px;color:#9ea3ad;margin-top:4px">0자 / 0 byte</div>
+        <div class="osd-crit">
+          <div class="osd-crit-nm">2) 핵심 내용 요약</div>
+          <div class="osd-pills">
+            <button class="osd-pill">10</button>
+            <button class="osd-pill on">8</button>
+            <button class="osd-pill">6</button>
+          </div>
+          <div class="osd-rationale">선자, 요셉, 노아, 모자수 3대에 걸친 서사를 시간순으로 요약함. 다만 도쿄 이주 이후 1930~40년대 재일한인 정책·사회적 배경 설명이 다소 축약되어 있어 8점으로 조정.</div>
         </div>
-      </div>
+
+        <div class="osd-crit">
+          <div class="osd-crit-nm">3) 생각의 변화</div>
+          <div class="osd-pills">
+            <button class="osd-pill on">10</button>
+            <button class="osd-pill">8</button>
+            <button class="osd-pill">6</button>
+          </div>
+          <div class="osd-rationale">독서 전 "재일교포 = 사회적 편견의 대상"이라는 단편적 인식에서, 독서 후 "역사적 맥락 속 정체성 형성 과정"으로 확장된 변화를 구체 사례와 함께 서술함. 근거가 충분해 10점으로 상향.</div>
+        </div>
+
+        <div class="osd-crit">
+          <div class="osd-crit-nm">4) 진로·관심사와의 연계</div>
+          <div class="osd-pills">
+            <button class="osd-pill">10</button>
+            <button class="osd-pill on">8</button>
+            <button class="osd-pill">6</button>
+          </div>
+          <div class="osd-rationale">국제학 관심과 연계하여 이주민 정책 문제의식을 제시함. 다만 구체적 진학 계획·향후 학습 로드맵과의 연결이 다소 일반적임.</div>
+        </div>
+
+        <div class="osd-crit">
+          <div class="osd-crit-nm">5) 종합 평가·후속 탐구 계획</div>
+          <div class="osd-pills">
+            <button class="osd-pill">10</button>
+            <button class="osd-pill on">8</button>
+            <button class="osd-pill">6</button>
+          </div>
+          <div class="osd-rationale">『파친코』의 서사 구조가 세대 간 정체성 계승을 잘 드러낸다는 관점에서 종합 평가. 후속 탐구로 "한국계 미국인 문학과의 비교"를 제시했으나 구체적 방법론 서술은 다소 부족.</div>
+        </div>
+
+        <div class="osd-crit">
+          <div class="osd-crit-nm">6) 보고서 구성 및 양식</div>
+          <div class="osd-pills">
+            <button class="osd-pill on">10</button>
+            <button class="osd-pill">8</button>
+            <button class="osd-pill">6</button>
+          </div>
+          <div class="osd-rationale">도입-전개-정리 구조가 명확하고 분량 기준 준수. 맞춤법·문장 표현 정확하며 어휘 선택이 적절함.</div>
+        </div>
+
+        <div class="osd-ai-notice">
+          <i data-lucide="info"></i>
+          <span>AI Assistant의 채점 결과는 부정확할 수 있으며, 반드시 선생님의 최종 확인이 필요합니다.</span>
+        </div>
+      </section>
+
+      <!-- AI 피드백 섹션 -->
+      <section class="osd-sec">
+        <div class="osd-sec-hd">
+          <i data-lucide="bot" style="color:#365eef"></i>
+          <span class="osd-sec-t">AI 피드백</span>
+          <button class="osd-info-btn" title="도움말"><i data-lucide="help-circle"></i></button>
+        </div>
+        <div class="osd-ai-tabs">
+          <button class="osd-ai-tab active">과제물 분석 AI</button>
+          <button class="osd-ai-tab">루브릭 기반 AI</button>
+        </div>
+        <div class="osd-ai-box">
+          <div class="osd-ai-sub-hd">
+            <span class="osd-ai-sub-t">피드백 초안</span>
+            <div class="osd-ai-sub-radio">
+              <label class="osd-radio active"><input type="radio" name="osd-ai-sub" checked><span class="dot"></span>잘한 점·보완할 점</label>
+              <label class="osd-radio"><input type="radio" name="osd-ai-sub"><span class="dot"></span>채점요소별 보기</label>
+            </div>
+          </div>
+          <div class="osd-ai-txt">『파친코』를 통해 세대에 걸친 정체성 변화를 성찰한 점이 인상적입니다.<br><br>[잘한 점]<br>- 조부모 세대의 역사적 경험을 자신의 진로 관심과 연결한 관점이 신선함<br>- 3대(선자-노아-모자수)에 걸친 서사를 시간순으로 명확히 정리함<br>- 독서 전후 인식 변화를 구체적 사례와 함께 서술한 부분이 설득력 있음<br><br>[보완할 점]<br>- 도쿄 이주 이후 사회적 배경(1930~40년대 재일한인 정책)에 대한 서술이 축약되어 있어 보완 필요<br>- 후속 탐구 계획에서 "한국계 미국인 문학"과의 비교 방법이 구체화되면 좋겠음</div>
+          <div class="osd-ai-bottom">
+            <span class="osd-ai-meta">채점 수준 : 기본 값으로 채점</span>
+            <div class="osd-ai-bottom-btns">
+              <button class="osd-tool-btn"><i data-lucide="arrow-down-to-line"></i>피드백 옮기기</button>
+              <button class="osd-tool-btn primary"><i data-lucide="wand-sparkles"></i>다시 채점</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 선생님 직접 피드백 섹션 -->
+      <section class="osd-sec">
+        <div class="osd-sec-hd">
+          <i data-lucide="pen-line" style="color:#365eef"></i>
+          <span class="osd-sec-t">선생님 직접 피드백</span>
+          <button class="osd-info-btn" title="도움말"><i data-lucide="help-circle"></i></button>
+        </div>
+        <textarea class="osd-teacher-input" placeholder="채점 완료 시, 학생에게 제공되는 과제 피드백 내용입니다. AI 생성 기록을 참고하여 피드백을 작성해 보세요.">『파친코』를 자신의 진로 관심(국제학·이주민 정책)과 연결한 관점이 특히 좋았어요. 3대에 걸친 서사를 놓치지 않고 정리한 것도 훌륭합니다. 다음 독서에서는 소설 속 사회·역사적 배경을 조금 더 조사해서 근거로 활용해보면 서술이 한결 두터워질 거예요. 후속 탐구 주제로 제시한 "한국계 미국인 문학과의 비교"도 방법론을 구체화해서 실제로 진행해보길 기대합니다.</textarea>
+        <div class="osd-teacher-bottom">
+          <span class="osd-teacher-meta">217자 / 678 byte</span>
+          <div class="osd-ai-bottom-btns">
+            <button class="osd-tool-btn"><i data-lucide="save"></i>임시 저장</button>
+            <button class="osd-save-btn"><i data-lucide="check"></i>저장 후 다음</button>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </div>
@@ -2887,6 +3216,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="ct" onclick="goScene('hw-list')">과제물 관리</div>
       <div class="ct" onclick="goScene('scoring-list')">수행평가 채점</div>
       <div class="ct active">세부능력 및 특기사항 지원</div>
+      <div class="ct tab-cr" onclick="goToOwnerCrTab()">공동 평가<span class="beta-mark">Beta</span></div>
     </div>
   </div>
   <div class="page-wrap">
@@ -2895,31 +3225,155 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
     </div>
 
     <div class="section-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-        <select class="obs-select" style="width:140px;height:38px"><option>1학년 1반</option><option>1학년 10반</option></select>
-        <div style="display:flex;gap:6px"><button class="btn-outline btn-sm"><i data-lucide="eye" style="width:13px;height:13px"></i>점수 보이기</button><button class="btn-outline btn-sm"><i data-lucide="download" style="width:13px;height:13px"></i>전체 AI 기록 가져오기</button><button class="btn-solid btn-sm"><i data-lucide="check" style="width:13px;height:13px"></i>저장</button></div>
+      <!-- 툴바 (Figma 6143:25072 원본) -->
+      <div class="osr-toolbar">
+        <select class="obs-select" style="width:200px;height:38px">
+          <option>1학년 1반</option>
+          <option>1학년 10반</option>
+          <option>1학년 91반</option>
+        </select>
+        <div class="osr-toolbar-r">
+          <span class="osr-save-time"><i data-lucide="check-circle" style="width:13px;height:13px"></i>09/08 15:38 저장됨</span>
+          <button class="btn-outline btn-sm"><i data-lucide="eye" style="width:13px;height:13px"></i>점수 보이기</button>
+          <button class="btn-outline btn-sm"><i data-lucide="wand-sparkles" style="width:13px;height:13px"></i>전체 AI 기록 가져오기</button>
+          <button class="btn-solid btn-sm"><i data-lucide="check" style="width:13px;height:13px"></i>저장</button>
+          <button class="osd-icon-btn" style="background:#319d64;color:#fff" title="다운로드"><i data-lucide="download"></i></button>
+        </div>
       </div>
-      <table class="sr-table">
-        <thead><tr><th style="width:60px">학번</th><th style="width:70px">이름</th><th style="width:60px">총점</th><th>AI Assistant가 생성한 기록</th><th>선생님 직접 작성</th><th style="width:80px;text-align:center">기록 근거</th></tr></thead>
+
+      <table class="osr-table">
+        <colgroup>
+          <col style="width:70px"><col style="width:80px"><col style="width:70px">
+          <col><col><col style="width:90px">
+        </colgroup>
+        <thead><tr>
+          <th>학번</th><th>이름</th><th>총점</th>
+          <th>AI Assistant가 생성한 기록</th>
+          <th>선생님 직접 작성</th>
+          <th>기록 근거</th>
+        </tr></thead>
         <tbody>
           <tr>
-            <td>10101</td><td>김일일</td><td>54</td>
-            <td><div class="sr-content">작품의 주제와 화학공학 진로와의 연계를 단계적으로 정리함으로써 진로 의식을 바탕으로 독서를 설계하는 모습을 보여줌. 우라늄과 플루토늄, 원자폭탄 사례를 통해 기술 발전이 가져온 이익뿐 아니라 윤리적 책임을 함께 서술하고, 바나듐의 의약품 활용, 가돌리늄의 MRI 활용 등 구체적인 기술 적용 사례를 발췌·정리하여 화학공학자가 장래에 연구할 수 있는 이익 중심 기술의 방향성을 그려 냄으로써 진로 인식을 심화함…</div><div class="sr-actions-row"><span style="font-size:11px;color:#9ea3ad;margin-right:auto">1258 Byte</span><button class="sr-ic"><i data-lucide="thumbs-up"></i></button><button class="sr-ic"><i data-lucide="thumbs-down"></i></button><button class="sr-ic" style="background:#e9f2ff;color:#3151c4"><i data-lucide="wand-sparkles"></i></button><button class="sr-ic"><i data-lucide="copy"></i></button></div></td>
-            <td><div class="sr-content">작품의 주제와 화학공학 진로와의 연계를 단계적으로 정리함으로써 진로 의식을 바탕으로 독서를 설계하는 모습을 보여줌. 우라늄과 플루토늄, 원자폭탄 사례를 통해 기술 발전이 가져온 이익뿐 아니라 윤리적 책임을 함께 서술하고…</div><div style="font-size:11px;color:#9ea3ad;margin-top:6px">512자 · 1258 Byte</div></td>
-            <td style="text-align:center"><button class="hw-link" style="font-size:12px">→<br>기록 근거</button></td>
+            <td class="osr-c">10101</td>
+            <td class="osr-c">김일일</td>
+            <td class="osr-c osr-total">54</td>
+            <td class="osr-cell">
+              <div class="osr-ai-txt">『파친코』를 통해 3대에 걸친 재일교포 정체성 문제를 분석적으로 정리한 점이 두드러짐. 조부모의 이주 경험을 진로 관심(국제학)과 연결하여 사회사와 개인사의 접점을 파악하는 관점이 성숙하며, 후속 탐구로 한국계 미국인 문학과의 비교를 제시하여 확장적 사고 태도를 보임. 다만 도쿄 이주 이후 시대적 배경 설명은 다소 축약되어 심화 학습 여지가 있음. 서사 구조 파악과 자기 성찰을 균형 있게 담아낸 우수한 독서 활동.</div>
+              <div class="osr-cell-btm">
+                <span class="osr-byte">1258 Byte</span>
+                <button class="osr-ic" title="좋아요"><i data-lucide="thumbs-up"></i></button>
+                <button class="osr-ic" title="싫어요"><i data-lucide="thumbs-down"></i></button>
+                <button class="osr-ic active" title="다시 생성"><i data-lucide="wand-sparkles"></i>다시 생성</button>
+                <button class="osr-ic" title="복사"><i data-lucide="copy"></i></button>
+              </div>
+            </td>
+            <td class="osr-cell">
+              <div class="osr-teacher-txt">『파친코』(이민진)를 통해 재일교포 3대의 정체성 형성 과정을 자신의 진로 관심인 국제학·이주민 정책과 연계하여 서술함. 조부모 세대의 역사적 경험을 논거로 삼아 사회사와 개인사의 접점을 분석하는 관점이 돋보이며, 후속 탐구 주제로 한국계 미국인 문학과의 비교를 제시하여 확장적 사고 태도를 보여줌. 도쿄 이주 이후 시대적 배경 서술이 다소 축약된 점은 아쉬우나 전체 서사 구조를 정합적으로 파악한 점에서 자기주도적 독서 역량이 우수함.</div>
+              <div class="osr-teacher-meta">280자 · 812 Byte</div>
+            </td>
+            <td class="osr-c">
+              <button class="osr-evidence"><i data-lucide="chevron-right"></i><span>기록 근거</span></button>
+            </td>
           </tr>
+
           <tr>
-            <td>10102</td><td>김이이</td><td>52</td>
-            <td><div class="sr-content">'자기주도 독서 활동의 과제'에서 책 선택 이유를 미술 입시 준비 상황과 평소 미술에 대한 높은 관심과 연결하여 설득력 있게 제시하고, '내가 하는 일이 세상을 바꿀 수 있다'는 제목에서 느낀 놀라움과 궁금증을 독서 전 기대와 연계해 구체적인 내적 독백 형식으로 서술하여 자신의 기존 인식과 가치관을 분명히 드러냄…</div><div class="sr-actions-row"><span style="font-size:11px;color:#9ea3ad;margin-right:auto">1105 Byte</span><button class="sr-ic"><i data-lucide="thumbs-up"></i></button><button class="sr-ic"><i data-lucide="thumbs-down"></i></button><button class="sr-ic" style="background:#e9f2ff;color:#3151c4"><i data-lucide="wand-sparkles"></i></button><button class="sr-ic"><i data-lucide="copy"></i></button></div></td>
-            <td><div class="sr-content">전지 기술과 인공광합성에 대한 높은 관심을 바탕으로 관련 도서와 읽기 자료를 스스로 선정해 꾸준히 탐독하고 핵심 내용을 정리하며, 과제 문항을 성실히 완성하고 논리적 구성을 유지하려는 태도를 보임…</div><div style="font-size:11px;color:#9ea3ad;margin-top:6px">487자 · 1105 Byte</div></td>
-            <td style="text-align:center"><button class="hw-link" style="font-size:12px">→<br>기록 근거</button></td>
+            <td class="osr-c">10102</td>
+            <td class="osr-c">김이이</td>
+            <td class="osr-c osr-total">52</td>
+            <td class="osr-cell">
+              <div class="osr-ai-txt">『데미안』(헤르만 헤세)을 통해 자아 탐색이라는 청소년기 과제에 진지하게 접근한 점이 우수함. 이원적 세계관을 자신의 성장 경험과 연결하려는 시도가 진솔하며, 심리학 진로 관심 속에서 융의 개성화 이론 학습 계획을 구체적으로 제시함. 상징적 서사에 대한 이해도가 높으나 후반부 에바 부인 등장 이후 분석은 다소 얕아 심화 여지 있음.</div>
+              <div class="osr-cell-btm">
+                <span class="osr-byte">1024 Byte</span>
+                <button class="osr-ic"><i data-lucide="thumbs-up"></i></button>
+                <button class="osr-ic"><i data-lucide="thumbs-down"></i></button>
+                <button class="osr-ic active"><i data-lucide="wand-sparkles"></i>다시 생성</button>
+                <button class="osr-ic"><i data-lucide="copy"></i></button>
+              </div>
+            </td>
+            <td class="osr-cell">
+              <div class="osr-teacher-txt">『데미안』(헤르만 헤세)을 통해 자아 탐색이라는 청소년기 과제에 진지하게 접근함. 이원적 세계관을 자신의 성장 경험과 연결하여 서술한 점이 인상적이며, 심리학 진로 관심과의 연계 속에서 융의 개성화 이론에 대한 심화 학습 계획을 제시함. 상징적 서사에 대한 이해와 자기 반성적 태도가 균형 있게 드러남.</div>
+              <div class="osr-teacher-meta">168자 · 490 Byte</div>
+            </td>
+            <td class="osr-c">
+              <button class="osr-evidence"><i data-lucide="chevron-right"></i><span>기록 근거</span></button>
+            </td>
           </tr>
-          <tr><td colspan="6" style="text-align:center;color:#9ea3ad;font-size:12px;padding:14px;">⋯ 나머지 학생 (데모 간소화)</td></tr>
+
+          <tr>
+            <td class="osr-c">10103</td>
+            <td class="osr-c">김삼삼</td>
+            <td class="osr-c osr-total">52</td>
+            <td class="osr-cell">
+              <div class="osr-ai-txt">『아몬드』(손원평)를 통해 감정 인식이라는 문학적 주제를 진로(교육학)와 진솔하게 연결한 점이 돋보임. 후속 탐구로 감정 발달 심리학 관련 문헌 조사 계획을 구체적 도서까지 언급하여 학습 지향성이 뚜렷함. 곤이와 윤재의 관계 변화 분석에서 타인 이해의 관점 전환을 논리적으로 정리한 점 우수.</div>
+              <div class="osr-cell-btm">
+                <span class="osr-byte">896 Byte</span>
+                <button class="osr-ic"><i data-lucide="thumbs-up"></i></button>
+                <button class="osr-ic"><i data-lucide="thumbs-down"></i></button>
+                <button class="osr-ic active"><i data-lucide="wand-sparkles"></i>다시 생성</button>
+                <button class="osr-ic"><i data-lucide="copy"></i></button>
+              </div>
+            </td>
+            <td class="osr-cell">
+              <div class="osr-teacher-txt">『아몬드』(손원평)를 읽고 감정 인식이라는 문학적 주제를 자신의 진로(교육학)와 진솔하게 연결함. 후속 탐구로 감정 발달 심리학 관련 문헌 조사 계획을 구체적으로 제시하여 학습 지향성을 잘 드러내며, 특히 곤이와 윤재의 관계 변화에 대한 서술에서 타인 이해의 관점 전환을 논리적으로 정리함.</div>
+              <div class="osr-teacher-meta">164자 · 478 Byte</div>
+            </td>
+            <td class="osr-c">
+              <button class="osr-evidence"><i data-lucide="chevron-right"></i><span>기록 근거</span></button>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="osr-c">10104</td>
+            <td class="osr-c">김사사</td>
+            <td class="osr-c osr-total">48</td>
+            <td class="osr-cell">
+              <div class="osr-ai-txt">『82년생 김지영』(조남주)을 통해 세대별 여성 서사의 사회적 맥락을 정리하고 진로(사회복지) 관심과 연계한 시도가 우수함. 통계 자료와 소설 서사를 병렬적으로 활용하여 문제의식을 뒷받침한 점 인상적. 대안 제시 부분은 다소 원론적이나 사회 문제 인식의 폭이 확장됨.</div>
+              <div class="osr-cell-btm">
+                <span class="osr-byte">768 Byte</span>
+                <button class="osr-ic"><i data-lucide="thumbs-up"></i></button>
+                <button class="osr-ic"><i data-lucide="thumbs-down"></i></button>
+                <button class="osr-ic active"><i data-lucide="wand-sparkles"></i>다시 생성</button>
+                <button class="osr-ic"><i data-lucide="copy"></i></button>
+              </div>
+            </td>
+            <td class="osr-cell">
+              <div class="osr-teacher-txt">『82년생 김지영』(조남주)을 통해 세대별 여성 서사의 사회적 맥락을 정리하고, 자신의 진로(사회복지) 관심과 연계함. 통계 자료와 소설 서사를 병렬적으로 활용하여 문제의식을 뒷받침한 점이 우수하나, 대안 제시 부분이 다소 원론적임.</div>
+              <div class="osr-teacher-meta">132자 · 386 Byte</div>
+            </td>
+            <td class="osr-c">
+              <button class="osr-evidence"><i data-lucide="chevron-right"></i><span>기록 근거</span></button>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="osr-c">10105</td>
+            <td class="osr-c">김오오</td>
+            <td class="osr-c osr-total">56</td>
+            <td class="osr-cell">
+              <div class="osr-ai-txt">『사피엔스』(유발 하라리)를 통해 인지 혁명·농업 혁명·과학 혁명의 흐름을 자기 언어로 재구성한 통합적 이해도가 우수함. "허구의 힘" 개념을 진로 관심(경제학)의 화폐·기업 개념으로 확장한 점 창의적. 방대한 시간축을 요약하면서도 핵심 개념을 놓치지 않는 정리력이 돋보임.</div>
+              <div class="osr-cell-btm">
+                <span class="osr-byte">824 Byte</span>
+                <button class="osr-ic"><i data-lucide="thumbs-up"></i></button>
+                <button class="osr-ic"><i data-lucide="thumbs-down"></i></button>
+                <button class="osr-ic active"><i data-lucide="wand-sparkles"></i>다시 생성</button>
+                <button class="osr-ic"><i data-lucide="copy"></i></button>
+              </div>
+            </td>
+            <td class="osr-cell">
+              <div class="osr-teacher-txt">『사피엔스』(유발 하라리)를 통해 인지 혁명·농업 혁명·과학 혁명의 흐름을 자기 언어로 재구성함. 특히 "허구의 힘"이라는 개념을 자신의 진로 관심(경제학) 속 화폐·기업 개념으로 확장하여 설명한 점이 인상적이며, 방대한 시간축을 요약하면서도 핵심 개념을 놓치지 않는 정리력이 돋보임.</div>
+              <div class="osr-teacher-meta">156자 · 452 Byte</div>
+            </td>
+            <td class="osr-c">
+              <button class="osr-evidence"><i data-lucide="chevron-right"></i><span>기록 근거</span></button>
+            </td>
+          </tr>
+
+          <tr><td colspan="6" style="text-align:center;color:#9ea3ad;font-size:12px;padding:14px;">⋯ 나머지 학생 (데모 간소화 · 총 20명)</td></tr>
         </tbody>
       </table>
     </div>
 
-    <div style="background:#e9f2ff;border:1px solid #ccdfff;border-radius:8px;padding:12px 16px;margin-top:12px;display:flex;align-items:center;gap:8px;font-size:13px;color:#3151c4">
+    <div class="osr-hint">
       <i data-lucide="sparkles" style="width:15px;height:15px"></i>
       <span><b>AI 기록 다듬기</b>&nbsp;&nbsp;학생을 선택하고 요청사항을 자유롭게 입력해 AI 기록을 다듬어 보세요.</span>
       <button class="btn-solid btn-sm" style="margin-left:auto"><i data-lucide="user-plus" style="width:12px;height:12px"></i>학생 선택하기</button>
@@ -2944,20 +3398,75 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
 <footer class="site-footer">© 2026. Datadriven Inc. All rights reserved. · CLIPO 공동 평가 v0.4 목업</footer>
 
 <!-- ================================================
+     확인 다이얼로그 (권한 회수 · 삭제 등 · 재사용)
+================================================ -->
+<div class="cfm-modal" id="cfmModal" style="display:none" onclick="if(event.target===this)cfmClose()">
+  <div class="cfm-wrap">
+    <div class="cfm-ic" id="cfmIc"><i data-lucide="user-x"></i></div>
+    <div class="cfm-title" id="cfmTitle">권한 회수</div>
+    <div class="cfm-desc" id="cfmDesc">설명</div>
+    <div class="cfm-actions">
+      <button class="cfm-btn cfm-cancel" onclick="cfmClose()">아니오</button>
+      <button class="cfm-btn cfm-confirm" id="cfmConfirm">네, 회수합니다</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================
      플로팅 댓글 창 (오너 · 원본 화면에서 댓글 참조)
+     [6] 우측 댓글 패널과 동일 구조 · 헤더 · 입력창(상단) · 필터 · 리스트
 ================================================ -->
 <div class="fcw-panel" id="fcwPanel" style="display:none">
+  <!-- 접힘 상태 · 원형 파란 버튼 (드래그 이동 가능 · 클릭으로 펼침) -->
+  <button class="fcw-collapsed-tab" title="드래그하여 이동 · 클릭하여 펼치기">
+    <i data-lucide="message-square-quote"></i>
+    <span class="collapsed-unread-badge" id="fcwCollapsedBadge">0</span>
+  </button>
   <div class="fcw-hd">
     <div class="fcw-hd-l">
       <i data-lucide="message-square-quote"></i>
       <div>
-        <div class="fcw-hd-t">댓글 <span class="fcw-count">0개</span></div>
+        <div class="fcw-hd-t">댓글 내역 <span class="fcw-count">0개</span></div>
         <div class="fcw-ctx-label" title="">컨텍스트</div>
       </div>
     </div>
-    <button class="fcw-close" onclick="fcwClose()" title="닫기"><i data-lucide="x"></i></button>
+    <div style="display:flex;gap:2px;flex-shrink:0;">
+      <button class="fcw-close" onclick="fcwToggleCollapse()" title="접기"><i data-lucide="chevrons-right"></i></button>
+      <button class="fcw-close" onclick="fcwClose()" title="닫기"><i data-lucide="x"></i></button>
+    </div>
   </div>
-  <div class="fcw-body"><!-- 댓글 카드 --></div>
+  <!-- 입력창 상단 -->
+  <div class="fcw-new-cmt">
+    <div class="fcw-write-hint"><i data-lucide="at-sign"></i><span>지금 보고 있는 위치에 댓글이 남겨져요</span></div>
+    <textarea class="fcw-new-cmt-input" id="fcwNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
+    <div class="fcw-new-cmt-actions">
+      <button class="btn-solid btn-sm" onclick="fcwSubmitComment()">등록</button>
+    </div>
+  </div>
+  <!-- 필터 · 작성자/메뉴 위, 상태 아래 -->
+  <div class="fcw-filter-row">
+    <div class="fcw-subfilters">
+      <select class="cls-select-mini" id="fcwFilterAuthor" onchange="fcwSetAuthorFilter(this.value)">
+        <option value="all">작성자: 전체</option>
+        <option value="박수정">박수정 선생님</option>
+        <option value="김민준">김민준 선생님</option>
+        <option value="이지혜">이지혜 선생님</option>
+        <option value="홍길동">홍길동 선생님</option>
+      </select>
+      <select class="cls-select-mini" id="fcwFilterMenu" onchange="fcwSetMenuFilter(this.value)">
+        <option value="all">메뉴: 전체</option>
+        <option value="design">설계</option>
+        <option value="grading">채점</option>
+        <option value="seteuk">세특</option>
+      </select>
+    </div>
+    <div class="cr-filter-group">
+      <button class="cr-filter-btn active" data-fcw-filter="all" onclick="fcwSetFilter('all')">전체 <span class="cr-filter-n" id="fcwCnAll">0</span></button>
+      <button class="cr-filter-btn" data-fcw-filter="unread" onclick="fcwSetFilter('unread')">안 읽음 <span class="cr-filter-n unread" id="fcwCnUnread">0</span></button>
+      <button class="cr-filter-btn" data-fcw-filter="resolved" onclick="fcwSetFilter('resolved')">읽음 <span class="cr-filter-n resolved" id="fcwCnResolved">0</span></button>
+    </div>
+  </div>
+  <div class="fcw-body"><!-- 댓글 카드 · 최신순 --></div>
 </div>
 
 <!-- ================================================
@@ -2991,9 +3500,6 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
       <div class="field">
         <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;">
           <span>검토 요청할 선생님 <span style="color:#6d7381;font-weight:400">(현재 3명 선택됨)</span></span>
-        </div>
-        <div class="teacher-search">
-          <input class="text-input" placeholder="이름·아이디로 검색 (예: 박수정, minjoon@naver.com)">
         </div>
         <div class="teacher-list">
           <div class="t-item" onclick="toggleTeacher(this)">
@@ -3070,6 +3576,11 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
      Comment Side Panel (개선 v2 — 탭 정보 · 필터 · 확인 원버튼 · 대댓글)
 ================================================ -->
 <aside class="comment-side" id="commentSide">
+  <!-- 접힘 상태 · 원형 파란 버튼 (드래그 이동 가능 · 클릭으로 펼침) -->
+  <button class="cs-collapsed-tab" title="드래그하여 이동 · 클릭하여 펼치기">
+    <i data-lucide="message-circle"></i>
+    <span class="collapsed-unread-badge" id="csCollapsedBadge">0</span>
+  </button>
   <div class="cs-head" id="csHead">
     <div class="cs-head-top">
       <div class="cs-title">
@@ -3080,53 +3591,50 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
         </div>
       </div>
       <div style="display:flex;gap:2px;flex-shrink:0;">
-        <button class="m-close" onclick="toggleMinimize(event)" title="접기/펴기" id="minToggleBtn"><i data-lucide="chevron-down"></i></button>
-        <button class="m-close" onclick="hideCommentAll()" title="닫기"><i data-lucide="x"></i></button>
+        <button class="m-close" onclick="toggleMinimize(event)" title="원형으로 접기"><i data-lucide="x"></i></button>
       </div>
     </div>
     <!-- 현재 탭 컨텍스트 (숨김 · 데이터 매핑용) -->
     <span id="csTabName" style="display:none">수업 홈</span>
-    <!-- 필터 툴바 -->
-    <div class="cs-filter-bar">
-      <div class="cr-filter-group">
-        <button class="cr-filter-btn active" data-cs-filter="all" onclick="setCsFilter('all')">전체 <span class="cr-filter-n" id="csCnAll">0</span></button>
-        <button class="cr-filter-btn" data-cs-filter="unread" onclick="setCsFilter('unread')">안 읽음 <span class="cr-filter-n unread" id="csCnUnread">0</span></button>
-        <button class="cr-filter-btn" data-cs-filter="resolved" onclick="setCsFilter('resolved')">읽음 <span class="cr-filter-n resolved" id="csCnResolved">0</span></button>
-      </div>
-      <button class="btn-outline btn-sm" onclick="csMarkAllRead()"><i data-lucide="check-check" style="width:13px;height:13px"></i>모두 읽음으로 처리</button>
-    </div>
-    <div class="cs-subfilters">
-      <select class="cls-select-mini" id="csFilterAuthor" onchange="setCsAuthorFilter(this.value)">
-        <option value="all">작성자: 전체</option>
-        <option value="박수정">박수정 선생님</option>
-        <option value="김민준">김민준 선생님</option>
-        <option value="이지혜">이지혜 선생님</option>
-        <option value="홍길동">홍길동 선생님</option>
-      </select>
-      <select class="cls-select-mini" id="csFilterMenu" onchange="setCsMenuFilter(this.value)">
-        <option value="all">메뉴: 전체</option>
-        <option value="design">설계</option>
-        <option value="grading">채점</option>
-        <option value="seteuk">세특</option>
-      </select>
-    </div>
   </div>
   <div class="cs-scope-row" id="csScopeRow" style="display:none">
     <!-- (v2 legacy · v4에선 사용 안 함) -->
   </div>
-  <div class="cs-body" id="csBody">
-    <!-- 댓글 목록은 renderComments()에서 동적 렌더링됨 -->
-  </div>
+  <!-- 입력창 · 상단 배치 ([6]과 동일 순서) -->
   <div class="comment-write">
-    <div class="cw-context" id="cwContext">
-      <i data-lucide="corner-down-right"></i>
-      <span class="cxt-name" id="cwContextText">채점기준 A</span>
-      <button class="ct-x" onclick="clearCommentContext()" title="컨텍스트 제거"><i data-lucide="x"></i></button>
-    </div>
-    <textarea class="cw-input" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
+    <!-- 컨텍스트 배너 · 지금 어떤 위치에 남기는지 명시 (rv-right와 통일) -->
+    <div class="rv-write-ctx" id="csWriteCtx"><!-- renderComments에서 갱신 --></div>
+    <textarea class="cw-input" id="csNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
     <div class="cw-actions">
       <button class="btn-solid btn-sm" onclick="submitComment()">등록</button>
     </div>
+  </div>
+  <!-- 필터 · 작성자/메뉴 위 · 상태 아래 -->
+  <div class="cs-subfilters">
+    <select class="cls-select-mini" id="csFilterAuthor" onchange="setCsAuthorFilter(this.value)">
+      <option value="all">작성자: 전체</option>
+      <option value="박수정">박수정 선생님</option>
+      <option value="김민준">김민준 선생님</option>
+      <option value="이지혜">이지혜 선생님</option>
+      <option value="홍길동">홍길동 선생님</option>
+    </select>
+    <select class="cls-select-mini" id="csFilterMenu" onchange="setCsMenuFilter(this.value)">
+      <option value="all">메뉴: 전체</option>
+      <option value="design">설계</option>
+      <option value="grading">채점</option>
+      <option value="seteuk">세특</option>
+    </select>
+  </div>
+  <div class="cs-filter-bar">
+    <div class="cr-filter-group">
+      <button class="cr-filter-btn active" data-cs-filter="all" onclick="setCsFilter('all')">전체 <span class="cr-filter-n" id="csCnAll">0</span></button>
+      <button class="cr-filter-btn" data-cs-filter="unread" onclick="setCsFilter('unread')">안 읽음 <span class="cr-filter-n unread" id="csCnUnread">0</span></button>
+      <button class="cr-filter-btn" data-cs-filter="resolved" onclick="setCsFilter('resolved')">읽음 <span class="cr-filter-n resolved" id="csCnResolved">0</span></button>
+    </div>
+    <button class="btn-outline btn-sm" onclick="csMarkAllRead()"><i data-lucide="check-check" style="width:13px;height:13px"></i>모두 읽음으로 처리</button>
+  </div>
+  <div class="cs-body" id="csBody">
+    <!-- 댓글 목록은 renderComments()에서 동적 렌더링됨 -->
   </div>
 </aside>
 
@@ -3176,8 +3684,7 @@ body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; point
         <div class="case-group-t">1차 채점자 시점</div>
         <button class="case-btn on" data-scene="owner-home"><span class="n">1</span>내 수업 홈</button>
         <button class="case-btn" onclick="goToCrTab('empty'); return false;"><span class="n">2</span>공동 평가 미시작</button>
-        <button class="case-btn" onclick="goToCrTab('started'); return false;"><span class="n">3</span>공동 평가 시작 (공유상태)</button>
-        <button class="case-btn" data-scene="owner-comments-view"><span class="n">4</span>댓글 확인 (보러가기 클릭 시)</button>
+        <button class="case-btn" onclick="goToCrTab('started'); return false;"><span class="n">3</span>공동 평가 시작(공유상태)+댓글 맵핑</button>
       </div>
     </div>
 
@@ -3224,15 +3731,15 @@ function goScene(id) {
   // - 자동 오픈 (full): 특정 시나리오
   // - 미니 레일만 표시: 관련 있는 다른 시나리오
   // - 완전 숨김: 관련 없는 시나리오
-  const AUTO_OPEN = { 'owner-comments-view':'수행평가 채점', 'owner-class-shared':'수업 홈' };
+  const AUTO_OPEN = { 'owner-class-shared':'수업 홈' };
   const RAIL_ONLY = {};
   if (AUTO_OPEN[id]) {
     openCommentSide(AUTO_OPEN[id]);
   } else if (RAIL_ONLY[id]) {
     showCommentRail(RAIL_ONLY[id]);
-  } else {
-    hideCommentAll();
   }
+  // 그 외 오너 탭 이동 시 commentSide 유지 (드래그·플로팅 지속)
+  // 명시적 닫기는 [X → 원형 접기]로 대체 · hideCommentAll은 페르소나 전환 등 특수 케이스에서만 호출
 
   // [v4] 서브탭 초기화 (owner-class-shared 진입 시 항상 '수업 홈' 서브탭)
   document.querySelectorAll('[data-subtab]').forEach(t => t.classList.toggle('active', t.getAttribute('data-subtab') === 'home'));
@@ -3256,6 +3763,14 @@ function goScene(id) {
   if (id === 'reviewer-class') { try { hideCommentAll(); } catch(e) {} }
   // 2차 채점자 모드에서 신규 화면 진입 시 상단에 읽기 전용 리본 자동 삽입
   setTimeout(injectReviewerStrip, 60);
+  // 오너 · 현재 씬 기반 자동 컨텍스트 감지 (commentSide 배너 업데이트)
+  // [보러 가기]로 진입한 경우엔 openCommentContext가 이후 시점에 강제로 컨텍스트를 다시 세팅함
+  setTimeout(function(){
+    try {
+      // 씬 이동한 즉시 · 사용자 명시 해제가 아니면 자동 감지 실행
+      if (!window._csAutoCleared) refreshOwnerAutoCtx();
+    } catch (e) {}
+  }, 80);
 }
 
 function switchPersona(p) {
@@ -3422,24 +3937,38 @@ function csMarkAllRead() { CR_COMMENTS.forEach(c => c.unread = false); toastMsg(
 function renderComments(tabName) {
   const body = document.getElementById('csBody');
   if (!body) return;
-  // [v4] 통일된 CR_COMMENTS 소스 사용 · 서브필터(작성자·메뉴) + 상태 필터 조합
-  let ctxList = CR_COMMENTS;
+  // ctx 모드: [보러 가기]로 오픈된 경우 · CR_COMMENTS를 컨텍스트로 필터
+  let ctxList;
+  if (window._csMode === 'ctx' && window._csTargetCtx) {
+    ctxList = CR_COMMENTS.filter(c => rvMatchesCtx(c, window._csTargetCtx));
+  } else {
+    ctxList = CR_COMMENTS.slice();
+  }
+  // 서브필터(작성자·메뉴) + 상태 필터
   if (csFilterAuthor !== 'all') ctxList = ctxList.filter(c => c.author === csFilterAuthor);
   if (csFilterMenu !== 'all') ctxList = ctxList.filter(c => c.ctxType === csFilterMenu);
-  // 상태 필터
   let list;
   if (csStateFilter === 'unread') list = ctxList.filter(c => c.unread);
   else if (csStateFilter === 'resolved') list = ctxList.filter(c => c.resolved);
   else list = ctxList;
 
-  // 카운트 갱신 (필터 버튼 안 미니 뱃지 · 서브필터 반영된 ctxList 기준)
+  // 최신순 정렬 + 클릭 댓글(_csHighlightId) 최상단
+  const highlightId = window._csHighlightId;
+  list = list.slice().sort(function(a, b){
+    if (highlightId) {
+      if (a.id === highlightId) return -1;
+      if (b.id === highlightId) return 1;
+    }
+    return (b.time || '').localeCompare(a.time || '');
+  });
+
+  // 카운트 갱신
   const cnAll = document.getElementById('csCnAll');
   const cnUnread = document.getElementById('csCnUnread');
   const cnResolved = document.getElementById('csCnResolved');
   if (cnAll) cnAll.textContent = ctxList.length;
   if (cnUnread) cnUnread.textContent = ctxList.filter(c => c.unread).length;
   if (cnResolved) cnResolved.textContent = ctxList.filter(c => c.resolved).length;
-  // 필터 버튼 활성
   document.querySelectorAll('.cs-filter-bar [data-cs-filter]').forEach(b => b.classList.toggle('active', b.getAttribute('data-cs-filter') === csStateFilter));
 
   const cntEl = document.getElementById('csTotalCnt');
@@ -3451,9 +3980,89 @@ function renderComments(tabName) {
     body.innerHTML = '<div class="cs-empty">' + msg + '</div>';
     return;
   }
-  body.innerHTML = list.map(c => renderCmtCard(c)).join('');
+  // 렌더 (하이라이트 대상에 hl-clicked 클래스 붙임)
+  body.innerHTML = list.map(function(c){
+    let card = renderCmtCard(c);
+    if (highlightId && c.id === highlightId) card = card.replace('class="cr-cmt', 'class="cr-cmt hl-clicked');
+    return card;
+  }).join('');
+  // 입력창 위 · 컨텍스트 배너 갱신 (오너 · rv-right와 동일 UX)
+  updateCsWriteCtxBanner();
   lucide.createIcons();
 }
+
+// commentSide 입력창 위 컨텍스트 배너 갱신
+function updateCsWriteCtxBanner() {
+  const el = document.getElementById('csWriteCtx');
+  const inp = document.getElementById('csNewCmtInput');
+  if (!el) return;
+  const ctx = (window._csMode === 'ctx' && window._csTargetCtx) ? window._csTargetCtx : null;
+  if (ctx) {
+    const label = rvCtxLabelText(ctx);
+    el.className = 'rv-write-ctx active';
+    el.innerHTML =
+      '<div class="rv-write-ctx-hd">'
+      + '<i data-lucide="at-sign"></i>'
+      + '<span>이 댓글은 아래 위치에 남겨져요</span>'
+      + '</div>'
+      + '<div class="rv-write-ctx-body">'
+      + '<span class="rv-write-ctx-lbl" title="' + label.replace(/"/g,'&quot;') + '">' + label + '</span>'
+      + '<button class="rv-write-ctx-clear" onclick="csClearWriteCtx()" title="컨텍스트 해제 · 수업 전체에 남기기"><i data-lucide="x"></i>해제</button>'
+      + '</div>';
+    if (inp) inp.placeholder = label + '에 대한 검토 의견을 남겨보세요';
+  } else {
+    el.className = 'rv-write-ctx';
+    el.innerHTML =
+      '<div class="rv-write-ctx-hd">'
+      + '<i data-lucide="message-square"></i>'
+      + '<span>수업 전체에 남기는 댓글이에요</span>'
+      + '</div>';
+    if (inp) inp.placeholder = '궁금한 점이나 검토 의견을 남겨보세요';
+  }
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+}
+
+// commentSide 컨텍스트 해제 (수업 전체 모드로 · 자동 감지도 해제)
+function csClearWriteCtx() {
+  window._csMode = 'tab';
+  window._csTargetCtx = null;
+  window._csHighlightId = null;
+  window._csAutoCleared = true; // 사용자가 명시 해제 → 씬 이동 전까지 자동 감지 억제
+  renderComments('');
+}
+
+// 오너 · 현재 활성 씬 기반 컨텍스트 자동 감지 (opt.2 best-effort)
+function _getOwnerAutoCtx() {
+  const activeScene = document.querySelector('.scene.active');
+  if (!activeScene) return null;
+  const id = activeScene.id.replace('scene-', '');
+  switch (id) {
+    case 'eval-plan-detail':
+      return { type:'design', eval:'(고) 자기주도 독서 활동' };
+    case 'scoring-class-detail':
+      return { type:'grading', eval:'(고) 자기주도 독서 활동', class:'1-1', subtype:'class_status' };
+    case 'student-scoring-detail':
+      return { type:'grading', eval:'(고) 자기주도 독서 활동', class:'1-1', student:'10101 김일일' };
+    case 'sr-list':
+      const sel = document.querySelector('#scene-sr-list .obs-select');
+      const cn = sel && sel.value ? sel.value : '1학년 1반';
+      return { type:'seteuk', class:cn };
+    default:
+      return null;
+  }
+}
+
+// 씬 이동 후 자동 컨텍스트 반영 (openCommentContext 이후에는 이미 명시 컨텍스트 세팅 · 씬 자동 감지가 덮어씀)
+function refreshOwnerAutoCtx() {
+  window._csAutoCleared = false; // 씬 이동 시 자동 감지 재활성
+  const auto = _getOwnerAutoCtx();
+  window._csTargetCtx = auto;
+  window._csHighlightId = null;
+  window._csMode = auto ? 'ctx' : 'tab';
+  try { renderComments(''); } catch (e) {}
+  try { updateCsWriteCtxBanner(); } catch (e) {}
+}
+
 // 댓글 컨텍스트(target) 클릭 → 탭에 맞는 상세 화면으로 이동
 const TAB_TO_SCENE = {
   '수업 홈': 'owner-class-shared',
@@ -3678,13 +4287,11 @@ function renderAuthorChip() {
 function toggleMinimize(e) {
   if (e) e.stopPropagation();
   const side = document.getElementById('commentSide');
-  side.classList.toggle('min');
-  const btn = document.getElementById('minToggleBtn');
-  btn.innerHTML = side.classList.contains('min')
-    ? '<i data-lucide="chevron-up"></i>'
-    : '<i data-lucide="chevron-down"></i>';
-  btn.title = side.classList.contains('min') ? '펴기' : '접기';
-  lucide.createIcons();
+  if (!side) return;
+  // 원형 파란 버튼으로 접기/펼치기
+  side.classList.toggle('collapsed');
+  try { updateCollapsedBadges(); } catch (err) {}
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
 function showCommentRail(target) {
   const cnt = COMMENT_COUNT_BY_TAB[target] ?? 0;
@@ -3753,14 +4360,41 @@ function clearCommentContext() {
 
 function submitComment() {
   const input = document.querySelector('#commentSide .cw-input');
+  if (!input) return;
   const val = input.value.trim();
   if (!val) { toastMsg('내용을 입력해 주세요.', true); return; }
-  const ctxEl = document.getElementById('cwContext');
-  const withCtx = ctxEl.classList.contains('show');
-  const ctxText = withCtx ? document.getElementById('cwContextText').textContent : null;
-  toastMsg(withCtx ? '댓글이 "' + ctxText + '"에 등록되었어요.' : '댓글이 등록되었어요.');
+  // 실제 CR_COMMENTS에 신규 댓글 추가 (현재 컨텍스트 반영 · 데모)
+  _addNewComment(val, window._csTargetCtx || null);
   input.value = '';
-  clearCommentContext();
+  try { clearCommentContext(); } catch (e) {}
+  toastMsg('댓글을 등록했어요.');
+  refreshComments();
+}
+
+// 신규 댓글 데이터 삽입 (재사용 · 오너/리뷰어 통합)
+function _addNewComment(text, ctx) {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const nowStr = now.getFullYear() + '/' + pad(now.getMonth()+1) + '/' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+  const author = getCurrentAuthorName();
+  const newId = 'c' + Date.now();
+  const c = {
+    id: newId,
+    author: author,
+    time: nowStr,
+    unread: false,   // 내가 쓴 것 · 내 입장에서는 이미 읽음
+    resolved: false,
+    replies: [],
+    reacts: [],
+    ctxType: (ctx && ctx.type) || 'design',
+    ctxData: ctx ? Object.assign({}, ctx, { type: undefined }) : {},
+    text: text
+  };
+  // ctxData에서 type 필드 제거 (ctxType으로 이미 저장)
+  if (c.ctxData) delete c.ctxData.type;
+  // 최상단 삽입 (렌더 정렬은 time desc이므로 위치 자동)
+  CR_COMMENTS.unshift(c);
+  return newId;
 }
 function toggleReact(btn, emoji) {
   btn.classList.toggle('on');
@@ -3959,7 +4593,33 @@ function toggleReviewerMenu(btn, e) {
 }
 function revokeReviewer(name) {
   document.querySelectorAll('.rv-menu.open').forEach(m => m.classList.remove('open'));
-  toastMsg(name + ' 선생님의 공동 평가 권한이 회수되었어요. 즉시 접근이 차단됩니다.');
+  cfmOpen({
+    icon: 'user-x',
+    title: name + ' 선생님의 검토 권한을 회수할까요?',
+    desc: '회수 즉시 선택한 선생님의 수업 열람 및 댓글 작성 권한이 사라져요.',
+    confirmLabel: '네, 회수합니다',
+    onConfirm: function(){
+      toastMsg(name + ' 선생님의 공동 평가 권한이 회수되었어요. 즉시 접근이 차단됩니다.');
+    }
+  });
+}
+
+// 재사용 가능한 확인 모달 · opts: {icon, title, desc, confirmLabel, onConfirm}
+function cfmOpen(opts) {
+  const m = document.getElementById('cfmModal');
+  if (!m) return;
+  document.getElementById('cfmTitle').textContent = opts.title || '확인';
+  document.getElementById('cfmDesc').textContent  = opts.desc  || '';
+  document.getElementById('cfmIc').innerHTML = '<i data-lucide="' + (opts.icon || 'alert-circle') + '"></i>';
+  const btn = document.getElementById('cfmConfirm');
+  btn.textContent = opts.confirmLabel || '네';
+  btn.onclick = function(){ cfmClose(); if (opts.onConfirm) opts.onConfirm(); };
+  m.style.display = 'flex';
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+}
+function cfmClose() {
+  const m = document.getElementById('cfmModal');
+  if (m) m.style.display = 'none';
 }
 
 // ===== 필터 드롭다운 =====
@@ -4091,7 +4751,7 @@ function jumpToTabUnread(tabName, authorName) {
     '수행평가 채점': 'scoring-class-detail',
     '세부능력 및 특기사항 지원': 'sr-list'
   };
-  const targetScene = UNREAD_SCENE_MAP[tabName] || 'owner-comments-view';
+  const targetScene = UNREAD_SCENE_MAP[tabName] || 'owner-class-shared';
   goScene(targetScene);
   setTimeout(() => {
     // 댓글 패널을 해당 탭 컨텍스트로 강제 오픈
@@ -4135,48 +4795,55 @@ function jumpToTarget(sceneId, targetElId) {
   }, 150);
 }
 
-// ===== Drag: Comment Side Panel (v0.4 플로팅) =====
+// ===== Drag: Comment Side Panel (v0.4 플로팅 · 접힘 원형 버튼 포함) =====
 (function() {
   const side = document.getElementById('commentSide');
   const hd = document.getElementById('csHead');
+  const collapsedTab = side ? side.querySelector('.cs-collapsed-tab') : null;
   if (!side || !hd) return;
-  let sx=0, sy=0, sl=0, st=0, dragging=false;
-  hd.addEventListener('mousedown', e => {
-    if (e.target.closest('button')) return;
-    dragging = true;
+  let sx=0, sy=0, sl=0, st=0, dragging=false, moved=false, activeTarget=null;
+
+  function onDown(e) {
+    // 헤더 내 다른 버튼(접기/닫기 등) 클릭 시 드래그 제외
+    if (e.target.closest('button') && !e.target.closest('.cs-collapsed-tab') && !e.currentTarget.matches('.cs-head, #csHead')) return;
+    if (e.currentTarget === hd && e.target.closest('button')) return;
+    dragging = true; moved = false;
+    activeTarget = e.currentTarget;
     sx = e.clientX; sy = e.clientY;
     const rect = side.getBoundingClientRect();
     sl = rect.left; st = rect.top;
     side.style.right = 'auto'; side.style.bottom = 'auto';
     side.style.left = sl + 'px'; side.style.top = st + 'px';
-    hd.style.cursor = 'grabbing';
+    document.body.style.userSelect = 'none';
     e.preventDefault();
-  });
-  document.addEventListener('mousemove', e => {
+  }
+  function onMove(e) {
     if (!dragging) return;
-    let nx = sl + (e.clientX - sx);
-    let ny = st + (e.clientY - sy);
+    const dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
+    let nx = sl + dx, ny = st + dy;
     const rect = side.getBoundingClientRect();
     nx = Math.max(0, Math.min(window.innerWidth - rect.width, nx));
-    ny = Math.max(56, Math.min(window.innerHeight - 60, ny));
+    ny = Math.max(56, Math.min(window.innerHeight - rect.height, ny));
     side.style.left = nx + 'px';
     side.style.top = ny + 'px';
-  });
-  document.addEventListener('mouseup', () => {
-    if (dragging) { dragging = false; hd.style.cursor = ''; }
-  });
-  // 최소화 상태에서 헤더 클릭 시 확장 (드래그 아닐 때만)
-  let downX = 0, downY = 0;
-  hd.addEventListener('mousedown', e => { downX = e.clientX; downY = e.clientY; });
-  hd.addEventListener('click', e => {
-    if (e.target.closest('button')) return;
-    if (Math.abs(e.clientX - downX) > 3 || Math.abs(e.clientY - downY) > 3) return; // drag
-    if (side.classList.contains('min')) {
-      side.classList.remove('min');
-      const btn = document.getElementById('minToggleBtn');
-      if (btn) { btn.innerHTML = '<i data-lucide="chevron-down"></i>'; btn.title = '접기'; lucide.createIcons(); }
+  }
+  function onUp(e) {
+    if (!dragging) return;
+    const wasClick = !moved;
+    const wasCollapsedTab = activeTarget === collapsedTab;
+    dragging = false; activeTarget = null;
+    document.body.style.userSelect = '';
+    // 접힘 원형 버튼을 클릭(이동 없음)한 경우 → 펼침
+    if (wasClick && wasCollapsedTab && side.classList.contains('collapsed')) {
+      toggleMinimize();
     }
-  });
+  }
+
+  hd.addEventListener('mousedown', onDown);
+  if (collapsedTab) collapsedTab.addEventListener('mousedown', onDown);
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
 })();
 
 // ===== Drag: Case Navigator =====
@@ -4214,6 +4881,15 @@ function jumpToTarget(sceneId, targetElId) {
 })();
 
 // ===== [v4] 공동 평가 탭 전환 =====
+// 다른 탭 씬에서 [공동 평가] 탭 클릭 시 · owner-class-shared로 이동 후 cr 서브탭 활성
+function goToOwnerCrTab() {
+  goScene('owner-class-shared');
+  setTimeout(function(){
+    const tab = document.querySelector('#scene-owner-class-shared .ct[data-subtab="cr"]');
+    if (tab) switchOwnerSubTab('cr', tab);
+  }, 50);
+}
+
 function switchOwnerSubTab(name, el) {
   // 활성 탭 표시
   document.querySelectorAll('.scene.active .ct[data-subtab]').forEach(t => t.classList.remove('active'));
@@ -4236,15 +4912,13 @@ function setCrState(state) { window._crState = state; renderCrPanel(); }
 // [v4] 시나리오 진입 헬퍼 (state 세팅 · 씬 이동 · cr 서브탭 활성)
 function goToCrTab(state) {
   goScene('owner-class-shared');
-  setTimeout(() => {
-    setCrState(state);
-    const t = document.querySelector('.scene.active .ct[data-subtab="cr"]');
-    if (t) switchOwnerSubTab('cr', t);
-    // 서브탭 active 클래스 명시 세팅 (safety)
-    document.querySelectorAll('.scene.active .ct[data-subtab]').forEach(el => {
-      el.classList.toggle('active', el.getAttribute('data-subtab') === 'cr');
-    });
-  }, 80);
+  // setTimeout 제거 → 씬 이동과 동시에 cr 서브탭 활성 (수업 홈 → 공동 평가 깜빡임 방지)
+  setCrState(state);
+  const t = document.querySelector('.scene.active .ct[data-subtab="cr"]');
+  if (t) switchOwnerSubTab('cr', t);
+  document.querySelectorAll('.scene.active .ct[data-subtab]').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('data-subtab') === 'cr');
+  });
 }
 function renderCrPanel() {
   const isEmpty = window._crState === 'empty';
@@ -4290,8 +4964,8 @@ const CR_COMMENTS = [
       { author:'홍길동', time:'2026/08/13 10:05', reacts:[], text:'맞아요. AI가 후반 항목을 조금 후하게 준 편이라, 제가 8점대로 하향 조정 중이에요.' }
     ],
     reacts:[{emoji:'👀', count:1, mine:false}],
-    ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1', subtype:'ai_summary' },
-    text:'AI 채점 결과 요약 봤어요. 총점 평균 51점대인데 "보고서 구성 및 양식" 항목 10점 비중이 좀 높아 보여요. 한번 재확인해봐도 좋을 것 같아요.' },
+    ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1', subtype:'class_status' },
+    text:'학급 채점 현황 봤어요. 총점 평균 51점대인데 "보고서 구성 및 양식" 항목 10점 비중이 좀 높아 보여요. 한번 재확인해봐도 좋을 것 같아요.' },
   { id:'c5', author:'박수정', time:'2026/08/10 14:40', unread:true, resolved:false, replies:[],
     reacts:[{emoji:'👀', count:1, mine:false}],
     ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1', student:'10103 김삼삼' },
@@ -4299,16 +4973,18 @@ const CR_COMMENTS = [
   { id:'c6', author:'김민준', time:'2026/08/09 13:22', unread:false, resolved:true, replies:[], reacts:[],
     ctxType:'design', ctxData:{ eval:'(고) 읽기 자료 분석을 통한 주제 통합 탐구' },
     text:'설계 흐름이 좋습니다. 학생들이 따라오기 좋겠어요.' },
-  { id:'c7', author:'박수정', time:'2026/08/08 16:10', unread:false, resolved:true,
+  { id:'c7', author:'박수정', time:'2026/08/08 16:10', unread:true, resolved:false,
     replies:[
       { author:'홍길동', time:'2026/08/08 17:22', reacts:[], text:'감사합니다. 문구 톤은 계속 유지하려고요.' },
-      { author:'박수정', time:'2026/08/09 09:05', reacts:[{emoji:'👍', count:1, mine:true}], text:'네, 이대로 진행하시면 좋을 것 같아요.' }
+      { author:'박수정', time:'2026/08/09 09:05', reacts:[{emoji:'👍', count:1, mine:true}], text:'네, 이대로 진행하시면 좋을 것 같아요.' },
+      // 데모 · 예전에 [읽음]으로 처리했으나 최근에 박수정 선생님이 답글 하나 더 남겨서 스레드 다시 unread 상태로 복귀됨
+      { author:'박수정', time:'2026/08/14 10:20', reacts:[], text:'앗, 하나만 더요 — 1학년 1반 김민수 학생 세특에 "동아리 리더십" 부분 표현이 조금 더 구체적이면 좋을 것 같아요. 참고해주세요.' }
     ],
     reacts:[{emoji:'✓', count:1, mine:true}],
-    ctxType:'seteuk', ctxData:{ class:'1학년 3반' },
+    ctxType:'seteuk', ctxData:{ class:'1학년 1반' },
     text:'세특 문구 톤이 잘 맞네요. 학생별 활동 근거도 잘 드러나요.' },
   { id:'c8', author:'김민준', time:'2026/08/08 11:00', unread:false, resolved:false, replies:[], reacts:[],
-    ctxType:'grading', ctxData:{ eval:'(고) 읽기 자료 분석', class:'1-10', subtype:'ai_summary' },
+    ctxType:'grading', ctxData:{ eval:'(고) 읽기 자료 분석', class:'1-10', subtype:'class_status' },
     text:'1-10반 채점 결과 확인했습니다. 평균이 안정적이네요.' },
   { id:'c9', author:'박수정', time:'2026/08/07 10:15', unread:false, resolved:false, replies:[], reacts:[],
     ctxType:'design', ctxData:{ eval:'(고) 문학 작품 감상 및 비평문 쓰기' },
@@ -4349,7 +5025,6 @@ function crCtxLabel(c) {
   if (c.ctxType === 'grading') {
     let s = '[채점] ' + d.eval + ' · ' + d.class;
     if (d.student) s += ' · ' + d.student;
-    else if (d.subtype === 'ai_summary') s += ' · AI 채점 결과 요약';
     else if (d.subtype === 'class_status') s += ' · 학급 채점 현황';
     return s;
   }
@@ -4430,9 +5105,8 @@ function renderCmtCard(c, opts) {
   opts = opts || {};
   const ctx = crCtxLabel(c);
   const unreadDot = c.unread ? '<span class="cr-cmt-dot" title="안 읽음"></span>' : '';
-  const resolvedBadge = c.resolved
-    ? '<span class="cr-cmt-state-badge resolved"><i data-lucide="check-circle" style="width:11px;height:11px"></i>읽음</span>'
-    : '';
+  // 초록색 '읽음' 뱃지는 제거 · 상태는 [읽음 처리]/[취소] 버튼과 dot 유무로 파악
+  const resolvedBadge = '';
   const isMyComment = c.author === getCurrentAuthorName();
   const readBtn = c.resolved
     ? '<button class="btn-ghost btn-sm cr-cmt-action" onclick="event.stopPropagation(); toggleResolve(\'' + c.id + '\')" title="읽음 취소"><i data-lucide="rotate-ccw" style="width:12px;height:12px"></i>취소</button>'
@@ -4467,6 +5141,7 @@ function refreshComments() {
     renderComments(document.getElementById('csTabName').textContent);
   }
   try { updateReopenFab(); } catch (e) {}
+  try { updateCollapsedBadges(); } catch (e) {}
 }
 function toggleReact(id, emoji) {
   const c = CR_COMMENTS.find(x => x.id === id);
@@ -4520,8 +5195,36 @@ function submitReply(id, btn) {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
   const nowStr = now.getFullYear() + '/' + pad(now.getMonth()+1) + '/' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-  c.replies.push({ author: getCurrentAuthorName(), time: nowStr, reacts:[], text: val });
+  const me = getCurrentAuthorName();
+  c.replies.push({ author: me, time: nowStr, reacts:[], text: val });
+  if (c.resolved) c.resolved = false;
+  inp.value = '';
   toastMsg('답글을 남겼어요.');
+  refreshComments();
+  // 등록 직후 · 답글 스레드 자동 펼침 (여러 리스트 모두 대상 · 방금 등록한 답글이 바로 보이도록)
+  setTimeout(function(){
+    document.querySelectorAll('#reply-thread-' + id).forEach(el => { el.style.display = ''; });
+    document.querySelectorAll('#reply-form-only-' + id).forEach(el => { el.style.display = ''; });
+    // toggle button chevron 회전
+    document.querySelectorAll('[data-thread-toggle="' + id + '"]').forEach(function(btn){
+      const svg = btn.querySelector('svg');
+      if (svg) svg.style.transform = 'rotate(180deg)';
+    });
+  }, 30);
+}
+
+// 데모용 · 다른 사람이 남긴 답글 시뮬레이션 (스레드 unread 복귀 트리거)
+function _demoAddReply(commentId, author, text) {
+  const c = CR_COMMENTS.find(x => x.id === commentId);
+  if (!c) return;
+  c.replies = c.replies || [];
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const nowStr = now.getFullYear() + '/' + pad(now.getMonth()+1) + '/' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
+  c.replies.push({ author, time: nowStr, reacts:[], text });
+  // 스레드 다시 unread (다른 사람이 남긴 답글이니까)
+  c.unread = true;
+  c.resolved = false;
   refreshComments();
 }
 function toggleCmtMenu(btn) {
@@ -4629,6 +5332,7 @@ function rvFilterByItem(el) {
   } else {
     el.classList.add('active');
     rvActiveCtx = ctx;
+    window._rvLastCtx = null; // 새 컨텍스트 진입 시 이전 백업 리셋
     // [v4] 좌측 아이템 클릭 시 메뉴 필터도 동기화
     rvFilterMenu = type;
     if (menuSel) menuSel.value = type;
@@ -4911,6 +5615,165 @@ const SCORING_CLASS_STATUS_DATA = {
     ]
   }
 };
+
+// ===== 통합 뷰어 · 수행평가 → 반 매핑 =====
+const SCORING_EVAL_CLASSES = {
+  '(고) 자기주도 독서 활동': [
+    { key:'1-1', name:'1학년 1반', total:20, done:9 },
+    { key:'1-10', name:'1학년 10반', total:2, done:0 }
+  ],
+  '(고) 읽기 자료 분석': [
+    { key:'1-1', name:'1학년 1반', total:20, done:20 },
+    { key:'1-10', name:'1학년 10반', total:2, done:2 }
+  ]
+};
+
+// AI 요약 데이터 (fallback stub 생성)
+function _getAiSummaryData(evalName, classKey) {
+  const k = evalName + ':' + classKey;
+  if (SCORING_AI_SUMMARY_DATA[k]) return SCORING_AI_SUMMARY_DATA[k];
+  // stub
+  const classInfo = (SCORING_EVAL_CLASSES[evalName] || []).find(c => c.key === classKey);
+  return {
+    evalName: evalName,
+    className: classInfo ? classInfo.name : classKey + '반',
+    classKey: classKey,
+    total: classInfo ? classInfo.total : 0,
+    aiSuccess: classInfo ? classInfo.done : 0,
+    aiFail: 0,
+    unscored: classInfo ? (classInfo.total - classInfo.done) : 0,
+    totalDist:{ avg:0, maxScore:60, buckets:[{label:'—',n:0}] },
+    criteriaDist:[]
+  };
+}
+
+// 학급 채점 현황 데이터 (fallback stub)
+function _getClassStatusData(evalName, classKey) {
+  const k = evalName + ':' + classKey;
+  if (SCORING_CLASS_STATUS_DATA[k]) return SCORING_CLASS_STATUS_DATA[k];
+  const classInfo = (SCORING_EVAL_CLASSES[evalName] || []).find(c => c.key === classKey);
+  const total = classInfo ? classInfo.total : 0;
+  const students = [];
+  for (let i = 1; i <= total; i++) {
+    const no = classKey === '1-1' ? ('101' + (i < 10 ? '0'+i : i)) : ('110' + (i < 10 ? '0'+i : i));
+    students.push({ no, name:'학생' + i, aiStatus:'채점 완료', aiScore:50, finalScore:50, stStatus:'done' });
+  }
+  return { evalName, className: classInfo ? classInfo.name : classKey + '반', classKey, students };
+}
+
+// 통합 뷰어 (AI 요약 + 학급 채점 현황 · 반 드롭다운으로 스위칭)
+function renderScoringCombinedHTML(evalName, classKey) {
+  const aiD = _getAiSummaryData(evalName, classKey);
+  const csD = _getClassStatusData(evalName, classKey);
+  const classes = SCORING_EVAL_CLASSES[evalName] || [{key:classKey, name:classKey}];
+
+  const dropOpts = classes.map(c => {
+    const sel = (c.key === classKey) ? ' selected' : '';
+    return '<option value="' + evalName + ':' + c.key + '"' + sel + '>' + c.name + ' (' + c.done + '/' + c.total + ')</option>';
+  }).join('');
+
+  // 첫 번째 (또는 첫 채점 완료) 학생 학번 · 학생별 상세 버튼용
+  const firstStudent = (csD.students.find(s => s.stStatus !== 'unscored') || csD.students[0] || { no:'10101' });
+  const stuKey = evalName + ':' + classKey + ':' + firstStudent.no;
+
+  // AI 요약 섹션 (본문만)
+  const critHtml = aiD.criteriaDist.map(c =>
+    '<div class="rvd-ai-chart-card">'
+    + '<div class="rvd-ai-chart-hd">'
+    +   '<span class="rvd-ai-chart-nm" title="' + c.name + '">' + c.name + '</span>'
+    +   '<span class="rvd-ai-avg">평균 ' + c.avg + '점</span>'
+    + '</div>'
+    + '<div class="rvd-ai-chart-body">' + renderBarChartSVG(c.buckets) + '</div>'
+    + '</div>'
+  ).join('');
+
+  // 학급 채점 현황 테이블 (본문만)
+  const stBadge = { done:'완료', unscored:'미채점', warn:'확인 필요' };
+  const stCls   = { done:'hw-b-done', unscored:'hw-b-none', warn:'hw-b-closed' };
+  const rowsHtml = csD.students.map(s => {
+    const finalCell = (s.finalScore == null) ? '-' : ('<b>' + s.finalScore + '</b>');
+    const aiScoreCell = (s.aiScore == null) ? '-' : ('(' + s.aiScore + ')');
+    const detailKey = evalName + ':' + classKey + ':' + s.no;
+    const detailBtn = (s.stStatus === 'unscored')
+      ? '<button class="hw-link" disabled style="opacity:.4;cursor:not-allowed"><i data-lucide="user"></i>상세 보기</button>'
+      : '<button class="hw-link" onclick="rvOpenDetail(\'grading-student\', \'' + detailKey + '\')"><i data-lucide="user"></i>상세 보기</button>';
+    return '<tr>'
+      + '<td>' + s.no + '</td>'
+      + '<td>' + s.name + '</td>'
+      + '<td>' + (s.aiStatus == null ? '-' : s.aiStatus) + '</td>'
+      + '<td>' + aiScoreCell + '</td>'
+      + '<td>' + finalCell + '</td>'
+      + '<td><span class="hw-badge ' + stCls[s.stStatus] + '">' + stBadge[s.stStatus] + '</span></td>'
+      + '<td>' + detailBtn + '</td>'
+      + '</tr>';
+  }).join('');
+
+  return '<div class="rvd-hd">'
+    + '<div>'
+    +   '<div class="rvd-title">' + evalName + '</div>'
+    +   '<div class="rvd-sub">채점 결과</div>'
+    + '</div>'
+    + '<div class="rvd-badges">'
+    +   '<span class="rvd-badge readonly"><i data-lucide="eye"></i>읽기 전용</span>'
+    + '</div>'
+    + '</div>'
+
+    // 툴바 · 반 드롭다운 + [학생별 상세 보기] 버튼 (파란색 강조)
+    + '<div class="rvd-sd-toolbar">'
+    +   '<select class="rvd-sd-select" onchange="rvSdJumpClass(this)">' + dropOpts + '</select>'
+    +   '<div class="rvd-sd-nav">'
+    +     '<button type="button" class="rvd-stu-cta" onclick="rvOpenDetail(\'grading-student\', \'' + stuKey + '\')"><i data-lucide="user-round"></i><span>학생별 상세 보기</span><i data-lucide="chevron-right"></i></button>'
+    +   '</div>'
+    + '</div>'
+
+    // AI 요약 섹션 (상단) · 안내 배너 삭제 (뷰어 모드에서 불필요)
+    + '<section class="rvd-sec">'
+    +   '<div class="rvd-sec-hd"><span class="rvd-sec-t">채점 결과 요약</span></div>'
+    +   '<div class="rvd-ai-summary">'
+    +     '<div class="rvd-ai-summary-cell"><div class="k">전체</div><div class="v">' + aiD.total + '명</div></div>'
+    +     '<div class="rvd-ai-summary-cell"><div class="k">AI 채점 성공</div><div class="v accent">' + aiD.aiSuccess + '명</div></div>'
+    +     '<div class="rvd-ai-summary-cell"><div class="k">AI 채점 실패</div><div class="v">' + aiD.aiFail + '명</div></div>'
+    +   '</div>'
+    +   '<div class="rvd-ai-note">※ 미채점 학생의 채점 결과는 점수 분포에 반영되지 않습니다.</div>'
+    + '</section>'
+    + (aiD.totalDist.buckets.length > 1 ?
+        '<section class="rvd-sec">'
+        + '<div class="rvd-sec-hd"><span class="rvd-sec-t">총점 점수 분포</span></div>'
+        + '<div class="rvd-ai-chart-card">'
+        +   '<div class="rvd-ai-chart-hd">'
+        +     '<span class="rvd-ai-chart-nm">' + aiD.className + ' : ' + aiD.evalName + '</span>'
+        +     '<span class="rvd-ai-avg">평균 ' + aiD.totalDist.avg + '점</span>'
+        +   '</div>'
+        +   '<div class="rvd-ai-chart-body">' + renderBarChartSVG(aiD.totalDist.buckets, {width:720}) + '</div>'
+        + '</div>'
+        + '</section>'
+        + '<section class="rvd-sec">'
+        + '<div class="rvd-sec-hd"><span class="rvd-sec-t">채점 요소별 점수 분포</span><span class="rvd-sec-cnt">' + aiD.criteriaDist.length + '개</span></div>'
+        + '<div class="rvd-ai-grid">' + critHtml + '</div>'
+        + '</section>'
+        : '<section class="rvd-sec"><div class="rvd-sd-empty">이 반의 상세 분포 데이터가 아직 준비되지 않았어요.</div></section>')
+
+    // 학급 채점 현황 섹션 (하단)
+    + '<section class="rvd-sec">'
+    +   '<div class="rvd-sec-hd">'
+    +     '<span class="rvd-sec-t">학생 채점 현황</span>'
+    +     '<span class="rvd-sec-cnt">' + csD.students.length + '명</span>'
+    +   '</div>'
+    +   '<div class="rvd-cs-tbl-wrap">'
+    +     '<table class="rvd-cs-tbl">'
+    +       '<thead><tr>'
+    +         '<th>학번</th><th>이름</th><th>AI 채점 결과</th><th>AI 점수</th><th>최종 점수</th><th>채점 상태</th><th>학생 채점</th>'
+    +       '</tr></thead>'
+    +       '<tbody>' + rowsHtml + '</tbody>'
+    +     '</table>'
+    +   '</div>'
+    + '</section>';
+}
+
+// 통합 뷰어 · 반 드롭다운 스위칭
+function rvSdJumpClass(select) {
+  rvOpenDetail('grading-combined', select.value);
+}
 
 function renderClassStatusHTML(d) {
   const stBadge = { done:'완료', unscored:'미채점', warn:'확인 필요' };
@@ -5414,7 +6277,16 @@ function rvOpenDetail(type, key) {
     if (!d) { toastMsg('AI 채점 요약 데이터가 없어요.', true); return; }
     content.innerHTML = renderScoringAiSummaryHTML(d);
     // 우측 댓글 필터 자동 세팅 (채점 · 해당 반 · AI 요약)
-    rvActiveCtx = { type:'grading', eval:d.evalName, class:d.classKey, subtype:'ai_summary' };
+    rvActiveCtx = { type:'grading', eval:d.evalName, class:d.classKey, subtype:'class_status' };
+    rvFilterMenu = 'grading';
+    const menuSel = document.getElementById('rvFilterMenu');
+    if (menuSel) menuSel.value = 'grading';
+  } else if (type === 'grading-combined') {
+    // key = 'evalName:classKey'
+    const parts = key.split(':');
+    const evalName = parts[0], classKey = parts[1];
+    content.innerHTML = renderScoringCombinedHTML(evalName, classKey);
+    rvActiveCtx = { type:'grading', eval:evalName, class:classKey };
     rvFilterMenu = 'grading';
     const menuSel = document.getElementById('rvFilterMenu');
     if (menuSel) menuSel.value = 'grading';
@@ -5455,6 +6327,7 @@ function rvOpenDetail(type, key) {
     const menuSel = document.getElementById('rvFilterMenu');
     if (menuSel) menuSel.value = 'grading';
   }
+  window._rvLastCtx = null; // 새 컨텍스트 진입 시 이전 백업 리셋
   list.style.display = 'none';
   wrap.style.display = '';
   window.scrollTo(0, 0);
@@ -5570,7 +6443,42 @@ function renderEvalDetailHTML(d) {
     + '</section>';
 }
 
+// 해제된 컨텍스트 백업 (다시 적용용) · 새 컨텍스트 진입 시 리셋됨
+window._rvLastCtx = null;
+
+// 섹션(수행평가 설계/채점 결과/세특) 접고 펼치기
+function toggleSec(hdEl) {
+  const sec = hdEl.closest('.sec');
+  if (!sec) return;
+  sec.classList.toggle('closed');
+  const chev = hdEl.querySelector('.chev svg, .chev i');
+  // chevron 회전은 CSS로 처리
+}
+
+// 우측 댓글 패널 접기/펼치기 (2차 채점자 · 모바일 편의)
+function toggleRvCollapse() {
+  document.body.classList.toggle('rv-collapsed');
+  updateCollapsedBadges();
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
+}
+// 접힘 상태 · 원형 버튼의 미확인 뱃지 갱신
+function updateCollapsedBadges() {
+  const unreadCnt = CR_COMMENTS.filter(c => c.unread).length;
+  ['rvCollapsedBadge','csCollapsedBadge','fcwCollapsedBadge'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (unreadCnt > 0) {
+      el.textContent = unreadCnt > 99 ? '99+' : unreadCnt;
+      el.classList.add('on');
+    } else {
+      el.classList.remove('on');
+    }
+  });
+}
+
 function rvClearFilter() {
+  // 해제 시점의 컨텍스트를 백업 (다시 적용 용)
+  if (rvActiveCtx) window._rvLastCtx = rvActiveCtx;
   rvActiveCtx = null;
   rvFilterMenu = 'all';
   const menuSel = document.getElementById('rvFilterMenu');
@@ -5580,6 +6488,29 @@ function rvClearFilter() {
 }
 // 입력창 배너에서 컨텍스트 해제 (수업 전체로) · 리스트 필터도 함께 해제
 function rvClearWriteCtx() { rvClearFilter(); }
+// 배너의 [↺ 다시 적용] 버튼 클릭 시 이전 컨텍스트 복원
+function rvReapplyCtx() {
+  if (!window._rvLastCtx) return;
+  rvActiveCtx = window._rvLastCtx;
+  window._rvLastCtx = null;
+  // 좌측 아이템 active 클래스 복구 (있으면)
+  const target = rvActiveCtx;
+  document.querySelectorAll('.scene.active .rv-item').forEach(el => {
+    const type = el.getAttribute('data-ctx-type');
+    const ev = el.getAttribute('data-eval');
+    const cl = el.getAttribute('data-class');
+    if (type === target.type && ev === (target.eval || null) && cl === (target.class || null)) {
+      el.classList.add('active');
+    }
+  });
+  // 메뉴 필터 복구
+  if (target.type) {
+    rvFilterMenu = target.type;
+    const menuSel = document.getElementById('rvFilterMenu');
+    if (menuSel) menuSel.value = target.type;
+  }
+  renderRvComments();
+}
 function rvSetFilter(f) { rvFilter = f; rvExpanded = false; renderRvComments(); }
 function rvSetAuthorFilter(v) { rvFilterAuthor = v; rvExpanded = false; renderRvComments(); }
 function rvSetMenuFilter(v) { rvFilterMenu = v; rvExpanded = false; renderRvComments(); }
@@ -5590,9 +6521,9 @@ function rvCtxLabelText(ctx) {
   const d = ctx;
   if (d.type === 'design') return '[설계] ' + d.eval;
   if (d.type === 'grading') {
-    let s = '[채점] ' + d.eval + ' · ' + d.class;
-    if (d.subtype === 'ai_summary') s += ' · AI 채점 결과 요약';
-    else if (d.subtype === 'class_status') s += ' · 학급 채점 현황';
+    let s = '[채점] ' + d.eval;
+    if (d.class) s += ' · ' + d.class;
+    if (d.subtype === 'class_status') s += ' · 학급 채점 현황';
     else if (d.student) s += ' · ' + d.student;
     return s;
   }
@@ -5605,8 +6536,11 @@ function rvSubmitComment() {
   if (!inp) return;
   const val = inp.value.trim();
   if (!val) { toastMsg('내용을 입력해주세요.', true); return; }
-  toastMsg('의견을 남겼어요.' + (rvActiveCtx ? ' (컨텍스트: ' + rvCtxLabelText(rvActiveCtx) + ')' : ''));
+  // 실제 CR_COMMENTS에 삽입 (rvActiveCtx 반영)
+  _addNewComment(val, rvActiveCtx ? Object.assign({ type: rvActiveCtx.type }, rvActiveCtx) : null);
   inp.value = '';
+  toastMsg('의견을 남겼어요.' + (rvActiveCtx ? ' (' + rvCtxLabelText(rvActiveCtx) + ')' : ''));
+  refreshComments();
 }
 
 function renderRvComments() {
@@ -5618,6 +6552,15 @@ function renderRvComments() {
   // 작성자·메뉴 서브필터
   if (rvFilterAuthor !== 'all') ctxMatched = ctxMatched.filter(c => c.author === rvFilterAuthor);
   if (rvFilterMenu !== 'all') ctxMatched = ctxMatched.filter(c => c.ctxType === rvFilterMenu);
+  // 최신순 정렬 + 클릭 댓글(_rvHighlightId) 최상단
+  const _rvHl = window._rvHighlightId;
+  ctxMatched = ctxMatched.slice().sort((a, b) => {
+    if (_rvHl) {
+      if (a.id === _rvHl) return -1;
+      if (b.id === _rvHl) return 1;
+    }
+    return (b.time || '').localeCompare(a.time || '');
+  });
   // 상태 필터
   let filtered;
   if (rvFilter === 'unread') filtered = ctxMatched.filter(c => c.unread);
@@ -5669,12 +6612,21 @@ function renderRvComments() {
         + '</div>';
       if (writeInp) writeInp.placeholder = label + '에 대한 검토 의견을 남겨보세요';
     } else {
+      // 컨텍스트 없음 상태 · 이전 컨텍스트 있으면 [다시 적용] 노출
+      const hasLast = !!window._rvLastCtx;
+      const lastLbl = hasLast ? rvCtxLabelText(window._rvLastCtx) : '';
       writeCtxEl.className = 'rv-write-ctx';
       writeCtxEl.innerHTML =
         '<div class="rv-write-ctx-hd">'
         + '<i data-lucide="message-square"></i>'
         + '<span>수업 전체에 남기는 댓글이에요</span>'
-        + '</div>';
+        + '</div>'
+        + (hasLast
+          ? '<div class="rv-write-ctx-body">'
+            + '<span class="rv-write-ctx-lbl muted" title="' + lastLbl.replace(/"/g,'&quot;') + '">' + lastLbl + '</span>'
+            + '<button class="rv-write-ctx-reapply" onclick="rvReapplyCtx()" title="이전 컨텍스트 다시 적용"><i data-lucide="rotate-ccw"></i>다시 적용</button>'
+            + '</div>'
+          : '');
       if (writeInp) writeInp.placeholder = '궁금한 점이나 검토 의견을 남겨보세요';
     }
     if (window.lucide && lucide.createIcons) lucide.createIcons();
@@ -5687,7 +6639,11 @@ function renderRvComments() {
               : (rvActiveCtx ? '이 항목에 댓글이 없어요.' : '아직 댓글이 없어요.');
     wrap.innerHTML = '<div style="text-align:center;color:#9ea3ad;font-size:13px;padding:30px 20px;">' + msg + '</div>';
   } else {
-    wrap.innerHTML = list.map(c => renderCmtCard(c)).join('');
+    wrap.innerHTML = list.map(function(c){
+      let card = renderCmtCard(c);
+      if (_rvHl && c.id === _rvHl) card = card.replace('class="cr-cmt', 'class="cr-cmt hl-clicked');
+      return card;
+    }).join('');
     if (totalInFilter > 5) {
       const btn = rvExpanded
         ? '<button class="cr-more-btn" onclick="rvToggleExpand()"><i data-lucide="chevron-up" style="width:14px;height:14px;margin-right:4px"></i>접기</button>'
@@ -5705,6 +6661,25 @@ function renderRvComments() {
     } catch (e) {}
   });
 
+  // sec-item 중앙 뱃지 (전체 · 미확인)
+  document.querySelectorAll('.scene.active .sec-item-c').forEach(el => {
+    try {
+      const spec = JSON.parse(el.getAttribute('data-cnt-for'));
+      const matched = CR_COMMENTS.filter(c => rvMatchesCtx(c, spec));
+      const total = matched.length;
+      const unread = matched.filter(c => c.unread).length;
+      let html = '';
+      // 순서: 미확인 → 전체 (미확인이 눈에 먼저 띄도록)
+      if (unread > 0) {
+        html += '<span class="sec-badge unread"><span class="unread-dot"></span>미확인 댓글 수 ' + unread + '</span>';
+      }
+      if (total > 0) {
+        html += '<span class="sec-badge total"><i data-lucide="message-circle"></i>전체 댓글 수 ' + total + '</span>';
+      }
+      el.innerHTML = html;
+    } catch (e) {}
+  });
+
   lucide.createIcons();
 }
 function setCrFilter(f) { crFilter = f; crExpanded = false; renderCrComments(); }
@@ -5714,7 +6689,8 @@ function toggleResolve(id) {
   const c = CR_COMMENTS.find(x => x.id === id);
   if (!c) return;
   c.resolved = !c.resolved;
-  if (c.resolved) c.unread = false;  // 읽음 처리 시 자동으로 안 읽음 해제
+  if (c.resolved) c.unread = false;   // 읽음 처리 시 안 읽음 해제
+  else c.unread = true;               // 읽음 취소 시 → 다시 안 읽음 (빨간 dot 복귀)
   toastMsg(c.resolved ? '읽음으로 처리했어요.' : '읽음을 취소했어요.');
   refreshComments();
 }
@@ -5737,28 +6713,33 @@ function openCommentContext(commentId) {
   if (!c) { toastMsg('댓글을 찾을 수 없어요.', true); return; }
   const d = c.ctxData || {};
 
-  // 컨텍스트 저장 + 하이라이트 대상 지정
-  window._fcwHighlightId = commentId;
-  window._fcwCtx = { type: c.ctxType, ...d };
+  // 클릭한 댓글 자동 읽음 처리 (unread 해제 + resolved 처리 · [읽음 처리] → [취소]로 전환)
+  c.unread = false;
+  c.resolved = true;
 
-  // 씬 라우팅
+  // 2차 채점자(reviewer) 씬이 활성이면 뷰어 모드로 라우팅 (rvOpenDetail)
+  const revScene = document.getElementById('scene-reviewer-class');
+  const inReviewer = revScene && revScene.classList.contains('active');
+  if (inReviewer) {
+    return _openCommentInReviewer(c);
+  }
+
+  // 1차 채점자(owner) 라우팅 · 원본 편집 씬 + commentSide 오픈
+  window._csTargetCtx = { type: c.ctxType, ...d };
+  window._csHighlightId = c.id;
+  window._csMode = 'ctx';
+
   if (c.ctxType === 'design') {
     goScene('eval-plan-detail');
   } else if (c.ctxType === 'grading') {
     if (d.student) {
-      // [채점] · 학생별 상세
       goScene('student-scoring-detail');
-    } else if (d.subtype === 'ai_summary') {
-      // [채점] · AI 요약 → 학급 상세 + 모달 자동 오픈
-      goScene('scoring-class-detail');
-      setTimeout(function(){ openAiSummaryModal(d.eval, d.class); }, 100);
     } else {
-      // [채점] · 학급 채점 현황 or 기본
+      // 학급 채점 현황 (class_status)로 통합 · AI 요약도 여기 포함
       goScene('scoring-class-detail');
     }
   } else if (c.ctxType === 'seteuk') {
     goScene('sr-list');
-    // 반 드롭다운 자동 선택
     setTimeout(function(){
       const sel = document.querySelector('#scene-sr-list .obs-select');
       if (sel && d.class) {
@@ -5767,8 +6748,69 @@ function openCommentContext(commentId) {
       }
     }, 100);
   }
-  // 플로팅 창 오픈 (기존 열려있으면 갱신)
-  fcwOpen();
+
+  // commentSide 오픈 + 컨텍스트 필터된 리스트 렌더 (fcwPanel은 사용 안 함)
+  // 주의: goScene의 자동 감지가 _csTargetCtx를 덮어쓰므로 여기서 다시 강제 세팅
+  setTimeout(function(){
+    // 씬 자동 감지가 덮어쓴 것을 원래 댓글 컨텍스트로 되돌림
+    window._csTargetCtx = { type: c.ctxType, ...d };
+    window._csHighlightId = c.id;
+    window._csMode = 'ctx';
+    const side = document.getElementById('commentSide');
+    if (!side) return;
+    side.classList.add('open');
+    side.classList.remove('min');
+    side.classList.remove('collapsed');
+    csFilterAuthor = 'all'; csFilterMenu = 'all'; csStateFilter = 'all';
+    const fa = document.getElementById('csFilterAuthor'); if (fa) fa.value = 'all';
+    const fm = document.getElementById('csFilterMenu'); if (fm) fm.value = 'all';
+    renderComments('');
+    setTimeout(function(){
+      const body = document.getElementById('csBody');
+      const target = body && body.querySelector('[data-cmt-id="' + c.id + '"]');
+      if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+    }, 60);
+  }, 150);
+}
+
+// 2차 채점자 · 댓글 → 뷰어 라우팅 (원본이 아니라 리뷰어 상세 뷰어로 이동)
+function _openCommentInReviewer(c) {
+  const d = c.ctxData || {};
+  if (c.ctxType === 'design') {
+    // 설계 뷰어 · EVAL_DETAIL_DATA에 있는 것만 열림
+    if (EVAL_DETAIL_DATA[d.eval]) {
+      rvOpenDetail('design', d.eval);
+    } else {
+      toastMsg('이 설계의 상세 데이터가 아직 준비되지 않았어요.', true);
+    }
+  } else if (c.ctxType === 'grading') {
+    const key = (d.eval || '') + ':' + (d.class || '');
+    if (d.student) {
+      // 학생 상세 · student는 "10101 김일일" 형식 → 학번만 추출
+      const no = String(d.student).split(' ')[0];
+      rvOpenDetail('grading-student', key + ':' + no);
+    } else if (d.subtype === 'class_status') {
+      // 학급 채점 현황 · AI 요약도 여기 통합됨 → 통합 뷰어로 이동
+      rvOpenDetail('grading-combined', key);
+    } else {
+      // 기본 · 통합 뷰어 (반 없으면 1-1 기본)
+      rvOpenDetail('grading-combined', (d.eval || '') + ':' + (d.class || '1-1'));
+    }
+  } else if (c.ctxType === 'seteuk') {
+    if (d.class && SETEUK_CLASS_DATA[d.class]) {
+      rvOpenDetail('seteuk-class', d.class);
+    } else {
+      toastMsg('이 세특의 상세 데이터가 아직 준비되지 않았어요.', true);
+    }
+  }
+  // 리뷰어 우측 리스트에서 · 클릭 댓글 최상단 정렬 + 좌측 세로바 하이라이팅
+  window._rvHighlightId = c.id;
+  setTimeout(function(){
+    if (typeof renderRvComments === 'function') renderRvComments();
+    const list = document.getElementById('rvCommentsList');
+    const target = list && list.querySelector('[data-cmt-id="' + c.id + '"]');
+    if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+  }, 200);
 }
 
 function fcwOpen() {
@@ -5776,7 +6818,15 @@ function fcwOpen() {
   const p = document.getElementById('fcwPanel');
   if (!p) return;
   p.style.display = 'flex';
+  p.classList.remove('collapsed'); // 새로 열 때는 펼쳐진 상태
   fcwRender();
+}
+// 플로팅 창 접기/펼치기 (rv-right와 UX 통일)
+function fcwToggleCollapse() {
+  const p = document.getElementById('fcwPanel');
+  if (!p) return;
+  p.classList.toggle('collapsed');
+  if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
 function fcwClose() {
   window._fcwOpen = false;
@@ -5785,6 +6835,26 @@ function fcwClose() {
   const p = document.getElementById('fcwPanel');
   if (p) p.style.display = 'none';
 }
+// 플로팅 창 · 필터 상태
+window._fcwFilter = 'all';
+window._fcwFilterAuthor = 'all';
+window._fcwFilterMenu = 'all';
+
+function fcwSetFilter(f) { window._fcwFilter = f; fcwRender(); }
+function fcwSetAuthorFilter(v) { window._fcwFilterAuthor = v; fcwRender(); }
+function fcwSetMenuFilter(v) { window._fcwFilterMenu = v; fcwRender(); }
+function fcwSubmitComment() {
+  const inp = document.getElementById('fcwNewCmtInput');
+  if (!inp) return;
+  const val = inp.value.trim();
+  if (!val) { toastMsg('내용을 입력해주세요.', true); return; }
+  _addNewComment(val, window._fcwCtx || null);
+  inp.value = '';
+  toastMsg('의견을 남겼어요.');
+  fcwRender();
+  refreshComments();
+}
+
 function fcwRender() {
   const p = document.getElementById('fcwPanel');
   if (!p) return;
@@ -5796,16 +6866,34 @@ function fcwRender() {
     if (ctx.type === 'design') ctxLabel = '[설계] ' + (ctx.eval || '—');
     else if (ctx.type === 'grading') {
       ctxLabel = '[채점] ' + (ctx.eval || '—') + ' · ' + (ctx.class || '—');
-      if (ctx.subtype === 'ai_summary') ctxLabel += ' · AI 채점 결과 요약';
-      else if (ctx.subtype === 'class_status') ctxLabel += ' · 학급 채점 현황';
+      if (ctx.subtype === 'class_status') ctxLabel += ' · 학급 채점 현황';
       else if (ctx.student) ctxLabel += ' · ' + ctx.student;
     } else if (ctx.type === 'seteuk') ctxLabel = '[세특] ' + (ctx.class || '—');
   }
-  // 매칭 댓글 리스트 (rvMatchesCtx 재사용)
-  let list = ctx ? CR_COMMENTS.filter(c => rvMatchesCtx(c, ctx)) : CR_COMMENTS.slice();
-  // 최신순 정렬 그대로 · 리스트 렌더 (renderCmtCard 재사용 + fcw-highlight 클래스)
+  // 컨텍스트 매칭
+  let ctxMatched = ctx ? CR_COMMENTS.filter(c => rvMatchesCtx(c, ctx)) : CR_COMMENTS.slice();
+  // 서브필터
+  if (window._fcwFilterAuthor !== 'all') ctxMatched = ctxMatched.filter(c => c.author === window._fcwFilterAuthor);
+  if (window._fcwFilterMenu !== 'all') ctxMatched = ctxMatched.filter(c => c.ctxType === window._fcwFilterMenu);
+  // 최신순 정렬
+  ctxMatched = ctxMatched.slice().sort((a, b) => (b.time || '').localeCompare(a.time || ''));
+  // 카운트 갱신
+  const cntAll = document.getElementById('fcwCnAll');
+  const cntUnread = document.getElementById('fcwCnUnread');
+  const cntResolved = document.getElementById('fcwCnResolved');
+  if (cntAll) cntAll.textContent = ctxMatched.length;
+  if (cntUnread) cntUnread.textContent = ctxMatched.filter(c => c.unread).length;
+  if (cntResolved) cntResolved.textContent = ctxMatched.filter(c => c.resolved).length;
+  // 상태 필터
+  let list;
+  if (window._fcwFilter === 'unread') list = ctxMatched.filter(c => c.unread);
+  else if (window._fcwFilter === 'resolved') list = ctxMatched.filter(c => c.resolved);
+  else list = ctxMatched;
+  // 필터 버튼 활성
+  document.querySelectorAll('#fcwPanel [data-fcw-filter]').forEach(b => b.classList.toggle('active', b.getAttribute('data-fcw-filter') === window._fcwFilter));
+  // 리스트 렌더
   const cardsHtml = list.length === 0
-    ? '<div style="text-align:center;color:#9ea3ad;font-size:13px;padding:30px 20px;">이 컨텍스트에 다른 댓글이 없어요.</div>'
+    ? '<div style="text-align:center;color:#9ea3ad;font-size:13px;padding:30px 20px;">' + (ctx ? '이 컨텍스트에 표시할 댓글이 없어요.' : '표시할 댓글이 없어요.') + '</div>'
     : list.map(function(c){
         let card = renderCmtCard(c);
         if (c.id === highlightId) card = card.replace('class="cr-cmt', 'class="cr-cmt fcw-highlight');
@@ -5824,10 +6912,11 @@ function fcwInitDrag() {
   const p = document.getElementById('fcwPanel');
   if (!p) return;
   const hd = p.querySelector('.fcw-hd');
-  let dragging = false, startX = 0, startY = 0, panelX = 0, panelY = 0;
-  hd.addEventListener('mousedown', function(e){
+  const collapsedTab = p.querySelector('.fcw-collapsed-tab');
+  let dragging = false, moved = false, startX = 0, startY = 0, panelX = 0, panelY = 0;
+  function onDown(e) {
     if (e.target.closest('.fcw-close')) return; // 닫기 버튼은 드래그 제외
-    dragging = true;
+    dragging = true; moved = false;
     startX = e.clientX; startY = e.clientY;
     const rect = p.getBoundingClientRect();
     panelX = rect.left; panelY = rect.top;
@@ -5835,21 +6924,31 @@ function fcwInitDrag() {
     p.style.left = panelX + 'px';
     p.style.top = panelY + 'px';
     document.body.style.userSelect = 'none';
-  });
+    e.preventDefault();
+  }
+  hd.addEventListener('mousedown', onDown);
+  if (collapsedTab) collapsedTab.addEventListener('mousedown', onDown);
   document.addEventListener('mousemove', function(e){
     if (!dragging) return;
     const dx = e.clientX - startX;
     const dy = e.clientY - startY;
+    if (Math.abs(dx) + Math.abs(dy) > 3) moved = true;
     let nx = panelX + dx;
     let ny = panelY + dy;
-    // 뷰포트 경계 클램프
     nx = Math.max(0, Math.min(window.innerWidth - p.offsetWidth, nx));
     ny = Math.max(0, Math.min(window.innerHeight - 60, ny));
     p.style.left = nx + 'px';
     p.style.top = ny + 'px';
   });
-  document.addEventListener('mouseup', function(){
-    if (dragging) { dragging = false; document.body.style.userSelect = ''; }
+  document.addEventListener('mouseup', function(e){
+    if (!dragging) return;
+    const wasClick = !moved;
+    dragging = false;
+    document.body.style.userSelect = '';
+    // 접힌 상태에서 원형 버튼 클릭(이동 없음) → 펼침
+    if (wasClick && p.classList.contains('collapsed') && collapsedTab && collapsedTab.contains(e.target)) {
+      fcwToggleCollapse();
+    }
   });
 }
 
