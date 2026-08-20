@@ -662,6 +662,10 @@ body.reviewer-mode .scene.active .page-wrap { position:relative; }
 .rv-mode-strip { display:none; background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:12px 18px; align-items:center; gap:10px; margin-bottom:16px; font-size:14px; color:#92310a; }
 .rv-mode-strip svg { width:16px; height:16px; color:#ea580c; flex-shrink:0; }
 body.reviewer-mode .rv-mode-strip { display:flex; }
+/* 2차 채점자 모드에서는 1차 채점자용 플로팅 댓글창·재열기 fab·플로팅 창 모두 숨김 */
+body.reviewer-mode #commentSide,
+body.reviewer-mode #cmtReopenFab,
+body.reviewer-mode #fcwPanel { display:none !important; }
 body.reviewer-mode .scene.active .step-btn,
 body.reviewer-mode .scene.active .btn-solid:not(.rv-allow),
 body.reviewer-mode .scene.active .epc-ic-btn[title="삭제"] { opacity:.5; pointer-events:none; }
@@ -1264,7 +1268,8 @@ body.rv-collapsed .rv-split { padding-right:40px; }
 .rv-write-ctx-clear { display:inline-flex; align-items:center; gap:2px; height:22px; padding:0 8px; border:1px solid #a3c3ff; background:#fff; color:#3151c4; border-radius:100px; font-size:11px; font-weight:500; cursor:pointer; font-family:inherit; flex-shrink:0; }
 .rv-write-ctx-clear:hover { background:#e9f2ff; border-color:#365eef; }
 .rv-write-ctx-clear svg { width:11px; height:11px; }
-.rv-write-ctx-lbl.muted { color:#6d7381; font-weight:500; }
+.rv-write-ctx-lbl.muted { color:#6d7381; font-weight:500; text-decoration:line-through; text-decoration-color:#b3b6bd; }
+.rv-write-ctx-hint { flex-shrink:0; font-size:11px; font-weight:600; color:#9ea3ad; padding:2px 6px; background:#f1f3f5; border-radius:4px; }
 .rv-write-ctx-reapply { display:inline-flex; align-items:center; gap:3px; height:22px; padding:0 8px; border:1px solid #a3c3ff; background:#e9f2ff; color:#3151c4; border-radius:100px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; flex-shrink:0; }
 .rv-write-ctx-reapply:hover { background:#365eef; color:#fff; border-color:#365eef; }
 .rv-write-ctx-reapply svg { width:11px; height:11px; }
@@ -1500,7 +1505,24 @@ body.rv-collapsed .rv-split { padding-right:40px; }
 .reply-toggle-btn b { color:#3151c4; font-weight:700; }
 
 .reply-thread { margin-top:6px; margin-left:14px; padding-left:12px; border-left:2px solid #e9f2ff; display:flex; flex-direction:column; gap:8px; }
-.reply-item { display:flex; gap:8px; padding:4px 0; }
+.reply-item { display:flex; gap:8px; padding:4px 0; align-items:flex-start; }
+.reply-unread-dot { width:6px; height:6px; border-radius:50%; background:#f2525f; flex-shrink:0; align-self:center; margin-right:-2px; }
+.reply-unread-dot.inline { width:6px; height:6px; margin:0 0 0 6px; display:inline-block; vertical-align:middle; }
+
+/* ===== 삭제된 댓글 / 답글 ===== */
+.cr-cmt.deleted .cr-cmt-hd .cr-cmt-author { color:#9ea3ad; font-weight:500; }
+.cr-cmt-text.deleted, .reply-text.deleted { color:#9ea3ad; font-style:italic; display:inline-flex; align-items:center; gap:6px; }
+.cr-cmt-text.deleted svg, .reply-text.deleted svg { width:12px; height:12px; color:#b3b6bd; }
+.reply-item.deleted .reply-author { color:#9ea3ad; }
+
+/* ===== 소속 변경/탈퇴/권한 회수 안내 문구 ===== */
+.cr-cmt-author.muted, .reply-author.muted { color:#9ea3ad; font-weight:500; font-style:italic; }
+
+/* ===== 인라인 수정 UI ===== */
+.cr-cmt-edit { display:flex; flex-direction:column; gap:6px; margin:4px 0; }
+.cr-cmt-edit-input { width:100%; min-height:60px; padding:8px 10px; border:1px solid #365eef; border-radius:6px; font-size:13px; font-family:inherit; resize:vertical; box-sizing:border-box; background:#fff; color:#222631; }
+.cr-cmt-edit-input:focus { outline:none; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+.cr-cmt-edit-actions { display:flex; justify-content:flex-end; gap:6px; }
 .reply-avatar { width:22px; height:22px; border-radius:50%; background:#e9f2ff; color:#3151c4; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; flex-shrink:0; }
 .reply-body { flex:1; min-width:0; }
 .reply-hd { display:flex; align-items:baseline; gap:6px; margin-bottom:2px; }
@@ -2023,6 +2045,7 @@ body.rv-collapsed .rv-split { padding-right:40px; }
           </select>
           <select class="cls-select-mini" id="crFilterMenu" onchange="setCrMenuFilter(this.value)">
             <option value="all">메뉴: 전체</option>
+            <option value="general">수업 전체</option>
             <option value="design">설계</option>
             <option value="grading">채점</option>
             <option value="seteuk">세특</option>
@@ -2468,6 +2491,7 @@ body.rv-collapsed .rv-split { padding-right:40px; }
           </select>
           <select class="cls-select-mini" id="rvFilterMenu" onchange="rvSetMenuFilter(this.value)">
             <option value="all">메뉴: 전체</option>
+            <option value="general">수업 전체</option>
             <option value="design">설계</option>
             <option value="grading">채점</option>
             <option value="seteuk">세특</option>
@@ -3620,6 +3644,7 @@ body.rv-collapsed .rv-split { padding-right:40px; }
     </select>
     <select class="cls-select-mini" id="csFilterMenu" onchange="setCsMenuFilter(this.value)">
       <option value="all">메뉴: 전체</option>
+      <option value="general">수업 전체</option>
       <option value="design">설계</option>
       <option value="grading">채점</option>
       <option value="seteuk">세특</option>
@@ -3932,7 +3957,10 @@ let csFilterMenu = 'all';
 function setCsFilter(f) { csStateFilter = f; renderComments(document.getElementById('csTabName').textContent); }
 function setCsAuthorFilter(v) { csFilterAuthor = v; renderComments(document.getElementById('csTabName').textContent); }
 function setCsMenuFilter(v) { csFilterMenu = v; renderComments(document.getElementById('csTabName').textContent); }
-function csMarkAllRead() { CR_COMMENTS.forEach(c => c.unread = false); toastMsg('모든 댓글을 읽음으로 처리했어요.'); refreshComments(); }
+function csMarkAllRead() {
+  CR_COMMENTS.forEach(c => { c.unread = false; if (c.replies) c.replies.forEach(r => r.unread = false); });
+  toastMsg('모든 댓글을 읽음으로 처리했어요.'); refreshComments();
+}
 
 function renderComments(tabName) {
   const body = document.getElementById('csBody');
@@ -3948,7 +3976,7 @@ function renderComments(tabName) {
   if (csFilterAuthor !== 'all') ctxList = ctxList.filter(c => c.author === csFilterAuthor);
   if (csFilterMenu !== 'all') ctxList = ctxList.filter(c => c.ctxType === csFilterMenu);
   let list;
-  if (csStateFilter === 'unread') list = ctxList.filter(c => c.unread);
+  if (csStateFilter === 'unread') list = ctxList.filter(c => _threadHasUnread(c));
   else if (csStateFilter === 'resolved') list = ctxList.filter(c => c.resolved);
   else list = ctxList;
 
@@ -3967,7 +3995,7 @@ function renderComments(tabName) {
   const cnUnread = document.getElementById('csCnUnread');
   const cnResolved = document.getElementById('csCnResolved');
   if (cnAll) cnAll.textContent = ctxList.length;
-  if (cnUnread) cnUnread.textContent = ctxList.filter(c => c.unread).length;
+  if (cnUnread) cnUnread.textContent = ctxList.filter(c => _threadHasUnread(c)).length;
   if (cnResolved) cnResolved.textContent = ctxList.filter(c => c.resolved).length;
   document.querySelectorAll('.cs-filter-bar [data-cs-filter]').forEach(b => b.classList.toggle('active', b.getAttribute('data-cs-filter') === csStateFilter));
 
@@ -4011,23 +4039,45 @@ function updateCsWriteCtxBanner() {
       + '</div>';
     if (inp) inp.placeholder = label + '에 대한 검토 의견을 남겨보세요';
   } else {
+    // 컨텍스트 없음 · 이전 컨텍스트 있으면 [되돌리기] 노출 (2차와 UX 통일)
+    const hasLast = !!window._csLastCtx;
+    const lastLbl = hasLast ? rvCtxLabelText(window._csLastCtx) : '';
     el.className = 'rv-write-ctx';
     el.innerHTML =
       '<div class="rv-write-ctx-hd">'
       + '<i data-lucide="message-square"></i>'
-      + '<span>수업 전체에 남기는 댓글이에요</span>'
-      + '</div>';
+      + '<span>위치 지정 없이 · 이 수업 전반에 남겨요</span>'
+      + '</div>'
+      + (hasLast
+        ? '<div class="rv-write-ctx-body">'
+          + '<span class="rv-write-ctx-hint">방금 해제</span>'
+          + '<span class="rv-write-ctx-lbl muted" title="' + lastLbl.replace(/"/g,'&quot;') + '">' + lastLbl + '</span>'
+          + '<button class="rv-write-ctx-reapply" onclick="csReapplyCtx()" title="이전 위치 되돌리기"><i data-lucide="rotate-ccw"></i>되돌리기</button>'
+          + '</div>'
+        : '');
     if (inp) inp.placeholder = '궁금한 점이나 검토 의견을 남겨보세요';
   }
   if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
 
 // commentSide 컨텍스트 해제 (수업 전체 모드로 · 자동 감지도 해제)
+window._csLastCtx = window._csLastCtx || null;
 function csClearWriteCtx() {
+  // 현재 컨텍스트를 백업 (다시 적용용)
+  if (window._csTargetCtx) window._csLastCtx = window._csTargetCtx;
   window._csMode = 'tab';
   window._csTargetCtx = null;
   window._csHighlightId = null;
   window._csAutoCleared = true; // 사용자가 명시 해제 → 씬 이동 전까지 자동 감지 억제
+  renderComments('');
+}
+// commentSide 이전 컨텍스트 다시 적용
+function csReapplyCtx() {
+  if (!window._csLastCtx) return;
+  window._csMode = 'ctx';
+  window._csTargetCtx = window._csLastCtx;
+  window._csLastCtx = null;
+  window._csAutoCleared = false;
   renderComments('');
 }
 
@@ -4211,10 +4261,13 @@ function openCommentSide(target) {
   const side = document.getElementById('commentSide');
   side.classList.add('open');
   side.classList.remove('min');
+  // 첫 오픈에 위치 인라인화 (드래그 즉시 동작)
+  requestAnimationFrame(() => { try { window.csEnsurePosition(); } catch (e) {} });
   const rail = document.getElementById('commentRail');
   if (rail) rail.classList.remove('show');
   try { renderScopeRow(t); } catch (e) {}
   renderComments(t);
+  try { updateReopenFab(); } catch (e) {}
   // [v4] 재열기 플로팅 버튼 숨김
   const fab = document.getElementById('cmtReopenFab');
   if (fab) fab.style.display = 'none';
@@ -4337,7 +4390,7 @@ function updateReopenFab() {
   const eligible = !NOT_FAB.includes(activeId) && !isRemoved && !isSideOpen && !isEmptyState && activeId;
   fab.style.display = eligible ? '' : 'none';
   if (eligible) {
-    const unreadCnt = CR_COMMENTS.filter(c => c.unread).length;
+    const unreadCnt = CR_COMMENTS.filter(c => _threadHasUnread(c)).length;
     const cnt = document.getElementById('cmtReopenCnt');
     if (cnt) {
       cnt.textContent = unreadCnt;
@@ -4386,7 +4439,7 @@ function _addNewComment(text, ctx) {
     resolved: false,
     replies: [],
     reacts: [],
-    ctxType: (ctx && ctx.type) || 'design',
+    ctxType: (ctx && ctx.type) || 'general',   // 컨텍스트 없음 → 수업 전체 인디케이터
     ctxData: ctx ? Object.assign({}, ctx, { type: undefined }) : {},
     text: text
   };
@@ -4796,6 +4849,20 @@ function jumpToTarget(sceneId, targetElId) {
 }
 
 // ===== Drag: Comment Side Panel (v0.4 플로팅 · 접힘 원형 버튼 포함) =====
+// 첫 오픈 시 CSS `right:24px, top:76px` → 인라인 `left/top`으로 즉시 전환 (드래그 계산 일관성 보장)
+window.csEnsurePosition = function() {
+  const side = document.getElementById('commentSide');
+  if (!side) return;
+  // 이미 인라인 left가 있으면 건너뜀 (사용자가 옮겨둔 위치 유지)
+  if (side.style.left && side.style.left !== 'auto') return;
+  const rect = side.getBoundingClientRect();
+  if (rect.width === 0) return; // 아직 렌더 전
+  side.style.right = 'auto';
+  side.style.bottom = 'auto';
+  side.style.left = rect.left + 'px';
+  side.style.top = rect.top + 'px';
+};
+
 (function() {
   const side = document.getElementById('commentSide');
   const hd = document.getElementById('csHead');
@@ -4803,17 +4870,19 @@ function jumpToTarget(sceneId, targetElId) {
   if (!side || !hd) return;
   let sx=0, sy=0, sl=0, st=0, dragging=false, moved=false, activeTarget=null;
 
+  // 드래그 제외 대상: 실제 액션 버튼·입력요소만
+  const EXCLUDE_SEL = '.m-close, button.btn-solid, button.btn-outline, button.btn-ghost, button.btn-subtle, select, input, textarea, a';
+
   function onDown(e) {
-    // 헤더 내 다른 버튼(접기/닫기 등) 클릭 시 드래그 제외
-    if (e.target.closest('button') && !e.target.closest('.cs-collapsed-tab') && !e.currentTarget.matches('.cs-head, #csHead')) return;
-    if (e.currentTarget === hd && e.target.closest('button')) return;
+    // 실제 액션 버튼·인풋 클릭 시 드래그 제외 (X 버튼, 등록 버튼 등)
+    if (e.target.closest(EXCLUDE_SEL)) return;
+    // 위치 인라인화 (첫 드래그 대비)
+    window.csEnsurePosition();
     dragging = true; moved = false;
     activeTarget = e.currentTarget;
     sx = e.clientX; sy = e.clientY;
     const rect = side.getBoundingClientRect();
     sl = rect.left; st = rect.top;
-    side.style.right = 'auto'; side.style.bottom = 'auto';
-    side.style.left = sl + 'px'; side.style.top = st + 'px';
     document.body.style.userSelect = 'none';
     e.preventDefault();
   }
@@ -4939,13 +5008,20 @@ function renderCrPanel() {
 const CR_COMMENTS = [
   { id:'c1', author:'박수정', time:'2026/08/13 15:12', unread:true, resolved:false,
     replies:[
-      { author:'홍길동', time:'2026/08/13 15:45', reacts:[], text:'그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요.' },
-      { author:'박수정', time:'2026/08/13 16:02', reacts:[{emoji:'✓', count:1, mine:false}], text:'아, 결론 연결 부분 다시 보니 그렇네요. 3점 동의합니다.' },
-      { author:'김민준', time:'2026/08/13 16:20', reacts:[], text:'저도 같은 답안 채점할 때 헷갈렸어요. 논리 연결 기준을 좀 더 명시하면 좋겠습니다.' }
+      { author:'홍길동', time:'2026/08/13 15:45', reacts:[], unread:false, text:'그 답안은 자료 인용은 좋은데 결론 연결이 약해서 3점으로 두었어요.' },
+      { author:'박수정', time:'2026/08/13 16:02', reacts:[{emoji:'✓', count:1, mine:false}], unread:true, text:'아, 결론 연결 부분 다시 보니 그렇네요. 3점 동의합니다.' },
+      { author:'김민준', time:'2026/08/13 16:20', reacts:[], unread:true, text:'저도 같은 답안 채점할 때 헷갈렸어요. 논리 연결 기준을 좀 더 명시하면 좋겠습니다.' }
     ],
     reacts:[{emoji:'👀', count:2, mine:false}],
     ctxType:'grading', ctxData:{ eval:'(고) 자기주도 독서 활동', class:'1-1', student:'10101 김일일' },
     text:'김일일 학생 논술 답안, 3번 문항 근거 채점기준 4점으로 봐도 될까요? 자료 인용이 충분해 보여서요.' },
+  { id:'c0g', author:'박수정', time:'2026/08/14 14:30', unread:true, resolved:false,
+    replies:[
+      { author:'김민준', time:'2026/08/14 15:00', reacts:[], unread:true, text:'저도 동의합니다. 채점 전에 한 번 정리하고 가면 좋을 것 같아요.' }
+    ],
+    reacts:[],
+    ctxType:'general', ctxData:{},
+    text:'전체 진행 방향 관련해서, 이번 주 안에 채점 기준 한 번 맞춰보는 시간 가지면 어떨까요?' },
   { id:'c2', author:'박수정', time:'2026/08/13 10:08', unread:true, resolved:false, replies:[], reacts:[],
     ctxType:'design', ctxData:{ eval:'(고) 자기주도 독서 활동' },
     text:'채점기준 A "주장의 명확성" 급간 배점이 8-5-4-3-1로 되어있는데, 4점과 3점 구간이 좀 촘촘해 보여요.' },
@@ -4975,10 +5051,10 @@ const CR_COMMENTS = [
     text:'설계 흐름이 좋습니다. 학생들이 따라오기 좋겠어요.' },
   { id:'c7', author:'박수정', time:'2026/08/08 16:10', unread:true, resolved:false,
     replies:[
-      { author:'홍길동', time:'2026/08/08 17:22', reacts:[], text:'감사합니다. 문구 톤은 계속 유지하려고요.' },
-      { author:'박수정', time:'2026/08/09 09:05', reacts:[{emoji:'👍', count:1, mine:true}], text:'네, 이대로 진행하시면 좋을 것 같아요.' },
+      { author:'홍길동', time:'2026/08/08 17:22', reacts:[], unread:false, text:'감사합니다. 문구 톤은 계속 유지하려고요.' },
+      { author:'박수정', time:'2026/08/09 09:05', reacts:[{emoji:'👍', count:1, mine:true}], unread:false, text:'네, 이대로 진행하시면 좋을 것 같아요.' },
       // 데모 · 예전에 [읽음]으로 처리했으나 최근에 박수정 선생님이 답글 하나 더 남겨서 스레드 다시 unread 상태로 복귀됨
-      { author:'박수정', time:'2026/08/14 10:20', reacts:[], text:'앗, 하나만 더요 — 1학년 1반 김민수 학생 세특에 "동아리 리더십" 부분 표현이 조금 더 구체적이면 좋을 것 같아요. 참고해주세요.' }
+      { author:'박수정', time:'2026/08/14 10:20', reacts:[], unread:true, text:'앗, 하나만 더요 — 1학년 1반 김민수 학생 세특에 "동아리 리더십" 부분 표현이 조금 더 구체적이면 좋을 것 같아요. 참고해주세요.' }
     ],
     reacts:[{emoji:'✓', count:1, mine:true}],
     ctxType:'seteuk', ctxData:{ class:'1학년 1반' },
@@ -5012,7 +5088,15 @@ const CR_COMMENTS = [
     text:'단계별 학습 목표 배치가 매끄럽습니다. 이대로 진행해도 좋을 것 같아요.' },
   { id:'c14', author:'홍길동', time:'2026/08/02 08:15', unread:false, resolved:false, replies:[], reacts:[],
     ctxType:'design', ctxData:{ eval:'(고) 자기주도 독서 활동' },
-    text:'검토 요청드립니다. 특히 채점기준 A 부분 살펴봐주시면 감사하겠습니다.' }
+    text:'검토 요청드립니다. 특히 채점기준 A 부분 살펴봐주시면 감사하겠습니다.' },
+  { id:'c15', author:'이지혜', time:'2026/07/28 14:00', unread:false, resolved:false,
+    authorStatus:'moved',   // 데모 · 소속 변경된 선생님 (원작성자 사라진 경우 예시)
+    replies:[
+      { author:'박수정', time:'2026/07/28 15:20', reacts:[], unread:false, text:'좋은 의견 감사합니다. 참고해서 다듬어볼게요.' }
+    ],
+    reacts:[],
+    ctxType:'general', ctxData:{},
+    text:'수업 방향성이 좋네요, 학생들이 관심 가질 것 같아요.' }
 ];
 let crFilter = 'all';  // 'all' | 'unread' | 'resolved'
 let crFilterAuthor = 'all';   // 'all' | author name
@@ -5020,7 +5104,8 @@ let crFilterMenu = 'all';     // 'all' | 'design' | 'grading' | 'seteuk'
 let crExpanded = false;  // 더보기 클릭 시 true
 
 function crCtxLabel(c) {
-  const d = c.ctxData;
+  const d = c.ctxData || {};
+  if (c.ctxType === 'general' || !c.ctxType) return '[수업 전체]';
   if (c.ctxType === 'design') return '[설계] ' + d.eval;
   if (c.ctxType === 'grading') {
     let s = '[채점] ' + d.eval + ' · ' + d.class;
@@ -5029,7 +5114,14 @@ function crCtxLabel(c) {
     return s;
   }
   if (c.ctxType === 'seteuk') return '[세특] ' + d.class;
-  return '';
+  return '[수업 전체]';
+}
+
+// 스레드 unread 파생: 원댓글 자체 unread || 답글 중 하나라도 unread
+function _threadHasUnread(c) {
+  if (!c) return false;
+  if (c.unread) return true;
+  return !!(c.replies && c.replies.some(r => r.unread));
 }
 
 // ===== [v4] 댓글 카드 공용 렌더 함수 (시나리오 3 & 6 통일) =====
@@ -5048,20 +5140,60 @@ function renderReactsRow(c) {
   return '<div class="react-row">' + chips + addBtn + '</div>';
 }
 function renderReply(r, cid, ridx) {
-  const initial = r.author.charAt(0);
-  const reacts = r.reacts || [];
-  const chips = reacts.map(x =>
-    '<button class="react-chip' + (x.mine ? ' mine' : '') + '" onclick="event.stopPropagation(); toggleReplyReact(\'' + cid + '\', ' + ridx + ', \'' + x.emoji + '\')">' + x.emoji + ' <b>' + x.count + '</b></button>'
-  ).join('');
-  const addBtn = '<div class="react-add-wrap"><button class="react-add-btn" onclick="event.stopPropagation(); toggleReactPop(this)" title="반응 추가"><i data-lucide="smile-plus"></i></button><div class="react-pop">'
-    + REACT_EMOJIS.map(e => '<button onclick="event.stopPropagation(); addReplyReactTo(\'' + cid + '\', ' + ridx + ', \'' + e + '\', this)">' + e + '</button>').join('')
-    + '</div></div>';
-  const reactsRow = '<div class="react-row reply-react-row">' + chips + addBtn + '</div>';
-  return '<div class="reply-item">'
+  const initial = (r.author || '?').charAt(0);
+  const isDeleted = !!r.deleted;
+  const isEditing = window._editingReplyKey === (cid + ':' + ridx);
+  const isMyReply = r.author === getCurrentAuthorName();
+
+  const unreadDot = (!isDeleted && r.unread) ? '<span class="reply-unread-dot" title="안 읽음"></span>' : '';
+
+  // 작성자 표시 (authorStatus → 안내 문구)
+  let authorHtml;
+  if (r.authorStatus === 'moved') authorHtml = '<span class="reply-author muted">소속을 변경하신 선생님입니다</span>';
+  else if (r.authorStatus === 'left') authorHtml = '<span class="reply-author muted">탈퇴한 사용자입니다</span>';
+  else if (r.authorStatus === 'revoked') authorHtml = '<span class="reply-author muted">권한이 회수된 선생님입니다</span>';
+  else authorHtml = '<span class="reply-author">' + r.author + ' 선생님</span>';
+
+  // 텍스트 · 삭제·편집 상태 반영
+  let textBlock;
+  if (isEditing) {
+    const safeVal = String(r.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    textBlock = '<div class="cr-cmt-edit">'
+      + '<textarea class="cr-cmt-edit-input" data-cid="' + cid + '" data-ridx="' + ridx + '" onclick="event.stopPropagation()">' + safeVal + '</textarea>'
+      + '<div class="cr-cmt-edit-actions">'
+      +   '<button class="btn-ghost btn-sm" onclick="event.stopPropagation(); cancelEditReply(\'' + cid + '\', ' + ridx + ')">취소</button>'
+      +   '<button class="btn-solid btn-sm" onclick="event.stopPropagation(); saveEditReply(\'' + cid + '\', ' + ridx + ')">저장</button>'
+      + '</div>'
+      + '</div>';
+  } else if (isDeleted) {
+    textBlock = '<div class="reply-text deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다</div>';
+  } else {
+    textBlock = '<div class="reply-text">' + r.text + '</div>';
+  }
+
+  // 반응 · 삭제/편집 중 숨김
+  let reactsRow = '';
+  if (!isDeleted && !isEditing) {
+    const chips = (r.reacts || []).map(x =>
+      '<button class="react-chip' + (x.mine ? ' mine' : '') + '" onclick="event.stopPropagation(); toggleReplyReact(\'' + cid + '\', ' + ridx + ', \'' + x.emoji + '\')">' + x.emoji + ' <b>' + x.count + '</b></button>'
+    ).join('');
+    const addBtn = '<div class="react-add-wrap"><button class="react-add-btn" onclick="event.stopPropagation(); toggleReactPop(this)" title="반응 추가"><i data-lucide="smile-plus"></i></button><div class="react-pop">'
+      + REACT_EMOJIS.map(e => '<button onclick="event.stopPropagation(); addReplyReactTo(\'' + cid + '\', ' + ridx + ', \'' + e + '\', this)">' + e + '</button>').join('')
+      + '</div></div>';
+    reactsRow = '<div class="react-row reply-react-row">' + chips + addBtn + '</div>';
+  }
+
+  // 수정·삭제 메뉴 (본인 답글만 · 삭제/편집 아닐 때만)
+  const editMenu = (isMyReply && !isDeleted && !isEditing)
+    ? '<div class="cmt-menu-wrap"><button class="cmt-menu-btn" onclick="event.stopPropagation(); toggleCmtMenu(this)" title="더 보기"><i data-lucide="more-horizontal"></i></button><div class="cmt-menu"><button onclick="event.stopPropagation(); editReply(\'' + cid + '\', ' + ridx + ')"><i data-lucide="edit-3"></i>수정</button><button class="danger" onclick="event.stopPropagation(); deleteReply(\'' + cid + '\', ' + ridx + ')"><i data-lucide="trash-2"></i>삭제</button></div></div>'
+    : '';
+
+  return '<div class="reply-item' + (r.unread && !isDeleted ? ' unread' : '') + (isDeleted ? ' deleted' : '') + '">'
+    + unreadDot
     + '<div class="reply-avatar">' + initial + '</div>'
     + '<div class="reply-body">'
-    +   '<div class="reply-hd"><span class="reply-author">' + r.author + ' 선생님</span><span class="reply-time">' + r.time + '</span></div>'
-    +   '<div class="reply-text">' + r.text + '</div>'
+    +   '<div class="reply-hd">' + authorHtml + '<span class="reply-time">' + r.time + '</span>' + editMenu + '</div>'
+    +   textBlock
     +   reactsRow
     + '</div>'
     + '</div>';
@@ -5093,8 +5225,12 @@ function renderRepliesBlock(c) {
       + '<div class="reply-thread" id="reply-form-only-' + c.id + '" style="display:none">' + renderReplyForm(c.id) + '</div>'
       + '</div>';
   }
+  const hasUnreadReply = replies.some(r => r.unread);
+  const unreadHint = hasUnreadReply
+    ? ' <span class="reply-unread-dot inline" title="안 읽은 답글이 있어요"></span>'
+    : '';
   return '<div class="reply-block">'
-    + '<button class="reply-toggle-btn" onclick="event.stopPropagation(); toggleReplies(\'' + c.id + '\')" data-thread-toggle="' + c.id + '"><i data-lucide="chevron-down"></i>답글 <b>' + replies.length + '</b></button>'
+    + '<button class="reply-toggle-btn" onclick="event.stopPropagation(); toggleReplies(\'' + c.id + '\')" data-thread-toggle="' + c.id + '"><i data-lucide="chevron-down"></i>답글 <b>' + replies.length + '</b>' + unreadHint + '</button>'
     + '<div class="reply-thread" id="reply-thread-' + c.id + '" style="display:none">'
     +   replies.map((r, i) => renderReply(r, c.id, i)).join('')
     +   renderReplyForm(c.id)
@@ -5104,35 +5240,76 @@ function renderRepliesBlock(c) {
 function renderCmtCard(c, opts) {
   opts = opts || {};
   const ctx = crCtxLabel(c);
-  const unreadDot = c.unread ? '<span class="cr-cmt-dot" title="안 읽음"></span>' : '';
-  // 초록색 '읽음' 뱃지는 제거 · 상태는 [읽음 처리]/[취소] 버튼과 dot 유무로 파악
+  const threadUnread = _threadHasUnread(c);
+  const isDeleted = !!c.deleted;
+  const isEditing = window._editingCmtId === c.id;
+  const unreadDot = (!isDeleted && threadUnread) ? '<span class="cr-cmt-dot" title="안 읽음"></span>' : '';
   const resolvedBadge = '';
   const isMyComment = c.author === getCurrentAuthorName();
-  const readBtn = c.resolved
+
+  // 작성자 표시 (소속 변경/탈퇴/권한 회수 → 안내 문구로 대체)
+  const authorHtml = _renderAuthorLabel(c);
+
+  // 읽음 처리 · 보러 가기: 삭제 또는 편집 중이면 숨김
+  const readBtn = (isDeleted || isEditing) ? '' : (c.resolved
     ? '<button class="btn-ghost btn-sm cr-cmt-action" onclick="event.stopPropagation(); toggleResolve(\'' + c.id + '\')" title="읽음 취소"><i data-lucide="rotate-ccw" style="width:12px;height:12px"></i>취소</button>'
-    : '<button class="btn-outline btn-sm cr-cmt-action" onclick="event.stopPropagation(); toggleResolve(\'' + c.id + '\')"><i data-lucide="check" style="width:12px;height:12px"></i>읽음 처리</button>';
-  const editMenu = isMyComment
+    : '<button class="btn-outline btn-sm cr-cmt-action" onclick="event.stopPropagation(); toggleResolve(\'' + c.id + '\')"><i data-lucide="check" style="width:12px;height:12px"></i>읽음 처리</button>');
+  // 수업 전체(컨텍스트 없음) 댓글은 이동 대상이 없으므로 [보러 가기] 숨김
+  const isGeneral = (c.ctxType === 'general' || !c.ctxType);
+  const goBtn = (isDeleted || isEditing || isGeneral) ? '' : '<button class="btn-ghost btn-sm" onclick="event.stopPropagation(); openCommentContext(\'' + c.id + '\')">보러 가기 →</button>';
+  const editMenu = (isMyComment && !isDeleted && !isEditing)
     ? '<div class="cmt-menu-wrap"><button class="cmt-menu-btn" onclick="event.stopPropagation(); toggleCmtMenu(this)" title="더 보기"><i data-lucide="more-horizontal"></i></button><div class="cmt-menu"><button onclick="event.stopPropagation(); editCmt(\'' + c.id + '\')"><i data-lucide="edit-3"></i>수정</button><button class="danger" onclick="event.stopPropagation(); deleteCmt(\'' + c.id + '\')"><i data-lucide="trash-2"></i>삭제</button></div></div>'
     : '';
-  return '<div class="cr-cmt' + (c.unread ? ' unread' : '') + (c.resolved ? ' resolved' : '') + '" data-cmt-id="' + c.id + '">'
+
+  // 텍스트 영역 · 편집 모드 vs 삭제 표시 vs 일반
+  let textBlock;
+  if (isEditing) {
+    const safeVal = String(c.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    textBlock = '<div class="cr-cmt-edit">'
+      + '<textarea class="cr-cmt-edit-input" data-cid="' + c.id + '" onclick="event.stopPropagation()">' + safeVal + '</textarea>'
+      + '<div class="cr-cmt-edit-actions">'
+      +   '<button class="btn-ghost btn-sm" onclick="event.stopPropagation(); cancelEditCmt(\'' + c.id + '\')">취소</button>'
+      +   '<button class="btn-solid btn-sm" onclick="event.stopPropagation(); saveEditCmt(\'' + c.id + '\')">저장</button>'
+      + '</div>'
+      + '</div>';
+  } else if (isDeleted) {
+    textBlock = '<div class="cr-cmt-text deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다</div>';
+  } else {
+    textBlock = '<div class="cr-cmt-text">' + c.text + '</div>';
+  }
+
+  // 반응 · 삭제/편집 중이면 숨김
+  const reactsBlock = (isDeleted || isEditing) ? '' : renderReactsRow(c);
+  // 답글 블록은 삭제된 원댓글에서도 유지 (Notion 정책)
+  const repliesBlock = renderRepliesBlock(c);
+
+  return '<div class="cr-cmt' + (threadUnread && !isDeleted ? ' unread' : '') + (c.resolved ? ' resolved' : '') + (isDeleted ? ' deleted' : '') + '" data-cmt-id="' + c.id + '">'
     + '<div class="cr-cmt-body">'
     +   '<div class="cr-cmt-hd">'
     +     unreadDot
-    +     '<span class="cr-cmt-author">' + c.author + ' 선생님</span>'
-    +     '<span class="cr-cmt-ctx">' + ctx + '</span>'
+    +     authorHtml
+    +     (isDeleted ? '' : '<span class="cr-cmt-ctx">' + ctx + '</span>')
     +     resolvedBadge
     +     '<span class="cr-cmt-time">' + c.time + '</span>'
     +     editMenu
     +   '</div>'
-    +   '<div class="cr-cmt-text">' + c.text + '</div>'
-    +   renderReactsRow(c)
-    +   renderRepliesBlock(c)
+    +   textBlock
+    +   reactsBlock
+    +   repliesBlock
     + '</div>'
-    + '<div class="cr-cmt-actions">'
-    +   readBtn
-    +   '<button class="btn-ghost btn-sm" onclick="event.stopPropagation(); openCommentContext(\'' + c.id + '\')">보러 가기 →</button>'
-    + '</div>'
+    + ((readBtn || goBtn)
+      ? '<div class="cr-cmt-actions">' + readBtn + goBtn + '</div>'
+      : '')
     + '</div>';
+}
+
+// 작성자 표시 렌더 · authorStatus 있으면 안내 문구로 대체
+function _renderAuthorLabel(x) {
+  if (!x) return '';
+  if (x.authorStatus === 'moved') return '<span class="cr-cmt-author muted">소속을 변경하신 선생님입니다</span>';
+  if (x.authorStatus === 'left') return '<span class="cr-cmt-author muted">탈퇴한 사용자입니다</span>';
+  if (x.authorStatus === 'revoked') return '<span class="cr-cmt-author muted">권한이 회수된 선생님입니다</span>';
+  return '<span class="cr-cmt-author">' + x.author + ' 선생님</span>';
 }
 function refreshComments() {
   if (document.getElementById('crCommentsList')) renderCrComments();
@@ -5140,8 +5317,13 @@ function refreshComments() {
   if (document.getElementById('csBody') && document.getElementById('commentSide').classList.contains('open')) {
     renderComments(document.getElementById('csTabName').textContent);
   }
+  if (document.getElementById('fcwPanel') && window._fcwOpen) {
+    try { fcwRender(); } catch (e) {}
+  }
   try { updateReopenFab(); } catch (e) {}
   try { updateCollapsedBadges(); } catch (e) {}
+  // 답글 스레드/폼 열림 상태 복원 (모든 리스트 동시 대상)
+  try { applyAllReplyStates(); } catch (e) {}
 }
 function toggleReact(id, emoji) {
   const c = CR_COMMENTS.find(x => x.id === id);
@@ -5166,23 +5348,43 @@ function toggleReactPop(btn) {
   document.querySelectorAll('.react-pop.show').forEach(p => { if (p !== pop) p.classList.remove('show'); });
   pop.classList.toggle('show');
 }
-function toggleReplies(id) {
-  const el = document.getElementById('reply-thread-' + id);
-  if (!el) return;
-  const isOpen = el.style.display !== 'none';
-  el.style.display = isOpen ? 'none' : '';
-  // 아이콘 회전
-  const btn = document.querySelector('[data-thread-toggle="' + id + '"]');
-  if (btn) {
+// ===== 답글 스레드/폼 열림 상태 (전역 · 여러 리스트에 중복 렌더되는 카드 지원) =====
+window._openedReplyThreads = window._openedReplyThreads || new Set();
+window._openedReplyForms = window._openedReplyForms || new Set();
+
+function _applyThreadState(id) {
+  const open = window._openedReplyThreads.has(id);
+  document.querySelectorAll('[id="reply-thread-' + id + '"]').forEach(el => {
+    el.style.display = open ? '' : 'none';
+  });
+  document.querySelectorAll('[data-thread-toggle="' + id + '"]').forEach(btn => {
     const svg = btn.querySelector('svg');
-    if (svg) svg.style.transform = isOpen ? '' : 'rotate(180deg)';
-  }
+    if (svg) svg.style.transform = open ? 'rotate(180deg)' : '';
+  });
+}
+function _applyFormState(id) {
+  const open = window._openedReplyForms.has(id);
+  document.querySelectorAll('[id="reply-form-only-' + id + '"]').forEach(el => {
+    el.style.display = open ? '' : 'none';
+  });
+}
+function applyAllReplyStates() {
+  window._openedReplyThreads.forEach(id => _applyThreadState(id));
+  window._openedReplyForms.forEach(id => _applyFormState(id));
+}
+function toggleReplies(id) {
+  if (window._openedReplyThreads.has(id)) window._openedReplyThreads.delete(id);
+  else window._openedReplyThreads.add(id);
+  _applyThreadState(id);
 }
 function toggleReplyForm(id) {
-  const el = document.getElementById('reply-form-only-' + id);
-  if (!el) return;
-  el.style.display = el.style.display === 'none' ? '' : 'none';
-  if (el.style.display !== 'none') el.querySelector('textarea').focus();
+  if (window._openedReplyForms.has(id)) window._openedReplyForms.delete(id);
+  else window._openedReplyForms.add(id);
+  _applyFormState(id);
+  if (window._openedReplyForms.has(id)) {
+    const el = document.querySelector('[id="reply-form-only-' + id + '"] textarea');
+    if (el) el.focus();
+  }
 }
 function submitReply(id, btn) {
   const wrap = btn.closest('.reply-form-inner');
@@ -5196,21 +5398,15 @@ function submitReply(id, btn) {
   const pad = n => String(n).padStart(2, '0');
   const nowStr = now.getFullYear() + '/' + pad(now.getMonth()+1) + '/' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
   const me = getCurrentAuthorName();
-  c.replies.push({ author: me, time: nowStr, reacts:[], text: val });
+  // 내가 쓴 답글 · 내 입장에서는 이미 읽음
+  c.replies.push({ author: me, time: nowStr, reacts:[], unread:false, text: val });
   if (c.resolved) c.resolved = false;
   inp.value = '';
+  // 스레드 열림 상태로 유지 (등록 후 답글이 바로 보이도록)
+  window._openedReplyThreads.add(id);
+  window._openedReplyForms.delete(id);
   toastMsg('답글을 남겼어요.');
   refreshComments();
-  // 등록 직후 · 답글 스레드 자동 펼침 (여러 리스트 모두 대상 · 방금 등록한 답글이 바로 보이도록)
-  setTimeout(function(){
-    document.querySelectorAll('#reply-thread-' + id).forEach(el => { el.style.display = ''; });
-    document.querySelectorAll('#reply-form-only-' + id).forEach(el => { el.style.display = ''; });
-    // toggle button chevron 회전
-    document.querySelectorAll('[data-thread-toggle="' + id + '"]').forEach(function(btn){
-      const svg = btn.querySelector('svg');
-      if (svg) svg.style.transform = 'rotate(180deg)';
-    });
-  }, 30);
 }
 
 // 데모용 · 다른 사람이 남긴 답글 시뮬레이션 (스레드 unread 복귀 트리거)
@@ -5221,9 +5417,8 @@ function _demoAddReply(commentId, author, text) {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
   const nowStr = now.getFullYear() + '/' + pad(now.getMonth()+1) + '/' + pad(now.getDate()) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-  c.replies.push({ author, time: nowStr, reacts:[], text });
-  // 스레드 다시 unread (다른 사람이 남긴 답글이니까)
-  c.unread = true;
+  // 다른 사람이 남긴 답글 · 그 답글 자체 unread=true (원댓글 dot는 파생으로 자동 표시)
+  c.replies.push({ author, time: nowStr, reacts:[], unread:true, text });
   c.resolved = false;
   refreshComments();
 }
@@ -5233,11 +5428,104 @@ function toggleCmtMenu(btn) {
   document.querySelectorAll('.cmt-menu.show').forEach(m => { if (m !== menu) m.classList.remove('show'); });
   menu.classList.toggle('show');
 }
-function editCmt(id) { toastMsg('댓글 수정 데모는 준비 중입니다.', true); document.querySelectorAll('.cmt-menu.show').forEach(m => m.classList.remove('show')); }
+// ===== 원댓글 · 답글 수정·삭제 =====
+window._editingCmtId = window._editingCmtId || null;
+window._editingReplyKey = window._editingReplyKey || null;
+
+// 원댓글 수정 진입
+function editCmt(id) {
+  window._editingCmtId = id;
+  window._editingReplyKey = null;
+  document.querySelectorAll('.cmt-menu.show').forEach(m => m.classList.remove('show'));
+  refreshComments();
+  setTimeout(function(){
+    const ta = document.querySelector('.cr-cmt-edit-input[data-cid="' + id + '"]:not([data-ridx])');
+    if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+  }, 30);
+}
+function saveEditCmt(id) {
+  const ta = document.querySelector('.cr-cmt-edit-input[data-cid="' + id + '"]:not([data-ridx])');
+  if (!ta) return;
+  const val = ta.value.trim();
+  if (!val) { toastMsg('내용을 입력해주세요.', true); return; }
+  const c = CR_COMMENTS.find(x => x.id === id);
+  if (!c) return;
+  c.text = val;
+  window._editingCmtId = null;
+  toastMsg('댓글을 수정했어요.');
+  refreshComments();
+}
+function cancelEditCmt(id) {
+  window._editingCmtId = null;
+  refreshComments();
+}
+// 원댓글 소프트 삭제 (답글 유지 · 텍스트만 대체)
 function deleteCmt(id) {
-  if (!confirm('이 댓글을 삭제하시겠어요?')) return;
-  const idx = CR_COMMENTS.findIndex(x => x.id === id);
-  if (idx >= 0) { CR_COMMENTS.splice(idx, 1); toastMsg('댓글을 삭제했어요.'); refreshComments(); }
+  cfmOpen({
+    icon: 'trash-2',
+    title: '이 댓글을 삭제하시겠어요?',
+    desc: '삭제된 댓글은 되돌릴 수 없어요. 답글은 유지됩니다.',
+    confirmLabel: '삭제',
+    onConfirm: function() {
+      const c = CR_COMMENTS.find(x => x.id === id);
+      if (!c) return;
+      c.deleted = true;
+      c.text = '삭제된 댓글입니다';
+      c.reacts = [];
+      c.unread = false; // 삭제된 댓글은 unread 카운트 제외
+      toastMsg('댓글을 삭제했어요.');
+      refreshComments();
+    }
+  });
+}
+// 답글 수정 진입
+function editReply(cid, ridx) {
+  window._editingReplyKey = cid + ':' + ridx;
+  window._editingCmtId = null;
+  document.querySelectorAll('.cmt-menu.show').forEach(m => m.classList.remove('show'));
+  // 답글 스레드 열림 유지
+  window._openedReplyThreads.add(cid);
+  refreshComments();
+  setTimeout(function(){
+    const ta = document.querySelector('.cr-cmt-edit-input[data-cid="' + cid + '"][data-ridx="' + ridx + '"]');
+    if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+  }, 30);
+}
+function saveEditReply(cid, ridx) {
+  const ta = document.querySelector('.cr-cmt-edit-input[data-cid="' + cid + '"][data-ridx="' + ridx + '"]');
+  if (!ta) return;
+  const val = ta.value.trim();
+  if (!val) { toastMsg('내용을 입력해주세요.', true); return; }
+  const c = CR_COMMENTS.find(x => x.id === cid);
+  if (!c || !c.replies || !c.replies[ridx]) return;
+  c.replies[ridx].text = val;
+  window._editingReplyKey = null;
+  toastMsg('답글을 수정했어요.');
+  refreshComments();
+}
+function cancelEditReply(cid, ridx) {
+  window._editingReplyKey = null;
+  refreshComments();
+}
+// 답글 소프트 삭제
+function deleteReply(cid, ridx) {
+  cfmOpen({
+    icon: 'trash-2',
+    title: '이 답글을 삭제하시겠어요?',
+    desc: '삭제된 답글은 되돌릴 수 없어요.',
+    confirmLabel: '삭제',
+    onConfirm: function() {
+      const c = CR_COMMENTS.find(x => x.id === cid);
+      if (!c || !c.replies || !c.replies[ridx]) return;
+      const r = c.replies[ridx];
+      r.deleted = true;
+      r.text = '삭제된 댓글입니다';
+      r.reacts = [];
+      r.unread = false;
+      toastMsg('답글을 삭제했어요.');
+      refreshComments();
+    }
+  });
 }
 // 바깥 클릭 시 팝오버·메뉴 자동 닫기
 document.addEventListener('click', e => {
@@ -5254,7 +5542,7 @@ function renderCrComments() {
   if (!wrap) return;
   // 필터 적용 (state + author + menu 독립 조합)
   let filtered = CR_COMMENTS;
-  if (crFilter === 'unread') filtered = filtered.filter(c => c.unread);
+  if (crFilter === 'unread') filtered = filtered.filter(c => _threadHasUnread(c));
   else if (crFilter === 'resolved') filtered = filtered.filter(c => c.resolved);
   if (crFilterAuthor !== 'all') filtered = filtered.filter(c => c.author === crFilterAuthor);
   if (crFilterMenu !== 'all') filtered = filtered.filter(c => c.ctxType === crFilterMenu);
@@ -5264,7 +5552,7 @@ function renderCrComments() {
   const list = filtered.slice(0, showCount);
 
   // 필터 카운트 갱신
-  const unreadCnt = CR_COMMENTS.filter(c => c.unread).length;
+  const unreadCnt = CR_COMMENTS.filter(c => _threadHasUnread(c)).length;
   const resolvedCnt = CR_COMMENTS.filter(c => c.resolved).length;
   const allCnt = CR_COMMENTS.length;
   const cnAll = document.getElementById('cnAll');
@@ -6463,7 +6751,7 @@ function toggleRvCollapse() {
 }
 // 접힘 상태 · 원형 버튼의 미확인 뱃지 갱신
 function updateCollapsedBadges() {
-  const unreadCnt = CR_COMMENTS.filter(c => c.unread).length;
+  const unreadCnt = CR_COMMENTS.filter(c => _threadHasUnread(c)).length;
   ['rvCollapsedBadge','csCollapsedBadge','fcwCollapsedBadge'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -6519,6 +6807,7 @@ function rvToggleExpand() { rvExpanded = !rvExpanded; renderRvComments(); }
 function rvCtxLabelText(ctx) {
   if (!ctx) return '전체';
   const d = ctx;
+  if (d.type === 'general') return '[수업 전체]';
   if (d.type === 'design') return '[설계] ' + d.eval;
   if (d.type === 'grading') {
     let s = '[채점] ' + d.eval;
@@ -6563,7 +6852,7 @@ function renderRvComments() {
   });
   // 상태 필터
   let filtered;
-  if (rvFilter === 'unread') filtered = ctxMatched.filter(c => c.unread);
+  if (rvFilter === 'unread') filtered = ctxMatched.filter(c => _threadHasUnread(c));
   else if (rvFilter === 'resolved') filtered = ctxMatched.filter(c => c.resolved);
   else filtered = ctxMatched;
 
@@ -6576,7 +6865,7 @@ function renderRvComments() {
   const unreadEl = document.getElementById('rvCnUnread');
   const resolvedEl = document.getElementById('rvCnResolved');
   if (allEl) allEl.textContent = ctxMatched.length;
-  if (unreadEl) unreadEl.textContent = ctxMatched.filter(c => c.unread).length;
+  if (unreadEl) unreadEl.textContent = ctxMatched.filter(c => _threadHasUnread(c)).length;
   if (resolvedEl) resolvedEl.textContent = ctxMatched.filter(c => c.resolved).length;
 
   // 필터 버튼 활성 상태
@@ -6619,12 +6908,13 @@ function renderRvComments() {
       writeCtxEl.innerHTML =
         '<div class="rv-write-ctx-hd">'
         + '<i data-lucide="message-square"></i>'
-        + '<span>수업 전체에 남기는 댓글이에요</span>'
+        + '<span>위치 지정 없이 · 이 수업 전반에 남겨요</span>'
         + '</div>'
         + (hasLast
           ? '<div class="rv-write-ctx-body">'
+            + '<span class="rv-write-ctx-hint">방금 해제</span>'
             + '<span class="rv-write-ctx-lbl muted" title="' + lastLbl.replace(/"/g,'&quot;') + '">' + lastLbl + '</span>'
-            + '<button class="rv-write-ctx-reapply" onclick="rvReapplyCtx()" title="이전 컨텍스트 다시 적용"><i data-lucide="rotate-ccw"></i>다시 적용</button>'
+            + '<button class="rv-write-ctx-reapply" onclick="rvReapplyCtx()" title="이전 위치 되돌리기"><i data-lucide="rotate-ccw"></i>되돌리기</button>'
             + '</div>'
           : '');
       if (writeInp) writeInp.placeholder = '궁금한 점이나 검토 의견을 남겨보세요';
@@ -6656,7 +6946,7 @@ function renderRvComments() {
   document.querySelectorAll('.scene.active .rv-left-dot').forEach(el => {
     try {
       const spec = JSON.parse(el.getAttribute('data-cnt-for'));
-      const cnt = CR_COMMENTS.filter(c => rvMatchesCtx(c, spec) && c.unread).length;
+      const cnt = CR_COMMENTS.filter(c => rvMatchesCtx(c, spec) && _threadHasUnread(c)).length;
       el.classList.toggle('on', cnt > 0);
     } catch (e) {}
   });
@@ -6667,7 +6957,7 @@ function renderRvComments() {
       const spec = JSON.parse(el.getAttribute('data-cnt-for'));
       const matched = CR_COMMENTS.filter(c => rvMatchesCtx(c, spec));
       const total = matched.length;
-      const unread = matched.filter(c => c.unread).length;
+      const unread = matched.filter(c => _threadHasUnread(c)).length;
       let html = '';
       // 순서: 미확인 → 전체 (미확인이 눈에 먼저 띄도록)
       if (unread > 0) {
@@ -6689,13 +6979,22 @@ function toggleResolve(id) {
   const c = CR_COMMENTS.find(x => x.id === id);
   if (!c) return;
   c.resolved = !c.resolved;
-  if (c.resolved) c.unread = false;   // 읽음 처리 시 안 읽음 해제
-  else c.unread = true;               // 읽음 취소 시 → 다시 안 읽음 (빨간 dot 복귀)
+  if (c.resolved) {
+    // 스레드 전체 읽음 처리 (원댓글 + 모든 답글)
+    c.unread = false;
+    if (c.replies) c.replies.forEach(r => r.unread = false);
+  } else {
+    // 취소 = 다시 안 읽음 (원댓글만 · 답글은 각자 상태 유지)
+    c.unread = true;
+  }
   toastMsg(c.resolved ? '읽음으로 처리했어요.' : '읽음을 취소했어요.');
   refreshComments();
 }
 function markAllCmtRead() {
-  CR_COMMENTS.forEach(c => c.unread = false);
+  CR_COMMENTS.forEach(c => {
+    c.unread = false;
+    if (c.replies) c.replies.forEach(r => r.unread = false);
+  });
   toastMsg('모든 댓글을 읽음으로 처리했어요.');
   renderCrComments();
 }
@@ -6713,8 +7012,9 @@ function openCommentContext(commentId) {
   if (!c) { toastMsg('댓글을 찾을 수 없어요.', true); return; }
   const d = c.ctxData || {};
 
-  // 클릭한 댓글 자동 읽음 처리 (unread 해제 + resolved 처리 · [읽음 처리] → [취소]로 전환)
+  // 클릭한 댓글 자동 읽음 처리 (스레드 전체 · 원댓글 + 모든 답글)
   c.unread = false;
+  if (c.replies) c.replies.forEach(r => r.unread = false);
   c.resolved = true;
 
   // 2차 채점자(reviewer) 씬이 활성이면 뷰어 모드로 라우팅 (rvOpenDetail)
@@ -6761,6 +7061,9 @@ function openCommentContext(commentId) {
     side.classList.add('open');
     side.classList.remove('min');
     side.classList.remove('collapsed');
+    // 첫 오픈에 위치 인라인화 (드래그 즉시 동작)
+    requestAnimationFrame(() => { try { window.csEnsurePosition(); } catch (e) {} });
+    try { updateReopenFab(); } catch (e) {}
     csFilterAuthor = 'all'; csFilterMenu = 'all'; csStateFilter = 'all';
     const fa = document.getElementById('csFilterAuthor'); if (fa) fa.value = 'all';
     const fm = document.getElementById('csFilterMenu'); if (fm) fm.value = 'all';
@@ -6863,7 +7166,8 @@ function fcwRender() {
   // 컨텍스트 라벨
   let ctxLabel = '전체 댓글';
   if (ctx) {
-    if (ctx.type === 'design') ctxLabel = '[설계] ' + (ctx.eval || '—');
+    if (ctx.type === 'general') ctxLabel = '[수업 전체]';
+    else if (ctx.type === 'design') ctxLabel = '[설계] ' + (ctx.eval || '—');
     else if (ctx.type === 'grading') {
       ctxLabel = '[채점] ' + (ctx.eval || '—') + ' · ' + (ctx.class || '—');
       if (ctx.subtype === 'class_status') ctxLabel += ' · 학급 채점 현황';
@@ -6882,11 +7186,11 @@ function fcwRender() {
   const cntUnread = document.getElementById('fcwCnUnread');
   const cntResolved = document.getElementById('fcwCnResolved');
   if (cntAll) cntAll.textContent = ctxMatched.length;
-  if (cntUnread) cntUnread.textContent = ctxMatched.filter(c => c.unread).length;
+  if (cntUnread) cntUnread.textContent = ctxMatched.filter(c => _threadHasUnread(c)).length;
   if (cntResolved) cntResolved.textContent = ctxMatched.filter(c => c.resolved).length;
   // 상태 필터
   let list;
-  if (window._fcwFilter === 'unread') list = ctxMatched.filter(c => c.unread);
+  if (window._fcwFilter === 'unread') list = ctxMatched.filter(c => _threadHasUnread(c));
   else if (window._fcwFilter === 'resolved') list = ctxMatched.filter(c => c.resolved);
   else list = ctxMatched;
   // 필터 버튼 활성
