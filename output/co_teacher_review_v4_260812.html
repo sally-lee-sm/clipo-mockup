@@ -344,6 +344,30 @@ body.nav-expanded .main-wrap { margin-left:222px; }
 /* Teacher search & select */
 .teacher-search { position:relative; margin-bottom:12px; }
 .teacher-list { max-height:280px; overflow-y:auto; border:1px solid #dde1e8; border-radius:8px; }
+
+/* ===== 공동 평가 설정 · 통합 테이블 ===== */
+.share-table-wrap { border:1px solid #dde1e8; border-radius:8px; overflow:hidden; max-height:420px; overflow-y:auto; }
+.share-table { width:100%; border-collapse:collapse; font-size:14px; background:#fff; }
+.share-table thead th { position:sticky; top:0; background:#f6f7f9; color:#3b3f4c; font-weight:600; font-size:13px; padding:12px 14px; text-align:left; border-bottom:1px solid #dde1e8; z-index:2; }
+.share-table tbody td { padding:14px 14px; border-bottom:1px solid #f1f3f5; vertical-align:middle; }
+.share-table tbody tr:last-child td { border-bottom:none; }
+.share-table tbody tr:hover { background:#f9fafb; }
+.share-table .col-name { font-size:14px; font-weight:600; color:#222631; white-space:nowrap; }
+.share-table .col-email { font-size:13px; color:#6d7381; }
+.share-table .col-subj { color:#3b3f4c; font-size:13px; white-space:nowrap; width:100px; }
+.share-table .col-scope { width:280px; text-align:center; }
+.share-table thead .col-scope { padding-bottom:6px; }
+.share-table .col-scope-sub { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; font-weight:500; font-size:11px; color:#6d7381; margin-top:6px; text-align:center; }
+.share-table tbody .col-scope { display:grid; grid-template-columns:1fr 1fr 1fr; gap:0; align-items:center; }
+
+.scope-radio { position:relative; display:inline-flex; justify-content:center; align-items:center; cursor:pointer; padding:8px 0; }
+.scope-radio input { position:absolute; opacity:0; pointer-events:none; }
+.scope-radio span { width:18px; height:18px; border-radius:50%; border:1.5px solid #b3b6bd; background:#fff; transition:all .12s; display:inline-block; position:relative; }
+.scope-radio:hover span { border-color:#416bff; }
+.scope-radio input:checked + span { border:5.5px solid #416bff; }
+.share-table tbody tr[data-scope="none"] .col-name { color:#9ea3ad; }
+.share-table tbody tr[data-scope="none"] .col-email,
+.share-table tbody tr[data-scope="none"] .col-subj { color:#b3b6bd; }
 .t-item { display:flex; align-items:center; gap:14px; padding:16px 18px; cursor:pointer; }
 .t-item:hover { background:#f6f7f9; }
 .t-item + .t-item { border-top:1px solid #f1f3f5; }
@@ -1263,7 +1287,29 @@ body.rv-collapsed .rv-split { padding-right:40px; }
 .rv-write-ctx-hd svg { width:12px; height:12px; color:#9ea3ad; }
 .rv-write-ctx.active .rv-write-ctx-hd { color:#3151c4; }
 .rv-write-ctx.active .rv-write-ctx-hd svg { color:#365eef; }
-.rv-write-ctx-body { display:flex; align-items:center; gap:6px; }
+.rv-write-ctx-body { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+.rv-write-ctx-drops { display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+
+/* ===== 컨텍스트 요약 pill (자동 감지 상태) ===== */
+.ctx-summary-pill { flex:1 1 auto; min-width:0; padding:6px 12px; background:#e9f2ff; border:1px solid #ccdfff; border-radius:6px; color:#3151c4; font-size:13px; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ctx-summary-pill.muted { background:#f6f7f9; border-color:#dde1e8; color:#6d7381; font-weight:500; }
+.ctx-summary-pill.partial { background:#fff9e6; border-color:#fde68a; color:#a16207; }
+.ctx-edit-btn { flex-shrink:0; display:inline-flex; align-items:center; gap:4px; height:30px; padding:0 10px; border:1px solid #dde1e8; background:#fff; border-radius:6px; color:#3b3f4c; font-size:12px; font-weight:500; cursor:pointer; font-family:inherit; }
+.ctx-edit-btn:hover { border-color:#a3c3ff; color:#3151c4; background:#f4f8ff; }
+.ctx-edit-btn svg { width:12px; height:12px; }
+
+/* ===== 인라인 편집 에디터 ===== */
+.ctx-editor-inline { margin-top:8px; padding:10px; background:#f6f7f9; border:1px solid #dde1e8; border-radius:6px; display:flex; flex-direction:column; gap:8px; }
+.ctx-editor-drops { display:flex; flex-direction:column; gap:6px; }
+.ctx-editor-drops .ctx-type-select, .ctx-editor-drops .ctx-target-select { width:100%; height:32px; }
+.ctx-editor-actions { display:flex; justify-content:flex-end; gap:6px; }
+.ctx-type-select, .ctx-target-select { height:30px; padding:0 26px 0 10px; border:1px solid #dde1e8; border-radius:6px; font-size:12px; font-family:inherit; color:#222631; background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%236d7381' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") no-repeat right 8px center; appearance:none; -webkit-appearance:none; cursor:pointer; max-width:100%; text-overflow:ellipsis; }
+.ctx-type-select { min-width:110px; flex-shrink:0; }
+.ctx-target-select { flex:1; min-width:180px; }
+.ctx-type-select:hover, .ctx-target-select:hover { border-color:#a3c3ff; }
+.ctx-type-select:focus, .ctx-target-select:focus { outline:none; border-color:#365eef; box-shadow:0 0 0 3px rgba(65,107,255,.12); }
+.ctx-target-select:disabled { background-color:#f6f7f9; color:#9ea3ad; cursor:not-allowed; }
+.rv-write-ctx.active .rv-write-ctx-hd { color:#3151c4; }
 .rv-write-ctx-lbl { flex:1; min-width:0; font-size:12px; font-weight:600; color:#3151c4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .rv-write-ctx-clear { display:inline-flex; align-items:center; gap:2px; height:22px; padding:0 8px; border:1px solid #a3c3ff; background:#fff; color:#3151c4; border-radius:100px; font-size:11px; font-weight:500; cursor:pointer; font-family:inherit; flex-shrink:0; }
 .rv-write-ctx-clear:hover { background:#e9f2ff; border-color:#365eef; }
@@ -1517,6 +1563,9 @@ body.rv-collapsed .rv-split { padding-right:40px; }
 
 /* ===== 소속 변경/탈퇴/권한 회수 안내 문구 ===== */
 .cr-cmt-author.muted, .reply-author.muted { color:#9ea3ad; font-weight:500; font-style:italic; }
+
+/* ===== (수정됨) 표시 ===== */
+.cmt-edited-tag { margin-left:6px; font-size:11px; color:#b3b6bd; font-weight:400; vertical-align:baseline; }
 
 /* ===== 인라인 수정 UI ===== */
 .cr-cmt-edit { display:flex; flex-direction:column; gap:6px; margin:4px 0; }
@@ -1984,7 +2033,7 @@ body.rv-collapsed .rv-split { padding-right:40px; }
             <div class="cr-sec-ic"><i data-lucide="users"></i></div>
             <div>
               <div class="cr-sec-t">검토 선생님</div>
-              <div class="cr-sec-sub">이 수업을 열람하고 검토 의견을 남길 수 있는 선생님이에요.</div>
+              <div class="cr-sec-sub">이 수업을 열람하고 댓글을 남길 수 있는 선생님이에요.</div>
             </div>
           </div>
           <button class="btn-subtle btn-sm" onclick="openShareModal()"><i data-lucide="settings-2" style="width:14px;height:14px"></i>공동 평가 설정</button>
@@ -2474,7 +2523,7 @@ body.rv-collapsed .rv-split { padding-right:40px; }
       <!-- 입력창 · 상단 배치 -->
       <div class="rv-new-cmt">
         <div class="rv-write-ctx" id="rvWriteCtx"><!-- renderRvComments에서 갱신 --></div>
-        <textarea class="rv-new-cmt-input" id="rvNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
+        <textarea class="rv-new-cmt-input" id="rvNewCmtInput" placeholder="궁금한 점이나 댓글을 남겨보세요"></textarea>
         <div class="rv-new-cmt-actions">
           <button class="btn-solid btn-sm" onclick="rvSubmitComment()">등록</button>
         </div>
@@ -3462,7 +3511,7 @@ body.rv-collapsed .rv-split { padding-right:40px; }
   <!-- 입력창 상단 -->
   <div class="fcw-new-cmt">
     <div class="fcw-write-hint"><i data-lucide="at-sign"></i><span>지금 보고 있는 위치에 댓글이 남겨져요</span></div>
-    <textarea class="fcw-new-cmt-input" id="fcwNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
+    <textarea class="fcw-new-cmt-input" id="fcwNewCmtInput" placeholder="궁금한 점이나 댓글을 남겨보세요"></textarea>
     <div class="fcw-new-cmt-actions">
       <button class="btn-solid btn-sm" onclick="fcwSubmitComment()">등록</button>
     </div>
@@ -3523,70 +3572,78 @@ body.rv-collapsed .rv-split { padding-right:40px; }
     <div class="m-body">
       <div class="field">
         <div class="field-label" style="display:flex;align-items:center;justify-content:space-between;">
-          <span>검토 요청할 선생님 <span style="color:#6d7381;font-weight:400">(현재 3명 선택됨)</span></span>
+          <span>검토 요청 선생님 & 공유 범위 <span style="color:#6d7381;font-weight:400">(현재 <b id="selectedCount">3</b>명 공유 중)</span></span>
         </div>
-        <div class="teacher-list">
-          <div class="t-item" onclick="toggleTeacher(this)">
-            <div class="t-check checked"><i data-lucide="check"></i></div>
-            <div class="t-name-wrap"><span class="t-name">박수정 선생님</span><span class="t-email">soojung@datadriven.kr</span><span class="t-subj">국어</span></div>
-            <span class="rv-preset plus" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업 + 세특</span>
-          </div>
-          <div class="t-item" onclick="toggleTeacher(this)">
-            <div class="t-check checked"><i data-lucide="check"></i></div>
-            <div class="t-name-wrap"><span class="t-name">김민준 선생님</span><span class="t-email">minjoon@naver.com</span><span class="t-subj">국어</span></div>
-            <span class="rv-preset plus" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업 + 세특</span>
-          </div>
-          <div class="t-item" onclick="toggleTeacher(this)">
-            <div class="t-check checked"><i data-lucide="check"></i></div>
-            <div class="t-name-wrap"><span class="t-name">이지혜 선생님</span><span class="t-email">jihye.lee@test.clipo.ai</span><span class="t-subj">역사</span></div>
-            <span class="rv-preset basic" style="height:22px;font-size:11px;padding:0 8px;"><i data-lucide="package"></i>수업</span>
-          </div>
-          <div class="t-item" onclick="toggleTeacher(this)">
-            <div class="t-check"></div>
-            <div class="t-name-wrap"><span class="t-name">최민아 선생님</span><span class="t-email">mina.choi@test.clipo.ai</span><span class="t-subj">사회</span></div>
-            <span style="font-size:12px;color:#9ea3ad;">미공유</span>
-          </div>
-          <div class="t-item" onclick="toggleTeacher(this)">
-            <div class="t-check"></div>
-            <div class="t-name-wrap"><span class="t-name">정하나 선생님</span><span class="t-email">hana.jung@test.clipo.ai</span><span class="t-subj">수학</span></div>
-            <span style="font-size:12px;color:#9ea3ad;">미공유</span>
-          </div>
+        <div class="share-table-wrap">
+          <table class="share-table">
+            <thead>
+              <tr>
+                <th class="col-name">이름</th>
+                <th class="col-email">아이디(이메일)</th>
+                <th class="col-subj">담당 과목</th>
+                <th class="col-scope">
+                  공유 범위
+                  <span class="col-scope-sub">
+                    <span>수업 + 세특</span><span>수업</span><span>미공유</span>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-scope="plus">
+                <td class="col-name">박수정 선생님</td>
+                <td class="col-email">soojung@datadriven.kr</td>
+                <td class="col-subj">국어</td>
+                <td class="col-scope">
+                  <label class="scope-radio"><input type="radio" name="scope-t1" value="plus" checked onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t1" value="basic" onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t1" value="none" onchange="onScopeChange(this)"><span></span></label>
+                </td>
+              </tr>
+              <tr data-scope="plus">
+                <td class="col-name">김민준 선생님</td>
+                <td class="col-email">minjoon@naver.com</td>
+                <td class="col-subj">국어</td>
+                <td class="col-scope">
+                  <label class="scope-radio"><input type="radio" name="scope-t2" value="plus" checked onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t2" value="basic" onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t2" value="none" onchange="onScopeChange(this)"><span></span></label>
+                </td>
+              </tr>
+              <tr data-scope="basic">
+                <td class="col-name">이지혜 선생님</td>
+                <td class="col-email">jihye.lee@test.clipo.ai</td>
+                <td class="col-subj">역사</td>
+                <td class="col-scope">
+                  <label class="scope-radio"><input type="radio" name="scope-t3" value="plus" onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t3" value="basic" checked onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t3" value="none" onchange="onScopeChange(this)"><span></span></label>
+                </td>
+              </tr>
+              <tr data-scope="none">
+                <td class="col-name">최민아 선생님</td>
+                <td class="col-email">mina.choi@test.clipo.ai</td>
+                <td class="col-subj">사회</td>
+                <td class="col-scope">
+                  <label class="scope-radio"><input type="radio" name="scope-t4" value="plus" onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t4" value="basic" onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t4" value="none" checked onchange="onScopeChange(this)"><span></span></label>
+                </td>
+              </tr>
+              <tr data-scope="none">
+                <td class="col-name">정하나 선생님</td>
+                <td class="col-email">hana.jung@test.clipo.ai</td>
+                <td class="col-subj">수학</td>
+                <td class="col-scope">
+                  <label class="scope-radio"><input type="radio" name="scope-t5" value="plus" onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t5" value="basic" onchange="onScopeChange(this)"><span></span></label>
+                  <label class="scope-radio"><input type="radio" name="scope-t5" value="none" checked onchange="onScopeChange(this)"><span></span></label>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div class="field-help">같은 학교 소속 선생님 중에서 선택해요. 교과·인원 제한이 없어요.</div>
-      </div>
-
-      <div class="field">
-        <div class="field-label">공유 범위</div>
-        <div style="font-size:13px;color:#3151c4;background:#f4f8ff;border:1px solid #ccdfff;border-radius:6px;padding:10px 12px;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
-          <i data-lucide="info" style="width:14px;height:14px;flex-shrink:0"></i>
-          <span>위에서 선택한 <b id="selectedCount">3명</b>의 선생님에게 공유 범위를 일괄 적용합니다.</span>
-        </div>
-        <div class="preset-list">
-          <div class="preset-card on" onclick="pickPreset(this, 'basic')">
-            <div class="preset-card-hd">
-              <div class="preset-radio"></div>
-              <span class="preset-name">수업</span>
-            </div>
-            <div class="preset-tabs">
-              <span class="pt">평가 설계</span>
-              <span class="pt">채점 결과</span>
-            </div>
-            <div class="preset-desc">수업 진행 · 평가 결과 검토 중심</div>
-          </div>
-          <div class="preset-card" onclick="pickPreset(this, 'plus')">
-            <div class="preset-card-hd">
-              <div class="preset-radio"></div>
-              <span class="preset-name">수업 + 세특</span>
-            </div>
-            <div class="preset-tabs">
-              <span class="pt">평가 설계</span>
-              <span class="pt">채점 결과</span>
-              <span class="pt plus">세특 기록</span>
-            </div>
-            <div class="preset-desc">세부능력 및 특기사항까지 함께 검토</div>
-          </div>
-        </div>
-        <div class="field-help">기본적인 수업 정보(수업명, 참여 학생 정보 등)는 공유 범위에 항상 포함됩니다. 공유 후에도 언제든 범위를 바꿀 수 있으며, 세특 미포함으로 바꿀 시 세특 기록 열람은 즉시 차단되며 세특에 남긴 댓글도 열람할 수 없어요.</div>
+        <div class="field-help">같은 학교 소속 선생님 중에서 선택 · 선생님별로 공유 범위 다르게 지정할 수 있어요. 세특 미포함으로 바꿀 시 세특 기록 열람은 즉시 차단되며 세특에 남긴 댓글도 열람할 수 없어요.</div>
       </div>
     </div>
     <div class="m-foot">
@@ -3628,7 +3685,7 @@ body.rv-collapsed .rv-split { padding-right:40px; }
   <div class="comment-write">
     <!-- 컨텍스트 배너 · 지금 어떤 위치에 남기는지 명시 (rv-right와 통일) -->
     <div class="rv-write-ctx" id="csWriteCtx"><!-- renderComments에서 갱신 --></div>
-    <textarea class="cw-input" id="csNewCmtInput" placeholder="궁금한 점이나 검토 의견을 남겨보세요"></textarea>
+    <textarea class="cw-input" id="csNewCmtInput" placeholder="궁금한 점이나 댓글을 남겨보세요"></textarea>
     <div class="cw-actions">
       <button class="btn-solid btn-sm" onclick="submitComment()">등록</button>
     </div>
@@ -3844,6 +3901,17 @@ function pickPreset(el, key) {
   el.parentElement.querySelectorAll('.preset-card').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
 }
+
+// 공동 평가 설정 · 통합 테이블 · 개별 범위 변경
+function onScopeChange(input) {
+  const row = input.closest('tr');
+  if (row) row.setAttribute('data-scope', input.value);
+  // 공유 중 선생님 수 갱신 (미공유 제외)
+  const total = document.querySelectorAll('.share-table tbody tr').length;
+  const shared = Array.from(document.querySelectorAll('.share-table tbody tr')).filter(r => r.getAttribute('data-scope') !== 'none').length;
+  const cnt = document.getElementById('selectedCount');
+  if (cnt) cnt.textContent = shared;
+}
 function openLinkPopover(e) {
   if (e) e.stopPropagation();
   document.getElementById('linkPopover').classList.toggle('open');
@@ -4019,43 +4087,232 @@ function renderComments(tabName) {
   lucide.createIcons();
 }
 
+// ===== 댓글 맵핑 드롭다운 · 유형(4종) + 조건부 계층 세부 단계 =====
+// 유형 (채점은 학급 현황/학생별 통합 · 세부 단계에서 자동 분기)
+const CTX_TYPE_OPTIONS = [
+  { value:'general', label:'수업 전체' },
+  { value:'design',  label:'설계' },
+  { value:'grading', label:'채점' },
+  { value:'seteuk',  label:'세특' }
+];
+
+// 데모 데이터 (실제 서비스에서는 수업 데이터에서 동적 로드)
+const EVAL_LIST = [
+  '(고) 자기주도 독서 활동',
+  '(고) 읽기 자료 분석을 통한 주제 통합 탐구',
+  '(고) 문학 작품 감상 및 비평문 쓰기',
+  '(고) 읽기 자료 분석'
+];
+const CLASS_LIST = ['1-1', '1-10'];
+const STUDENT_LIST = {
+  '1-1':  ['10101 김일일', '10102 김이이', '10103 김삼삼'],
+  '1-10': ['10205 이하늘']
+};
+const SETEUK_CLASS_LIST = ['1학년 1반', '1학년 10반'];
+
+// pending 상태 (드롭다운 소스 · owner/reviewer 별도)
+window._pendingCtx = window._pendingCtx || { type:'general' };
+window._pendingCtxRv = window._pendingCtxRv || { type:'general' };
+
+function _getPendingCtx(prefix) { return prefix === 'rv' ? window._pendingCtxRv : window._pendingCtx; }
+function _setPendingCtx(prefix, p) { if (prefix === 'rv') window._pendingCtxRv = p; else window._pendingCtx = p; }
+
+// Ctx → pending 변환 (자동 세팅 반영)
+function _ctxToPending(ctx) {
+  if (!ctx) return { type:'general' };
+  if (ctx.type === 'general') return { type:'general' };
+  if (ctx.type === 'design') return { type:'design', eval:ctx.eval };
+  if (ctx.type === 'seteuk') return { type:'seteuk', class:ctx.class };
+  if (ctx.type === 'grading') {
+    const student = ctx.student || (ctx.subtype === 'class_status' ? '__all__' : undefined);
+    return { type:'grading', eval:ctx.eval, class:ctx.class, student:student };
+  }
+  return { type:'general' };
+}
+
+// Pending → ctx (커밋용 · 미완이면 null)
+function _pendingToCtx(p) {
+  if (!p || p.type === 'general') return null;
+  if (p.type === 'design') return p.eval ? { type:'design', eval:p.eval } : null;
+  if (p.type === 'seteuk') return p.class ? { type:'seteuk', class:p.class } : null;
+  if (p.type === 'grading') {
+    if (!p.eval || !p.class || !p.student) return null;
+    if (p.student === '__all__') return { type:'grading', eval:p.eval, class:p.class, subtype:'class_status' };
+    return { type:'grading', eval:p.eval, class:p.class, student:p.student };
+  }
+  return null;
+}
+
+// Pending → pill 라벨 (부분 선택도 반영)
+function _pendingLabel(p) {
+  if (!p || p.type === 'general') return '[수업 전체]';
+  if (p.type === 'design') return p.eval ? '[설계] ' + p.eval : '[설계] · 세부 대상 미지정';
+  if (p.type === 'seteuk') return p.class ? '[세특] ' + p.class : '[세특] · 학급 미지정';
+  if (p.type === 'grading') {
+    let s = '[채점]';
+    if (p.eval) s += ' ' + p.eval;
+    if (p.class) s += ' · ' + p.class;
+    if (p.student === '__all__') s += ' · 학급 채점 현황';
+    else if (p.student) s += ' · ' + p.student;
+    if (!p.eval || !p.class || !p.student) s += ' · 세부 대상 미지정';
+    return s;
+  }
+  return '[수업 전체]';
+}
+
+// 자동 세팅된 ctx와 pending 동기화 (외부에서 ctx가 바뀌었을 때 pending도 갱신)
+function _syncPending(ctx, prefix) {
+  const pending = _getPendingCtx(prefix);
+  if (ctx) {
+    const fromCtx = _ctxToPending(ctx);
+    _setPendingCtx(prefix, fromCtx);
+    return fromCtx;
+  }
+  return pending;
+}
+
+// 자동 감지 요약 표시 · 편집 팝오버로 계층 선택 (옵션 A)
+// 상시: 인디케이터 pill + [변경] 버튼 · 클릭 시 인라인 에디터 확장
+window._ctxEditorFor = null;    // 'cs' | 'rv' | null (편집 중인 prefix)
+window._ctxEditorTemp = null;   // 편집 중 임시 pending
+
+function renderCtxDropdowns(currentCtx, prefix) {
+  // 자동 세팅된 ctx가 있으면 pending 동기화
+  _syncPending(currentCtx, prefix);
+  const editing = (window._ctxEditorFor === prefix);
+  const p = editing ? (window._ctxEditorTemp || _getPendingCtx(prefix)) : _getPendingCtx(prefix);
+
+  // 요약 pill 라벨 (부분 선택도 반영 · 완전 세팅되면 인디케이터 정책 그대로)
+  const pillLabel = _pendingLabel(p);
+  const isComplete = !!_pendingToCtx(p) || p.type === 'general';
+  const isGeneral = (p.type === 'general');
+  const pillClass = isGeneral ? 'ctx-summary-pill muted' : (isComplete ? 'ctx-summary-pill' : 'ctx-summary-pill partial');
+
+  const summaryHtml = '<div class="rv-write-ctx-body">'
+    + '<span class="' + pillClass + '" title="' + pillLabel.replace(/"/g,'&quot;') + '">' + pillLabel + '</span>'
+    + (editing ? '' : '<button class="ctx-edit-btn" onclick="openCtxEditor(\'' + prefix + '\')" title="위치 변경"><i data-lucide="edit-3"></i>변경</button>')
+    + '</div>';
+
+  // 에디터 (인라인 확장) · 편집 중일 때만 노출
+  let editorHtml = '';
+  if (editing) {
+    const typeOpts = CTX_TYPE_OPTIONS.map(o =>
+      '<option value="' + o.value + '"' + (o.value === p.type ? ' selected' : '') + '>' + o.label + '</option>'
+    ).join('');
+    function selectHtml(stage, opts, currentVal, placeholder) {
+      const options = opts.map(o =>
+        '<option value="' + o.value + '"' + (o.value === currentVal ? ' selected' : '') + '>' + o.label + '</option>'
+      ).join('');
+      const ph = currentVal ? '' : '<option value="" selected disabled>' + placeholder + '</option>';
+      return '<select class="ctx-target-select" onchange="onCtxEditorStageChange(\'' + stage + '\', this.value)">' + ph + options + '</select>';
+    }
+    let stages = '';
+    if (p.type === 'design') {
+      stages = selectHtml('eval', EVAL_LIST.map(v => ({ value:v, label:v })), p.eval, '수행평가 선택');
+    } else if (p.type === 'seteuk') {
+      stages = selectHtml('class', SETEUK_CLASS_LIST.map(v => ({ value:v, label:v })), p.class, '학급 선택');
+    } else if (p.type === 'grading') {
+      stages = selectHtml('eval', EVAL_LIST.map(v => ({ value:v, label:v })), p.eval, '수행평가 선택');
+      if (p.eval) {
+        stages += selectHtml('class', CLASS_LIST.map(v => ({ value:v, label:v })), p.class, '반 선택');
+      }
+      if (p.eval && p.class) {
+        const students = STUDENT_LIST[p.class] || [];
+        const stuOpts = [
+          { value:'__all__', label:'학급 전체 (학급 채점 현황)' },
+          ...students.map(v => ({ value:v, label:v }))
+        ];
+        stages += selectHtml('student', stuOpts, p.student, '학생 선택');
+      }
+    }
+    editorHtml = '<div class="ctx-editor-inline">'
+      + '<div class="ctx-editor-drops">'
+      +   '<select class="ctx-type-select" onchange="onCtxEditorStageChange(\'type\', this.value)">' + typeOpts + '</select>'
+      +   stages
+      + '</div>'
+      + '<div class="ctx-editor-actions">'
+      +   '<button class="btn-ghost btn-sm" onclick="cancelCtxEdit()">취소</button>'
+      +   '<button class="btn-solid btn-sm" onclick="applyCtxEdit()">적용</button>'
+      + '</div>'
+      + '</div>';
+  }
+
+  return '<div class="rv-write-ctx-hd">'
+    + '<i data-lucide="at-sign"></i>'
+    + '<span>다음 위치에 댓글을 남겨요</span>'
+    + '</div>'
+    + summaryHtml
+    + editorHtml;
+}
+
+// 편집 팝오버 열기 / 닫기
+function openCtxEditor(prefix) {
+  window._ctxEditorFor = prefix;
+  window._ctxEditorTemp = Object.assign({}, _getPendingCtx(prefix));
+  if (prefix === 'cs') updateCsWriteCtxBanner();
+  else if (prefix === 'rv') renderRvComments();
+}
+function cancelCtxEdit() {
+  const prefix = window._ctxEditorFor;
+  window._ctxEditorFor = null;
+  window._ctxEditorTemp = null;
+  if (prefix === 'cs') updateCsWriteCtxBanner();
+  else if (prefix === 'rv') renderRvComments();
+}
+function applyCtxEdit() {
+  const prefix = window._ctxEditorFor;
+  const temp = window._ctxEditorTemp;
+  if (!prefix || !temp) { cancelCtxEdit(); return; }
+  _setPendingCtx(prefix, temp);
+  const ctx = _pendingToCtx(temp);
+  window._ctxEditorFor = null;
+  window._ctxEditorTemp = null;
+  _setCtxByPrefix(prefix, ctx);
+}
+// 편집 중 각 단계 변경 (커밋 X · temp만 갱신)
+function onCtxEditorStageChange(stage, value) {
+  const p = Object.assign({}, window._ctxEditorTemp || { type:'general' });
+  if (stage === 'type') {
+    p.type = value;
+    delete p.eval; delete p.class; delete p.student;
+  } else {
+    p[stage] = value;
+    if (stage === 'eval') { delete p.class; delete p.student; }
+    if (stage === 'class') { delete p.student; }
+  }
+  window._ctxEditorTemp = p;
+  const prefix = window._ctxEditorFor;
+  if (prefix === 'cs') updateCsWriteCtxBanner();
+  else if (prefix === 'rv') renderRvComments();
+}
+
+// prefix('cs' or 'rv')별로 컨텍스트 세팅
+function _setCtxByPrefix(prefix, ctx) {
+  if (prefix === 'cs') {
+    if (ctx) { window._csMode = 'ctx'; window._csTargetCtx = ctx; window._csAutoCleared = false; }
+    else { window._csMode = 'tab'; window._csTargetCtx = null; window._csAutoCleared = true; }
+    renderComments('');
+  } else if (prefix === 'rv') {
+    rvActiveCtx = ctx || null;
+    renderRvComments();
+  }
+}
+
 // commentSide 입력창 위 컨텍스트 배너 갱신
 function updateCsWriteCtxBanner() {
   const el = document.getElementById('csWriteCtx');
   const inp = document.getElementById('csNewCmtInput');
   if (!el) return;
   const ctx = (window._csMode === 'ctx' && window._csTargetCtx) ? window._csTargetCtx : null;
-  if (ctx) {
-    const label = rvCtxLabelText(ctx);
-    el.className = 'rv-write-ctx active';
-    el.innerHTML =
-      '<div class="rv-write-ctx-hd">'
-      + '<i data-lucide="at-sign"></i>'
-      + '<span>이 댓글은 아래 위치에 남겨져요</span>'
-      + '</div>'
-      + '<div class="rv-write-ctx-body">'
-      + '<span class="rv-write-ctx-lbl" title="' + label.replace(/"/g,'&quot;') + '">' + label + '</span>'
-      + '<button class="rv-write-ctx-clear" onclick="csClearWriteCtx()" title="컨텍스트 해제 · 수업 전체에 남기기"><i data-lucide="x"></i>해제</button>'
-      + '</div>';
-    if (inp) inp.placeholder = label + '에 대한 검토 의견을 남겨보세요';
-  } else {
-    // 컨텍스트 없음 · 이전 컨텍스트 있으면 [되돌리기] 노출 (2차와 UX 통일)
-    const hasLast = !!window._csLastCtx;
-    const lastLbl = hasLast ? rvCtxLabelText(window._csLastCtx) : '';
-    el.className = 'rv-write-ctx';
-    el.innerHTML =
-      '<div class="rv-write-ctx-hd">'
-      + '<i data-lucide="message-square"></i>'
-      + '<span>위치 지정 없이 · 이 수업 전반에 남겨요</span>'
-      + '</div>'
-      + (hasLast
-        ? '<div class="rv-write-ctx-body">'
-          + '<span class="rv-write-ctx-hint">방금 해제</span>'
-          + '<span class="rv-write-ctx-lbl muted" title="' + lastLbl.replace(/"/g,'&quot;') + '">' + lastLbl + '</span>'
-          + '<button class="rv-write-ctx-reapply" onclick="csReapplyCtx()" title="이전 위치 되돌리기"><i data-lucide="rotate-ccw"></i>되돌리기</button>'
-          + '</div>'
-        : '');
-    if (inp) inp.placeholder = '궁금한 점이나 검토 의견을 남겨보세요';
+  el.className = ctx ? 'rv-write-ctx active' : 'rv-write-ctx';
+  el.innerHTML = renderCtxDropdowns(ctx, 'cs');
+  if (inp) {
+    if (ctx) {
+      const label = rvCtxLabelText(ctx);
+      inp.placeholder = label + '에 대한 댓글을 남겨보세요';
+    } else {
+      inp.placeholder = '궁금한 점이나 댓글을 남겨보세요';
+    }
   }
   if (window.lucide && lucide.createIcons) lucide.createIcons();
 }
@@ -5168,7 +5425,8 @@ function renderReply(r, cid, ridx) {
   } else if (isDeleted) {
     textBlock = '<div class="reply-text deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다</div>';
   } else {
-    textBlock = '<div class="reply-text">' + r.text + '</div>';
+    const editedTag = r.edited ? '<span class="cmt-edited-tag" title="수정됨">(수정됨)</span>' : '';
+    textBlock = '<div class="reply-text">' + r.text + editedTag + '</div>';
   }
 
   // 반응 · 삭제/편집 중 숨김
@@ -5275,7 +5533,8 @@ function renderCmtCard(c, opts) {
   } else if (isDeleted) {
     textBlock = '<div class="cr-cmt-text deleted"><i data-lucide="trash-2"></i>삭제된 댓글입니다</div>';
   } else {
-    textBlock = '<div class="cr-cmt-text">' + c.text + '</div>';
+    const editedTag = c.edited ? '<span class="cmt-edited-tag" title="수정됨">(수정됨)</span>' : '';
+    textBlock = '<div class="cr-cmt-text">' + c.text + editedTag + '</div>';
   }
 
   // 반응 · 삭제/편집 중이면 숨김
@@ -5337,6 +5596,9 @@ function toggleReact(id, emoji) {
   } else {
     c.reacts.push({ emoji, count:1, mine:true });
   }
+  // 원댓글(스레드) 이모지 반응 = 스레드 전체 읽음 처리
+  c.unread = false;
+  if (c.replies) c.replies.forEach(rr => rr.unread = false);
   refreshComments();
 }
 function addReactTo(id, emoji, btn) {
@@ -5400,6 +5662,9 @@ function submitReply(id, btn) {
   const me = getCurrentAuthorName();
   // 내가 쓴 답글 · 내 입장에서는 이미 읽음
   c.replies.push({ author: me, time: nowStr, reacts:[], unread:false, text: val });
+  // 답글 등록 = 스레드 관여 → 스레드 전체 읽음 처리
+  c.unread = false;
+  c.replies.forEach(r => r.unread = false);
   if (c.resolved) c.resolved = false;
   inp.value = '';
   // 스레드 열림 상태로 유지 (등록 후 답글이 바로 보이도록)
@@ -5451,6 +5716,7 @@ function saveEditCmt(id) {
   const c = CR_COMMENTS.find(x => x.id === id);
   if (!c) return;
   c.text = val;
+  c.edited = true;
   window._editingCmtId = null;
   toastMsg('댓글을 수정했어요.');
   refreshComments();
@@ -5459,20 +5725,30 @@ function cancelEditCmt(id) {
   window._editingCmtId = null;
   refreshComments();
 }
-// 원댓글 소프트 삭제 (답글 유지 · 텍스트만 대체)
+// 원댓글 삭제 (답글 유무에 따라 소프트/하드 분기)
 function deleteCmt(id) {
+  const c = CR_COMMENTS.find(x => x.id === id);
+  if (!c) return;
+  const hasReplies = !!(c.replies && c.replies.length > 0);
   cfmOpen({
     icon: 'trash-2',
     title: '이 댓글을 삭제하시겠어요?',
-    desc: '삭제된 댓글은 되돌릴 수 없어요. 답글은 유지됩니다.',
+    desc: hasReplies
+      ? '삭제된 댓글은 되돌릴 수 없어요. 답글은 유지됩니다.'
+      : '삭제된 댓글은 되돌릴 수 없어요.',
     confirmLabel: '삭제',
     onConfirm: function() {
-      const c = CR_COMMENTS.find(x => x.id === id);
-      if (!c) return;
-      c.deleted = true;
-      c.text = '삭제된 댓글입니다';
-      c.reacts = [];
-      c.unread = false; // 삭제된 댓글은 unread 카운트 제외
+      if (hasReplies) {
+        // 답글 있음 → 소프트 삭제 (텍스트만 대체 · 답글 유지)
+        c.deleted = true;
+        c.text = '삭제된 댓글입니다';
+        c.reacts = [];
+        c.unread = false;
+      } else {
+        // 답글 없음 → 완전 삭제
+        const idx = CR_COMMENTS.findIndex(x => x.id === id);
+        if (idx >= 0) CR_COMMENTS.splice(idx, 1);
+      }
       toastMsg('댓글을 삭제했어요.');
       refreshComments();
     }
@@ -5499,6 +5775,7 @@ function saveEditReply(cid, ridx) {
   const c = CR_COMMENTS.find(x => x.id === cid);
   if (!c || !c.replies || !c.replies[ridx]) return;
   c.replies[ridx].text = val;
+  c.replies[ridx].edited = true;
   window._editingReplyKey = null;
   toastMsg('답글을 수정했어요.');
   refreshComments();
@@ -6570,11 +6847,11 @@ function rvOpenDetail(type, key) {
     const menuSel = document.getElementById('rvFilterMenu');
     if (menuSel) menuSel.value = 'grading';
   } else if (type === 'grading-combined') {
-    // key = 'evalName:classKey'
+    // key = 'evalName:classKey' · 학급 채점 현황 통합 뷰
     const parts = key.split(':');
     const evalName = parts[0], classKey = parts[1];
     content.innerHTML = renderScoringCombinedHTML(evalName, classKey);
-    rvActiveCtx = { type:'grading', eval:evalName, class:classKey };
+    rvActiveCtx = { type:'grading', eval:evalName, class:classKey, subtype:'class_status' };
     rvFilterMenu = 'grading';
     const menuSel = document.getElementById('rvFilterMenu');
     if (menuSel) menuSel.value = 'grading';
@@ -6883,41 +7160,19 @@ function renderRvComments() {
     }
   }
 
-  // 입력창 위 · 컨텍스트 배너 갱신
+  // 입력창 위 · 컨텍스트 드롭다운 (조건부 계층 · 사용자 임의 지정 가능)
   const writeCtxEl = document.getElementById('rvWriteCtx');
   const writeInp = document.getElementById('rvNewCmtInput');
   if (writeCtxEl) {
-    if (rvActiveCtx) {
-      const label = rvCtxLabelText(rvActiveCtx);
-      writeCtxEl.className = 'rv-write-ctx active';
-      writeCtxEl.innerHTML =
-        '<div class="rv-write-ctx-hd">'
-        + '<i data-lucide="at-sign"></i>'
-        + '<span>이 댓글은 아래 위치에 남겨져요</span>'
-        + '</div>'
-        + '<div class="rv-write-ctx-body">'
-        + '<span class="rv-write-ctx-lbl" title="' + label.replace(/"/g,'&quot;') + '">' + label + '</span>'
-        + '<button class="rv-write-ctx-clear" onclick="rvClearWriteCtx()" title="컨텍스트 해제 · 수업 전체에 남기기"><i data-lucide="x"></i>해제</button>'
-        + '</div>';
-      if (writeInp) writeInp.placeholder = label + '에 대한 검토 의견을 남겨보세요';
-    } else {
-      // 컨텍스트 없음 상태 · 이전 컨텍스트 있으면 [다시 적용] 노출
-      const hasLast = !!window._rvLastCtx;
-      const lastLbl = hasLast ? rvCtxLabelText(window._rvLastCtx) : '';
-      writeCtxEl.className = 'rv-write-ctx';
-      writeCtxEl.innerHTML =
-        '<div class="rv-write-ctx-hd">'
-        + '<i data-lucide="message-square"></i>'
-        + '<span>위치 지정 없이 · 이 수업 전반에 남겨요</span>'
-        + '</div>'
-        + (hasLast
-          ? '<div class="rv-write-ctx-body">'
-            + '<span class="rv-write-ctx-hint">방금 해제</span>'
-            + '<span class="rv-write-ctx-lbl muted" title="' + lastLbl.replace(/"/g,'&quot;') + '">' + lastLbl + '</span>'
-            + '<button class="rv-write-ctx-reapply" onclick="rvReapplyCtx()" title="이전 위치 되돌리기"><i data-lucide="rotate-ccw"></i>되돌리기</button>'
-            + '</div>'
-          : '');
-      if (writeInp) writeInp.placeholder = '궁금한 점이나 검토 의견을 남겨보세요';
+    writeCtxEl.className = rvActiveCtx ? 'rv-write-ctx active' : 'rv-write-ctx';
+    writeCtxEl.innerHTML = renderCtxDropdowns(rvActiveCtx, 'rv');
+    if (writeInp) {
+      if (rvActiveCtx) {
+        const label = rvCtxLabelText(rvActiveCtx);
+        writeInp.placeholder = label + '에 대한 댓글을 남겨보세요';
+      } else {
+        writeInp.placeholder = '궁금한 점이나 댓글을 남겨보세요';
+      }
     }
     if (window.lucide && lucide.createIcons) lucide.createIcons();
   }
