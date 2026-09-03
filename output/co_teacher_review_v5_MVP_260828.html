@@ -1678,8 +1678,8 @@ body.rv-collapsed .rv-split { padding-right:40px; }
 .cs-filter-bar .btn-outline { white-space:nowrap; font-size:11px; padding:0 8px; }
 
 /* [v4] 댓글 재열기 플로팅 버튼 */
-/* [MVP · v0.6] fab 위치 · [공동평가] 탭 바로 우측 영역 (상단 우측 · 화면 크기 무관 항상 노출) */
-.cmt-reopen-fab { position:fixed; right:24px; top:68px; width:42px; height:42px; border-radius:50%; background:#365eef; color:#fff; border:none; box-shadow:0 4px 12px rgba(65,107,255,.30); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; z-index:150; transition:transform .12s, box-shadow .12s; }
+/* [MVP · v0.6] fab · [공동 평가] 탭 Beta 딱지 우측 고정 · 스크롤 시 탭 밴드와 함께 이동 */
+.cmt-reopen-fab { position:absolute; width:42px; height:42px; border-radius:50%; background:#365eef; color:#fff; border:none; box-shadow:0 4px 12px rgba(65,107,255,.30); cursor:pointer; display:inline-flex; align-items:center; justify-content:center; z-index:150; transition:transform .12s, box-shadow .12s; }
 .cmt-reopen-fab svg { width:18px !important; height:18px !important; }
 /* fab 카운트 뱃지 · MVP는 미확인 카운트 후속 배포 → 숨김 */
 .cmt-reopen-cnt { display:none !important; }
@@ -4755,9 +4755,10 @@ function _positionFabNextToCrTab() {
   const beta = crTab.querySelector('.beta-mark, .beta');
   const anchor = beta || crTab;
   const rect = anchor.getBoundingClientRect();
-  fab.style.position = 'fixed';
-  fab.style.left = (rect.right + 12) + 'px';
-  fab.style.top = (rect.top + rect.height/2 - 21) + 'px';
+  // absolute 배치 · 문서 기준 좌표 · 스크롤 시 탭 밴드와 함께 이동
+  fab.style.position = 'absolute';
+  fab.style.left = (rect.right + window.scrollX + 12) + 'px';
+  fab.style.top = (rect.top + window.scrollY + rect.height/2 - 21) + 'px';
   fab.style.right = 'auto';
   fab.style.bottom = 'auto';
 }
