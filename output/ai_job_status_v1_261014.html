@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../clipo/레퍼런스화면/clipo_favicon.png">
+  <title>AI 작업 상태 안내 (CLIPO)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *{ font-family:'Pretendard GOV',-apple-system,sans-serif; box-sizing:border-box; }
+    body{ margin:0; background:#f6f7f9; color:#222631; font-size:16px; min-width:1280px; }
+    a{ text-decoration:none; color:inherit; }
+    button{ font-family:inherit; }
+
+    /* ===== Global Header (CLIPO 표준 — task_ocr_v3 복제) ===== */
+    .g-hd { height: 58px; background: #fff; border-bottom: 1px solid #dde1e8; display: flex; align-items: center; padding: 0 20px 0 9px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
+    .gh-menu-btn { width:40px; height:40px; border:none; background:none; border-radius:4px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; color:#3b3f4c; margin-right:9px; line-height:1; vertical-align:middle; }
+    .gh-menu-btn:hover { background:#f6f7f9; }
+    .g-hd-r { margin-left: auto; display: flex; align-items: center; gap: 16px; font-size: 15px; color: #18181b; }
+    .hd-plan { display: flex; align-items: center; gap: 8px; }
+    .plan-badge { display: inline-flex; align-items: center; height: 20px; background: #e9f2ff; border: 1px solid #ccdfff; color: #3151c4; font-size: 12px; font-weight: 500; padding: 0 6px; border-radius: 6px; line-height: 1; }
+    .credit-wrap { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #18181b; }
+    .user-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 36px; padding: 0 12px; border: 1px solid #c7cbd3; border-radius: 9999px; background: none; font-size: 14px; color: #27272a; cursor: pointer; line-height: 1; vertical-align:middle; font-weight: 500; }
+
+    /* ===== AI 작업 상태 안내 (로고 오른쪽) ===== */
+    .g-hd > svg{ flex-shrink:0; }
+    .ai-st{ position:relative; display:none; align-items:center; gap:10px; margin-left:20px; height:36px; flex-shrink:0; }
+    .g-hd-r > *{ flex-shrink:0; white-space:nowrap; }
+    .ai-st.show{ display:inline-flex; }
+    .ai-st-msg{ display:inline-flex; align-items:center; gap:8px; font-size:15px; font-weight:500; color:#416bff; white-space:nowrap; }
+    .ai-st-msg.done{ color:#222631; }
+    .ai-st-msg .ic-spin{ width:18px; height:18px; color:#416bff; animation:spin 1s linear infinite; flex-shrink:0; }
+    .ai-st-msg .ic-done{ width:18px; height:18px; color:#1ab864; flex-shrink:0; }
+    .ai-st-link{ display:inline-flex; align-items:center; justify-content:center; gap:2px; height:30px; padding:0 10px 0 12px; border-radius:100px; border:1px solid #ccdfff; background:#fff; color:#3151c4; font-size:14px; font-weight:600; cursor:pointer; line-height:1; vertical-align:middle; white-space:nowrap; }
+    .ai-st-link:hover{ background:#e9f2ff; }
+    .ai-st-link i, .ai-st-link svg{ width:16px; height:16px; }
+    .ai-st-x{ width:28px; height:28px; border:none; background:none; border-radius:6px; color:#9aa0ad; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; padding:0; }
+    .ai-st-x:hover{ background:#f1f3f5; color:#3b3f4c; }
+    /* 여러 건 목록 */
+    .ai-pop{ position:absolute; top:44px; left:0; width:420px; background:#fff; border-radius:10px; box-shadow:0 0 1px #2226314D, 0 8px 24px #00000026; padding:8px; display:none; z-index:400; }
+    .ai-pop.open{ display:block; }
+    .ai-pop-hd{ font-size:14px; font-weight:600; color:#6d7381; padding:6px 10px 8px; }
+    .ai-row{ display:flex; align-items:center; gap:10px; padding:10px; border-radius:8px; }
+    .ai-row + .ai-row{ border-top:1px solid #f1f3f5; }
+    .ai-row .ic-spin{ width:18px; height:18px; color:#416bff; animation:spin 1s linear infinite; flex-shrink:0; }
+    .ai-row .ic-done{ width:18px; height:18px; color:#1ab864; flex-shrink:0; }
+    .ai-row-txt{ flex:1; min-width:0; }
+    .ai-row-t{ font-size:15px; font-weight:600; color:#222631; margin:0 0 2px; }
+    .ai-row-d{ font-size:14px; color:#6d7381; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ai-row-st{ font-size:14px; color:#6d7381; flex-shrink:0; }
+    @keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    /* ===== Sidebar (CLIPO 표준 icon-sb) ===== */
+    .icon-sb { width: 56px; background: #fff; border-right: 1px solid #d9d9d9; position: fixed; top: 58px; bottom: 0; left: 0; display: flex; flex-direction: column; padding: 8px 0; z-index: 150; transition: width .2s ease; }
+    .icon-sb.expanded { width: 200px; }
+    .si { height: 40px; display: flex; align-items: center; border-radius: 8px; color: #6d7381; cursor: pointer; margin: 0 8px 2px; position: relative; padding: 0 4px 0 8px; gap: 10px; white-space: nowrap; flex-shrink: 0; }
+    .si:hover { background: #f1f3f5; }
+    .si.active { background: #e9f2ff; color: #416bff; }
+    .si-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .si-label { font-size: 13px; font-weight: 500; opacity: 0; transition: opacity .1s; overflow: hidden; }
+    .icon-sb.expanded .si-label { opacity: 1; }
+    .si-tip { position: absolute; left: 48px; top: 50%; transform: translateY(-50%); background: #222631; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; display: none; z-index: 300; pointer-events: none; }
+    .si:hover .si-tip { display: block; }
+    .icon-sb.expanded .si-tip { display: none !important; }
+    .nav-bottom { margin-top: auto; width: 100%; }
+    .nav-div { height: 1px; background: #f1f3f5; margin: 4px 8px; }
+
+    /* ===== Layout ===== */
+    .main-wrap{ position:relative; padding-top:58px; padding-left:56px; transition:padding-left .2s; min-height:100vh; background:#f6f7f9; }
+    body.nav-expanded .main-wrap{ padding-left:200px; }
+    .screen{ display:none; }
+    .screen.active{ display:flex; flex-direction:column; min-height:calc(100vh - 58px); }
+    .tab-band{ background:white; border-bottom:1px solid #dde1e8; }
+    .tab-band-inner{ max-width:1240px; margin:0 auto; padding:0 32px; display:flex; gap:8px; }
+    .sub-tab{ padding:18px 14px; font-size:16px; font-weight:500; color:#3b3f4c; border:none; background:none; cursor:pointer; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-1px; display:inline-flex; align-items:center; justify-content:center; gap:4px; line-height:1; vertical-align:middle; }
+    .sub-tab:hover{ color:#222631; }
+    .sub-tab.on{ color:#416bff; border-bottom:2px solid #416bff; }
+    .sub-tab .beta{ font-size:14px; color:#7d9bff; }
+    .page-wrap{ max-width:1240px; margin:0 auto; padding:28px 32px 0; flex:1; display:flex; flex-direction:column; width:100%; }
+    .page-h1{ font-size:22px; font-weight:700; color:#222631; margin:0 0 8px; }
+    .page-sub{ font-size:16px; color:#3b3f4c; margin:0 0 24px; line-height:1.55; }
+    .ev-card{ background:white; border-radius:12px; padding:24px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:20px; }
+    .ev-card-t{ font-size:20px; font-weight:600; margin:0 0 4px; }
+    .ev-card-d{ font-size:14px; color:#6d7381; margin:0 0 16px; }
+
+    /* 표 (레퍼런스 tbl2) */
+    .tbl2{ width:100%; border-collapse:separate; border-spacing:0; }
+    .tbl2 th{ background:#f6f7f9; height:44px; font-size:15px; font-weight:500; color:#3b3f4c; padding:0 12px; text-align:center; border-top:1px solid #dde1e8; border-bottom:1px solid #dde1e8; }
+    .tbl2 th:first-child{ border-left:1px solid #dde1e8; border-top-left-radius:8px; }
+    .tbl2 th:last-child{ border-right:1px solid #dde1e8; border-top-right-radius:8px; }
+    .tbl2 td{ font-size:16px; padding:14px 12px; text-align:center; color:#222631; border-bottom:1px solid #eceef2; transition:background .6s; }
+    .tbl2 td:first-child{ border-left:1px solid #dde1e8; }
+    .tbl2 td:last-child{ border-right:1px solid #dde1e8; }
+    .tbl2 tr:last-child td{ border-bottom:1px solid #dde1e8; }
+    .tbl2 tr:last-child td:first-child{ border-bottom-left-radius:8px; }
+    .tbl2 tr:last-child td:last-child{ border-bottom-right-radius:8px; }
+    .tbl2 tr.hl td{ background:#e9f2ff; }
+    .pill-btn{ height:36px; border-radius:100px; padding:0 16px; font-size:14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; line-height:1; vertical-align:middle; border:none; }
+    .pill-btn i, .pill-btn svg{ width:16px; height:16px; }
+    .pill-btn-primary{ background:#416bff; color:white; }
+    .pill-btn-primary:hover{ background:#365eef; }
+    .pill-btn-soft{ background:#e9f2ff; color:#3151c4; }
+    .pill-btn:disabled{ opacity:.45; cursor:not-allowed; }
+    .run-st{ display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:15px; color:#416bff; font-weight:500; }
+    .run-st i, .run-st svg{ width:16px; height:16px; animation:spin 1s linear infinite; }
+    .done-st{ display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:15px; color:#319d64; font-weight:500; }
+    .done-st i, .done-st svg{ width:16px; height:16px; }
+    .badge{ display:inline-flex; align-items:center; justify-content:center; border-radius:100px; padding:3px 10px; font-size:13px; font-weight:600; white-space:nowrap; }
+    .badge-purple{ background:#e9f2ff; color:#3151c4; }
+    .badge-gray{ background:#f1f3f5; color:#6d7381; }
+
+    .site-footer{ margin-top:auto; padding:48px 0 40px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .sf-links{ display:flex; align-items:center; }
+    .sf-links a{ font-size:14px; color:#3b3f4c; padding:0 16px; }
+    .sf-links a + a{ border-left:1px solid #dde1e8; }
+    .sf-copy{ font-size:14px; color:#9aa0ad; }
+
+    .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(12px); opacity:0; min-width:320px; max-width:480px; padding:14px 22px 14px 16px; border-radius:4px; display:flex; align-items:center; gap:12px; font-size:15px; font-weight:600; box-shadow:0 0 1px #2226314D, 0 4px 12px #00000026; z-index:9999; transition:opacity .2s ease, transform .2s ease; pointer-events:none; }
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast-success{ background:#319d64; color:white; }
+    .toast-info{ background:#222631; color:white; }
+  </style>
+</head>
+<body>
+
+<!-- ===== Global Header (CLIPO 표준, 58px) ===== -->
+<header class="g-hd" id="gnb">
+  <button class="gh-menu-btn" onclick="toggleNav()" aria-label="메뉴 펼치기"><i data-lucide="panel-left-open" style="width:20px;height:20px"></i></button>
+  <svg width="76" height="16" viewBox="0 0 76 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer" onclick="location.href='../clipo/레퍼런스화면/home_v1_260612.html'"><path d="M11.3613 4.03516H4.09668V11.9629H8.88281L8.88086 11.9648H15.6016V16H4.02539C1.80242 15.9998 0 14.223 0 12.0322V3.96777C0 1.77696 1.80242 0.000177874 4.02539 0H15.4561L11.3613 4.03516ZM22.0703 11.9648H33.5781V16H22.002C19.7788 16 17.9756 14.2231 17.9756 12.0322V0H22.0703V11.9648ZM40.0459 16H35.9521V0H40.0459V16ZM54.5381 0C56.4564 0 58.0138 1.53228 58.0186 3.42285L58.0166 3.4248V8.54297C58.014 10.4333 56.4567 11.9648 54.5361 11.9648H46.5107L42.416 16V0H54.5381ZM71.9746 0C74.0086 0.000134956 75.6887 1.49046 75.958 3.42285H76V12.5771H75.958C75.6887 14.5095 74.011 15.9999 71.9746 16H64.4238C62.3897 16 60.7098 14.5096 60.4404 12.5771C60.4145 12.398 60.3984 12.2184 60.3984 12.0322V3.96777C60.3984 3.78159 60.4145 3.60205 60.4404 3.42285C60.7098 1.49037 62.3873 0 64.4238 0H71.9746ZM64.4922 12.5771H71.9062V3.42285H64.4922V12.5771ZM46.5107 3.42285V8.54004H53.9238V3.42285H46.5107Z" fill="#365EEF"/></svg>
+  <!-- AI 작업 상태 안내: 진행 중 → 완료 시 링크 -->
+  <div class="ai-st" id="ai-st" aria-live="polite"></div>
+  <div class="g-hd-r">
+    <div class="hd-plan">
+      <span class="plan-badge">학교 유료</span>
+      <span style="font-size:15px;font-weight:500;color:#18181b">D-180</span>
+    </div>
+    <div class="credit-wrap"><i data-lucide="bot" style="width:20px;height:20px;color:#416bff"></i><span>200 크레딧</span></div>
+    <button class="user-btn">최대표 선생님(대표교사) <i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+  </div>
+</header>
+
+<!-- ===== Sidebar (CLIPO 표준 icon-sb) ===== -->
+<nav class="icon-sb" id="icon-sb">
+  <div class="si" data-k="home" onclick="location.href='../clipo/레퍼런스화면/home_v1_260612.html'"><div class="si-icon"><i data-lucide="home" style="width:20px;height:20px"></i></div><span class="si-label">홈</span><span class="si-tip">홈</span></div>
+  <div class="si" onclick="notReady('평가 준비')"><div class="si-icon"><i data-lucide="scissors" style="width:20px;height:20px"></i></div><span class="si-label">평가 준비</span><span class="si-tip">평가 준비</span></div>
+  <div class="si" data-k="class" onclick="go('scoring')"><div class="si-icon"><i data-lucide="layout-grid" style="width:20px;height:20px"></i></div><span class="si-label">수업</span><span class="si-tip">수업</span></div>
+  <div class="si" data-k="creative" onclick="go('creative')"><div class="si-icon"><i data-lucide="notebook-pen" style="width:20px;height:20px"></i></div><span class="si-label">창의적 체험활동 <span style="font-size:10px;background:#416bff;color:#fff;padding:1px 5px;border-radius:3px;margin-left:2px">Beta</span></span><span class="si-tip">창의적 체험활동</span></div>
+  <div class="si" onclick="location.href='../clipo/레퍼런스화면/quick_seteuk_dev_list_v1_260604.html'"><div class="si-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div><span class="si-label">세특 간편 생성기</span><span class="si-tip">세특 간편 생성기</span></div>
+  <div class="si" onclick="notReady('행동특성 및 종합기록')"><div class="si-icon"><i data-lucide="smile" style="width:20px;height:20px"></i></div><span class="si-label">행동특성 및 종합기록</span><span class="si-tip">행동특성 및 종합기록</span></div>
+  <div class="si" onclick="notReady('리포트')"><div class="si-icon"><i data-lucide="bar-chart-2" style="width:20px;height:20px"></i></div><span class="si-label">리포트</span><span class="si-tip">리포트</span></div>
+  <div class="si" onclick="notReady('학교 설정')"><div class="si-icon"><i data-lucide="building-2" style="width:20px;height:20px"></i></div><span class="si-label">학교 설정</span><span class="si-tip">학교 설정</span></div>
+  <div class="nav-bottom">
+    <div class="nav-div"></div>
+    <div class="si" onclick="notReady('매뉴얼 다운로드')"><div class="si-icon"><i data-lucide="file-down" style="width:20px;height:20px"></i></div><span class="si-label">매뉴얼 다운로드</span><span class="si-tip">매뉴얼 다운로드</span></div>
+    <div class="si" onclick="notReady('요금제')"><div class="si-icon"><i data-lucide="credit-card" style="width:20px;height:20px"></i></div><span class="si-label">요금제</span><span class="si-tip">요금제</span></div>
+    <div class="si" onclick="notReady('고객센터')"><div class="si-icon"><i data-lucide="help-circle" style="width:20px;height:20px"></i></div><span class="si-label">고객센터</span><span class="si-tip">고객센터</span></div>
+  </div>
+</nav>
+
+<div class="main-wrap">
+
+<!-- ===== #scoring — 수행평가 채점 ===== -->
+<div class="screen" id="screen-scoring">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="notReady('수업 홈')">수업 홈</button>
+      <button class="sub-tab" onclick="notReady('수행평가 설계')">수행평가 설계</button>
+      <button class="sub-tab" onclick="notReady('과제물 관리')">과제물 관리</button>
+      <button class="sub-tab on" onclick="go('scoring')">수행평가 채점</button>
+      <button class="sub-tab" onclick="go('seteuk')">세부능력 및 특기사항 지원</button>
+      <button class="sub-tab" onclick="notReady('공동 평가')">공동 평가 <span class="beta">(beta)</span></button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <h1 class="page-h1">0922 실섭 qa 수행평가 채점</h1>
+    <p class="page-sub">AI가 채점 초안을 만들어 드려요. 선생님이 검토한 뒤 최종 확정해 주세요.</p>
+    <div class="ev-card">
+      <p class="ev-card-t">0922 실섭 QA</p>
+      <p class="ev-card-d">AI 채점 가능 · 마감 전</p>
+      <table class="tbl2">
+        <thead><tr><th>학급</th><th>상태</th><th>선생님 채점 현황</th><th>원점수 평균</th><th>AI 채점</th><th>AI 채점 결과</th></tr></thead>
+        <tbody id="tb-scoring"></tbody>
+      </table>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== #seteuk — 세부능력 및 특기사항 지원 ===== -->
+<div class="screen" id="screen-seteuk">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="notReady('수업 홈')">수업 홈</button>
+      <button class="sub-tab" onclick="notReady('수행평가 설계')">수행평가 설계</button>
+      <button class="sub-tab" onclick="notReady('과제물 관리')">과제물 관리</button>
+      <button class="sub-tab" onclick="go('scoring')">수행평가 채점</button>
+      <button class="sub-tab on" onclick="go('seteuk')">세부능력 및 특기사항 지원</button>
+      <button class="sub-tab" onclick="notReady('공동 평가')">공동 평가 <span class="beta">(beta)</span></button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <h1 class="page-h1">세부능력 및 특기사항 지원</h1>
+    <p class="page-sub">수행평가 결과를 바탕으로 AI가 세특 초안을 만들어 드려요.</p>
+    <div class="ev-card">
+      <p class="ev-card-t">0922 실섭 QA</p>
+      <p class="ev-card-d">세특 생성 가능</p>
+      <table class="tbl2">
+        <thead><tr><th>학급</th><th>학생 수</th><th>세특 생성</th><th>생성 결과</th></tr></thead>
+        <tbody id="tb-seteuk"></tbody>
+      </table>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== #creative — 창의적 체험활동 ===== -->
+<div class="screen" id="screen-creative">
+  <div class="page-wrap">
+    <h1 class="page-h1">창의적 체험활동</h1>
+    <p class="page-sub">활동 자료를 바탕으로 AI가 학생별 기록 초안을 만들어 드려요.</p>
+    <div class="ev-card">
+      <p class="ev-card-t">2026학년도 2학기 · 1-1반</p>
+      <p class="ev-card-d">학생 8명</p>
+      <table class="tbl2">
+        <thead><tr><th>영역</th><th>활동</th><th>기록 생성</th><th>생성 결과</th></tr></thead>
+        <tbody id="tb-creative"></tbody>
+      </table>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+</div>
+
+<div id="toast" class="toast toast-success">
+  <i data-lucide="circle-check-big" style="width:20px;height:20px;flex-shrink:0;"></i>
+  <span id="toast-msg"></span>
+</div>
+
+<script>
+function $(id){ return document.getElementById(id); }
+function toggleNav(){ $('icon-sb').classList.toggle('expanded'); document.body.classList.toggle('nav-expanded'); }
+function showToast(msg, type){ var t = $('toast'); $('toast-msg').textContent = msg; t.className = 'toast toast-' + (type || 'success') + ' show'; setTimeout(function(){ t.classList.remove('show'); }, 2500); }
+function notReady(name){ showToast((name || '해당 화면') + ' 은(는) 아직 준비 중이에요.', 'info'); }
+
+// ── 대상 데이터 (레퍼런스 1-1반 구성 기준) ──
+// state: idle → run → done(결과 있음). 시연용 소요 시간(ms)
+var ITEMS = {
+  scoring:  [ { id:'s1', cls:'1-1반', status:'마감 전', teacher:'0 / 8명', avg:'-' }, { id:'s2', cls:'1-2반', status:'마감 전', teacher:'0 / 9명', avg:'-' } ],
+  seteuk:   [ { id:'t1', cls:'1-1반', n:'8명' }, { id:'t2', cls:'1-2반', n:'9명' } ],
+  creative: [ { id:'c1', area:'자율활동', act:'학급 자치 회의' }, { id:'c2', area:'동아리활동', act:'과학 탐구반' } ]
+};
+var KIND = {
+  scoring:  { label:'AI 채점', done:'AI 채점이 끝났어요.', ms:8000, desc:function(it){ return '0922 실섭 QA · ' + it.cls; } },
+  seteuk:   { label:'세특 생성', done:'세특 생성이 끝났어요.', ms:11000, desc:function(it){ return '0922 실섭 QA · ' + it.cls; } },
+  creative: { label:'창체 기록 생성', done:'창체 기록 생성이 끝났어요.', ms:9500, desc:function(it){ return it.area + ' · ' + it.act + ' · 1-1반'; } }
+};
+var state = {};        // id → 'run' | 'done'
+var jobs = [];         // 상단 안내에 올라온 작업 { id, kind, item, st:'run'|'done' }
+var popOpen = false;
+var hlId = null;
+
+// ── 라우팅 (화면마다 고유 해시) ──
+var SCREENS = ['scoring', 'seteuk', 'creative'];
+function go(sc){ if (location.hash !== '#' + sc) location.hash = sc; else route(); }
+function route(){
+  var sc = (location.hash || '#scoring').slice(1).split('?')[0];
+  if (SCREENS.indexOf(sc) < 0) sc = 'scoring';
+  SCREENS.forEach(function(k){ $('screen-' + k).classList.toggle('active', k === sc); });
+  document.querySelectorAll('#icon-sb .si').forEach(function(el){ el.classList.toggle('active', el.dataset.k === (sc === 'creative' ? 'creative' : 'class')); });
+  renderTables(); window.scrollTo(0, 0);
+  if (hlId) { var r = document.querySelector('tr[data-id="' + hlId + '"]'); if (r) { r.classList.add('hl'); setTimeout(function(){ r.classList.remove('hl'); }, 1600); } hlId = null; }
+  lucide.createIcons();
+}
+window.addEventListener('hashchange', route);
+
+// ── 실행 ──
+function run(kind, id){
+  var it = ITEMS[kind].filter(function(x){ return x.id === id; })[0];
+  state[id] = 'run';
+  var job = { id:id, kind:kind, item:it, st:'run' };
+  jobs = jobs.filter(function(j){ return j.id !== id; }); jobs.push(job);
+  showToast(KIND[kind].label + '을 시작했어요. 다른 화면으로 이동해도 괜찮아요.', 'info');
+  setTimeout(function(){ state[id] = 'done'; job.st = 'done'; renderTables(); renderStatus(); lucide.createIcons(); }, KIND[kind].ms);
+  renderTables(); renderStatus(); lucide.createIcons();
+}
+// 결과 화면으로 이동 = 안내에서 그 작업을 내림
+function openResult(id){
+  var j = jobs.filter(function(x){ return x.id === id; })[0];
+  if (!j) return;
+  jobs = jobs.filter(function(x){ return x.id !== id; });
+  popOpen = false; hlId = id;
+  renderStatus(); go(j.kind);
+}
+function dismissDone(){ jobs = jobs.filter(function(j){ return j.st !== 'done'; }); popOpen = false; renderStatus(); lucide.createIcons(); }
+function togglePop(e){ e.stopPropagation(); popOpen = !popOpen; renderStatus(); lucide.createIcons(); }
+document.addEventListener('click', function(e){ if (popOpen && !$('ai-st').contains(e.target)) { popOpen = false; renderStatus(); lucide.createIcons(); } });
+
+// ── 상단 안내 ──
+function renderStatus(){
+  var el = $('ai-st');
+  if (!jobs.length) { el.classList.remove('show'); el.innerHTML = ''; return; }
+  el.classList.add('show');
+  var run = jobs.filter(function(j){ return j.st === 'run'; }), done = jobs.filter(function(j){ return j.st === 'done'; });
+  var spin = '<i data-lucide="loader-circle" class="ic-spin"></i>', ok = '<i data-lucide="circle-check" class="ic-done"></i>';
+  var x = '<button class="ai-st-x" onclick="dismissDone()" aria-label="완료 안내 닫기"><i data-lucide="x" style="width:16px;height:16px"></i></button>';
+  var html = '';
+  if (jobs.length === 1) {
+    var j = jobs[0];
+    html = j.st === 'run'
+      ? '<span class="ai-st-msg">' + spin + 'AI가 작업 중이에요. 이동해도 괜찮아요.</span>'
+      : '<span class="ai-st-msg done">' + ok + KIND[j.kind].done + '</span>'
+        + '<button class="ai-st-link" onclick="openResult(\'' + j.id + '\')">결과 보기<i data-lucide="chevron-right"></i></button>' + x;
+  } else {
+    var msg = !done.length ? spin + 'AI가 작업 ' + run.length + '건을 하고 있어요. 이동해도 괜찮아요.'
+      : !run.length ? ok + 'AI 작업 ' + done.length + '건이 끝났어요.'
+      : spin + 'AI 작업 ' + done.length + '건이 끝났어요 · ' + run.length + '건 진행 중';
+    html = '<span class="ai-st-msg' + (!run.length ? ' done' : '') + '">' + msg + '</span>'
+      + '<button class="ai-st-link" onclick="togglePop(event)" aria-expanded="' + popOpen + '">' + (done.length ? '결과 보기' : '목록 보기') + '<i data-lucide="' + (popOpen ? 'chevron-up' : 'chevron-down') + '"></i></button>'
+      + (done.length && !run.length ? x : '')
+      + '<div class="ai-pop' + (popOpen ? ' open' : '') + '" onclick="event.stopPropagation()">'
+      + '<p class="ai-pop-hd">AI 작업 ' + jobs.length + '건</p>'
+      + jobs.slice().sort(function(a, b){ return (a.st === 'done' ? 0 : 1) - (b.st === 'done' ? 0 : 1); }).map(function(j){
+          return '<div class="ai-row">' + (j.st === 'run' ? spin : ok)
+            + '<div class="ai-row-txt"><p class="ai-row-t">' + KIND[j.kind].label + '</p><p class="ai-row-d">' + KIND[j.kind].desc(j.item) + '</p></div>'
+            + (j.st === 'run' ? '<span class="ai-row-st">진행 중</span>' : '<button class="ai-st-link" onclick="openResult(\'' + j.id + '\')">결과 보기<i data-lucide="chevron-right"></i></button>')
+            + '</div>';
+        }).join('')
+      + '</div>';
+  }
+  el.innerHTML = html;
+}
+
+// ── 화면별 표 ──
+function cellRun(kind, it, btnLabel){
+  var st = state[it.id];
+  if (st === 'run') return '<span class="run-st"><i data-lucide="loader-circle"></i>진행 중</span>';
+  if (st === 'done') return '<span class="done-st"><i data-lucide="circle-check"></i>완료</span>';
+  return '<button class="pill-btn pill-btn-primary" onclick="run(\'' + kind + '\',\'' + it.id + '\')"><i data-lucide="sparkles"></i>' + btnLabel + '</button>';
+}
+function cellResult(it){
+  return '<button class="pill-btn pill-btn-soft"' + (state[it.id] === 'done' ? ' onclick="notReady(\'결과 상세\')"' : ' disabled') + '>결과 확인</button>';
+}
+function renderTables(){
+  $('tb-scoring').innerHTML = ITEMS.scoring.map(function(it){
+    return '<tr data-id="' + it.id + '"><td>' + it.cls + '</td><td><span class="badge badge-gray">' + it.status + '</span></td><td>' + it.teacher + '</td><td>' + it.avg + '</td><td>' + cellRun('scoring', it, 'AI 채점') + '</td><td>' + cellResult(it) + '</td></tr>';
+  }).join('');
+  $('tb-seteuk').innerHTML = ITEMS.seteuk.map(function(it){
+    return '<tr data-id="' + it.id + '"><td>' + it.cls + '</td><td>' + it.n + '</td><td>' + cellRun('seteuk', it, '세특 생성') + '</td><td>' + cellResult(it) + '</td></tr>';
+  }).join('');
+  $('tb-creative').innerHTML = ITEMS.creative.map(function(it){
+    return '<tr data-id="' + it.id + '"><td><span class="badge badge-purple">' + it.area + '</span></td><td>' + it.act + '</td><td>' + cellRun('creative', it, '기록 생성') + '</td><td>' + cellResult(it) + '</td></tr>';
+  }).join('');
+}
+
+route();
+</script>
+</body>
+</html>
