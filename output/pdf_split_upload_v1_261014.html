@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../clipo/레퍼런스화면/clipo_favicon.png">
+  <title>PDF 분할 업로드 — 과제물 관리 (CLIPO)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *{ font-family:'Pretendard GOV',-apple-system,sans-serif; box-sizing:border-box; }
+    body{ margin:0; background:#f6f7f9; color:#222631; font-size:16px; min-width:1280px; }
+    a{ text-decoration:none; color:inherit; }
+
+    /* ===== Global Header (CLIPO 표준 — task_ocr_v3 복제) ===== */
+    .g-hd { height: 58px; background: #fff; border-bottom: 1px solid #dde1e8; display: flex; align-items: center; padding: 0 20px 0 9px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
+    .gh-menu-btn { width:40px; height:40px; border:none; background:none; border-radius:4px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; color:#3b3f4c; margin-right:9px; line-height:1; vertical-align:middle; }
+    .gh-menu-btn:hover { background:#f6f7f9; }
+    .g-hd-r { margin-left: auto; display: flex; align-items: center; gap: 16px; font-size: 15px; color: #18181b; }
+    .hd-plan { display: flex; align-items: center; gap: 8px; }
+    .plan-badge { display: inline-flex; align-items: center; height: 20px; background: #e9f2ff; border: 1px solid #ccdfff; color: #3151c4; font-size: 12px; font-weight: 500; padding: 0 6px; border-radius: 6px; line-height: 1; }
+    .credit-wrap { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #18181b; }
+    .user-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 36px; padding: 0 12px; border: 1px solid #c7cbd3; border-radius: 9999px; background: none; font-size: 14px; color: #27272a; cursor: pointer; line-height: 1; vertical-align:middle; font-weight: 500; }
+
+    /* ===== Sidebar (CLIPO 표준 icon-sb) ===== */
+    .icon-sb { width: 56px; background: #fff; border-right: 1px solid #d9d9d9; position: fixed; top: 58px; bottom: 0; left: 0; display: flex; flex-direction: column; padding: 8px 0; z-index: 150; transition: width .2s ease; }
+    .icon-sb.expanded { width: 200px; }
+    .si { height: 40px; display: flex; align-items: center; border-radius: 8px; color: #6d7381; cursor: pointer; margin: 0 8px 2px; position: relative; padding: 0 4px 0 8px; gap: 10px; white-space: nowrap; flex-shrink: 0; }
+    .si:hover { background: #f1f3f5; }
+    .si.active { background: #e9f2ff; color: #416bff; }
+    .si-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .si-label { font-size: 13px; font-weight: 500; opacity: 0; transition: opacity .1s; overflow: hidden; }
+    .icon-sb.expanded .si-label { opacity: 1; }
+    .si-tip { position: absolute; left: 48px; top: 50%; transform: translateY(-50%); background: #222631; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; display: none; z-index: 300; pointer-events: none; }
+    .si:hover .si-tip { display: block; }
+    .icon-sb.expanded .si-tip { display: none !important; }
+    .nav-bottom { margin-top: auto; width: 100%; }
+    .nav-div { height: 1px; background: #f1f3f5; margin: 4px 8px; }
+
+    /* ===== Layout ===== */
+    .main-wrap{ position:relative; padding-top:58px; padding-left:56px; transition:padding-left .2s; min-height:100vh; background:#f6f7f9; }
+    body.nav-expanded .main-wrap{ padding-left:200px; }
+    .screen{ display:none; }
+    .screen.active{ display:flex; flex-direction:column; min-height:calc(100vh - 58px); }
+
+    /* ===== 탭 밴드 (레퍼런스 동일 — 굵기 변화 없음) ===== */
+    .tab-band{ background:white; border-bottom:1px solid #dde1e8; }
+    .tab-band-inner{ max-width:1240px; margin:0 auto; padding:0 32px; display:flex; gap:8px; }
+    .sub-tab{ padding:18px 14px; font-size:16px; font-weight:500; color:#3b3f4c; border:none; background:none; cursor:pointer; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-1px; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; }
+    .sub-tab:hover{ color:#222631; }
+    .sub-tab.on{ color:#416bff; border-bottom:2px solid #416bff; }
+
+    .page-wrap{ max-width:1240px; margin:0 auto; padding:28px 32px 0; flex:1; display:flex; flex-direction:column; width:100%; }
+    .page-h1{ font-size:22px; font-weight:700; color:#222631; margin:0 0 8px; }
+    .page-sub{ font-size:16px; color:#3b3f4c; margin:0 0 24px; line-height:1.55; }
+    .back-link{ display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; gap:4px; font-size:15px; font-weight:600; color:#222631; background:none; border:none; cursor:pointer; font-family:inherit; padding:0; margin-bottom:14px; align-self:flex-start; }
+    .back-link i, .back-link svg{ color:#416bff; }
+    .back-link:hover{ color:#416bff; }
+    .ev-card{ background:white; border-radius:12px; padding:24px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; }
+
+    /* ===== 버튼 (레퍼런스 동일) ===== */
+    .btn{ height:40px; border-radius:4px; font-weight:600; font-size:15px; font-family:inherit; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:0 16px; border:none; white-space:nowrap; flex-shrink:0; line-height:1; vertical-align:middle; transition:opacity .15s; }
+    .btn:hover{ opacity:.88; }
+    .btn-primary{ background:#416bff; color:white; }
+    .btn-primary:hover{ background:#365eef; opacity:1; }
+    .btn-primary:disabled{ background:#b8c8ff; cursor:not-allowed; }
+    .btn-secondary{ background:white; color:#3151c4; border:1px solid #ccdfff; }
+    .btn-secondary:hover{ background:#e9f2ff; opacity:1; }
+    .btn-outline{ background:white; color:#3b3f4c; border:1px solid #d9d9d9; }
+    .btn-sm{ height:34px; font-size:14px; padding:0 12px; }
+
+    /* ===== 푸터 ===== */
+    .site-footer{ margin-top:auto; padding:48px 0 40px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .sf-links{ display:flex; align-items:center; }
+    .sf-links a{ font-size:14px; color:#3b3f4c; padding:0 16px; }
+    .sf-links a + a{ border-left:1px solid #dde1e8; }
+    .sf-copy{ font-size:14px; color:#9aa0ad; }
+
+    /* ===== 스플릿 (PDF 보기 | 분할 패널) ===== */
+    .split{ display:flex; height:calc(100vh - 58px); }
+    .viewer{ flex:1; min-width:0; display:flex; flex-direction:column; background:#3a3a3a; }
+    .vw-bar{ height:48px; background:#222631; display:flex; align-items:center; justify-content:space-between; padding:0 16px; flex-shrink:0; gap:16px; }
+    .vw-file{ font-size:14px; color:white; font-weight:500; display:inline-flex; align-items:center; gap:8px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .vw-ctrl{ display:flex; align-items:center; gap:8px; color:white; font-size:14px; }
+    .vw-ibtn{ width:28px; height:28px; border:none; border-radius:4px; background:rgba(255,255,255,.12); color:white; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; padding:0; }
+    .vw-ibtn:hover{ background:rgba(255,255,255,.22); }
+    .vw-ibtn:disabled{ opacity:.35; cursor:not-allowed; }
+    .vw-pg{ background:rgba(255,255,255,.12); border-radius:4px; padding:4px 10px; min-width:36px; text-align:center; }
+    .vw-stage{ flex:1; overflow:auto; display:flex; align-items:flex-start; justify-content:center; padding:24px; }
+    .vw-page{ position:relative; background:white; width:520px; max-width:100%; min-height:700px; box-shadow:0 4px 24px rgba(0,0,0,.5); padding:40px; color:#222; font-size:14px; }
+    .vw-ph{ background:#f6f7f9; border-radius:4px; margin-bottom:12px; }
+
+    /* 오른쪽 패널 */
+    .panel-r{ width:600px; flex-shrink:0; background:white; display:flex; flex-direction:column; border-left:1px solid #dde1e8; }
+    .pr-hd{ padding:20px 24px 18px; border-bottom:1px solid #dde1e8; flex-shrink:0; display:flex; flex-direction:column; gap:16px; }
+    .pr-title-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .pr-title{ font-size:18px; font-weight:600; color:#222631; margin:0; }
+    .pr-body{ flex:1; overflow-y:auto; padding:20px 24px; display:flex; flex-direction:column; gap:20px; min-height:0; }
+    .pr-ft{ padding:16px 24px; border-top:1px solid #dde1e8; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-shrink:0; }
+
+    /* 스텝바 */
+    .steps{ list-style:none; margin:0; padding:0; display:flex; align-items:center; gap:8px; }
+    .steps li{ display:flex; align-items:center; gap:8px; }
+    .step-btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; background:none; padding:2px 0; font-family:inherit; font-size:15px; font-weight:500; color:#6d7381; cursor:default; line-height:1; vertical-align:middle; }
+    .step-btn .no{ width:24px; height:24px; border-radius:50%; background:#f1f3f5; color:#6d7381; display:inline-flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; line-height:1; }
+    .step-btn.on{ color:#222631; }
+    .step-btn.on .no{ background:#416bff; color:white; }
+    .step-btn.done{ color:#3151c4; cursor:pointer; }
+    .step-btn.done .no{ background:#e9f2ff; color:#3151c4; }
+    .step-btn.done:hover{ text-decoration:underline; }
+    .step-sep{ width:16px; height:16px; color:#b3b6bd; }
+
+    /* 파일 정보 */
+    .info-box{ background:#f6f7f9; border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:10px; }
+    .info-row{ display:flex; align-items:center; gap:8px; font-size:15px; color:#222631; }
+    .info-row .muted{ color:#6d7381; margin-left:auto; font-size:14px; }
+    .info-stats{ display:flex; gap:10px; }
+    .info-stat{ flex:1; background:white; border-radius:8px; padding:12px 14px; display:flex; flex-direction:column; gap:4px; }
+    .info-stat span{ font-size:14px; color:#6d7381; }
+    .info-stat b{ font-size:20px; font-weight:600; color:#222631; }
+
+    /* 입력 필드 */
+    .field{ display:flex; flex-direction:column; gap:8px; }
+    .field-lbl{ font-size:16px; font-weight:600; color:#222631; }
+    .field-help{ font-size:14px; color:#6d7381; line-height:1.5; margin:0; }
+    .field-row{ display:flex; align-items:center; gap:10px; font-size:16px; color:#3b3f4c; }
+    .num-in{ width:96px; height:40px; border:1px solid #d9d9d9; border-radius:4px; padding:0 12px; font-size:16px; font-family:inherit; color:#222631; text-align:center; outline:none; }
+    .num-in:focus{ border-color:#416bff; box-shadow:0 0 0 3px rgba(65,107,255,.15); }
+    .num-in.err{ border-color:#f2525f; }
+    .field-err{ font-size:14px; color:#db3e51; margin:0; display:none; align-items:center; gap:6px; }
+    .field-err.show{ display:inline-flex; }
+    .calc-box{ background:#f4f8ff; border-radius:10px; padding:14px 16px; display:flex; align-items:flex-start; gap:10px; font-size:15px; color:#3b3f4c; line-height:1.6; }
+    .calc-box b{ color:#222631; font-weight:600; }
+
+    /* 상태 안내 (좌측 띠 없음 — 배경+아이콘) */
+    .notice{ border-radius:8px; padding:12px 14px; display:flex; align-items:flex-start; gap:10px; font-size:15px; line-height:1.55; }
+    .notice > i, .notice > svg{ width:18px; height:18px; flex-shrink:0; margin-top:2px; }
+    .notice.warn{ background:#fff7ed; color:#9a3412; }
+    .notice.warn > i, .notice.warn > svg{ color:#f97316; }
+    .notice.err{ background:#fff3f4; color:#b42332; }
+    .notice.err > i, .notice.err > svg{ color:#f2525f; }
+    .notice.ok{ background:#eefcf4; color:#1f7a4a; }
+    .notice.ok > i, .notice.ok > svg{ color:#1ab864; }
+    .notice b{ font-weight:600; }
+
+    /* 세그먼트 (활성 시 굵기 변화 없음) */
+    .seg{ display:inline-flex; background:#f1f3f5; border-radius:8px; padding:3px; gap:2px; }
+    .seg-btn{ height:34px; padding:0 14px; border:none; border-radius:6px; background:none; font-family:inherit; font-size:14px; font-weight:500; color:#6d7381; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; }
+    .seg-btn.on{ background:white; color:#416bff; box-shadow:0 0 1px #2226314D, 0 1px 3px #0000001A; }
+
+    /* 결과 표 */
+    .rt-wrap{ border:1px solid #dde1e8; border-radius:8px; overflow:hidden; }
+    .rt{ width:100%; border-collapse:separate; border-spacing:0; }
+    .rt th{ background:#f6f7f9; height:40px; font-size:14px; font-weight:500; color:#6d7381; text-align:center; border-bottom:1px solid #dde1e8; }
+    .rt td{ height:52px; font-size:16px; text-align:center; color:#222631; border-bottom:1px solid #eceef2; padding:0 8px; }
+    .rt tr:last-child td{ border-bottom:none; }
+    .rt tbody tr{ cursor:pointer; }
+    .rt tbody tr:hover td{ background:#fafbfc; }
+    .rt tbody tr.cur td{ background:#f4f8ff; }
+    .rt tbody tr.skip td{ color:#9aa0ad; }
+    .rt tbody tr.bad td.pgcol{ background:#fff3f4; }
+    .rt .cell-in{ width:60px; height:36px; border:1px solid #d9d9d9; border-radius:4px; text-align:center; font-size:16px; font-family:inherit; color:#222631; outline:none; padding:0; }
+    .rt .cell-in:focus{ border-color:#416bff; }
+    .rt .cell-in.err{ border-color:#f2525f; }
+    .rt .rng{ display:inline-flex; align-items:center; gap:6px; color:#6d7381; }
+    .rt .chk{ width:20px; height:20px; accent-color:#416bff; cursor:pointer; vertical-align:middle; }
+    .rt .auto{ color:#3b3f4c; }
+    .rt .moved{ color:#365eef; font-weight:600; }
+
+    /* 처리 중 */
+    .proc{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1500; align-items:center; justify-content:center; flex-direction:column; gap:16px; }
+    .proc.open{ display:flex; }
+    .proc .ring{ width:48px; height:48px; border:4px solid rgba(255,255,255,.3); border-top:4px solid white; border-radius:50%; animation:spin 1s linear infinite; }
+    .proc p{ font-size:18px; font-weight:600; color:white; margin:0; }
+    @keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    /* 확인 모달 (rm-modal 동일 톤) */
+    .rm-overlay{ display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1600; align-items:center; justify-content:center; padding:24px; }
+    .rm-overlay.open{ display:flex; }
+    .rm-modal{ background:#fff; border-radius:12px; width:480px; max-width:calc(100vw - 48px); box-shadow:0 20px 60px rgba(0,0,0,.25); display:flex; flex-direction:column; }
+    .rm-hd{ position:relative; padding:20px 24px 12px; }
+    .rm-title{ font-size:20px; font-weight:600; color:#222631; line-height:1.25; margin:0; }
+    .rm-close{ position:absolute; top:16px; right:16px; width:36px; height:36px; border:0; background:none; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; color:#6d7381; }
+    .rm-close:hover{ background:#f1f3f5; }
+    .rm-body{ padding:0 24px 4px; display:flex; flex-direction:column; gap:14px; }
+    .rm-sum{ background:#f6f7f9; border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+    .rm-sum-row{ display:flex; justify-content:space-between; font-size:16px; color:#3b3f4c; }
+    .rm-sum-row b{ color:#222631; font-weight:600; }
+    .rm-desc{ font-size:15px; color:#52525b; line-height:1.55; margin:0; }
+    .rm-ft{ padding:16px 24px; display:flex; justify-content:flex-end; gap:10px; }
+
+    /* 완료 */
+    .done-box{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:12px; padding:40px 24px 8px; }
+    .done-ico{ width:64px; height:64px; border-radius:50%; background:#eefcf4; color:#1ab864; display:flex; align-items:center; justify-content:center; }
+    .done-title{ font-size:20px; font-weight:600; margin:4px 0 0; }
+    .done-desc{ font-size:16px; color:#3b3f4c; margin:0; line-height:1.6; }
+
+    /* 토스트 */
+    .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(12px); opacity:0; min-width:320px; max-width:480px; padding:14px 22px 14px 16px; border-radius:4px; display:flex; align-items:center; gap:12px; font-size:15px; font-weight:600; box-shadow:0 0 1px #2226314D, 0 4px 12px #00000026; z-index:9999; transition:opacity .2s ease, transform .2s ease; pointer-events:none; }
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast-success{ background:#319d64; color:white; }
+    .toast-error{ background:#db3e51; color:white; }
+    .toast-info{ background:#222631; color:white; }
+  </style>
+</head>
+<body>
+
+<!-- ===== Global Header (CLIPO 표준, 58px) ===== -->
+<header class="g-hd" id="gnb">
+  <button class="gh-menu-btn" onclick="toggleNav()" aria-label="메뉴 펼치기"><i data-lucide="panel-left-open" style="width:20px;height:20px"></i></button>
+  <svg width="76" height="16" viewBox="0 0 76 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer" onclick="location.href='../clipo/레퍼런스화면/home_v1_260612.html'"><path d="M11.3613 4.03516H4.09668V11.9629H8.88281L8.88086 11.9648H15.6016V16H4.02539C1.80242 15.9998 0 14.223 0 12.0322V3.96777C0 1.77696 1.80242 0.000177874 4.02539 0H15.4561L11.3613 4.03516ZM22.0703 11.9648H33.5781V16H22.002C19.7788 16 17.9756 14.2231 17.9756 12.0322V0H22.0703V11.9648ZM40.0459 16H35.9521V0H40.0459V16ZM54.5381 0C56.4564 0 58.0138 1.53228 58.0186 3.42285L58.0166 3.4248V8.54297C58.014 10.4333 56.4567 11.9648 54.5361 11.9648H46.5107L42.416 16V0H54.5381ZM71.9746 0C74.0086 0.000134956 75.6887 1.49046 75.958 3.42285H76V12.5771H75.958C75.6887 14.5095 74.011 15.9999 71.9746 16H64.4238C62.3897 16 60.7098 14.5096 60.4404 12.5771C60.4145 12.398 60.3984 12.2184 60.3984 12.0322V3.96777C60.3984 3.78159 60.4145 3.60205 60.4404 3.42285C60.7098 1.49037 62.3873 0 64.4238 0H71.9746ZM64.4922 12.5771H71.9062V3.42285H64.4922V12.5771ZM46.5107 3.42285V8.54004H53.9238V3.42285H46.5107Z" fill="#365EEF"/></svg>
+  <div class="g-hd-r">
+    <div class="hd-plan">
+      <span class="plan-badge">학교 유료</span>
+      <span style="font-size:15px;font-weight:500;color:#18181b">D-180</span>
+    </div>
+    <div class="credit-wrap"><i data-lucide="bot" style="width:20px;height:20px;color:#416bff"></i><span>200 크레딧</span></div>
+    <button class="user-btn">최대표 선생님(대표교사) <i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+  </div>
+</header>
+
+<!-- ===== Sidebar (CLIPO 표준 icon-sb) ===== -->
+<nav class="icon-sb" id="icon-sb">
+  <div class="si" onclick="location.href='../clipo/레퍼런스화면/home_v1_260612.html'"><div class="si-icon"><i data-lucide="home" style="width:20px;height:20px"></i></div><span class="si-label">홈</span><span class="si-tip">홈</span></div>
+  <div class="si" onclick="notReady('평가 준비')"><div class="si-icon"><i data-lucide="scissors" style="width:20px;height:20px"></i></div><span class="si-label">평가 준비</span><span class="si-tip">평가 준비</span></div>
+  <div class="si active" onclick="location.href='../clipo/레퍼런스화면/co_teacher_review_v1_260611.html'"><div class="si-icon"><i data-lucide="layout-grid" style="width:20px;height:20px"></i></div><span class="si-label">수업</span><span class="si-tip">수업</span></div>
+  <div class="si" onclick="location.href='../clipo/레퍼런스화면/creative_activity_list_v6_260507.html'"><div class="si-icon"><i data-lucide="notebook-pen" style="width:20px;height:20px"></i></div><span class="si-label">창의적 체험활동 <span style="font-size:10px;background:#416bff;color:#fff;padding:1px 5px;border-radius:3px;margin-left:2px">Beta</span></span><span class="si-tip">창의적 체험활동</span></div>
+  <div class="si" onclick="location.href='../clipo/레퍼런스화면/quick_seteuk_dev_list_v1_260604.html'"><div class="si-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div><span class="si-label">세특 간편 생성기</span><span class="si-tip">세특 간편 생성기</span></div>
+  <div class="si" onclick="notReady('행동특성 및 종합기록')"><div class="si-icon"><i data-lucide="smile" style="width:20px;height:20px"></i></div><span class="si-label">행동특성 및 종합기록</span><span class="si-tip">행동특성 및 종합기록</span></div>
+  <div class="si" onclick="notReady('리포트')"><div class="si-icon"><i data-lucide="bar-chart-2" style="width:20px;height:20px"></i></div><span class="si-label">리포트</span><span class="si-tip">리포트</span></div>
+  <div class="si" onclick="location.href='../clipo/레퍼런스화면/rep_teacher_succession_v1_260731.html'"><div class="si-icon"><i data-lucide="building-2" style="width:20px;height:20px"></i></div><span class="si-label">학교 설정</span><span class="si-tip">학교 설정</span></div>
+  <div class="nav-bottom">
+    <div class="nav-div"></div>
+    <div class="si" onclick="notReady('매뉴얼 다운로드')"><div class="si-icon"><i data-lucide="file-down" style="width:20px;height:20px"></i></div><span class="si-label">매뉴얼 다운로드</span><span class="si-tip">매뉴얼 다운로드</span></div>
+    <div class="si" onclick="notReady('요금제')"><div class="si-icon"><i data-lucide="credit-card" style="width:20px;height:20px"></i></div><span class="si-label">요금제</span><span class="si-tip">요금제</span></div>
+    <div class="si" onclick="notReady('고객센터')"><div class="si-icon"><i data-lucide="help-circle" style="width:20px;height:20px"></i></div><span class="si-label">고객센터</span><span class="si-tip">고객센터</span></div>
+  </div>
+</nav>
+
+<div class="main-wrap" id="main-wrap">
+
+<!-- ===== #upload — 파일 선택 (레퍼런스 상태A 그대로) ===== -->
+<div id="screen-upload" class="screen">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="location.href='../clipo/레퍼런스화면/co_teacher_review_v1_260611.html'">수업 홈</button>
+      <button class="sub-tab" onclick="location.href='../clipo/레퍼런스화면/task_direct_write_v1_260729.html#list'">설계</button>
+      <button class="sub-tab on" onclick="goList()">과제물 관리</button>
+      <button class="sub-tab" onclick="location.href='../clipo/레퍼런스화면/task_ocr_v3_260623.html#scoring'">채점</button>
+      <button class="sub-tab" onclick="notReady('리포트')">리포트</button>
+      <button class="sub-tab" onclick="notReady('세부능력 및 특기사항 지원')">세부능력 및 특기사항 지원</button>
+      <button class="sub-tab" onclick="notReady('공동 평가')">공동 평가</button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <button class="back-link" onclick="goList()"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i>이전으로</button>
+    <div>
+      <h1 class="page-h1">1-1반 PDF 분할 업로드</h1>
+      <p class="page-sub">학급 전체를 스캔한 PDF 1개를 올리면, 학생별로 나눠 등록해 드려요.</p>
+      <div class="ev-card">
+        <div style="background:white;border:1px dashed #b3b3b3;border-radius:12px;padding:40px 24px;min-height:228px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;">
+          <i data-lucide="upload-cloud" style="width:48px;height:48px;color:#6d7381;"></i>
+          <p style="font-size:16px;font-weight:500;color:#3b3f4c;line-height:1.55;margin:0;">
+            학급 단위로 스캔한 하나의 PDF 파일을 선택해 주세요.<br>
+            PDF 파일을 학생별로 나눠 업로드해 드려요.<br>
+            이미 업로드된 파일이 있으면 새로 올리는 파일로 바뀌어요.
+          </p>
+          <button onclick="pickFile()" class="btn btn-primary btn-sm">
+            <i data-lucide="folder-open" style="width:16px;height:16px;"></i>파일 선택
+          </button>
+        </div>
+      </div>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== #setup · #result · #done — 스플릿 (레퍼런스 상태B/D 골격) ===== -->
+<div id="screen-split" class="screen">
+  <div class="split">
+    <!-- 왼쪽: PDF 보기 -->
+    <section class="viewer" aria-label="PDF 미리보기">
+      <div class="vw-bar">
+        <span class="vw-file"><i data-lucide="file-text" style="width:16px;height:16px;flex-shrink:0;"></i>1학년1반과제파일.pdf</span>
+        <div class="vw-ctrl">
+          <button class="vw-ibtn" id="vw-prev" onclick="viewPage(state.view-1)" aria-label="이전 페이지"><i data-lucide="chevron-left" style="width:16px;height:16px"></i></button>
+          <span class="vw-pg" id="vw-cur">1</span><span style="color:#ccc">/</span><span id="vw-total">14</span>
+          <button class="vw-ibtn" id="vw-next" onclick="viewPage(state.view+1)" aria-label="다음 페이지"><i data-lucide="chevron-right" style="width:16px;height:16px"></i></button>
+        </div>
+        <div class="vw-ctrl">
+          <button class="vw-ibtn" aria-label="축소" onclick="notReady('축소')"><i data-lucide="minus" style="width:14px;height:14px"></i></button>
+          <span style="min-width:40px;text-align:center">100%</span>
+          <button class="vw-ibtn" aria-label="확대" onclick="notReady('확대')"><i data-lucide="plus" style="width:14px;height:14px"></i></button>
+        </div>
+      </div>
+      <div class="vw-stage">
+        <div class="vw-page" id="vw-page">
+          <div id="vw-content"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 오른쪽: 분할 패널 -->
+    <aside class="panel-r" aria-label="PDF 분할">
+      <div class="pr-hd">
+        <div class="pr-title-row">
+          <h2 class="pr-title">1-1반 PDF 분할 업로드</h2>
+          <button class="btn btn-outline btn-sm" id="btn-repick" onclick="repick()"><i data-lucide="refresh-cw" style="width:15px;height:15px;"></i>파일 다시 선택</button>
+        </div>
+        <ol class="steps" id="steps"></ol>
+      </div>
+
+      <!-- ① 페이지 설정 -->
+      <div class="pr-body" id="body-setup">
+        <div class="info-box">
+          <div class="info-row"><i data-lucide="file-text" style="width:16px;height:16px;color:#416bff;flex-shrink:0;"></i>1학년1반과제파일.pdf<span class="muted">방금 선택</span></div>
+          <div class="info-stats">
+            <div class="info-stat"><span>PDF 전체 페이지</span><b><span class="js-total">14</span>쪽</b></div>
+            <div class="info-stat"><span>1-1반 학생</span><b><span class="js-stu">8</span>명</b></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-lbl" for="in-start">과제물이 시작되는 페이지</label>
+          <p class="field-help">앞쪽에 표지나 안내문이 있으면 그 다음 페이지 번호를 넣어 주세요. 왼쪽에서 페이지를 넘겨 보며 확인할 수 있어요.</p>
+          <div class="field-row"><input id="in-start" class="num-in" type="number" min="1" placeholder="예: 1" oninput="onSetup()"><span>페이지부터</span></div>
+          <p class="field-err" id="err-start"><i data-lucide="circle-alert" style="width:16px;height:16px"></i><span></span></p>
+        </div>
+
+        <div class="field">
+          <label class="field-lbl" for="in-per">학생 한 명당 페이지 수</label>
+          <p class="field-help">대부분의 학생이 낸 분량을 넣어 주세요. 학생마다 다르면 다음 단계에서 고칠 수 있어요.</p>
+          <div class="field-row"><input id="in-per" class="num-in" type="number" min="1" placeholder="예: 2" oninput="onSetup()"><span>장씩</span></div>
+          <p class="field-err" id="err-per"><i data-lucide="circle-alert" style="width:16px;height:16px"></i><span></span></p>
+        </div>
+
+        <div class="calc-box" id="calc-box" style="display:none;">
+          <i data-lucide="calculator" style="width:18px;height:18px;color:#416bff;flex-shrink:0;margin-top:3px;"></i>
+          <span id="calc-text"></span>
+        </div>
+      </div>
+
+      <!-- ② 분할 결과 확인·수정 -->
+      <div class="pr-body" id="body-result" style="display:none;">
+        <div id="res-notice"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <div class="seg" role="tablist" aria-label="고치는 방법">
+            <button class="seg-btn" id="seg-count" role="tab" onclick="setMode('count')">페이지 수로 고치기</button>
+            <button class="seg-btn" id="seg-num" role="tab" onclick="setMode('num')">페이지 번호로 고치기</button>
+          </div>
+          <span style="font-size:14px;color:#6d7381;" id="res-count"></span>
+        </div>
+        <p class="field-help" id="mode-help" style="margin-top:-8px;"></p>
+        <div class="rt-wrap">
+          <table class="rt">
+            <thead><tr>
+              <th style="width:84px">학번</th><th style="width:88px">이름</th><th style="width:100px">페이지 수</th><th>페이지 번호</th><th style="width:72px">미제출</th>
+            </tr></thead>
+            <tbody id="rt-body"></tbody>
+          </table>
+        </div>
+        <p class="field-help">행을 누르면 왼쪽에서 그 학생의 첫 페이지를 보여 줘요.</p>
+      </div>
+
+      <!-- 완료 -->
+      <div class="pr-body" id="body-done" style="display:none;">
+        <div class="done-box">
+          <div class="done-ico"><i data-lucide="check" style="width:32px;height:32px"></i></div>
+          <p class="done-title">과제물을 업로드했어요</p>
+          <p class="done-desc" id="done-desc"></p>
+        </div>
+        <div class="rm-sum" id="done-sum"></div>
+      </div>
+
+      <div class="pr-ft" id="ft">
+        <button class="btn btn-secondary" id="ft-back" onclick="go('setup')"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i>이전</button>
+        <span></span>
+        <button class="btn btn-primary" id="ft-next" onclick="toResult()">다음<i data-lucide="chevron-right" style="width:18px;height:18px;"></i></button>
+        <button class="btn btn-primary" id="ft-upload" onclick="go('confirm')"><i data-lucide="check" style="width:18px;height:18px;"></i>과제 업로드</button>
+        <button class="btn btn-primary" id="ft-list" onclick="goList()">과제물 관리로 이동</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+</div>
+
+<!-- 처리 중 -->
+<div class="proc" id="proc"><div class="ring"></div><p id="proc-msg">PDF를 나누는 중이에요</p></div>
+
+<!-- #confirm — 업로드 확인 (되돌리기 어려운 짧은 확인만 모달) -->
+<div class="rm-overlay" id="confirm" onclick="if(event.target===this) go('result')">
+  <div class="rm-modal" role="dialog" aria-modal="true" aria-labelledby="cf-title">
+    <div class="rm-hd">
+      <h3 class="rm-title" id="cf-title">과제물을 업로드할까요?</h3>
+      <button class="rm-close" onclick="go('result')" aria-label="닫기"><i data-lucide="x" style="width:20px;height:20px"></i></button>
+    </div>
+    <div class="rm-body">
+      <div class="rm-sum" id="cf-sum"></div>
+      <div id="cf-warn"></div>
+      <p class="rm-desc">이미 올린 과제물이 있으면 이번 파일로 바뀌어요. 업로드한 뒤에도 과제물 관리에서 학생별로 파일을 바꿀 수 있어요.</p>
+    </div>
+    <div class="rm-ft">
+      <button class="btn btn-outline" onclick="go('result')">취소</button>
+      <button class="btn btn-primary" onclick="doUpload()">업로드</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast toast-success">
+  <i data-lucide="circle-check-big" style="width:20px;height:20px;flex-shrink:0;"></i>
+  <span id="toast-msg">저장되었습니다.</span>
+</div>
+
+<script>
+// ── 데이터: 레퍼런스(task_ocr_v3) 1-1반 실제 명단 그대로 ──
+var STUDENTS = [
+  { id:'10101', name:'김서윤' }, { id:'10102', name:'이준호' }, { id:'10103', name:'박지민' }, { id:'10105', name:'정현우' },
+  { id:'10106', name:'한지우' }, { id:'10107', name:'조민재' }, { id:'10108', name:'윤하은' }, { id:'10109', name:'임도윤' }
+];
+// 시연 PDF: 1쪽 표지 + 6명 제출(박지민만 3장, 나머지 2장) = 14쪽. 한지우·윤하은은 이번에 안 냄.
+var TOTAL = 14;
+var REAL = { cover:1, owners:['10101','10101','10102','10102','10103','10103','10103','10105','10105','10107','10107','10109','10109'] };
+var LIST_URL = '../clipo/레퍼런스화면/task_ocr_v3_260623.html';
+
+var state = { step:'upload', start:'', per:'', mode:'count', counts:[], starts:[], ends:[], skip:[], view:1, cur:-1 };
+
+function $(id){ return document.getElementById(id); }
+function toggleNav(){ $('icon-sb').classList.toggle('expanded'); document.body.classList.toggle('nav-expanded'); }
+function showToast(msg, type){
+  var t = $('toast'); $('toast-msg').textContent = msg;
+  t.className = 'toast toast-' + (type || 'success') + ' show';
+  setTimeout(function(){ t.classList.remove('show'); }, 2500);
+}
+function notReady(name){ showToast((name || '해당 화면') + ' 은(는) 아직 준비 중이에요.', 'info'); }
+function goList(){ location.href = LIST_URL; }
+
+// ── 분할 계산 ──
+function ranges(){
+  var out = [];
+  if (state.mode === 'count') {
+    var p = parseInt(state.start, 10) || 1;
+    STUDENTS.forEach(function(s, i){
+      if (state.skip[i]) { out.push(null); return; }
+      var c = Math.max(1, parseInt(state.counts[i], 10) || 1);
+      out.push({ s:p, e:p + c - 1 }); p += c;
+    });
+  } else {
+    STUDENTS.forEach(function(s, i){
+      if (state.skip[i]) { out.push(null); return; }
+      out.push({ s: parseInt(state.starts[i], 10) || 0, e: parseInt(state.ends[i], 10) || 0 });
+    });
+  }
+  return out;
+}
+// 페이지별 주인: {type:'ex'|'st'|'un'|'ov', who:[idx]}
+function pageMap(){
+  var r = ranges(), map = [], start = parseInt(state.start, 10) || 1;
+  for (var p = 1; p <= TOTAL; p++) map.push({ type: p < start ? 'ex' : 'un', who: [] });
+  r.forEach(function(g, i){
+    if (!g || !g.s || !g.e || g.e < g.s) return;
+    for (var p = g.s; p <= Math.min(g.e, TOTAL); p++) {
+      var m = map[p-1]; m.who.push(i); m.type = m.who.length > 1 ? 'ov' : 'st';
+    }
+  });
+  return map;
+}
+function check(){
+  var r = ranges(), map = pageMap(), start = parseInt(state.start, 10) || 1;
+  var bad = {}; // 행 단위 문제
+  var lastEnd = 0, over = 0, ov = [], un = [];
+  r.forEach(function(g, i){
+    if (!g) return;
+    if (!g.s || !g.e || g.e < g.s) { bad[i] = 'range'; return; }
+    if (g.e > TOTAL) bad[i] = 'over';
+    lastEnd = Math.max(lastEnd, g.e);
+  });
+  map.forEach(function(m, k){
+    if (m.type === 'ov') { ov.push(k+1); m.who.forEach(function(i){ bad[i] = 'ov'; }); }
+    if (m.type === 'un') un.push(k+1);
+  });
+  if (lastEnd > TOTAL) over = lastEnd - TOTAL;
+  var assigned = r.filter(Boolean).length, skipN = state.skip.filter(Boolean).length;
+  return { bad:bad, over:over, ov:ov, un:un, lastEnd:lastEnd, start:start, assigned:assigned, skipN:skipN, ok: !over && !ov.length && !un.length && !Object.keys(bad).length };
+}
+function pageList(arr){
+  // [3,4,5,9] → "3~5, 9쪽"
+  var out = [], i = 0;
+  while (i < arr.length) { var j = i; while (j+1 < arr.length && arr[j+1] === arr[j]+1) j++; out.push(i === j ? arr[i] : arr[i] + '~' + arr[j]); i = j+1; }
+  return out.join(', ') + '쪽';
+}
+
+// ── 라우팅 (화면·스텝마다 고유 해시) ──
+var ROUTES = ['upload','setup','result','confirm','done'];
+function go(step){ if (location.hash !== '#' + step) location.hash = step; else render(step); }
+function routeFromHash(){
+  var h = (location.hash || '#upload').slice(1);
+  if (ROUTES.indexOf(h) < 0) h = 'upload';
+  // 해시로 바로 들어오면 시연값으로 채움
+  if (h !== 'upload' && h !== 'setup' && !state.counts.length) seedResult(2, 2);
+  if (h === 'setup' && state.step === 'upload') { state.view = 1; }
+  render(h);
+}
+window.addEventListener('hashchange', routeFromHash);
+
+function seedResult(start, per){
+  state.start = String(start); state.per = String(per); state.mode = 'count';
+  state.counts = STUDENTS.map(function(){ return String(per); });
+  state.skip = STUDENTS.map(function(){ return false; });
+  syncNum(); state.view = start; state.cur = -1;
+}
+function syncNum(){ var r = ranges(); state.starts = r.map(function(g){ return g ? String(g.s) : ''; }); state.ends = r.map(function(g){ return g ? String(g.e) : ''; }); }
+
+// ── 화면 렌더 ──
+function render(step){
+  state.step = step;
+  var split = step !== 'upload';
+  $('screen-upload').classList.toggle('active', !split);
+  $('screen-split').classList.toggle('active', split);
+  $('confirm').classList.toggle('open', step === 'confirm');
+  if (split) {
+    var panel = step === 'confirm' ? 'result' : step;
+    $('body-setup').style.display = panel === 'setup' ? 'flex' : 'none';
+    $('body-result').style.display = panel === 'result' ? 'flex' : 'none';
+    $('body-done').style.display = panel === 'done' ? 'flex' : 'none';
+    $('ft-back').style.display = panel === 'result' ? '' : 'none';
+    $('ft-next').style.display = panel === 'setup' ? '' : 'none';
+    $('ft-upload').style.display = panel === 'result' ? '' : 'none';
+    $('ft-list').style.display = panel === 'done' ? '' : 'none';
+    $('btn-repick').style.display = panel === 'done' ? 'none' : '';
+    renderSteps(panel);
+    if (panel === 'setup') { $('in-start').value = state.start; $('in-per').value = state.per; onSetup(true); }
+    if (panel === 'result') renderResult();
+    if (panel === 'done') renderDone();
+    if (step === 'confirm') renderConfirm();
+    renderViewer();
+  }
+  lucide.createIcons();
+}
+
+function renderSteps(panel){
+  var names = ['페이지 설정', '분할 결과 확인', '업로드'];
+  var cur = panel === 'setup' ? 0 : panel === 'result' ? (state.step === 'confirm' ? 2 : 1) : 3;
+  var html = '';
+  names.forEach(function(n, i){
+    var cls = i < cur ? 'done' : i === cur ? 'on' : '';
+    var click = (i < cur && panel !== 'done') ? ' onclick="go(\'' + (i === 0 ? 'setup' : 'result') + '\')"' : ' disabled';
+    html += '<li><button class="step-btn ' + cls + '"' + click + '><span class="no">' + (i < cur ? '<i data-lucide="check" style="width:14px;height:14px"></i>' : (i+1)) + '</span>' + n + '</button>'
+      + (i < 2 ? '<i data-lucide="chevron-right" class="step-sep" style="width:16px;height:16px;color:#b3b6bd"></i>' : '') + '</li>';
+  });
+  $('steps').innerHTML = html;
+}
+
+// ① 페이지 설정
+function onSetup(silent){
+  var sv = $('in-start').value, pv = $('in-per').value;
+  state.start = sv; state.per = pv;
+  var s = parseInt(sv, 10), p = parseInt(pv, 10);
+  var es = '', ep = '';
+  if (sv !== '' && (!(s >= 1) || s > TOTAL)) es = '1~' + TOTAL + ' 사이의 페이지 번호를 넣어 주세요.';
+  if (pv !== '' && !(p >= 1)) ep = '1 이상의 숫자를 넣어 주세요.';
+  setErr('start', es); setErr('per', ep);
+  var ok = s >= 1 && s <= TOTAL && p >= 1;
+  $('ft-next').disabled = !ok;
+  if (ok) {
+    var need = STUDENTS.length * p, end = s + need - 1;
+    var txt = '<b>' + STUDENTS.length + '명 × ' + p + '장 = ' + need + '쪽</b>으로 나눠요. ' + s + '~' + end + '쪽을 쓰고, ';
+    if (end === TOTAL) txt += 'PDF 끝까지 딱 맞아요.';
+    else if (end < TOTAL) txt += '뒤에 <b>' + (TOTAL - end) + '쪽</b>이 남아요.';
+    else txt += 'PDF보다 <b>' + (end - TOTAL) + '쪽</b>이 모자라요. 미제출 학생이나 분량이 다른 학생은 다음 단계에서 고칠 수 있어요.';
+    $('calc-text').innerHTML = txt; $('calc-box').style.display = 'flex';
+  } else $('calc-box').style.display = 'none';
+  if (!silent && s >= 1 && s <= TOTAL) { state.view = s; renderViewer(); }
+  else if (!silent) renderViewer();
+}
+function setErr(k, msg){ var e = $('err-' + k); e.classList.toggle('show', !!msg); e.querySelector('span').textContent = msg; $('in-' + k).classList.toggle('err', !!msg); }
+function toResult(){
+  var s = parseInt(state.start, 10), p = parseInt(state.per, 10);
+  $('proc-msg').textContent = 'PDF를 나누는 중이에요'; $('proc').classList.add('open');
+  setTimeout(function(){ $('proc').classList.remove('open'); seedResult(s, p); go('result'); }, 1200);
+}
+function pickFile(){
+  $('proc-msg').textContent = 'PDF를 불러오는 중이에요'; $('proc').classList.add('open');
+  setTimeout(function(){ $('proc').classList.remove('open'); state.start = ''; state.per = ''; state.counts = []; state.view = 1; go('setup'); }, 800);
+}
+function repick(){ state.start = ''; state.per = ''; state.counts = []; state.skip = []; state.view = 1; go('upload'); }
+
+// ② 결과 확인·수정
+function setMode(m){
+  if (m === state.mode) return;
+  if (m === 'num') { syncNum(); }
+  else {
+    var r = ranges(), first = r.filter(function(g){ return g && g.s; })[0];
+    state.counts = r.map(function(g){ return g && g.e >= g.s ? String(g.e - g.s + 1) : (state.per || '1'); });
+    if (first) state.start = String(first.s);
+  }
+  state.mode = m; renderResult(); renderViewer(); lucide.createIcons();
+}
+function renderResult(){
+  var c = check(), isCount = state.mode === 'count';
+  $('seg-count').classList.toggle('on', isCount); $('seg-num').classList.toggle('on', !isCount);
+  $('mode-help').textContent = isCount ? '페이지 수를 바꾸면 뒤 학생들의 페이지 번호가 자동으로 밀려요.' : '학생마다 시작·끝 페이지를 직접 넣어요. 다른 학생 번호는 그대로예요.';
+  $('res-count').textContent = '제출 ' + c.assigned + '명 · 미제출 ' + c.skipN + '명';
+  $('res-notice').innerHTML = noticeHtml(c);
+  var r = ranges(), html = '';
+  STUDENTS.forEach(function(s, i){
+    var g = r[i], skip = !!state.skip[i], b = c.bad[i];
+    var cnt, rng;
+    if (skip) { cnt = '<span>—</span>'; rng = '<span>(미제출)</span>'; }
+    else if (isCount) {
+      cnt = '<input class="cell-in" type="number" min="1" aria-label="' + s.name + ' 페이지 수" value="' + (state.counts[i] || '') + '" onclick="event.stopPropagation()" oninput="setCount(' + i + ',this.value)">';
+      rng = '<span class="auto' + (b ? ' moved' : '') + '">' + g.s + ' ~ ' + g.e + '</span>';
+    } else {
+      cnt = '<span class="auto">' + (g.e >= g.s && g.s ? (g.e - g.s + 1) : '—') + '</span>';
+      rng = '<span class="rng"><input class="cell-in' + (b ? ' err' : '') + '" type="number" min="1" aria-label="' + s.name + ' 시작 페이지" value="' + (state.starts[i] || '') + '" onclick="event.stopPropagation()" oninput="setNum(' + i + ',\'s\',this.value)">~<input class="cell-in' + (b ? ' err' : '') + '" type="number" min="1" aria-label="' + s.name + ' 끝 페이지" value="' + (state.ends[i] || '') + '" onclick="event.stopPropagation()" oninput="setNum(' + i + ',\'e\',this.value)"></span>';
+    }
+    html += '<tr class="' + (skip ? 'skip ' : '') + (b ? 'bad ' : '') + (state.cur === i ? 'cur' : '') + '" onclick="pickRow(' + i + ')">'
+      + '<td>' + s.id + '</td><td>' + s.name + '</td><td>' + cnt + '</td><td class="pgcol">' + rng + '</td>'
+      + '<td><input class="chk" type="checkbox" aria-label="' + s.name + ' 미제출" ' + (skip ? 'checked' : '') + ' onclick="event.stopPropagation()" onchange="setSkip(' + i + ',this.checked)"></td></tr>';
+  });
+  $('rt-body').innerHTML = html;
+  $('ft-upload').disabled = c.ov.length > 0 || c.over > 0 || Object.keys(c.bad).some(function(k){ return c.bad[k] === 'range'; });
+}
+function noticeHtml(c){
+  if (c.ov.length) return '<div class="notice err"><i data-lucide="circle-alert"></i><span><b>' + pageList(c.ov) + '</b>이 두 학생에게 같이 들어가 있어요. 빨간 칸의 페이지 번호를 고쳐 주세요.</span></div>';
+  if (c.over) return '<div class="notice err"><i data-lucide="circle-alert"></i><span>PDF는 ' + TOTAL + '쪽인데 <b>' + c.lastEnd + '쪽까지</b> 나눠져 있어요. <b>' + c.over + '쪽</b>이 모자라요. 미제출 학생을 체크하거나 페이지 수를 줄여 주세요.</span></div>';
+  if (Object.keys(c.bad).length) return '<div class="notice err"><i data-lucide="circle-alert"></i><span>시작·끝 페이지가 비었거나 거꾸로 된 학생이 있어요.</span></div>';
+  var unBody = c.un.filter(function(p){ return p >= c.start; });
+  if (unBody.length) return '<div class="notice warn"><i data-lucide="triangle-alert"></i><span><b>' + pageList(unBody) + '</b>이 어느 학생에게도 들어가지 않았어요. 분량이 더 많은 학생이 있는지 확인해 주세요.</span></div>';
+  return '<div class="notice ok"><i data-lucide="circle-check"></i><span>' + c.start + '~' + TOTAL + '쪽을 ' + c.assigned + '명에게 빠짐없이 나눴어요.</span></div>';
+}
+function setCount(i, v){ state.counts[i] = v; refreshResult(i); }
+function setNum(i, k, v){ (k === 's' ? state.starts : state.ends)[i] = v; refreshResult(i); }
+function setSkip(i, v){ state.skip[i] = v; if (state.mode === 'num' && !v) { state.starts[i] = state.starts[i] || ''; } refreshResult(i, true); }
+// 입력 중 포커스 유지: 표 전체를 다시 그리되 같은 입력칸으로 포커스 복원
+function refreshResult(i, full){
+  var a = document.activeElement, label = a && a.getAttribute ? a.getAttribute('aria-label') : null, pos = a && a.selectionStart;
+  renderResult(); renderViewer(); lucide.createIcons();
+  if (label && !full) { var el = document.querySelector('[aria-label="' + label + '"]'); if (el) { el.focus(); try { el.setSelectionRange(pos, pos); } catch(e){} } }
+}
+function pickRow(i){
+  var g = ranges()[i];
+  state.cur = i;
+  if (g && g.s) state.view = Math.min(Math.max(1, g.s), TOTAL);
+  renderResult(); renderViewer(); lucide.createIcons();
+}
+
+// 확인 · 완료
+function sumHtml(c){
+  return '<div class="rm-sum-row"><span>업로드할 학생</span><b>' + c.assigned + '명</b></div>'
+    + '<div class="rm-sum-row"><span>미제출</span><b>' + c.skipN + '명</b></div>'
+    + '<div class="rm-sum-row"><span>사용하는 페이지</span><b>' + c.start + '~' + Math.min(c.lastEnd, TOTAL) + '쪽</b></div>';
+}
+function renderConfirm(){
+  var c = check(), unBody = c.un.filter(function(p){ return p >= c.start; });
+  $('cf-sum').innerHTML = sumHtml(c);
+  $('cf-warn').innerHTML = unBody.length ? '<div class="notice warn"><i data-lucide="triangle-alert"></i><span><b>' + pageList(unBody) + '</b>은 업로드되지 않아요.</span></div>' : '';
+}
+function doUpload(){
+  $('confirm').classList.remove('open');
+  $('proc-msg').textContent = '과제물을 업로드하는 중이에요'; $('proc').classList.add('open');
+  setTimeout(function(){ $('proc').classList.remove('open'); go('done'); }, 1200);
+}
+function renderDone(){
+  var c = check();
+  $('done-desc').innerHTML = '과제물 관리에서 학생별 파일을 확인할 수 있어요.';
+  $('done-sum').innerHTML = sumHtml(c);
+}
+
+// ── 왼쪽 PDF 보기 ──
+function viewPage(p){ if (p < 1 || p > TOTAL) return; state.view = p; renderViewer(); lucide.createIcons(); }
+function realContent(p){
+  if (p === REAL.cover) return '<p style="text-align:center;font-size:22px;font-weight:700;margin:120px 0 16px;">2학기 수행평가</p><p style="text-align:center;font-size:16px;color:#6d7381;margin:0 0 40px;">미래 도시 탐구 보고서</p><p style="text-align:center;font-size:15px;color:#3b3f4c;">1학년 1반 · 표지</p>';
+  var sid = REAL.owners[p - 2], st = STUDENTS.filter(function(s){ return s.id === sid; })[0];
+  var first = REAL.owners.indexOf(sid) === p - 2;
+  return '<div style="display:flex;justify-content:space-between;font-size:13px;color:#6d7381;margin-bottom:18px;"><span>미래 도시 탐구 보고서</span><span>' + (first ? '학번 ' + sid + ' · 이름 ' + st.name : '(이어서)') + '</span></div>'
+    + '<div class="vw-ph" style="height:' + (first ? 180 : 240) + 'px"></div><div class="vw-ph" style="height:150px"></div><div class="vw-ph" style="height:150px"></div>'
+    + '<p style="text-align:right;font-size:12px;color:#9aa0ad;margin:16px 0 0;">PDF ' + p + '쪽</p>';
+}
+function renderViewer(){
+  var p = state.view;
+  $('vw-cur').textContent = p; $('vw-total').textContent = TOTAL;
+  $('vw-prev').disabled = p <= 1; $('vw-next').disabled = p >= TOTAL;
+  $('vw-content').innerHTML = realContent(p);
+}
+
+lucide.createIcons();
+routeFromHash();
+</script>
+</body>
+</html>
