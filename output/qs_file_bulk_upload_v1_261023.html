@@ -409,6 +409,27 @@ body.pf-mode .demo-toggle { display: none; }
 .pf-proc .ring { width: 48px; height: 48px; border: 4px solid rgba(255,255,255,.3); border-top: 4px solid #fff; border-radius: 50%; animation: pfspin 1s linear infinite; }
 .pf-proc p { font-size: 18px; font-weight: 600; color: #fff; margin: 0; }
 @keyframes pfspin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+/* ===== 일괄 AI 분석 (창체 「일괄 AI 분석」 창과 같은 규칙) ===== */
+.ba-top { margin-left: auto; height: 40px; padding: 0 18px; border-radius: 8px; border: none; background: #416bff; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px; line-height: 1; vertical-align: middle; white-space: nowrap; }
+.ba-top:hover { background: #365eef; }
+.pf-modal.ba { width: 600px; max-height: calc(100vh - 48px); }
+.ba-tbl-wrap { border: 1px solid #dde1e8; border-radius: 8px; overflow: auto; max-height: 360px; }
+.ba-tbl { width: 100%; border-collapse: separate; border-spacing: 0; }
+.ba-tbl th { background: #f6f7f9; height: 40px; font-size: 14px; font-weight: 500; color: #6d7381; text-align: center; border-bottom: 1px solid #dde1e8; position: sticky; top: 0; z-index: 1; }
+.ba-tbl td { height: 46px; font-size: 15px; text-align: center; border-bottom: 1px solid #eceef2; }
+.ba-tbl tr:last-child td { border-bottom: none; }
+.ba-tbl tr.dis td { color: #9aa0ad; }
+.ba-tbl .chk { width: 18px; height: 18px; accent-color: #416bff; cursor: pointer; vertical-align: middle; }
+.ba-tbl .chk:disabled { cursor: not-allowed; opacity: .4; }
+.ba-tag { display: inline-flex; align-items: center; justify-content: center; height: 24px; padding: 0 10px; border-radius: 100px; font-size: 13px; font-weight: 600; line-height: 1; white-space: nowrap; gap: 4px; }
+.ba-tag.need { background: #fff7ed; color: #c2410c; }
+.ba-tag.done { background: #e9f2ff; color: #3151c4; }
+.ba-tag.stale { background: #fff7ed; color: #c2410c; }
+.ba-tag.busy { background: #f1f3f5; color: #416bff; }
+.ba-tag.no { background: #f1f3f5; color: #9aa0ad; }
+.ba-credit { font-size: 14px; color: #6d7381; margin-right: auto; display: inline-flex; align-items: center; gap: 6px; }
+.ba-credit b { color: #222631; font-weight: 600; }
+.pf-modal .pbtn-pri:disabled { background: #b8c8ff; cursor: not-allowed; }
 </style>
 </head>
 <body>
@@ -466,6 +487,7 @@ body.pf-mode .demo-toggle { display: none; }
     <div class="step-pill nav" onclick="busyToast('이 목업에는 없는 단계예요.')"><i data-lucide="wand-2" class="si-i"></i> AI 기록 생성</div>
     <span class="step-sep"><i data-lucide="chevron-right" style="width:18px;height:18px"></i></span>
     <div class="step-pill nav" onclick="busyToast('이 목업에는 없는 단계예요.')"><i data-lucide="file-pen-line" class="si-i"></i> 기록 편집</div>
+    <button class="ba-top" onclick="BA.open()"><i data-lucide="sparkles" style="width:18px;height:18px"></i>일괄 AI 분석</button>
   </div>
 
   <div class="two-col">
@@ -482,11 +504,9 @@ body.pf-mode .demo-toggle { display: none; }
       <div class="stu-list">
         <div class="stu-item active" onclick="selectStu(this)">
           <div class="stu-row1"><span class="stu-radio"></span><span class="stu-name">10101 김하나</span></div>
-          <div class="stu-tags"><span class="stu-tag off">자료 X</span><span class="stu-tag">입력 O</span><span class="stu-tag">수준 중</span></div>
         </div>
         <div class="stu-item" onclick="selectStu(this)">
           <div class="stu-row1"><span class="stu-radio"></span><span class="stu-name">10102 김두나</span></div>
-          <div class="stu-tags"><span class="stu-tag">자료 O</span><span class="stu-tag off">입력 X</span><span class="stu-tag">수준 중</span></div>
         </div>
         <div class="stu-item" onclick="selectStu(this)"><div class="stu-row1"><span class="stu-radio"></span><span class="stu-name">10103 박서연</span></div></div>
         <div class="stu-item" onclick="selectStu(this)"><div class="stu-row1"><span class="stu-radio"></span><span class="stu-name">10104 이준호</span></div></div>
@@ -838,13 +858,6 @@ body.pf-mode .demo-toggle { display: none; }
 </div>
 
 <!-- 데모 토글 (목업 검토용 — AI 분석 결과 전환) -->
-<div class="demo-toggle" id="demoToggle">
-  <span class="demo-toggle-label">데모 · AI 분석</span>
-  <span class="demo-seg">
-    <button id="demoOk" class="on" onclick="setDemoFail(false)">성공</button>
-    <button id="demoFailBtn" onclick="setDemoFail(true)">실패</button>
-  </span>
-</div>
 
 <div class="pf-proc" id="pf-proc"><div class="ring"></div><p id="pf-proc-msg"></p></div>
 <!-- ③ 업로드 확인 -->
@@ -853,6 +866,24 @@ body.pf-mode .demo-toggle { display: none; }
     <div class="m-hd"><h3 class="m-title" id="pf-cf-t">자료를 업로드할까요?</h3><button class="m-x" onclick="PF.go('bulk-result')" aria-label="닫기"><i data-lucide="x" style="width:20px;height:20px"></i></button></div>
     <div class="m-body"><p class="m-lead" id="pf-cf-lead"></p><div id="pf-cf-notice"></div></div>
     <div class="m-ft"><button class="pbtn pbtn-out" onclick="PF.go('bulk-result')">취소</button><button class="pbtn pbtn-pri" onclick="PF.upload()">업로드</button></div>
+  </div>
+</div>
+<!-- 일괄 AI 분석 -->
+<div class="pf-ov" id="ba" onclick="if(event.target===this) BA.close()">
+  <div class="pf-modal ba" role="dialog" aria-modal="true" aria-labelledby="ba-t">
+    <div class="m-hd"><h3 class="m-title" id="ba-t">일괄 AI 분석</h3><button class="m-x" onclick="BA.close()" aria-label="닫기"><i data-lucide="x" style="width:20px;height:20px"></i></button></div>
+    <div class="m-body">
+      <p class="m-desc">자료가 있는 학생을 골라 한 번에 분석해요. 분석이 끝나면 학생마다 「AI 활동 분석 결과」에서 확인하고 고칠 수 있어요.</p>
+      <div class="ba-tbl-wrap"><table class="ba-tbl">
+        <thead><tr><th style="width:52px"><input type="checkbox" class="chk" id="ba-all" aria-label="전체 선택" onchange="BA.all(this.checked)"></th><th style="width:90px">학번</th><th style="width:90px">이름</th><th>자료</th><th style="width:120px">상태</th></tr></thead>
+        <tbody id="ba-rows"></tbody>
+      </table></div>
+    </div>
+    <div class="m-ft">
+      <span class="ba-credit" id="ba-credit"></span>
+      <button class="pbtn pbtn-out" onclick="BA.close()">취소</button>
+      <button class="pbtn pbtn-pri" id="ba-run" onclick="BA.run()"></button>
+    </div>
   </div>
 </div>
 <!-- 공통 확인 창 -->
@@ -916,13 +947,7 @@ document.addEventListener('click', function(e){
 /* 학생별 상태(자료/입력/키워드/수준 + AI 분석 상태) — 목록 태그와 편집 영역을 항상 일치시킴 */
 /* aiStatus: null(분석 전) | 'analyzing'(분석 중) | 'done'(완료) | 'failed'(실패) | 'stale'(자료 변경됨) */
 var DUMMY_AI_TEXT = '- 수업 시간에 자신의 의견을 논리적으로 발표하고, 모둠 활동에서 친구들의 의견을 경청하며 토론을 이끎.\n- 제시된 자료를 꼼꼼히 읽고 맥락을 정확히 파악하여 핵심 내용을 요약함.\n- 영어 에세이 작성 시 자기 생각을 창의적으로 표현하고 어휘를 적절히 활용하는 모습이 관찰됨.';
-var studentData = {
-  '10101': { file:null, content:'감정조절, 자기 관리, 타인배려, 타인존중, 사회참여', keywords:['감정조절','자기 관리','타인배려','타인존중','사회참여'], level:'중', aiStatus:null, aiText:'' },
-  '10102': { file:{name:'김두나_활동보고서.pdf', size:'1.8MB'}, content:'', keywords:[], level:'중', aiStatus:null, aiText:'' },
-  '10103': { file:{name:'박서연_활동지_v2.pdf', size:'2.1MB'}, content:'', keywords:[], level:'중', aiStatus:'stale', aiText:DUMMY_AI_TEXT },
-  '10104': { file:{name:'이준호_보고서.pdf', size:'3.4MB'}, content:'', keywords:[], level:'중', aiStatus:'failed', aiText:'' },
-  '10106': { file:{name:'정민서_탐구보고서.pdf', size:'1.2MB'}, content:'', keywords:[], level:'상', aiStatus:'done', aiText:DUMMY_AI_TEXT }
-};
+var studentData = {};   // 2단계에서 그룹을 구성하고 막 들어온 상태: 자료·키워드·분석 모두 없음
 var activeId = null;
 function getId(item){ return item.querySelector('.stu-name').textContent.trim().split(' ')[0]; }
 function dataFor(id){ if(!studentData[id]) studentData[id]={file:null,content:'',keywords:[],level:'중',aiStatus:null,aiText:''}; return studentData[id]; }
@@ -1445,6 +1470,67 @@ var PF = (function(){
     zoom: function(d){ S.zoom = Math.min(160, Math.max(60, S.zoom + d)); viewer(); }
   };
 })();
+/* ===== 일괄 AI 분석 — 학생 단위 잠금, 작업 중·자료 없는 학생은 고를 수 없음 ===== */
+var BA = (function(){
+  var $ = function(id){ return document.getElementById(id); };
+  var sel = {};
+  function stu(){ return [].slice.call(document.querySelectorAll('.stu-list .stu-item')).map(function(it){ var t = it.querySelector('.stu-name').textContent.trim().split(' '); return { id:t[0], name:t[1], item:it }; }); }
+  function stateOf(d){
+    if (!d || !d.file) return { k:'no', label:'자료 없음', can:false };
+    if (d.aiStatus === 'analyzing') return { k:'busy', label:'분석 중', can:false };
+    if (d.aiStatus === 'done') return { k:'done', label:'분석 완료', can:true };
+    if (d.aiStatus === 'stale') return { k:'stale', label:'자료 변경', can:true };
+    return { k:'need', label: d.aiStatus === 'failed' ? '분석 실패' : '분석 필요', can:true };
+  }
+  function open(){
+    saveActive();
+    sel = {};
+    var list = stu();
+    // 기본 체크: 분석이 필요한 학생(분석 필요·실패·자료 변경). 분석 완료는 다시 고를 수 있게만
+    list.forEach(function(s){ var st = stateOf(studentData[s.id]); if (st.can && st.k !== 'done') sel[s.id] = 1; });
+    if (!list.some(function(s){ return stateOf(studentData[s.id]).can; })) { busyToast('분석할 자료가 없어요. 자료를 먼저 올려 주세요.'); return; }
+    render(); $('ba').classList.add('open'); lucide.createIcons();
+  }
+  function close(){ $('ba').classList.remove('open'); }
+  function render(){
+    var list = stu(), n = 0, can = 0;
+    $('ba-rows').innerHTML = list.map(function(s){
+      var d = studentData[s.id], st = stateOf(d);
+      if (st.can) can++;
+      if (sel[s.id]) n++;
+      return '<tr class="' + (st.can ? '' : 'dis') + '"><td><input type="checkbox" class="chk" aria-label="' + s.name + ' 선택"' + (sel[s.id] ? ' checked' : '') + (st.can ? '' : ' disabled') + ' onchange="BA.pick(\'' + s.id + '\',this.checked)"></td>'
+        + '<td>' + s.id + '</td><td>' + s.name + '</td><td>' + (d && d.file ? '있음' : '없음') + '</td>'
+        + '<td><span class="ba-tag ' + st.k + '">' + (st.k === 'busy' ? '<span class="mini-spin"></span>' : '') + st.label + '</span></td></tr>';
+    }).join('');
+    $('ba-all').checked = can > 0 && n === can;
+    $('ba-credit').innerHTML = '<i data-lucide="sparkles" style="width:15px;height:15px;color:#416bff"></i>크레딧 <b>' + n + '개</b> 사용';
+    $('ba-run').textContent = '자료 분석 · ' + n + '명';
+    $('ba-run').disabled = !n;
+    lucide.createIcons();
+  }
+  function run(){
+    var ids = Object.keys(sel); if (!ids.length) return;
+    close();
+    ids.forEach(function(id, k){
+      var d = dataFor(id), item = stu().filter(function(s){ return s.id === id; })[0].item;
+      d.aiStatus = 'analyzing'; renderTags(item);
+      setTimeout(function(){
+        d.aiStatus = 'done'; d.aiText = DUMMY_AI_TEXT; d.editedAfterStale = false;
+        renderTags(item);
+        if (activeId === id) loadStudent(id);
+        if (k === ids.length - 1) okToast(ids.length + '명 분석을 마쳤어요.');
+      }, 1600 + k * 500);
+    });
+    if (activeId && sel[activeId]) loadStudent(activeId);
+    okToast(ids.length + '명 분석을 시작했어요. 다른 학생은 계속 입력할 수 있어요.');
+  }
+  return {
+    open: open, close: close, run: run,
+    pick: function(id, on){ if (on) sel[id] = 1; else delete sel[id]; render(); },
+    all: function(on){ stu().forEach(function(s){ if (on && stateOf(studentData[s.id]).can) sel[s.id] = 1; else if (!on) delete sel[s.id]; }); render(); }
+  };
+})();
+
 PF.route();
 
 </script>
