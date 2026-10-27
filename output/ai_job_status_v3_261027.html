@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="../clipo/레퍼런스화면/clipo_favicon.png">
+  <title>AI 진행·완료 안내 v3 (CLIPO)</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-gov.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <style>
+    *{ font-family:'Pretendard GOV',-apple-system,sans-serif; box-sizing:border-box; }
+    body{ margin:0; background:#f6f7f9; color:#222631; font-size:16px; min-width:1280px; }
+    a{ text-decoration:none; color:inherit; }
+    button{ font-family:inherit; }
+
+    /* ===== Global Header (CLIPO 표준 — task_ocr_v3 복제) ===== */
+    .g-hd { height: 58px; background: #fff; border-bottom: 1px solid #dde1e8; display: flex; align-items: center; padding: 0 20px 0 9px; position: fixed; top: 0; left: 0; right: 0; z-index: 200; }
+    .gh-menu-btn { width:40px; height:40px; border:none; background:none; border-radius:4px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; color:#3b3f4c; margin-right:9px; line-height:1; vertical-align:middle; }
+    .gh-menu-btn:hover { background:#f6f7f9; }
+    .g-hd-r { margin-left: auto; display: flex; align-items: center; gap: 16px; font-size: 15px; color: #18181b; }
+    .hd-plan { display: flex; align-items: center; gap: 8px; }
+    .plan-badge { display: inline-flex; align-items: center; height: 20px; background: #e9f2ff; border: 1px solid #ccdfff; color: #3151c4; font-size: 12px; font-weight: 500; padding: 0 6px; border-radius: 6px; line-height: 1; }
+    .credit-wrap { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #18181b; }
+    .user-btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 36px; padding: 0 12px; border: 1px solid #c7cbd3; border-radius: 9999px; background: none; font-size: 14px; color: #27272a; cursor: pointer; line-height: 1; vertical-align:middle; font-weight: 500; }
+
+    /* ===== AI 작업 안내 (로고 오른쪽, 공통 영역) — C-2611 ===== */
+    .g-hd > svg{ flex-shrink:0; }
+    .g-hd-r > *{ flex-shrink:0; white-space:nowrap; }
+    .ai-st{ position:relative; display:none; align-items:center; margin-left:20px; flex-shrink:0; }
+    .ai-st.show{ display:inline-flex; }
+    .ai-st-btn{ display:inline-flex; align-items:center; justify-content:center; gap:6px; height:34px; padding:0 6px; border-radius:6px; border:none; background:none; color:#416bff; font-size:15px; font-weight:500; cursor:pointer; line-height:1; vertical-align:middle; white-space:nowrap; }
+    .ai-st-btn:hover{ background:#f4f8ff; }
+    .ai-st-btn.done{ color:#222631; }
+    .ai-st-btn.done:hover{ background:#f6f7f9; }
+    .ai-st-btn .ai-st-sub{ margin-left:2px; }
+    .ai-st-sub{ font-weight:500; color:#6d7381; }
+    .ai-st .ic-spin{ width:18px; height:18px; color:#416bff; animation:spin 1s linear infinite; flex-shrink:0; }
+    .ai-st .ic-done{ width:18px; height:18px; color:#1ab864; flex-shrink:0; }
+    .ai-st .ic-chev{ width:16px; height:16px; color:#6d7381; }
+    .ai-pop{ position:absolute; top:44px; left:0; width:460px; max-height:70vh; overflow:auto; background:#fff; border-radius:10px; box-shadow:0 0 1px #2226314D, 0 8px 24px #00000026; padding:8px 8px 10px; display:none; z-index:400; }
+    .ai-pop.open{ display:block; }
+    .ai-grp{ font-size:14px; font-weight:600; color:#3b3f4c; margin:8px 10px 4px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ai-grp:first-child{ margin-top:4px; }
+    .ai-row{ display:flex; align-items:center; gap:10px; min-height:44px; padding:4px 10px 4px 22px; border-radius:8px; }
+    .ai-row:hover{ background:#f6f7f9; }
+    .ai-row-t{ flex:1; min-width:0; font-size:15px; color:#222631; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ai-row-st{ display:inline-flex; align-items:center; gap:6px; font-size:14px; flex-shrink:0; }
+    .ai-row-st.run{ color:#416bff; }
+    .ai-row-st.run .ic-spin{ width:15px; height:15px; }
+    .ai-row-st.done{ color:#319d64; font-weight:600; }
+    .ai-go{ height:30px; padding:0 12px; border-radius:100px; border:1px solid #ccdfff; background:#fff; color:#3151c4; font-size:14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; flex-shrink:0; }
+    .ai-go:hover{ background:#e9f2ff; }
+    .ai-x{ width:28px; height:28px; border:none; background:none; border-radius:6px; color:#9aa0ad; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; padding:0; flex-shrink:0; }
+    .ai-x:hover{ background:#eceef2; color:#3b3f4c; }
+    @keyframes spin{ from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+    /* ===== Sidebar (CLIPO 표준 icon-sb) ===== */
+    .icon-sb { width: 56px; background: #fff; border-right: 1px solid #d9d9d9; position: fixed; top: 58px; bottom: 0; left: 0; display: flex; flex-direction: column; padding: 8px 0; z-index: 150; transition: width .2s ease; }
+    .icon-sb.expanded { width: 200px; }
+    .si { height: 40px; display: flex; align-items: center; border-radius: 8px; color: #6d7381; cursor: pointer; margin: 0 8px 2px; position: relative; padding: 0 4px 0 8px; gap: 10px; white-space: nowrap; flex-shrink: 0; }
+    .si:hover { background: #f1f3f5; }
+    .si.active { background: #e9f2ff; color: #416bff; }
+    .si-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .si-label { font-size: 13px; font-weight: 500; opacity: 0; transition: opacity .1s; overflow: hidden; }
+    .icon-sb.expanded .si-label { opacity: 1; }
+    .si-tip { position: absolute; left: 48px; top: 50%; transform: translateY(-50%); background: #222631; color: #fff; font-size: 11px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; display: none; z-index: 300; pointer-events: none; }
+    .si:hover .si-tip { display: block; }
+    .icon-sb.expanded .si-tip { display: none !important; }
+    .nav-bottom { margin-top: auto; width: 100%; }
+    .nav-div { height: 1px; background: #f1f3f5; margin: 4px 8px; }
+
+    /* ===== Layout ===== */
+    .main-wrap{ position:relative; padding-top:58px; padding-left:56px; transition:padding-left .2s; min-height:100vh; background:#f6f7f9; }
+    body.nav-expanded .main-wrap{ padding-left:200px; }
+    .screen{ display:none; }
+    .screen.active{ display:flex; flex-direction:column; min-height:calc(100vh - 58px); }
+    .tab-band{ background:white; border-bottom:1px solid #dde1e8; }
+    .tab-band-inner{ max-width:1240px; margin:0 auto; padding:0 32px; display:flex; gap:8px; }
+    .sub-tab{ padding:18px 14px; font-size:16px; font-weight:500; color:#3b3f4c; border:none; background:none; cursor:pointer; font-family:inherit; border-bottom:2px solid transparent; margin-bottom:-1px; display:inline-flex; align-items:center; justify-content:center; gap:4px; line-height:1; vertical-align:middle; }
+    .sub-tab:hover{ color:#222631; }
+    .sub-tab.on{ color:#416bff; border-bottom:2px solid #416bff; }
+    .sub-tab .beta{ font-size:14px; color:#7d9bff; }
+    .page-wrap{ max-width:1240px; margin:0 auto; padding:28px 32px 0; flex:1; display:flex; flex-direction:column; width:100%; }
+    .page-h1{ font-size:22px; font-weight:700; color:#222631; margin:0 0 8px; }
+    .page-sub{ font-size:16px; color:#3b3f4c; margin:0 0 24px; line-height:1.55; }
+    .ev-card{ background:white; border-radius:12px; padding:24px; box-shadow:0 0 1px #2226314D, 0 2px 8px #0000000F; margin-bottom:20px; }
+    .ev-card-t{ font-size:20px; font-weight:600; margin:0 0 4px; }
+    .ev-card-d{ font-size:14px; color:#6d7381; margin:0 0 16px; }
+
+    /* 표 (레퍼런스 tbl2) */
+    .tbl2{ width:100%; border-collapse:separate; border-spacing:0; }
+    .tbl2 th{ background:#f6f7f9; height:44px; font-size:15px; font-weight:500; color:#3b3f4c; padding:0 12px; text-align:center; border-top:1px solid #dde1e8; border-bottom:1px solid #dde1e8; }
+    .tbl2 th:first-child{ border-left:1px solid #dde1e8; border-top-left-radius:8px; }
+    .tbl2 th:last-child{ border-right:1px solid #dde1e8; border-top-right-radius:8px; }
+    .tbl2 td{ font-size:16px; padding:14px 12px; text-align:center; color:#222631; border-bottom:1px solid #eceef2; transition:background .6s; }
+    .tbl2 td:first-child{ border-left:1px solid #dde1e8; }
+    .tbl2 td:last-child{ border-right:1px solid #dde1e8; }
+    .tbl2 tr:last-child td{ border-bottom:1px solid #dde1e8; }
+    .tbl2 tr:last-child td:first-child{ border-bottom-left-radius:8px; }
+    .tbl2 tr:last-child td:last-child{ border-bottom-right-radius:8px; }
+    .pill-btn{ height:36px; border-radius:100px; padding:0 16px; font-size:14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:6px; line-height:1; vertical-align:middle; border:none; }
+    .pill-btn i, .pill-btn svg{ width:16px; height:16px; }
+    .pill-btn-primary{ background:#416bff; color:white; }
+    .pill-btn-primary:hover{ background:#365eef; }
+    .pill-btn-soft{ background:#e9f2ff; color:#3151c4; }
+    .pill-btn:disabled{ opacity:.45; cursor:not-allowed; }
+    .run-st{ display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:16px; color:#222631; font-weight:500; }
+    .run-st i, .run-st svg{ color:#416bff; }
+    .run-st i, .run-st svg{ width:16px; height:16px; animation:spin 1s linear infinite; }
+    .done-st{ display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:15px; color:#319d64; font-weight:500; }
+    .done-st i, .done-st svg{ width:16px; height:16px; }
+    .badge{ display:inline-flex; align-items:center; justify-content:center; border-radius:100px; padding:3px 10px; font-size:13px; font-weight:600; white-space:nowrap; }
+    .badge-purple{ background:#e9f2ff; color:#3151c4; }
+    .badge-gray{ background:#f1f3f5; color:#6d7381; }
+
+    .site-footer{ margin-top:auto; padding:48px 0 40px; display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .sf-links{ display:flex; align-items:center; }
+    .sf-links a{ font-size:14px; color:#3b3f4c; padding:0 16px; }
+    .sf-links a + a{ border-left:1px solid #dde1e8; }
+    .sf-copy{ font-size:14px; color:#9aa0ad; }
+
+    .toast{ position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(12px); opacity:0; min-width:320px; max-width:480px; padding:14px 22px 14px 16px; border-radius:4px; display:flex; align-items:center; gap:12px; font-size:15px; font-weight:600; box-shadow:0 0 1px #2226314D, 0 4px 12px #00000026; z-index:9999; transition:opacity .2s ease, transform .2s ease; pointer-events:none; }
+    .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+    .toast-success{ background:#319d64; color:white; }
+    .toast-info{ background:#222631; color:white; }
+    /* 결과 화면 */
+    .back-link{ display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; gap:4px; font-size:15px; font-weight:600; color:#222631; background:none; border:none; cursor:pointer; padding:0; margin-bottom:14px; align-self:flex-start; }
+    .back-link i, .back-link svg{ color:#416bff; }
+    .card-hd{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:16px; }
+    .card-act{ display:flex; align-items:center; gap:12px; }
+    .sel-cnt{ font-size:14px; color:#3151c4; font-weight:600; }
+    .chk{ width:18px; height:18px; accent-color:#416bff; cursor:pointer; vertical-align:middle; }
+    .chk:disabled{ cursor:not-allowed; opacity:.4; }
+    .cls-sel{ height:40px; padding:0 12px; border:1px solid #d9d9d9; border-radius:6px; font-size:16px; font-weight:700; color:#222631; background:#fff; cursor:pointer; font-family:inherit; }
+    .muted{ color:#9aa0ad; font-size:15px; }
+    .link-btn{ display:inline-flex; align-items:center; justify-content:center; gap:2px; background:none; border:none; color:#3151c4; font-size:15px; font-weight:600; cursor:pointer; line-height:1; vertical-align:middle; padding:4px; }
+    .prog{ display:inline-flex; align-items:center; gap:14px; font-size:15px; }
+    .prog-bar{ width:200px; height:16px; border-radius:3px; background:#dbe5ff; overflow:hidden; display:inline-block; }
+    .prog-bar span{ display:block; height:100%; background:#416bff; }
+    .link-btn{ gap:6px; }
+    .td-left{ text-align:left !important; }
+    .draft{ font-size:15px; color:#222631; line-height:1.6; }
+    .ph-box{ background:#f6f7f9; border-radius:8px; height:160px; margin-top:12px; }
+    .fail-st{ font-size:15px; color:#f2525f; font-weight:500; }
+    .ai-row-st.warn{ color:#c2410c; font-weight:600; }
+    .ai-st-btn.fail{ color:#222631; }
+    .ai-st .ic-fail{ width:18px; height:18px; color:#f2525f; flex-shrink:0; }
+    .ai-st .ic-warn{ width:18px; height:18px; color:#f97316; flex-shrink:0; }
+    .toast-go{ margin-left:auto; height:30px; padding:0 12px; border-radius:100px; border:1px solid #ffffff66; background:none; color:#fff; font-size:14px; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; line-height:1; vertical-align:middle; flex-shrink:0; font-family:inherit; }
+    .toast-go:hover{ background:#ffffff1a; }
+  </style>
+</head>
+<body>
+
+<!-- ===== Global Header (CLIPO 표준, 58px) ===== -->
+<header class="g-hd" id="gnb">
+  <button class="gh-menu-btn" onclick="toggleNav()" aria-label="메뉴 펼치기"><i data-lucide="panel-left-open" style="width:20px;height:20px"></i></button>
+  <svg width="76" height="16" viewBox="0 0 76 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="cursor:pointer" onclick="notReady()"><path d="M11.3613 4.03516H4.09668V11.9629H8.88281L8.88086 11.9648H15.6016V16H4.02539C1.80242 15.9998 0 14.223 0 12.0322V3.96777C0 1.77696 1.80242 0.000177874 4.02539 0H15.4561L11.3613 4.03516ZM22.0703 11.9648H33.5781V16H22.002C19.7788 16 17.9756 14.2231 17.9756 12.0322V0H22.0703V11.9648ZM40.0459 16H35.9521V0H40.0459V16ZM54.5381 0C56.4564 0 58.0138 1.53228 58.0186 3.42285L58.0166 3.4248V8.54297C58.014 10.4333 56.4567 11.9648 54.5361 11.9648H46.5107L42.416 16V0H54.5381ZM71.9746 0C74.0086 0.000134956 75.6887 1.49046 75.958 3.42285H76V12.5771H75.958C75.6887 14.5095 74.011 15.9999 71.9746 16H64.4238C62.3897 16 60.7098 14.5096 60.4404 12.5771C60.4145 12.398 60.3984 12.2184 60.3984 12.0322V3.96777C60.3984 3.78159 60.4145 3.60205 60.4404 3.42285C60.7098 1.49037 62.3873 0 64.4238 0H71.9746ZM64.4922 12.5771H71.9062V3.42285H64.4922V12.5771ZM46.5107 3.42285V8.54004H53.9238V3.42285H46.5107Z" fill="#365EEF"/></svg>
+  <!-- AI 작업 안내: 진행 중 / 완료 → 누르면 작업 목록 (C-2611) -->
+  <div class="ai-st" id="ai-st" aria-live="polite"></div>
+  <div class="g-hd-r">
+    <div class="hd-plan">
+      <span class="plan-badge">학교 유료</span>
+      <span style="font-size:15px;font-weight:500;color:#18181b">D-180</span>
+    </div>
+    <div class="credit-wrap"><i data-lucide="bot" style="width:20px;height:20px;color:#416bff"></i><span>200 크레딧</span></div>
+    <button class="user-btn">최대표 선생님(대표교사) <i data-lucide="chevron-down" style="width:16px;height:16px"></i></button>
+  </div>
+</header>
+
+<!-- ===== Sidebar (CLIPO 표준 icon-sb) ===== -->
+<nav class="icon-sb" id="icon-sb">
+  <div class="si" data-k="home" onclick="notReady()"><div class="si-icon"><i data-lucide="home" style="width:20px;height:20px"></i></div><span class="si-label">홈</span><span class="si-tip">홈</span></div>
+  <div class="si" onclick="notReady('평가 준비')"><div class="si-icon"><i data-lucide="scissors" style="width:20px;height:20px"></i></div><span class="si-label">평가 준비</span><span class="si-tip">평가 준비</span></div>
+  <div class="si" data-k="class" onclick="go('scoring')"><div class="si-icon"><i data-lucide="layout-grid" style="width:20px;height:20px"></i></div><span class="si-label">수업</span><span class="si-tip">수업</span></div>
+  <div class="si" data-k="creative" onclick="notReady()"><div class="si-icon"><i data-lucide="notebook-pen" style="width:20px;height:20px"></i></div><span class="si-label">창의적 체험활동 <span style="font-size:10px;background:#416bff;color:#fff;padding:1px 5px;border-radius:3px;margin-left:2px">Beta</span></span><span class="si-tip">창의적 체험활동</span></div>
+  <div class="si" onclick="notReady()"><div class="si-icon"><i data-lucide="zap" style="width:20px;height:20px"></i></div><span class="si-label">세특 간편 생성기</span><span class="si-tip">세특 간편 생성기</span></div>
+  <div class="si" data-k="haeng" onclick="go('haeng-1')"><div class="si-icon"><i data-lucide="smile" style="width:20px;height:20px"></i></div><span class="si-label">행동특성 및 종합기록</span><span class="si-tip">행동특성 및 종합기록</span></div>
+  <div class="si" onclick="notReady('리포트')"><div class="si-icon"><i data-lucide="bar-chart-2" style="width:20px;height:20px"></i></div><span class="si-label">리포트</span><span class="si-tip">리포트</span></div>
+  <div class="si" onclick="notReady('학교 설정')"><div class="si-icon"><i data-lucide="building-2" style="width:20px;height:20px"></i></div><span class="si-label">학교 설정</span><span class="si-tip">학교 설정</span></div>
+  <div class="nav-bottom">
+    <div class="nav-div"></div>
+    <div class="si" onclick="notReady('매뉴얼 다운로드')"><div class="si-icon"><i data-lucide="file-down" style="width:20px;height:20px"></i></div><span class="si-label">매뉴얼 다운로드</span><span class="si-tip">매뉴얼 다운로드</span></div>
+    <div class="si" onclick="notReady('요금제')"><div class="si-icon"><i data-lucide="credit-card" style="width:20px;height:20px"></i></div><span class="si-label">요금제</span><span class="si-tip">요금제</span></div>
+    <div class="si" onclick="notReady('고객센터')"><div class="si-icon"><i data-lucide="help-circle" style="width:20px;height:20px"></i></div><span class="si-label">고객센터</span><span class="si-tip">고객센터</span></div>
+  </div>
+</nav>
+
+<div class="main-wrap">
+
+<!-- ===== #scoring — 수행평가 채점 (평가 목록) ===== -->
+<div class="screen" id="screen-scoring">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="notReady('수업 홈')">수업 홈</button>
+      <button class="sub-tab" onclick="notReady('수행평가 설계')">수행평가 설계</button>
+      <button class="sub-tab" onclick="notReady('과제물 관리')">과제물 관리</button>
+      <button class="sub-tab on" onclick="go('scoring')">수행평가 채점</button>
+      <button class="sub-tab" onclick="go('seteuk-1')">세부능력 및 특기사항 지원</button>
+      <button class="sub-tab" onclick="notReady('공동 평가')">공동 평가 <span class="beta">(beta)</span></button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <h1 class="page-h1">영어 수행평가 채점</h1>
+    <p class="page-sub">AI가 채점 초안을 만들어 드려요. 선생님이 검토한 뒤 최종 확정해 주세요.</p>
+    <div class="ev-card">
+      <p class="ev-card-t">나에게 특별한 음식 소개하기</p>
+      <p class="ev-card-d">AI 채점 가능 · 마감 전</p>
+      <table class="tbl2">
+        <thead><tr><th>학급</th><th>상태</th><th>선생님 채점 현황</th><th>원점수 평균</th><th>AI 채점</th><th>AI 채점 결과</th><th>관리</th></tr></thead>
+        <tbody id="tb-scoring"></tbody>
+      </table>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== #class-N — 학급 채점 현황 ===== -->
+<div class="screen" id="screen-class">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="notReady('수업 홈')">수업 홈</button>
+      <button class="sub-tab" onclick="notReady('수행평가 설계')">수행평가 설계</button>
+      <button class="sub-tab" onclick="notReady('과제물 관리')">과제물 관리</button>
+      <button class="sub-tab on" onclick="go('scoring')">수행평가 채점</button>
+      <button class="sub-tab" onclick="go('seteuk-1')">세부능력 및 특기사항 지원</button>
+      <button class="sub-tab" onclick="notReady('공동 평가')">공동 평가 <span class="beta">(beta)</span></button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <button class="back-link" onclick="go('scoring')"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i>이전으로</button>
+    <h1 class="page-h1" id="class-title"></h1>
+    <p class="page-sub">학생을 골라 AI 채점을 실행할 수 있어요. 실행하는 동안 다른 화면으로 이동해도 괜찮아요.</p>
+    <div class="ev-card">
+      <div class="card-hd">
+        <p class="ev-card-t" style="margin:0">학생 목록</p>
+        <div class="card-act">
+          <span class="sel-cnt" id="class-sel"></span>
+          <button class="pill-btn pill-btn-primary" id="class-run" onclick="runSelected('scoring')"><i data-lucide="sparkles"></i>AI 채점</button>
+        </div>
+      </div>
+      <table class="tbl2">
+        <thead><tr><th style="width:56px"><input type="checkbox" class="chk" id="class-all" aria-label="전체 선택" onchange="selectAll('scoring', this.checked)"></th><th>학번</th><th>이름</th><th>제출</th><th>AI 채점</th><th>채점 상세</th></tr></thead>
+        <tbody id="tb-class"></tbody>
+      </table>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== #student-학번 — 학생 채점 상세 ===== -->
+<div class="screen" id="screen-student">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="notReady('수업 홈')">수업 홈</button>
+      <button class="sub-tab" onclick="notReady('수행평가 설계')">수행평가 설계</button>
+      <button class="sub-tab" onclick="notReady('과제물 관리')">과제물 관리</button>
+      <button class="sub-tab on" onclick="go('scoring')">수행평가 채점</button>
+      <button class="sub-tab" onclick="go('seteuk-1')">세부능력 및 특기사항 지원</button>
+      <button class="sub-tab" onclick="notReady('공동 평가')">공동 평가 <span class="beta">(beta)</span></button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <button class="back-link" id="stu-back"><i data-lucide="chevron-left" style="width:18px;height:18px;"></i>학급 채점 현황</button>
+    <h1 class="page-h1" id="stu-title"></h1>
+    <p class="page-sub">나에게 특별한 음식 소개하기</p>
+    <div class="ev-card" id="stu-body"></div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== #seteuk-N — 세특 기록 화면 ===== -->
+<div class="screen" id="screen-seteuk">
+  <div class="tab-band">
+    <div class="tab-band-inner">
+      <button class="sub-tab" onclick="notReady('수업 홈')">수업 홈</button>
+      <button class="sub-tab" onclick="notReady('수행평가 설계')">수행평가 설계</button>
+      <button class="sub-tab" onclick="notReady('과제물 관리')">과제물 관리</button>
+      <button class="sub-tab" onclick="go('scoring')">수행평가 채점</button>
+      <button class="sub-tab on" onclick="go('seteuk-1')">세부능력 및 특기사항 지원</button>
+      <button class="sub-tab" onclick="notReady('공동 평가')">공동 평가 <span class="beta">(beta)</span></button>
+    </div>
+  </div>
+  <div class="page-wrap">
+    <h1 class="page-h1">세부능력 및 특기사항 지원</h1>
+    <p class="page-sub">수행평가 결과를 바탕으로 AI가 세특 초안을 만들어 드려요.</p>
+    <div class="ev-card">
+      <div class="card-hd">
+        <select class="cls-sel" id="seteuk-cls" onchange="go('seteuk-' + this.value)" aria-label="학급 선택">
+          <option value="1">1학년 1반</option>
+          <option value="2">1학년 2반</option>
+        </select>
+        <div class="card-act">
+          <span class="sel-cnt" id="seteuk-sel"></span>
+          <button class="pill-btn pill-btn-primary" id="seteuk-run" onclick="runSelected('seteuk')"><i data-lucide="sparkles"></i>AI 세특 생성</button>
+        </div>
+      </div>
+      <table class="tbl2">
+        <thead><tr><th style="width:56px"><input type="checkbox" class="chk" id="seteuk-all" aria-label="전체 선택" onchange="selectAll('seteuk', this.checked)"></th><th style="width:96px">학번</th><th style="width:96px">이름</th><th>AI 세특 초안</th></tr></thead>
+        <tbody id="tb-seteuk"></tbody>
+      </table>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+<!-- ===== #haeng-N — 행동특성 및 종합기록 (수업 밖 메뉴 — PRD V0.2 적용 범위 확대 예시) ===== -->
+<div class="screen" id="screen-haeng">
+  <div class="page-wrap">
+    <h1 class="page-h1">행동특성 및 종합기록</h1>
+    <p class="page-sub">학생 관찰 기록을 바탕으로 AI가 행특 초안을 만들어 드려요.</p>
+    <div class="ev-card">
+      <div class="card-hd">
+        <select class="cls-sel" id="haeng-cls" onchange="go('haeng-' + this.value)" aria-label="학급 선택">
+          <option value="1">1학년 1반</option>
+          <option value="2">1학년 2반</option>
+        </select>
+        <div class="card-act">
+          <span class="sel-cnt" id="haeng-sel"></span>
+          <button class="pill-btn pill-btn-primary" id="haeng-run" onclick="runSelected('haeng')"><i data-lucide="sparkles"></i>AI 행특 생성</button>
+        </div>
+      </div>
+      <table class="tbl2">
+        <thead><tr><th style="width:56px"><input type="checkbox" class="chk" id="haeng-all" aria-label="전체 선택" onchange="selectAll('haeng', this.checked)"></th><th style="width:96px">학번</th><th style="width:96px">이름</th><th>AI 행특 초안</th></tr></thead>
+        <tbody id="tb-haeng"></tbody>
+      </table>
+    </div>
+    <footer class="site-footer">
+      <div class="sf-links"><a href="#" onclick="return false;">회사소개</a><a href="#" onclick="return false;">이용약관</a><a href="#" onclick="return false;">개인정보처리방침</a><a href="#" onclick="return false;">고객센터</a></div>
+      <div class="sf-copy">© 2026. Datadriven Inc. All rights reserved.</div>
+    </footer>
+  </div>
+</div>
+
+</div>
+
+<div id="toast" class="toast toast-info"><span id="toast-msg"></span><button class="toast-go" id="toast-go" style="display:none">바로 가기</button></div>
+
+<script>
+function $(id){ return document.getElementById(id); }
+function toggleNav(){ $('icon-sb').classList.toggle('expanded'); document.body.classList.toggle('nav-expanded'); }
+function showToast(msg, type, onGo){
+  var t = $('toast'), b = $('toast-go');
+  $('toast-msg').textContent = msg; t.className = 'toast toast-' + (type || 'info') + ' show';
+  b.style.display = onGo ? '' : 'none';
+  b.onclick = onGo ? function(){ t.classList.remove('show'); onGo(); } : null;
+  clearTimeout(t._tm); t._tm = setTimeout(function(){ t.classList.remove('show'); }, onGo ? 5000 : 2500);
+}
+// 이 목업에서 그리지 않은 화면은 들어가지 않고 막음 (간편 세특·창체 등 다른 화면과 헷갈리지 않게)
+function notReady(){ showToast('제공하지 않는 범위입니다.'); }
+
+// ── 데이터: 레퍼런스(task_ocr_v3) 1-1반·1-2반 명단 그대로 ──
+var CLASSES = {
+  1: [['10101','김서윤'],['10102','이준호'],['10103','박지민'],['10105','정현우'],['10106','한지우'],['10107','조민재'],['10108','윤하은'],['10109','임도윤'],['10110','신예린'],['10111','김도현'],['10112','송하림'],['10113','노유찬'],['10114','백시우']],
+  2: [['10201','강민준'],['10202','오서영'],['10203','배찬혁'],['10204','류지아'],['10205','신동현'],['10206','황예은'],['10207','문태양'],['10208','전수빈'],['10209','고은찬'],['10210','차예원'],['10211','안세진'],['10212','진하늘'],['10213','송미래'],['10214','우건우']]
+};
+var ABSENT = { '10213':1, '10214':1 };   // 1-2반 미제출 → AI 채점 대상 아님
+// 시연용 실패 학생: AI 채점에서 박지민(1-1반)·전수빈(1-2반)은 실패 → 「학생 N명 확인 필요」
+var FAIL = { scoring:{ '10103':1, '10208':1 }, seteuk:{}, haeng:{} };
+var COURSE = '영어', EVAL = '나에게 특별한 음식 소개하기';
+var MS = { scoring:7000, seteuk:9000, haeng:8000 };  // 시연용 소요 시간
+var KIND = { scoring:'AI 채점', seteuk:'세특 생성', haeng:'행특 생성' };
+function nameOf(id){ for (var c in CLASSES) for (var i = 0; i < CLASSES[c].length; i++) if (CLASSES[c][i][0] === id) return CLASSES[c][i][1]; return id; }
+function clsOf(id){ return parseInt(id.charAt(2), 10); }
+function canRun(kind, id){ return !(kind === 'scoring' && ABSENT[id]); }
+
+// st[kind][학번] = 'run' | 'done' | 'fail'  (실패 이유는 결과 화면의 지금 표시 그대로)
+var st = { scoring:{}, seteuk:{}, haeng:{} };
+var sel = { scoring:{}, seteuk:{}, haeng:{} };
+var jobs = [];      // 실행 버튼 1번 = 작업 1개 = 1줄 { id, kind, cls, ids[], whole, st, fails, t, end }
+var seq = 0, popOpen = false;
+
+// ── 확인하기 전까지 남김: 새로고침해도 작업 목록·결과 유지 (PRD 원칙 4) ──
+var STORE = 'clipo-ai-jobs-v3';
+function save(){ try { sessionStorage.setItem(STORE, JSON.stringify({ st:st, jobs:jobs, seq:seq })); } catch(e){} }
+function load(){
+  try {
+    var d = JSON.parse(sessionStorage.getItem(STORE) || 'null'); if (!d) return;
+    st = d.st; jobs = d.jobs; seq = d.seq;
+    if (!st.haeng) st.haeng = {};
+    // 진행 중이던 작업은 남은 시간만큼 이어서 돈다 (지금처럼 진행 상태는 다시 불러옴)
+    jobs.forEach(function(j){ if (j.st === 'run') setTimeout(function(){ finish(j); }, Math.max(300, j.end - Date.now())); });
+  } catch(e){}
+}
+
+// ── 대상 표기 · 이동할 곳 (PRD 6) ──
+function targetLabel(j){
+  if (j.whole) return '1-' + j.cls + '반 전체';
+  var first = j.ids.slice().sort()[0];
+  return first + ' ' + nameOf(first) + (j.ids.length > 1 ? ' 외 ' + (j.ids.length - 1) + '명' : '');
+}
+// 묶음 제목: 기능 · 수업명 › 평가명 / 평가가 없으면 기능 · 수업명 / 수업 밖 기능은 기능 · 학급
+function groupKey(j){ return j.kind === 'haeng' ? 'haeng-' + j.cls : j.kind; }
+function menuLabel(j){
+  if (j.kind === 'scoring') return KIND.scoring + ' · ' + COURSE + ' › ' + EVAL;
+  if (j.kind === 'seteuk') return KIND.seteuk + ' · ' + COURSE;
+  return KIND.haeng + ' · 1학년 ' + j.cls + '반';
+}
+// 학생 상세 화면이 있는 기능(AI 채점)만 학생 1명 → 그 학생 화면. 나머지는 반 화면. 학생 행 스크롤·강조 없음
+function destOf(j){
+  if (j.kind === 'scoring') return (!j.whole && j.ids.length === 1) ? 'student-' + j.ids[0] : 'class-' + j.cls;
+  return j.kind + '-' + j.cls;
+}
+function failNote(n){ return n ? ' (학생 ' + n + '명은 확인이 필요해요)' : ''; }
+// 토스트 대상: 반 전체는 「1-1반」, 학생이면 목록 표기 그대로
+function toastTarget(j){ return j.whole ? '1-' + j.cls + '반' : targetLabel(j); }
+
+// ── 실행 ──
+function runIds(kind, cls, ids){
+  ids = ids.filter(function(id){ return canRun(kind, id) && st[kind][id] !== 'run'; });
+  if (!ids.length) { showToast('실행할 학생을 선택해 주세요.'); return; }
+  var all = CLASSES[cls].map(function(s){ return s[0]; }).filter(function(id){ return canRun(kind, id); });
+  var whole = all.every(function(id){ return ids.indexOf(id) >= 0; });
+  var key = ids.slice().sort().join(',');
+  // 끝난 줄과 똑같은 대상이면 그 줄을 새 '진행 중'으로 바꿈, 일부만 겹치면 새 줄
+  jobs = jobs.filter(function(j){ return !(j.kind === kind && j.st === 'done' && j.ids.slice().sort().join(',') === key); });
+  var job = { id:'j' + (++seq), kind:kind, cls:cls, ids:ids, whole:whole, st:'run', fails:0, t:seq, end:Date.now() + MS[kind] };
+  jobs.push(job);
+  ids.forEach(function(id){ st[kind][id] = 'run'; delete sel[kind][id]; });
+  showToast(KIND[kind] + '을 시작했어요. 다른 화면으로 이동해도 괜찮아요.');
+  setTimeout(function(){ finish(job); }, MS[kind]);
+  refresh();
+}
+function finish(ref){
+  var job = jobs.filter(function(j){ return j.id === ref.id; })[0];
+  if (!job || job.st !== 'run') return;
+  job.st = 'done'; job.t = ++seq;
+  job.fails = 0;
+  job.ids.forEach(function(id){ var f = FAIL[job.kind][id]; st[job.kind][id] = f ? 'fail' : 'done'; if (f) job.fails++; });
+  // 지금 그 결과 화면을 보고 있으면 줄을 바로 내림 (토스트 없이 화면에서 바로 확인)
+  if (curRoute() === destOf(job)) { jobs = jobs.filter(function(j){ return j !== job; }); refresh(); return; }
+  // 작업마다 완료 토스트 + [바로 가기]
+  var id = job.id;
+  showToast(toastTarget(job) + ' ' + KIND[job.kind] + '이 끝났어요.' + failNote(job.fails), 'info', function(){ goJob(id); });
+  refresh();
+}
+function runSelected(kind){
+  var cls = kind === 'scoring' ? routeCls : kind === 'seteuk' ? seteukCls : haengCls;
+  runIds(kind, cls, Object.keys(sel[kind]).filter(function(id){ return clsOf(id) === cls; }));
+}
+function runClass(cls){ runIds('scoring', cls, CLASSES[cls].map(function(s){ return s[0]; })); }
+
+// ── 바로 가기 · 줄 내리기 ──
+function goJob(id){
+  var j = jobs.filter(function(x){ return x.id === id; })[0]; if (!j) return;
+  jobs = jobs.filter(function(x){ return x !== j; });
+  popOpen = false;
+  var r = destOf(j);
+  if (curRoute() === r) refresh(); else go(r);
+}
+function removeJob(id){ jobs = jobs.filter(function(x){ return x.id !== id; }); refresh(); }
+
+// ── 상단 안내 + 작업 목록 ──
+function togglePop(e){ e.stopPropagation(); popOpen = !popOpen; renderStatus(); lucide.createIcons(); }
+document.addEventListener('click', function(e){ if (popOpen && !$('ai-st').contains(e.target)) { popOpen = false; renderStatus(); lucide.createIcons(); } });
+function renderStatus(){
+  var el = $('ai-st');
+  if (!jobs.length) { el.classList.remove('show'); el.innerHTML = ''; popOpen = false; return; }
+  el.classList.add('show');
+  var run = jobs.filter(function(j){ return j.st === 'run'; }), done = jobs.filter(function(j){ return j.st === 'done'; });
+  // 진행 중이면 진행 문구 하나, 모두 끝나면 5절 완료 메시지 (작업 수 = 목록 줄 수, 확인 필요 수 = 실패한 학생 수)
+  var label, cls = '';
+  if (run.length) label = '<i data-lucide="loader-circle" class="ic-spin"></i>AI 작업 ' + run.length + '개 진행 중이에요';
+  else {
+    var fails = done.reduce(function(s, j){ return s + j.fails; }, 0);
+    var allFail = done.every(function(j){ return j.fails === j.ids.length; });
+    if (allFail) { cls = ' fail'; label = '<i data-lucide="circle-alert" class="ic-fail"></i>AI 작업을 완료하지 못했어요. 다시 시도해 주세요.'; }
+    else if (fails) { cls = ' done'; label = '<i data-lucide="circle-alert" class="ic-warn"></i>AI 작업 ' + done.length + '개가 끝났어요.<span class="ai-st-sub">(학생 ' + fails + '명은 확인이 필요해요)</span>'; }
+    else { cls = ' done'; label = '<i data-lucide="circle-check" class="ic-done"></i>AI 작업 ' + done.length + '개가 끝났어요.'; }
+  }
+  // 진행 중 위, 끝난 것 아래 / 각각 최근 실행이 먼저 → 기능·수업·평가로 묶음
+  var rows = run.slice().sort(function(a, b){ return b.t - a.t; }).concat(done.slice().sort(function(a, b){ return b.t - a.t; }));
+  var groups = [], gmap = {};
+  rows.forEach(function(j){ var k = groupKey(j); if (!gmap[k]) { gmap[k] = { title:menuLabel(j), rows:[] }; groups.push(gmap[k]); } gmap[k].rows.push(j); });
+  var list = groups.map(function(g){
+    return '<p class="ai-grp">' + g.title + '</p>' + g.rows.map(function(j){
+      return '<div class="ai-row">'
+        + '<span class="ai-row-t">' + targetLabel(j) + '</span>'
+        + (j.st === 'run'
+          ? '<span class="ai-row-st run"><i data-lucide="loader-circle" class="ic-spin"></i>진행 중</span>'
+          : (j.fails ? '<span class="ai-row-st warn">완료 · 학생 ' + j.fails + '명 확인 필요</span>' : '<span class="ai-row-st done">완료</span>')
+            + '<button class="ai-go" onclick="goJob(\'' + j.id + '\')">바로 가기</button><button class="ai-x" onclick="event.stopPropagation();removeJob(\'' + j.id + '\')" aria-label="이 줄 지우기"><i data-lucide="x" style="width:15px;height:15px"></i></button>')
+        + '</div>';
+    }).join('');
+  }).join('');
+  el.innerHTML = '<button class="ai-st-btn' + cls + '" onclick="togglePop(event)" aria-expanded="' + popOpen + '">' + label + '<i data-lucide="' + (popOpen ? 'chevron-up' : 'chevron-down') + '" class="ic-chev"></i></button>'
+    + '<div class="ai-pop' + (popOpen ? ' open' : '') + '" onclick="event.stopPropagation()">' + list + '</div>';
+}
+
+// ── 라우팅 (화면마다 고유 해시) ──
+var routeCls = 1, seteukCls = 1, haengCls = 1;
+function curRoute(){ return (location.hash || '#scoring').slice(1); }
+function go(r){ if (location.hash !== '#' + r) location.hash = r; else route(); }
+function route(){
+  var r = curRoute(), m;
+  var screen = 'scoring';
+  if ((m = /^class-([12])$/.exec(r))) { screen = 'class'; routeCls = +m[1]; }
+  else if ((m = /^student-(\d{5})$/.exec(r))) { screen = 'student'; routeCls = clsOf(m[1]); }
+  else if ((m = /^seteuk-([12])$/.exec(r))) { screen = 'seteuk'; seteukCls = +m[1]; }
+  else if ((m = /^haeng-([12])$/.exec(r))) { screen = 'haeng'; haengCls = +m[1]; }
+  else if (r !== 'scoring') { location.replace('#scoring'); return; }
+  ['scoring', 'class', 'student', 'seteuk', 'haeng'].forEach(function(k){ $('screen-' + k).classList.toggle('active', k === screen); });
+  document.querySelectorAll('.icon-sb .si[data-k]').forEach(function(s){ s.classList.toggle('active', s.getAttribute('data-k') === (screen === 'haeng' ? 'haeng' : 'class')); });
+  // 그 결과 화면에 직접 들어오면 해당 완료 줄은 내림
+  jobs = jobs.filter(function(j){ return !(j.st === 'done' && destOf(j) === r); });
+  window.scrollTo(0, 0);
+  refresh();
+}
+window.addEventListener('hashchange', route);
+
+// ── 화면 그리기 ──
+function cellAi(kind, id){
+  if (!canRun(kind, id)) return '<span class="muted">-</span>';
+  var s = st[kind][id];
+  if (s === 'run') return '<span class="run-st"><i data-lucide="loader-circle"></i>자동 채점 진행 중</span>';
+  if (s === 'done') return '<span class="done-st"><i data-lucide="circle-check"></i>AI 채점 완료</span>';
+  if (s === 'fail') return '<span class="fail-st">AI 채점 실패</span>';
+  return '<span class="muted">채점 전</span>';
+}
+function rowChk(kind, id){
+  var dis = !canRun(kind, id) || st[kind][id] === 'run';
+  return '<input type="checkbox" class="chk" aria-label="' + nameOf(id) + ' 선택"' + (sel[kind][id] ? ' checked' : '') + (dis ? ' disabled' : '') + ' onclick="event.stopPropagation()" onchange="toggleSel(\'' + kind + '\',\'' + id + '\',this.checked)">';
+}
+function toggleSel(kind, id, on){ if (on) sel[kind][id] = 1; else delete sel[kind][id]; refresh(); }
+function selectAll(kind, on){
+  var cls = kind === 'scoring' ? routeCls : kind === 'seteuk' ? seteukCls : haengCls;
+  CLASSES[cls].forEach(function(s){ var id = s[0]; if (on && canRun(kind, id) && st[kind][id] !== 'run') sel[kind][id] = 1; else if (!on) delete sel[kind][id]; });
+  refresh();
+}
+function selInfo(kind, cls){
+  var n = Object.keys(sel[kind]).filter(function(id){ return clsOf(id) === cls; }).length;
+  return n;
+}
+// 세특·행특 공통 초안 표
+function renderDraft(kind, cls, text){
+  $(kind + '-cls').value = String(cls);
+  $('tb-' + kind).innerHTML = CLASSES[cls].map(function(s){
+    var id = s[0], v = st[kind][id];
+    var body = v === 'run' ? '<span class="run-st"><i data-lucide="loader-circle"></i>AI가 ' + (kind === 'seteuk' ? '세특' : '행특') + ' 초안을 만들고 있어요</span>'
+      : v === 'done' ? '<span class="draft">' + text(s[1]) + '</span>'
+      : '<span class="muted">생성된 초안이 없어요.</span>';
+    return '<tr data-id="' + id + '"><td>' + rowChk(kind, id) + '</td><td>' + id + '</td><td>' + s[1] + '</td><td class="td-left">' + body + '</td></tr>';
+  }).join('');
+  var n = selInfo(kind, cls);
+  $(kind + '-sel').textContent = n ? n + '명 선택' : '';
+  $(kind + '-run').disabled = !n;
+  var elig = CLASSES[cls].filter(function(s){ return st[kind][s[0]] !== 'run'; });
+  $(kind + '-all').checked = elig.length > 0 && elig.every(function(s){ return sel[kind][s[0]]; });
+}
+function renderScreens(){
+  // 평가 목록
+  $('tb-scoring').innerHTML = [1, 2].map(function(c){
+    var ids = CLASSES[c].map(function(s){ return s[0]; });
+    var sub = ids.filter(function(id){ return canRun('scoring', id); });
+    var running = sub.filter(function(id){ return st.scoring[id] === 'run'; }).length;
+    var doneN = sub.filter(function(id){ return st.scoring[id] === 'done' || st.scoring[id] === 'fail'; }).length;
+    var aiCell = running ? '<span class="run-st"><i data-lucide="loader-circle"></i>자동 채점 진행 중</span>'
+      : '<button class="pill-btn pill-btn-primary" onclick="runClass(' + c + ')"><i data-lucide="sparkles"></i>AI 채점</button>';
+    return '<tr><td>1-' + c + '반</td><td><span class="badge badge-purple">진행</span></td>'
+      + '<td><span class="prog"><span class="prog-bar"><span style="width:0"></span></span>0/' + sub.length + '</span></td><td>-</td>'
+      + '<td>' + aiCell + '</td>'
+      + '<td><button class="pill-btn pill-btn-soft"' + (doneN ? ' onclick="go(\'class-' + c + '\')"' : ' disabled') + '><i data-lucide="bar-chart-3"></i>결과 확인</button></td>'
+      + '<td><button class="link-btn" onclick="go(\'class-' + c + '\')"><i data-lucide="list-checks" style="width:17px;height:17px"></i>학급 채점 현황</button></td></tr>';
+  }).join('');
+  // 학급 채점 현황
+  var c = routeCls;
+  $('class-title').textContent = '1-' + c + '반 학급 채점 현황';
+  $('tb-class').innerHTML = CLASSES[c].map(function(s){
+    var id = s[0];
+    return '<tr data-id="' + id + '"><td>' + rowChk('scoring', id) + '</td><td>' + id + '</td><td>' + s[1] + '</td><td>' + (ABSENT[id] ? '<span class="badge badge-gray">미제출</span>' : '제출') + '</td><td>' + cellAi('scoring', id) + '</td><td>'
+      + (ABSENT[id] ? '<span class="muted">-</span>' : '<button class="link-btn" onclick="go(\'student-' + id + '\')">보기<i data-lucide="chevron-right" style="width:15px;height:15px"></i></button>') + '</td></tr>';
+  }).join('');
+  var n = selInfo('scoring', c);
+  $('class-sel').textContent = n ? n + '명 선택' : '';
+  $('class-run').disabled = !n;
+  var elig = CLASSES[c].filter(function(s){ return canRun('scoring', s[0]) && st.scoring[s[0]] !== 'run'; });
+  $('class-all').checked = elig.length > 0 && elig.every(function(s){ return sel.scoring[s[0]]; });
+  // 학생 채점 상세
+  var sid = (/^student-(\d{5})$/.exec(curRoute()) || [])[1];
+  if (sid) {
+    $('stu-title').textContent = sid + ' ' + nameOf(sid) + ' 채점 상세';
+    $('stu-back').onclick = function(){ go('class-' + clsOf(sid)); };
+    var s2 = st.scoring[sid];
+    var again = '<button class="pill-btn pill-btn-primary" onclick="runIds(\'scoring\',' + clsOf(sid) + ',[\'' + sid + '\'])"><i data-lucide="sparkles"></i>AI 채점</button>';
+    $('stu-body').innerHTML = s2 === 'done'
+      ? '<p class="ev-card-t">AI 채점 결과</p><p class="ev-card-d">AI 채점이 끝났어요. 결과를 검토한 뒤 확정해 주세요.</p><div class="ph-box"></div><div class="ph-box" style="height:120px"></div>'
+      : s2 === 'run' ? '<p class="run-st" style="justify-content:flex-start"><i data-lucide="loader-circle"></i>자동 채점 진행 중이에요.</p>'
+      : s2 === 'fail' ? '<p class="ev-card-t">AI 채점 결과</p><p class="ev-card-d"><span class="fail-st">AI 채점 실패</span> · 제출물을 읽지 못했어요. 다시 실행해 주세요.</p>' + again
+      : '<p class="ev-card-t">AI 채점 결과</p><p class="ev-card-d">아직 AI 채점을 하지 않았어요.</p>' + again;
+  }
+  // 세특 · 행특
+  renderDraft('seteuk', seteukCls, function(nm){ return nm + ' 학생은 자신에게 특별한 음식을 주제로 발표하며 경험과 감정을 구체적인 영어 표현으로 전달함. …'; });
+  renderDraft('haeng', haengCls, function(nm){ return nm + ' 학생은 학급 활동에서 맡은 역할을 끝까지 책임감 있게 수행하며 친구들의 의견을 존중함. …'; });
+}
+function refresh(){ renderScreens(); renderStatus(); lucide.createIcons(); save(); }
+
+load();
+route();
+</script>
+</body>
+</html>
